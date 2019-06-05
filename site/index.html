@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SICER2 Documentation</title>
+  
+
+  <link rel="shortcut icon" href="./img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "None";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script>
+  <script src="./js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> SICER2 Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href=".">Quick Start</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#quick-start">Quick Start</a></li>
+                
+                    <li><a class="toctree-l4" href="#introduction">Introduction</a></li>
+                
+                    <li><a class="toctree-l4" href="#installation">Installation</a></li>
+                
+                    <li><a class="toctree-l4" href="#using-sicer2">Using SICER2</a></li>
+                
+                    <li><a class="toctree-l4" href="#using-sicer2-for-differential-peak-calling">Using SICER2 for differential peak calling</a></li>
+                
+                    <li><a class="toctree-l4" href="#example-use">Example Use</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="workflow/">Workflow of SICER2</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="sicer2_output/">Understanding SICER2 Outputs</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="contact/">Contact</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">SICER2 Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Quick Start</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="https://github.com/jeffreyyoo/SICER-2" class="icon icon-github"> Edit on GitHub</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="quick-start">Quick Start</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Chromatin immunoprecipitation combined with high-throughput sequencing (ChIP-seq) can be used to map binding sites of a protein of interest in the genome. Histone modifications usually occupy broad chromatin domains and result in diffuse patterns in ChIP-seq data that make it difficult to identify signal enrichment. SICER, a spatial clustering approach for the identification of ChIP-enriched regions, was developed for calling broad peaks from ChIP-seq data. </p>
+<p>Usability of the original SICER software has been affected by increased throughputs of ChIP-seq experiments over the years. We now present SICER2 a more user-friendly version of SICER that has been redisgned and streamlined to handle large ChIP-seq data sets. This new Python package supports multiple job submissions on cluster systems and parallel processing on multicore architectures.</p>
+<p>For more information about the original SICER algorithm, please see</p>
+<p>“<em>A clustering approach for identification of enriched domains from histone modification
+ ChIP-Seq data</em>" Chongzhi Zang, Dustin E. Schones, Chen Zeng, Kairong Cui, Keji Zhao, and
+ Weiqun Peng, <strong>Bioinformatics</strong> 25, 1952 - 1958 (2009)</p>
+<p>In addition, we present an alternative algorithm for identification of broad domains from ChIP-seq data called RECOGNICER.</p>
+<p><em>(More detail about RECOGNICER TBD)</em></p>
+<h2 id="installation">Installation</h2>
+<h3 id="quick-installation">Quick Installation</h3>
+<p>Easiest way to install SICER2 is through <code>pip</code>. Simply open the terminal and type <code>pip install SICER2</code>.</p>
+<h3 id="requirements">Requirements</h3>
+<h4 id="python-version">Python Version</h4>
+<p>Unlike the original version of SICER, SICER2 runs in Python 3.
+Please use Python 3 to install and run SICER 2.0.</p>
+<h4 id="libraries">Libraries</h4>
+<p>Numpy and Scipy are required to run SICER2. Please have these installed before installing SICER2.
+This can be done by simply typing <code>pip install numpy scipy</code> under command line (if python2.7 is your default python version, use <code>pip3</code>).</p>
+<h4 id="c-compiler">C Compiler</h4>
+<p>C compiler is required to compile C codes that are part of the SICER2 package. This also means that python header files (e.g. Python.h) are needed. For Linux users, make sure to have python-dev installed. For Mac OS X users, it is recommended that you install Xcode.</p>
+<h4 id="bedtools">BedTools</h4>
+<p>Lastly, if you would like to directly pass BAM files as input files for SICER2, you need to have <em>bedtools</em> installed. Please refer to this <a href="http://bedtools.readthedocs.io/en/latest/">link</a> for more details on installing bedtools. This is not required if you will intend to only pass BED files as input files.</p>
+<h3 id="other-installations">Other Installations</h3>
+<p>For local installation, the source distribution file is available at Zang Lab website (<a href="http://faculty.virginia.edu/zanglab/">link</a>)</p>
+<h2 id="using-sicer2">Using SICER2</h2>
+<p>The terminal command to run SICER is <code>sicer</code>. The command to run RECOGNICER is <code>recognicer</code>.</p>
+<p>Both <code>sicer</code> command and <code>recognicer</code> command take several flag-based arguments as inputs. Two arguments are required: (1) name/path of treatment file, (2) species of reference genome. Arguments for each command are explained below.</p>
+<h3 id="sicer-arguments">SICER Arguments</h3>
+<h5 id="-t-treatment_file-required">-t/--treatment_file (Required)</h5>
+<p>The file must either be in BED or BAM format (note that you need <em>bedtools</em> installed to directly enter BAM files).
+The file name can either the relative path or the absolute path of the file.</p>
+<h5 id="-c-control_file-optional">-c/--control_file (Optional)</h5>
+<p>Like the treatment file, control file must be in BED or BAM format and can be the relative path or the absolute path of the file. However, control library input is optional.</p>
+<h5 id="-s-species-required">-s/--species (Required)</h5>
+<p>ex) <code>-s hg38</code></p>
+<h5 id="-rt-redundancy_threshold-optional">-rt/--redundancy_threshold (Optional)</h5>
+<p>The number of copies of indentical reads allowed in a library. Default value is 1</p>
+<h5 id="-w-window_size-optional">-w/--window_size (Optional)</h5>
+<p>Resolution of SICER. Default value is 200 (bp)</p>
+<h5 id="-f-fragment_size-optional">-f/--fragment_size (Optional)</h5>
+<p>The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read.
+Default value is 150 (bp).</p>
+<h5 id="-egf-effective_genome_faction-optional">-egf/--effective_genome_faction (Optional)</h5>
+<p>Effective genome as fraction of the genome size. Default value is 0.74.</p>
+<h5 id="-fdr-false_discovery_rate-optional">-fdr/--false_discovery_rate (Optional)</h5>
+<p>Remove all islands with an false-discovery-rate below cutoff. Default value is 0.01.</p>
+<h5 id="-g-gap_size-optional">-g/--gap_size (Optional)</h5>
+<p>The minimum length of a "gap" such that neighboring window is an "island."
+Please note that this value must be a multiple of the window size.
+Default value is 600 (bp).</p>
+<h5 id="-e-e_value-optional">-e/--e_value (Optional)</h5>
+<p>E-value. Requires user input when no control library is provided. Default value is 1000</p>
+<h5 id="-o-output_directory-optional">-o/--output_directory (Optional)</h5>
+<p>Path of the directory in which results will be stored. Default output directory is the current working directory.</p>
+<h5 id="-cpu-cpu-optional">-cpu/--cpu (Optional)</h5>
+<p>The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal number of cores is the species' number of chromosomes. Default value is the maximum number of cores avaiable in the system.</p>
+<h5 id="-significant_reads-optional">--significant_reads (Optional)</h5>
+<p>Significant Reads: Type "--significant_reads" flag to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.</p>
+<h3 id="recognicer-arguments">RECOGNICER Arguments</h3>
+<p>All of the arguments for RECOGNICER are identical to those of SICER except for <code>gap_size</code> and <code>e_value</code>.
+Instead of these two arguments, RECOGNICER has two arguments called <code>step_size</code> and <code>step_score</code>.</p>
+<h5 id="-s_size-step_size-optional">-s_size/--step_size (Optional)</h5>
+<p>The number of windows in one graining unit. Default value is 3.</p>
+<h5 id="-s_score-step_score-optional">-s_score/--step_score (Optional)</h5>
+<p>The minimum number of positive elements in the graining unit to call the unit positive. Default value is 2.</p>
+<h2 id="using-sicer2-for-differential-peak-calling">Using SICER2 for differential peak calling</h2>
+<p>The commands for differential peak calling are <code>sicer_df</code> and <code>recognicer_df</code>.  </p>
+<h4 id="arguments">Arguments</h4>
+<p>The arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below.</p>
+<p>Also, differential peak calling has one additional argument called <code>----false_discovery_rate_df</code></p>
+<h5 id="-t-treatment_file-required_1">-t/--treatment_file (Required)</h5>
+<p>Two files must be given as input. The first file must be the knockout (KO) file and the second file must be the wild-type (WT) file.
+Both files must either be in BED or BAM format.</p>
+<h5 id="-c-control_file-optional_1">-c/--control_file (Optional)</h5>
+<p>While optional, two files must be given as input if you decide to provide the input. The first file must be the control library corresponding to the knockout (KO) treatment file and the second file must be the control library corresponding to the wild-type (WT) treatment file. Both files must either be in BED or BAM format.</p>
+<h5 id="-fdr_df-false_discovery_rate_df-optional">-fdr_df/--false_discovery_rate_df (Optional)</h5>
+<p>Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01.</p>
+<h2 id="example-use">Example Use</h2>
+<ol>
+<li>Calling SICER with a control library.
+<em>Default parameters are explicitly entered for the sake of demonstration.</em></li>
+</ol>
+<p><code>sicer -t treatment.bed -c control.bed -s hg38 -w 200 -rt 1 -f 150 -egf 0.74 -fdr 0.01 -g 600 -e 1000</code></p>
+<ol>
+<li>Calling SICER without a control library</li>
+</ol>
+<p><code>sicer -t treatment.bed -s hg38</code></p>
+<ol>
+<li>Calling SICER with control libraries for differential peak calling.</li>
+</ol>
+<p><code>sicer_df -t treatment1.bed treatment2.bed -c control1.bed control2.bed -s hg38</code></p>
+<ol>
+<li>Calling SICER without control libraries for differential peak calling.</li>
+</ol>
+<p><code>sicer_df -t treatment1.bed treatment2.bed -s hg38</code></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="workflow/" class="btn btn-neutral float-right" title="Workflow of SICER2"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+        <span style="margin-left: 15px"><a href="workflow/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.14.0
+Build Date UTC : 2019-05-31 12:24:22.530815
+-->

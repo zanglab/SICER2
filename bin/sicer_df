@@ -1,0 +1,251 @@
+#!/usr/bin/env python3
+# Developed by Zang Lab at University of Virginia - 2018
+
+#Author: Jin Yong Yoo
+
+import os
+import sys
+
+curr_path = os.getcwd()
+cpu_available = len(os.sched_getaffinity(0))
+
+import subprocess
+import argparse
+
+# Imports from SICER package
+from sicer.main import run_SICER_df
+from sicer.lib import Utility, GenomeData
+
+def main():
+    '''The main function/pipeline for SICER-differential enrichment'''
+    parser = argparse.ArgumentParser(description='Processing arguments for SICER', usage = "Use --help or -h for more information")
+
+    parser.add_argument(
+        '--treatment_file',
+        '-t',
+        required=True,
+        nargs='+',
+        type=str,
+        help='''Name of the sample file you wish to run SICER on. This can either be the relative or the absolute path of the file. Must be in BED or BAM format.'''
+    )
+
+    parser.add_argument(
+        '--control_file',
+        '-c',
+        required=False,
+        nargs='*',
+        type=str,
+        help='''Name of the control library in BED or BAM format. This can either be the relative or the absolute path of the file. If you wish to run SICER without a control library, simply do not enter the file. '''
+    )
+
+    parser.add_argument(
+        '--species',
+        '-s',
+        required=True,
+        type=str,
+        help='The species/genome used (ex: hg38)'
+    )
+
+    parser.add_argument(
+        '--redundancy_threshold',
+        '-rt',
+        required=False,
+        type=int,
+        default=1,
+        help='The number of copies of indentical reads allowed in a library. Default value is 1'
+    )
+
+    parser.add_argument(
+        '--window_size',
+        '-w',
+        required=False,
+        type=int,
+        default=200,
+        help='Resolution of SICER. Default value is 200 (bp)'
+    )
+    parser.add_argument(
+        '--fragment_size',
+        '-f',
+        required=False,
+        type=int,
+        default=150,
+        help='The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read. Default value is 150 (bp).'
+    )
+
+    parser.add_argument(
+        '--effective_genome_fraction',
+        '-egf',
+        required=False,
+        type=float,
+        default=0.74,
+        help='Effective genome as fraction of the genome size. Default value is 0.74'
+    )
+
+    parser.add_argument(
+        '--false_discovery_rate',
+        '-fdr',
+        required=False,
+        default=0.01,
+        type=float,
+        help='''Remove all islands with an false_discovery_rate below cutoff. Default value is 0.01.'''
+    )
+
+    parser.add_argument(
+        '--false_discovery_rate_df',
+        '-fdr_df',
+        required=False,
+        default=0.01,
+        type=float,
+        help='Cutoff for identification of significant changes been wild-type library and knockout library. Only provide a value when comparing two libraries.'
+    )
+
+    parser.add_argument(
+        '--output_directory',
+        '-o',
+        required=False,
+        default=curr_path,
+        type=str,
+        help='Path of the directory in which results will be stored. Default path is the current path'
+    )
+
+    parser.add_argument(
+        '--gap_size',
+        '-g',
+        required=False,
+        type=int,
+        default=600,
+        help='The minimum length of a \"gap\" such that neighboring window is an \"island.\" This value must be a multiple of the window size. Default value is 600 (bp)'''
+    )
+    parser.add_argument(
+        '--e_value',
+        '-e',
+        required=False,
+        type=int,
+        default=1000,
+        help='E-value. Requires user input when no control library is provided. Default value is 1000'
+    )
+
+    parser.add_argument(
+        '--cpu',
+        '-cpu',
+        required=False,
+        type=int,
+        default=cpu_available,
+        help='CPU Core Count: The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal core count is the species\' number of chromosomes. Default value is the maximum number of cores avaiable in the system.'
+    )
+
+    parser.add_argument(
+        '--significant_reads',
+        required=False,
+        action='store_true',
+        help='Output Significant Reads: Enter \"--significant_reads\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
+    )
+    
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        required=False,
+        help="increase console output verbosity",
+        action="store_true")
+
+    args = parser.parse_args()
+    setattr(args,'subcommand','SICER')
+    setattr(args,'df',True)
+
+    # Check if argument inputs are valid
+    if (len(args.treatment_file) != 2):
+        sys.stderr.write("Error: SICER needs two treatment files as input\n")
+        sys.exit(1)
+
+    for i in range(len(args.treatment_file)):
+        file = args.treatment_file[i]
+        if not(os.path.isabs(file)):
+            args.treatment_file[i] = os.path.join(curr_path, file)
+
+        if (not (Utility.fileExists(args.treatment_file[i]))):
+            sys.stderr.write("Error: " + file + " file is not found.\n")
+            sys.exit(1)
+        if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
+            sys.stderr.write("Error: Treatment file must be in BED or BAM format. \n")
+            sys.exit(1)
+
+    if (not (args.species in GenomeData.species_chroms.keys())):
+        sys.stderr.write("Error: Species " + args.species + " not recognized.\n")
+        sys.exit(1)
+
+    if (not (args.effective_genome_fraction <= 1 and args.effective_genome_fraction >= 0)):
+        sys.stderr.write("Error: Effective genome fraction must be a value between 0 and 1.\n")
+        sys.exit(1)
+
+
+    if (args.gap_size % args.window_size != 0):
+        sys.stderr.write("Error: Gap size is not a multiple of window size.\n")
+        sys.exit(1)
+
+    if args.cpu > cpu_available:
+        args.cpu = cpu_available
+        sys.stderr.write("WARNING: The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
+
+    if not os.path.exists(args.output_directory):
+        try:
+            os.makedirs(args.output_directory)
+        except:
+            sys.exit("Output directory (%s) could not be created. Terminating program.\n" % args.output_directory)
+
+    for i, file in enumerate(args.treatment_file):
+        if (file.lower().endswith('.bam')):
+            bed_file_name = file.replace('.bam', '.bed')
+            bed_file_name = file.replace('.BAM', '.bed')
+            try:
+                subprocess.call(['bedtools', 'bamtobed', '-i', file, '>', bed_file_name])
+                args.treatment_file[i] = bed_file_name
+            except:
+                sys.exit(
+                    "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
+
+
+    if (args.control_file is not None):
+        if (len(args.control_file) > 2):
+            sys.stderr.write("Error: Too many control file inputs. SICER accepts at max two files.\n")
+            sys.exit(1)
+
+        if (len(args.control_file) == 1):
+            args.control_file.append(args.control_file[0])
+
+        for i in range(len(args.control_file)):
+            file = args.control_file[i]
+            if not(os.path.isabs(file)):
+                args.control_file[i] = os.path.join(curr_path, file)
+
+            if (not (Utility.fileExists(args.control_file[i]))):
+                sys.stderr.write("Error: " + file + " file is not found.\n")
+                sys.exit(1)
+
+            if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
+                sys.stderr.write("Error: Control library file must be in BED or BAM format. \n")
+                sys.exit(1)
+
+        for i, file in enumerate(args.control_file):
+            if (file.lower().endswith('.bam')):
+                bed_file_name = file.replace('.bam', '.bed')
+                bed_file_name = file.replace('.BAM', '.bed')
+                try:
+                    subprocess.call(['bedtools', 'bamtobed', '-i', file, '>', bed_file_name])
+                    args.control_file[i] = bed_file_name
+                except:
+                    sys.exit(
+                        "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
+
+    '''In this version of SICER, there are 2 different algorithms available for finding significant islands.
+    The first one is the original SICER algorithm and the second one is RECOGNICER, which
+    uses coarse-graining model identiy significant islands. "Version" argument determines which algorithm to run
+    Whether to run SICER to identify differentially enriched regions or not is determined by the number of treatment
+    libraries provided by the user.'''
+
+    print("Running SICER with given arguments \n")
+    run_SICER_df.main(args)
+    print("\nProgram Finished Running")
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,18 @@
+Metadata-Version: 1.1
+Name: SICER2
+Version: 1.0.0
+Summary: SICER2, a bioinformatics tool
+Home-page: https://github.com/jeffreyyoo/SICER-2
+Author: Jin Yong Yoo, Yiren Wang, Chongzhi Zang*
+Author-email: zang@virginia.edu
+License: MIT
+Description: Spatial Clustering for Identification of ChIP-Enriched Regions (SICER) & Coarse-graining Approach for Identifying Broad Domains from ChIP-Enriched Regions (RECOGNICER)
+Keywords: ChIP-Seq,SICER
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Environment :: Other Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Topic :: Scientific/Engineering
