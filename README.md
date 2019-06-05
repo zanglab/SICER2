@@ -1,5 +1,5 @@
 # SICER2
-[![Build Status](https://travis-ci.org/jeffreyyoo/SICER-2.svg?branch=master)](https://travis-ci.org/jeffreyyoo/SICER-2)
+[![Build Status](https://travis-ci.com/zanglab/SICER2.svg?branch=master)](https://travis-ci.com/zanglab/SICER2)
 
 ## Introduction
 Chromatin immunoprecipitation combined with high-throughput sequencing (ChIP-seq) can be used to map binding sites of a protein of interest in the genome. Histone modifications usually occupy broad chromatin domains and result in diffuse patterns in ChIP-seq data that make it difficult to identify signal enrichment. SICER, a spatial clustering approach for the identification of ChIP-enriched regions, was developed for calling broad peaks from ChIP-seq data. 
