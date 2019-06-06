@@ -17,7 +17,7 @@ setup(
     version='1.0.0',
     description = 'SICER2, a bioinformatics tool',
     long_description='Spatial Clustering for Identification of ChIP-Enriched Regions (SICER) & Coarse-graining Approach for Identifying Broad Domains from ChIP-Enriched Regions (RECOGNICER)',
-    url = 'http://faculty.virginia.edu/zanglab/software.htm',
+    url = 'http://zanglab.github.io/SICER2 ',
     author = 'Jin Yong Yoo, Yiren Wang, Chongzhi Zang*',
     author_email = 'zang@virginia.edu',
     license = 'MIT',

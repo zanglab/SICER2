@@ -5,5 +5,5 @@ pages:
     - 'Understanding SICER2 Outputs': sicer2_output.md
     - Contact: contact.md
 theme: readthedocs
-repo_url: https://github.com/jeffreyyoo/SICER-2
+repo_url: https://github.com/zanglab/SICER2
 site_author: Jin Yong Yoo
