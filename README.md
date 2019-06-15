@@ -1,4 +1,6 @@
 # SICER2
+Redesigned and improved ChIP-seq broad peak calling tool SICER
+
 [![Build Status](https://travis-ci.com/zanglab/SICER2.svg?branch=master)](https://travis-ci.com/zanglab/SICER2)
 
 ## Introduction
