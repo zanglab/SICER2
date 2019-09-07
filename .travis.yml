@@ -17,8 +17,6 @@ before_install:
 install:
   - pip install numpy
   - pip install scipy
-  - pip install -i https://test.pypi.org/simple/ SICER2
-
 
 script:
   - bash ./test/travisCI/test.sh
