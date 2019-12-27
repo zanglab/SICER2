@@ -215,7 +215,7 @@ def main():
                 sys.exit(
                     "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly")
 
-    '''In this version of SICER, there are 2 different al> %sgorithms available for finding significant islands.
+    '''In this version of SICER, there are 2 different algorithms available for finding significant islands.
     The first one is the original SICER algorithm and the second one is RECOGNICER, which
     uses coarse-graining model identiy significant islands. "Version" argument determines which algorithm to run
     Whether to run SICER to identify differentially enriched regions or not is determined by the number of treatment
