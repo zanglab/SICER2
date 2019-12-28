@@ -1,22 +1,27 @@
 os:
-  - linux
+- linux
 language: python
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
-
+- '3.4'
+- '3.5'
+- '3.6'
 matrix:
   include:
-    - python: 3.7
-      dist: xenial
-      sudo: true
-
-before_install:
-  # install python 3.6.7
+  - python: 3.7
+    dist: xenial
+    sudo: true
+before_install: 
 install:
-  - pip install numpy
-  - pip install scipy
-
+- pip install numpy
+- pip install scipy
 script:
-  - bash ./test/travisCI/test.sh
+- bash ./test/travisCI/test.sh
+deploy:
+  provider: pypi
+  user: __token__
+  password:
+    secure: Q0rilapEwPQqOHB1prEhrwD2+5guAmAgUVaHlz4M6HRgm+cAOuPikShv3Upx0+h2Q/ZDaGsGPiJqTn778JkfYkx0W8sEgl3G57J3gYQ8UV3rraNYLPrLjfOwwIV/cPo5XMljffqcM2vfFDsJc16xz+3IEUPLYSeUG/W6PtSCKEKriQgTzcu90UDDTfFIAlqNKhvpaZFs/E4+HRkpbQUEpwKuBelEcSJ8YcOLmmXAHv/v4D11aPs0x7bvqpfmrkTdC7jrWxRDaByQarzheG5KcIzisjpKX+jg8lTLifBwyg1OqRgvbvRiVpO8olbDPmBRmYKqOjvQhVFNPu8c+Nx4q2CHeusOg36Cm/+Ft53Vf4EsFAuo+wKKMV0bETw2eniZGxc91ZxLWp0YeyXBCs20e25DYklmxfpIL0ZNPzu8CZ6Vlgf8HD5Su3CsHpDNFmJyaqsp20adSqepD6m1+P4QgK1ztTuWCoM/UXhWQurUIXx6W3mNpAGSJabcPve/mx2CZq4+nRf3GFGbHcTXjc1YaFd0j1tUVib6l9CyZje4bNcf82E8ujCoqzz3NDXV+MCEw8qMsdkbDN8Hq84mqG2n6JMEdLZk92txyZ76bHyPo+6Aak1Kfobp6eQ8XYxLv8eatbzX3tPDSvcxOQUj19MKq83C21/pPrvDldDy1Pxxhmw=
+  distributions: sdist
+  on:
+    tags: true
+    python: 3.5
