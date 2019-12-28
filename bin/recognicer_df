@@ -4,7 +4,7 @@
 #Author: Jin Yong Yoo
 
 import os
-import sys
+import sys, errno, warnings
 
 curr_path = os.getcwd()
 cpu_available = os.cpu_count() - 1  #leave one core for I/O
@@ -16,7 +16,10 @@ import argparse
 from sicer.main import run_RECOGNICER_df
 from sicer.lib import Utility, GenomeData
 
+def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
+        return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
 
+warnings.formatwarning = warning_on_one_line
 
 def main():
     '''The main function/pipeline for RECOGNICER-differential enrichment'''
@@ -166,11 +169,24 @@ def main():
             args.treatment_file[i] = os.path.join(curr_path, file)
 
         if (not (Utility.fileExists(args.treatment_file[i]))):
-            sys.stderr.write("Error: " + file + " file is not found.\n")
-            sys.exit(1)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file)
+
         if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
-            sys.stderr.write("Error: Treatment file must be in BED or BAM format. \n")
-            sys.exit(1)
+            warnings.warn("Treatment file must be in BED or BAM format.")
+
+        if (file.lower().endswith('.bam')):
+            bed_file_name = args.treatment_file[i].replace('.bam', '.bed')
+
+            if not Utility.fileExists(bed_file_name):
+                process =  subprocess.Popen("bedtools bamtobed -i %s > %s" % (file, bed_file_name),
+                                stdin=subprocess.PIPE,
+                                shell=True,
+                                )
+                process.communicate()
+                if process.returncode != 0:
+                    sys.stderr.write("Error: Cannot convert BAM file to BED file.\nCheck if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly.\n")
+                    sys.exit(1)
+            args.treatment_file[i] = bed_file_name
 
     if (not (args.species in GenomeData.species_chroms.keys())):
         sys.stderr.write("Error: Species " + args.species + " not recognized.\n")
@@ -186,25 +202,13 @@ def main():
 
     if args.cpu > cpu_available:
         args.cpu = cpu_available
-        sys.stderr.write("WARNING: The number of CPU cores entered is greater than the number of cores available for this process. Executing RECOGNICER with the maximum number of cores available.\n")
+        warnings.warn("The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
 
     if not os.path.exists(args.output_directory):
         try:
             os.makedirs(args.output_directory)
         except:
             sys.exit("Output directory (%s) could not be created. Terminating program.\n" % args.output_directory)
-
-    for i, file in enumerate(args.treatment_file):
-        if (file.lower().endswith('.bam')):
-            bed_file_name = file.replace('.bam', '.bed')
-            bed_file_name = file.replace('.BAM', '.bed')
-            try:
-                subprocess.call(['bedtools', 'bamtobed', '-i', file, '>', bed_file_name])
-                args.treatment_file[i] = bed_file_name
-            except:
-                sys.exit(
-                    "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
-
 
     if (args.control_file is not None):
         if (len(args.control_file) > 2):
@@ -220,23 +224,24 @@ def main():
                 args.control_file[i] = os.path.join(curr_path, file)
 
             if (not (Utility.fileExists(args.control_file[i]))):
-                sys.stderr.write("Error: " + file + " file is not found.\n")
-                sys.exit(1)
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file)
 
             if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
-                sys.stderr.write("Error: Control library file must be in BED or BAM format. \n")
-                sys.exit(1)
+                warnings.warn("Treatment file must be in BED or BAM format.")
 
-        for i, file in enumerate(args.control_file):
             if (file.lower().endswith('.bam')):
-                bed_file_name = file.replace('.bam', '.bed')
-                bed_file_name = file.replace('.BAM', '.bed')
-                try:
-                    subprocess.call(['bedtools', 'bamtobed', '-i', file, '>', bed_file_name])
-                    args.control_file[i] = bed_file_name
-                except:
-                    sys.exit(
-                        "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
+                bed_file_name = args.control_file[i].replace('.bam', '.bed')
+
+                if not Utility.fileExists(bed_file_name):
+                    process =  subprocess.Popen("bedtools bamtobed -i %s > %s" % (file, bed_file_name),
+                                stdin=subprocess.PIPE,
+                                shell=True,
+                                )
+                    process.communicate()
+                    if process.returncode != 0:
+                        sys.stderr.write("Error: Cannot convert BAM file to BED file.\nCheck if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly.\n")
+                        sys.exit(1)
+                args.control_file[i] = bed_file_name
 
 
     print("Running RECOGNICER with given arguments \n")
