@@ -4,7 +4,7 @@
 #Author: Jin Yong Yoo
 
 import os
-import sys
+import sys, errno, warnings
 
 curr_path = os.getcwd()
 cpu_available = os.cpu_count() - 1  #leave one core for I/O
@@ -16,6 +16,10 @@ import argparse
 from sicer.main import run_SICER
 from sicer.lib import Utility, GenomeData
 
+def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
+        return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
+
+warnings.formatwarning = warning_on_one_line
 
 def main():
     '''The main function/pipeline for SICER'''
@@ -144,30 +148,55 @@ def main():
     setattr(args,'df',False)
 
     # Check if argument inputs are valid
-    file_name_temp = args.treatment_file
     if not(os.path.isabs(args.treatment_file)):
         args.treatment_file = os.path.join(curr_path, args.treatment_file)
 
     if (not (Utility.fileExists(args.treatment_file))):
-        sys.stderr.write("Error: " + file_name_temp + " file not found.\n")
-        sys.exit(1)
+        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.treatment_file)
 
     if (not (args.treatment_file.lower().endswith('.bed')) and not (args.treatment_file.lower().endswith('.bam'))):
-        sys.stderr.write("Error: Treatment file must be in BED or BAM format. \n")
-        sys.exit(1)
+        warnings.warn("Treatment file must be in BED or BAM format.")
+
+    # Checks if the inputs files are in BAM format. If they are, convert them into BED format using bamToBed
+    # functionality from bedtools2 (https://github.com/arq5x/bedtools2).
+
+    if (args.treatment_file.lower().endswith('.bam')):
+        bed_file_name = args.treatment_file.replace('.bam', '.bed')
+        
+        if not Utility.fileExists(bed_file_name):
+            process =  subprocess.Popen("bedtools bamtobed -i %s > %s" % (args.treatment_file, bed_file_name),
+                                stdin=subprocess.PIPE,
+                                shell=True,
+                                )
+            process.communicate()
+            if process.returncode != 0:
+                sys.stderr.write("Error: Cannot convert BAM file to BED file.\nCheck if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly.\n")
+                sys.exit(1)
+        args.treatment_file = bed_file_name
 
     if (args.control_file is not None):
-        file_name_temp = args.control_file
         if not(os.path.isabs(args.control_file)):
             args.control_file = os.path.join(curr_path, args.control_file)
 
         if (not (Utility.fileExists(args.control_file))):
-            sys.stderr.write("Error: " + file_name_temp + " file not found.\n")
-            sys.exit(1)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.control_file)
 
         if (not (args.control_file.lower().endswith('.bed')) and not (args.control_file.lower().endswith('.bam'))):
-            sys.stderr.write("Error: Control library file must be in BED or BAM format. \n")
-            sys.exit(1)
+            warnings.warn("Treatment file must be in BED or BAM format.")
+
+        if (args.control_file.lower().endswith('.bam')):
+            bed_file_name = args.control_file.replace('.bam', '.bed')
+            
+            if not Utility.fileExists(bed_file_name):
+                process =  subprocess.Popen("bedtools bamtobed -i %s > %s" % (args.control_file, bed_file_name),
+                                stdin=subprocess.PIPE,
+                                shell=True,
+                                )
+                process.communicate()
+                if process.returncode != 0:
+                    sys.stderr.write("Error: Cannot convert BAM file to BED file.\nCheck if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly.\n")
+                    sys.exit(1)
+            args.control_file = bed_file_name
 
     if (not (args.species in GenomeData.species_chroms.keys())):
         sys.stderr.write("Error: Species " + args.species + " not recognized.\n")
@@ -186,10 +215,12 @@ def main():
         try:
             os.makedirs(args.output_directory)
         except:
-            sys.exit("Output directory (%s) could not be created. Terminating program." % args.output_directory)
+            sys.stderr.write("Error: Gap size is not a multiple of window size.\n" % args.output_directory)
+            sys.exit(1)
 
     if args.cpu > cpu_available:
         args.cpu = cpu_available
+<<<<<<< HEAD
         sys.stderr.write("WARNING: The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
 
     '''Checks if the inputs files are in BAM format. If they are, convert them into BED format using bamToBed
@@ -220,6 +251,9 @@ def main():
     uses coarse-graining model identiy significant islands. "Version" argument determines which algorithm to run
     Whether to run SICER to identify differentially enriched regions or not is determined by the number of treatment
     libraries provided by the user.'''
+=======
+        warnings.warn("The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
+>>>>>>> 833bde93cd30330952c4e166617826a82e50eb31
 
     print("Running SICER with given arguments \n")
     run_SICER.main(args)

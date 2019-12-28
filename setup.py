@@ -14,7 +14,7 @@ ext_modules = [Extension("sicer.src.coarsegraining",["sicer/src/coarsegraining.c
 
 setup(
     name='SICER2',
-    version='1.0.0',
+    version='1.0.1',
     description = 'SICER2, a redesigned and improved ChIP-seq broad peak calling tool',
     long_description='Redesigned and improved version of the original ChIP-seq broad peak calling tool SICER. Also contains Coarse-graining Approach for Identifying Broad Domains from ChIP-Enriched Regions (RECOGNICER)',
     url = 'http://zanglab.github.io/SICER2 ',
