@@ -220,40 +220,7 @@ def main():
 
     if args.cpu > cpu_available:
         args.cpu = cpu_available
-<<<<<<< HEAD
-        sys.stderr.write("WARNING: The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
-
-    '''Checks if the inputs files are in BAM format. If they are, convert them into BED format using bamToBed
-    functionality from bedtools2 (https://github.com/arq5x/bedtools2). Therefore bedtools2 must be installed'''
-
-    if (args.treatment_file.lower().endswith('.bam')):
-        bed_file_name = args.treatment_file.replace('.bam', '.bed')
-        try:
-            subprocess.call(['bedtools', 'bamtobed', '-i', args.treatment_file, '>', bed_file_name])
-            args.treatment_file = bed_file_name
-        except:
-            sys.exit(
-                "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly")
-
-    if (args.control_file is not None):
-        if (args.control_file.lower().endswith('.bam')):
-            bed_file_name = args.control_file.replace('.bam', '.bed')
-            bed_file_name = args.control_file.replace('.BAM', '.bed')  # check for capitalized extension name
-            try:
-                subprocess.call(['bedtools', 'bamtobed', '-i', args.control_file, '>', bed_file_name])
-                args.control_file = bed_file_name
-            except:
-                sys.exit(
-                    "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly")
-
-    '''In this version of SICER, there are 2 different algorithms available for finding significant islands.
-    The first one is the original SICER algorithm and the second one is RECOGNICER, which
-    uses coarse-graining model identiy significant islands. "Version" argument determines which algorithm to run
-    Whether to run SICER to identify differentially enriched regions or not is determined by the number of treatment
-    libraries provided by the user.'''
-=======
         warnings.warn("The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
->>>>>>> 833bde93cd30330952c4e166617826a82e50eb31
 
     print("Running SICER with given arguments \n")
     run_SICER.main(args)

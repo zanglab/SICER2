@@ -14,9 +14,9 @@ curr_path = os.getcwd()
 # From SICER Package
 from sicer.lib import GenomeData
 from sicer.main import run_RECOGNICER
-from sicer.src import find_union_islands
-from sicer.src import compare_two_libraries_on_islands
-from sicer.src import filter_islands_by_significance
+from sicer import find_union_islands
+from sicer import compare_two_libraries_on_islands
+from sicer import filter_islands_by_significance
 
 
 def main(args):

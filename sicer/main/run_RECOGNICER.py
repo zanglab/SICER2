@@ -11,13 +11,13 @@ curr_path = os.getcwd()
 
 # From SICER Package
 from sicer.lib import GenomeData
-from sicer.src import remove_redundant_reads
-from sicer.src import run_make_graph_file_by_chrom
-from sicer.src import coarsegraining
-from sicer.src import associate_tags_with_chip_and_control_w_fc_q
-from sicer.src import filter_islands_by_significance
-from sicer.src import make_normalized_wig
-from sicer.src import filter_raw_tags_by_islands
+from sicer import remove_redundant_reads
+from sicer import run_make_graph_file_by_chrom
+from sicer import coarsegraining
+from sicer import associate_tags_with_chip_and_control_w_fc_q
+from sicer import filter_islands_by_significance
+from sicer import make_normalized_wig
+from sicer import filter_raw_tags_by_islands
 
 
 def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being called by run_RECOGNICER_df function.
