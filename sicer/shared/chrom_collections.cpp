@@ -871,13 +871,22 @@ typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
  * from libcpp.string cimport string
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
+ * ctypedef vector[BEDRead]* vec_ptr
  * 
- * cdef class ChromBEDReadCollection:
  */
 typedef char *__pyx_t_5sicer_6shared_17chrom_collections_cstr;
 
-/* "sicer/shared/chrom_collections.pxd":11
+/* "sicer/shared/chrom_collections.pxd":10
+ * 
  * ctypedef char* cstr
+ * ctypedef vector[BEDRead]* vec_ptr             # <<<<<<<<<<<<<<
+ * 
+ * cdef class ChromBEDReadCollection:
+ */
+typedef std::vector<BEDRead>  *__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr;
+
+/* "sicer/shared/chrom_collections.pxd":12
+ * ctypedef vector[BEDRead]* vec_ptr
  * 
  * cdef class ChromBEDReadCollection:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -888,7 +897,7 @@ struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection {
   struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
-  std::map<std::string,std::vector<BEDRead> >  data;
+  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  data;
 };
 
 
@@ -903,8 +912,8 @@ struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection {
 
 struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection {
   void (*insertRead)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, BEDRead);
-  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *);
-  std::vector<BEDRead>  (*getChromData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string);
+  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *);
+  __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr (*getChromData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string);
   BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, int);
   PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch);
   std::string (*dataToString)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch);
@@ -1379,8 +1388,8 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_insertRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, BEDRead __pyx_v_input_data); /* proto*/
-static std::map<std::string,std::vector<BEDRead> >  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto*/
-static std::vector<BEDRead>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom); /* proto*/
+static std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto*/
+static __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom); /* proto*/
 static BEDRead __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, int __pyx_v_i); /* proto*/
 static PyObject *__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromosomes(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_dataToString(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
@@ -1637,7 +1646,7 @@ static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
   Py_ssize_t __pyx_t_4;
   std::string __pyx_t_5;
   std::vector<BEDRead>  *__pyx_t_6;
-  std::pair<std::string,std::vector<BEDRead> >  __pyx_t_7;
+  std::pair<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_t_7;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
   /* "sicer/shared/chrom_collections.pyx":10
@@ -1694,7 +1703,7 @@ static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
  * 
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             self.data.insert(pair[string, vector[BEDRead]](chrom, deref(new vector[BEDRead](0))))
+ *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
  * 
  */
   if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
@@ -1716,7 +1725,7 @@ static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
     /* "sicer/shared/chrom_collections.pyx":14
  * 
  *         for chrom in self.chromosomes:
- *             self.data.insert(pair[string, vector[BEDRead]](chrom, deref(new vector[BEDRead](0))))             # <<<<<<<<<<<<<<
+ *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))             # <<<<<<<<<<<<<<
  * 
  *     cdef void insertRead(self, string chrom, BEDRead input_data):
  */
@@ -1728,7 +1737,7 @@ static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
       __PYX_ERR(0, 14, __pyx_L1_error)
     }
     try {
-      __pyx_t_7 = std::pair<std::string,std::vector<BEDRead> > (__pyx_t_5, (*__pyx_t_6));
+      __pyx_t_7 = std::pair<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> (__pyx_t_5, __pyx_t_6);
     } catch(...) {
       __Pyx_CppExn2PyErr();
       __PYX_ERR(0, 14, __pyx_L1_error)
@@ -1744,7 +1753,7 @@ static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
  * 
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             self.data.insert(pair[string, vector[BEDRead]](chrom, deref(new vector[BEDRead](0))))
+ *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
  * 
  */
   }
@@ -1774,24 +1783,24 @@ static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
 }
 
 /* "sicer/shared/chrom_collections.pyx":16
- *             self.data.insert(pair[string, vector[BEDRead]](chrom, deref(new vector[BEDRead](0))))
+ *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
  * 
  *     cdef void insertRead(self, string chrom, BEDRead input_data):             # <<<<<<<<<<<<<<
- *         self.data.at(chrom).push_back(input_data)
+ *         deref(self.data.at(chrom)).push_back(input_data)
  * 
  */
 
 static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_insertRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, BEDRead __pyx_v_input_data) {
   __Pyx_RefNannyDeclarations
-  __Pyx_FakeReference<std::vector<BEDRead> > __pyx_t_1;
+  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_1;
   __Pyx_RefNannySetupContext("insertRead", 0);
 
   /* "sicer/shared/chrom_collections.pyx":17
  * 
  *     cdef void insertRead(self, string chrom, BEDRead input_data):
- *         self.data.at(chrom).push_back(input_data)             # <<<<<<<<<<<<<<
+ *         deref(self.data.at(chrom)).push_back(input_data)             # <<<<<<<<<<<<<<
  * 
- *     cdef mapcpp[string, vector[BEDRead]] getData(self):
+ *     cdef mapcpp[string, vec_ptr] getData(self):
  */
   try {
     __pyx_t_1 = __pyx_v_self->data.at(__pyx_v_chrom);
@@ -1800,17 +1809,17 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
     __PYX_ERR(0, 17, __pyx_L1_error)
   }
   try {
-    __pyx_t_1->push_back(__pyx_v_input_data);
+    (*__pyx_t_1).push_back(__pyx_v_input_data);
   } catch(...) {
     __Pyx_CppExn2PyErr();
     __PYX_ERR(0, 17, __pyx_L1_error)
   }
 
   /* "sicer/shared/chrom_collections.pyx":16
- *             self.data.insert(pair[string, vector[BEDRead]](chrom, deref(new vector[BEDRead](0))))
+ *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
  * 
  *     cdef void insertRead(self, string chrom, BEDRead input_data):             # <<<<<<<<<<<<<<
- *         self.data.at(chrom).push_back(input_data)
+ *         deref(self.data.at(chrom)).push_back(input_data)
  * 
  */
 
@@ -1823,32 +1832,32 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
 }
 
 /* "sicer/shared/chrom_collections.pyx":19
- *         self.data.at(chrom).push_back(input_data)
+ *         deref(self.data.at(chrom)).push_back(input_data)
  * 
- *     cdef mapcpp[string, vector[BEDRead]] getData(self):             # <<<<<<<<<<<<<<
+ *     cdef mapcpp[string, vec_ptr] getData(self):             # <<<<<<<<<<<<<<
  *         return self.data
  * 
  */
 
-static std::map<std::string,std::vector<BEDRead> >  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
-  std::map<std::string,std::vector<BEDRead> >  __pyx_r;
+static std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
+  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getData", 0);
 
   /* "sicer/shared/chrom_collections.pyx":20
  * 
- *     cdef mapcpp[string, vector[BEDRead]] getData(self):
+ *     cdef mapcpp[string, vec_ptr] getData(self):
  *         return self.data             # <<<<<<<<<<<<<<
  * 
- *     cdef vector[BEDRead] getChromData(self, string chrom):
+ *     cdef vec_ptr getChromData(self, string chrom):
  */
   __pyx_r = __pyx_v_self->data;
   goto __pyx_L0;
 
   /* "sicer/shared/chrom_collections.pyx":19
- *         self.data.at(chrom).push_back(input_data)
+ *         deref(self.data.at(chrom)).push_back(input_data)
  * 
- *     cdef mapcpp[string, vector[BEDRead]] getData(self):             # <<<<<<<<<<<<<<
+ *     cdef mapcpp[string, vec_ptr] getData(self):             # <<<<<<<<<<<<<<
  *         return self.data
  * 
  */
@@ -1862,20 +1871,20 @@ static std::map<std::string,std::vector<BEDRead> >  __pyx_f_5sicer_6shared_17chr
 /* "sicer/shared/chrom_collections.pyx":22
  *         return self.data
  * 
- *     cdef vector[BEDRead] getChromData(self, string chrom):             # <<<<<<<<<<<<<<
+ *     cdef vec_ptr getChromData(self, string chrom):             # <<<<<<<<<<<<<<
  *         return self.data.at(chrom)
  * 
  */
 
-static std::vector<BEDRead>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom) {
-  std::vector<BEDRead>  __pyx_r;
+static __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom) {
+  __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr __pyx_r;
   __Pyx_RefNannyDeclarations
-  __Pyx_FakeReference<std::vector<BEDRead> > __pyx_t_1;
+  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_1;
   __Pyx_RefNannySetupContext("getChromData", 0);
 
   /* "sicer/shared/chrom_collections.pyx":23
  * 
- *     cdef vector[BEDRead] getChromData(self, string chrom):
+ *     cdef vec_ptr getChromData(self, string chrom):
  *         return self.data.at(chrom)             # <<<<<<<<<<<<<<
  * 
  *     cdef BEDRead getRead(self, string chrom, int i):
@@ -1892,7 +1901,7 @@ static std::vector<BEDRead>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromB
   /* "sicer/shared/chrom_collections.pyx":22
  *         return self.data
  * 
- *     cdef vector[BEDRead] getChromData(self, string chrom):             # <<<<<<<<<<<<<<
+ *     cdef vec_ptr getChromData(self, string chrom):             # <<<<<<<<<<<<<<
  *         return self.data.at(chrom)
  * 
  */
@@ -1900,7 +1909,7 @@ static std::vector<BEDRead>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromB
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_WriteUnraisable("sicer.shared.chrom_collections.ChromBEDReadCollection.getChromData", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -1910,21 +1919,21 @@ static std::vector<BEDRead>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromB
  *         return self.data.at(chrom)
  * 
  *     cdef BEDRead getRead(self, string chrom, int i):             # <<<<<<<<<<<<<<
- *         return self.data.at(chrom).at(i)
+ *         return deref(self.data.at(chrom)).at(i)
  * 
  */
 
 static BEDRead __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, int __pyx_v_i) {
   BEDRead __pyx_r;
   __Pyx_RefNannyDeclarations
-  __Pyx_FakeReference<std::vector<BEDRead> > __pyx_t_1;
+  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_1;
   __Pyx_FakeReference<BEDRead> __pyx_t_2;
   __Pyx_RefNannySetupContext("getRead", 0);
 
   /* "sicer/shared/chrom_collections.pyx":26
  * 
  *     cdef BEDRead getRead(self, string chrom, int i):
- *         return self.data.at(chrom).at(i)             # <<<<<<<<<<<<<<
+ *         return deref(self.data.at(chrom)).at(i)             # <<<<<<<<<<<<<<
  * 
  *     cpdef list getChromosomes(self):
  */
@@ -1935,7 +1944,7 @@ static BEDRead __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollecti
     __PYX_ERR(0, 26, __pyx_L1_error)
   }
   try {
-    __pyx_t_2 = __pyx_t_1->at(__pyx_v_i);
+    __pyx_t_2 = (*__pyx_t_1).at(__pyx_v_i);
   } catch(...) {
     __Pyx_CppExn2PyErr();
     __PYX_ERR(0, 26, __pyx_L1_error)
@@ -1947,7 +1956,7 @@ static BEDRead __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollecti
  *         return self.data.at(chrom)
  * 
  *     cdef BEDRead getRead(self, string chrom, int i):             # <<<<<<<<<<<<<<
- *         return self.data.at(chrom).at(i)
+ *         return deref(self.data.at(chrom)).at(i)
  * 
  */
 
@@ -1961,7 +1970,7 @@ static BEDRead __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollecti
 }
 
 /* "sicer/shared/chrom_collections.pyx":28
- *         return self.data.at(chrom).at(i)
+ *         return deref(self.data.at(chrom)).at(i)
  * 
  *     cpdef list getChromosomes(self):             # <<<<<<<<<<<<<<
  *         return self.chromosomes
@@ -2038,7 +2047,7 @@ static PyObject *__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollec
   goto __pyx_L0;
 
   /* "sicer/shared/chrom_collections.pyx":28
- *         return self.data.at(chrom).at(i)
+ *         return deref(self.data.at(chrom)).at(i)
  * 
  *     cpdef list getChromosomes(self):             # <<<<<<<<<<<<<<
  *         return self.chromosomes
@@ -2116,11 +2125,11 @@ static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadColl
   PyObject *__pyx_t_4 = NULL;
   std::string __pyx_t_5;
   Py_ssize_t __pyx_t_6;
-  __Pyx_FakeReference<std::vector<BEDRead> > __pyx_t_7;
+  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_7;
   std::vector<BEDRead> ::size_type __pyx_t_8;
   std::vector<BEDRead> ::size_type __pyx_t_9;
   std::vector<BEDRead> ::size_type __pyx_t_10;
-  __Pyx_FakeReference<std::vector<BEDRead> > __pyx_t_11;
+  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_11;
   __Pyx_FakeReference<BEDRead> __pyx_t_12;
   __Pyx_RefNannySetupContext("dataToString", 0);
   /* Check if called by wrapper */
@@ -2175,7 +2184,7 @@ static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadColl
  *     cpdef string dataToString(self):
  *         cdef string s = "".encode("UTF-8")             # <<<<<<<<<<<<<<
  *         for chrom in self.chromosomes:
- *             for i in range(self.data.at(chrom).size()):
+ *             for i in range(deref(self.data.at(chrom)).size()):
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_kp_b_); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L1_error)
   __pyx_v_s = __pyx_t_5;
@@ -2184,8 +2193,8 @@ static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadColl
  *     cpdef string dataToString(self):
  *         cdef string s = "".encode("UTF-8")
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             for i in range(self.data.at(chrom).size()):
- *                 s = s + self.data.at(chrom).at(i).toString().decode("UTF-8") + "\n"
+ *             for i in range(deref(self.data.at(chrom)).size()):
+ *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
  */
   if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
@@ -2206,8 +2215,8 @@ static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadColl
     /* "sicer/shared/chrom_collections.pyx":34
  *         cdef string s = "".encode("UTF-8")
  *         for chrom in self.chromosomes:
- *             for i in range(self.data.at(chrom).size()):             # <<<<<<<<<<<<<<
- *                 s = s + self.data.at(chrom).at(i).toString().decode("UTF-8") + "\n"
+ *             for i in range(deref(self.data.at(chrom)).size()):             # <<<<<<<<<<<<<<
+ *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
  *         return s
  */
     __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L1_error)
@@ -2217,15 +2226,15 @@ static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadColl
       __Pyx_CppExn2PyErr();
       __PYX_ERR(0, 34, __pyx_L1_error)
     }
-    __pyx_t_8 = __pyx_t_7->size();
+    __pyx_t_8 = (*__pyx_t_7).size();
     __pyx_t_9 = __pyx_t_8;
     for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_i = __pyx_t_10;
 
       /* "sicer/shared/chrom_collections.pyx":35
  *         for chrom in self.chromosomes:
- *             for i in range(self.data.at(chrom).size()):
- *                 s = s + self.data.at(chrom).at(i).toString().decode("UTF-8") + "\n"             # <<<<<<<<<<<<<<
+ *             for i in range(deref(self.data.at(chrom)).size()):
+ *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"             # <<<<<<<<<<<<<<
  *         return s
  * 
  */
@@ -2239,7 +2248,7 @@ static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadColl
         __PYX_ERR(0, 35, __pyx_L1_error)
       }
       try {
-        __pyx_t_12 = __pyx_t_11->at(__pyx_v_i);
+        __pyx_t_12 = (*__pyx_t_11).at(__pyx_v_i);
       } catch(...) {
         __Pyx_CppExn2PyErr();
         __PYX_ERR(0, 35, __pyx_L1_error)
@@ -2262,15 +2271,15 @@ static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadColl
  *     cpdef string dataToString(self):
  *         cdef string s = "".encode("UTF-8")
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             for i in range(self.data.at(chrom).size()):
- *                 s = s + self.data.at(chrom).at(i).toString().decode("UTF-8") + "\n"
+ *             for i in range(deref(self.data.at(chrom)).size()):
+ *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "sicer/shared/chrom_collections.pyx":36
- *             for i in range(self.data.at(chrom).size()):
- *                 s = s + self.data.at(chrom).at(i).toString().decode("UTF-8") + "\n"
+ *             for i in range(deref(self.data.at(chrom)).size()):
+ *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
  *         return s             # <<<<<<<<<<<<<<
  * 
  *     cpdef void printDataHead(self):
@@ -2341,13 +2350,13 @@ static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadColle
  * 
  *     cpdef void printDataHead(self):             # <<<<<<<<<<<<<<
  *         head = 10;
- *         cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()
+ *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
  */
 
 static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_7printDataHead(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
 static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_printDataHead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch) {
   long __pyx_v_head;
-  std::map<std::string,std::vector<BEDRead> > ::iterator __pyx_v_it;
+  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> ::iterator __pyx_v_it;
   long __pyx_v_i;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2409,7 +2418,7 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
  * 
  *     cpdef void printDataHead(self):
  *         head = 10;             # <<<<<<<<<<<<<<
- *         cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()
+ *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
  *         while(it != self.data.end()):
  */
   __pyx_v_head = 10;
@@ -2417,17 +2426,17 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
   /* "sicer/shared/chrom_collections.pyx":40
  *     cpdef void printDataHead(self):
  *         head = 10;
- *         cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()             # <<<<<<<<<<<<<<
+ *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()             # <<<<<<<<<<<<<<
  *         while(it != self.data.end()):
- *             if deref(it).second.size() > 0:
+ *             if deref(deref(it).second).size() > 0:
  */
   __pyx_v_it = __pyx_v_self->data.begin();
 
   /* "sicer/shared/chrom_collections.pyx":41
  *         head = 10;
- *         cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()
+ *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
  *         while(it != self.data.end()):             # <<<<<<<<<<<<<<
- *             if deref(it).second.size() > 0:
+ *             if deref(deref(it).second).size() > 0:
  *                 for i in range(head):
  */
   while (1) {
@@ -2435,20 +2444,20 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
     if (!__pyx_t_5) break;
 
     /* "sicer/shared/chrom_collections.pyx":42
- *         cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()
+ *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
  *         while(it != self.data.end()):
- *             if deref(it).second.size() > 0:             # <<<<<<<<<<<<<<
+ *             if deref(deref(it).second).size() > 0:             # <<<<<<<<<<<<<<
  *                 for i in range(head):
- *                     print(deref(it).second.at(i).toString().decode("UTF-8"))
+ *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
  */
-    __pyx_t_5 = (((*__pyx_v_it).second.size() > 0) != 0);
+    __pyx_t_5 = (((*(*__pyx_v_it).second).size() > 0) != 0);
     if (__pyx_t_5) {
 
       /* "sicer/shared/chrom_collections.pyx":43
  *         while(it != self.data.end()):
- *             if deref(it).second.size() > 0:
+ *             if deref(deref(it).second).size() > 0:
  *                 for i in range(head):             # <<<<<<<<<<<<<<
- *                     print(deref(it).second.at(i).toString().decode("UTF-8"))
+ *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
  *             postincrement(it)
  */
       __pyx_t_6 = __pyx_v_head;
@@ -2457,14 +2466,14 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
         __pyx_v_i = __pyx_t_8;
 
         /* "sicer/shared/chrom_collections.pyx":44
- *             if deref(it).second.size() > 0:
+ *             if deref(deref(it).second).size() > 0:
  *                 for i in range(head):
- *                     print(deref(it).second.at(i).toString().decode("UTF-8"))             # <<<<<<<<<<<<<<
+ *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))             # <<<<<<<<<<<<<<
  *             postincrement(it)
  * 
  */
         try {
-          __pyx_t_9 = (*__pyx_v_it).second.at(__pyx_v_i);
+          __pyx_t_9 = (*(*__pyx_v_it).second).at(__pyx_v_i);
         } catch(...) {
           __Pyx_CppExn2PyErr();
           __PYX_ERR(0, 44, __pyx_L1_error)
@@ -2478,17 +2487,17 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
       }
 
       /* "sicer/shared/chrom_collections.pyx":42
- *         cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()
+ *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
  *         while(it != self.data.end()):
- *             if deref(it).second.size() > 0:             # <<<<<<<<<<<<<<
+ *             if deref(deref(it).second).size() > 0:             # <<<<<<<<<<<<<<
  *                 for i in range(head):
- *                     print(deref(it).second.at(i).toString().decode("UTF-8"))
+ *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
  */
     }
 
     /* "sicer/shared/chrom_collections.pyx":45
  *                 for i in range(head):
- *                     print(deref(it).second.at(i).toString().decode("UTF-8"))
+ *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
  *             postincrement(it)             # <<<<<<<<<<<<<<
  * 
  *     def __dealloc__(self):
@@ -2501,7 +2510,7 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
  * 
  *     cpdef void printDataHead(self):             # <<<<<<<<<<<<<<
  *         head = 10;
- *         cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()
+ *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
  */
 
   /* function exit code */
@@ -2610,7 +2619,7 @@ static void __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection
  *             self.data[chrom].shrink_to_fit()
  */
     __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L1_error)
-    (__pyx_v_self->data[__pyx_t_4]).clear();
+    (__pyx_v_self->data[__pyx_t_4])->clear();
 
     /* "sicer/shared/chrom_collections.pyx":50
  *         for chrom in self.chromosomes:
@@ -2618,7 +2627,7 @@ static void __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection
  *             self.data[chrom].shrink_to_fit()             # <<<<<<<<<<<<<<
  */
     __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
-    (__pyx_v_self->data[__pyx_t_4]).shrink_to_fit();
+    (__pyx_v_self->data[__pyx_t_4])->shrink_to_fit();
 
     /* "sicer/shared/chrom_collections.pyx":48
  * 
@@ -3064,7 +3073,7 @@ static PyObject *__pyx_tp_new_5sicer_6shared_17chrom_collections_ChromBEDReadCol
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)o);
   p->__pyx_vtab = __pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
-  new((void*)&(p->data)) std::map<std::string,std::vector<BEDRead> > ();
+  new((void*)&(p->data)) std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> ();
   p->species = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->chromosomes = ((PyObject*)Py_None); Py_INCREF(Py_None);
   if (unlikely(__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_1__cinit__(o, a, k) < 0)) goto bad;
@@ -3356,8 +3365,8 @@ static int __Pyx_modinit_type_init_code(void) {
   /*--- Type init code ---*/
   __pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = &__pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
   __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.insertRead = (void (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, BEDRead))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_insertRead;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getData = (std::map<std::string,std::vector<BEDRead> >  (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getChromData = (std::vector<BEDRead>  (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData;
+  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getData = (std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData;
+  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getChromData = (__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData;
   __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getRead = (BEDRead (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, int))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getRead;
   __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getChromosomes = (PyObject *(*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromosomes;
   __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.dataToString = (std::string (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_dataToString;

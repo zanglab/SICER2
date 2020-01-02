@@ -35,8 +35,8 @@ extensions = [
                 extra_compile_args=extra_cpp_args,
                 language='c++'
                 ),
-            Extension('sicer.preprocessing',
-                sources=['sicer/preprocessing' + EXT],
+            Extension('sicer.utils_cpp',
+                sources=['sicer/utils_cpp' + EXT],
                 include_dirs=['.'],
                 extra_compile_args=extra_cpp_args,
                 language='c++'

@@ -11,19 +11,19 @@ cdef class ChromBEDReadCollection:
         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
 
         for chrom in self.chromosomes:
-            self.data.insert(pair[string, vector[BEDRead]](chrom, deref(new vector[BEDRead](0))))
+            self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
 
     cdef void insertRead(self, string chrom, BEDRead input_data):
-        self.data.at(chrom).push_back(input_data)
+        deref(self.data.at(chrom)).push_back(input_data)
 
-    cdef mapcpp[string, vector[BEDRead]] getData(self):
+    cdef mapcpp[string, vec_ptr] getData(self):
         return self.data
 
-    cdef vector[BEDRead] getChromData(self, string chrom):
+    cdef vec_ptr getChromData(self, string chrom):
         return self.data.at(chrom)
 
     cdef BEDRead getRead(self, string chrom, int i):
-        return self.data.at(chrom).at(i)
+        return deref(self.data.at(chrom)).at(i)
 
     cpdef list getChromosomes(self):
         return self.chromosomes
@@ -31,17 +31,17 @@ cdef class ChromBEDReadCollection:
     cpdef string dataToString(self):
         cdef string s = "".encode("UTF-8")
         for chrom in self.chromosomes:
-            for i in range(self.data.at(chrom).size()):
-                s = s + self.data.at(chrom).at(i).toString().decode("UTF-8") + "\n"
+            for i in range(deref(self.data.at(chrom)).size()):
+                s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
         return s
 
     cpdef void printDataHead(self):
         head = 10;
-        cdef mapcpp[string, vector[BEDRead]].iterator it = self.data.begin()
+        cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
         while(it != self.data.end()):
-            if deref(it).second.size() > 0:
+            if deref(deref(it).second).size() > 0:
                 for i in range(head):
-                    print(deref(it).second.at(i).toString().decode("UTF-8"))
+                    print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
             postincrement(it)
 
     def __dealloc__(self):

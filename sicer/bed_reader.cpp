@@ -4,6 +4,7 @@
 {
     "distutils": {
         "depends": [
+            "sicer/removeAt.cpp",
             "sicer/shared/dataStructs.h"
         ],
         "extra_compile_args": [
@@ -14,6 +15,7 @@
         "include_dirs": [
             "sicer/shared",
             "./sicer/shared",
+            "./sicer",
             "."
         ],
         "language": "c++",
@@ -643,9 +645,11 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <string.h>
 #include <string>
 #include "dataStructs.h"
+#include "removeAt.cpp"
 #include <stdlib.h>
 #include <stdio.h>
 #include <set>
+#include <algorithm>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -858,6 +862,18 @@ static const char *__pyx_f[] = {
   "stringsource",
   "sicer/shared/chrom_collections.pxd",
 };
+/* ForceInitThreads.proto */
+#ifndef __PYX_FORCE_INIT_THREADS
+  #define __PYX_FORCE_INIT_THREADS 0
+#endif
+
+/* NoFastGil.proto */
+#define __Pyx_PyGILState_Ensure PyGILState_Ensure
+#define __Pyx_PyGILState_Release PyGILState_Release
+#define __Pyx_FastGIL_Remember()
+#define __Pyx_FastGIL_Forget()
+#define __Pyx_FastGilFuncInit()
+
 
 /*--- Type declarations ---*/
 struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
@@ -876,22 +892,65 @@ typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
  * from libcpp.string cimport string
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
+ * ctypedef vector[BEDRead]* vec_ptr
  * 
- * cdef class ChromBEDReadCollection:
  */
 typedef char *__pyx_t_5sicer_6shared_17chrom_collections_cstr;
 
-/* "sicer/bed_reader.pyx":19
- * from libcpp.string cimport string
+/* "sicer/shared/chrom_collections.pxd":10
+ * 
+ * ctypedef char* cstr
+ * ctypedef vector[BEDRead]* vec_ptr             # <<<<<<<<<<<<<<
+ * 
+ * cdef class ChromBEDReadCollection:
+ */
+typedef std::vector<BEDRead>  *__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr;
+struct __pyx_ctuple_int__and_int__and_int__and_int;
+typedef struct __pyx_ctuple_int__and_int__and_int__and_int __pyx_ctuple_int__and_int__and_int__and_int;
+
+/* "sicer/bed_reader.pyx":25
+ * from libcpp.algorithm cimport sort
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
- * 
- * cdef class BEDReader:
+ * ctypedef bool (*cmp_f)(BEDRead, BEDRead)
+ * ctypedef vector[BEDRead]* vec_ptr
  */
 typedef char *__pyx_t_5sicer_10bed_reader_cstr;
 
-/* "sicer/shared/chrom_collections.pxd":11
+/* "sicer/bed_reader.pyx":26
+ * 
  * ctypedef char* cstr
+ * ctypedef bool (*cmp_f)(BEDRead, BEDRead)             # <<<<<<<<<<<<<<
+ * ctypedef vector[BEDRead]* vec_ptr
+ * 
+ */
+typedef bool (*__pyx_t_5sicer_10bed_reader_cmp_f)(BEDRead, BEDRead);
+
+/* "sicer/bed_reader.pyx":27
+ * ctypedef char* cstr
+ * ctypedef bool (*cmp_f)(BEDRead, BEDRead)
+ * ctypedef vector[BEDRead]* vec_ptr             # <<<<<<<<<<<<<<
+ * 
+ * cdef char PLUS = b'+'
+ */
+typedef std::vector<BEDRead>  *__pyx_t_5sicer_10bed_reader_vec_ptr;
+
+/* "sicer/bed_reader.pyx":65
+ *         self.line_count = 0
+ * 
+ *     cdef (int, int, int, int) _remove_redudant_reads(self, vec_ptr vec, int threshold) nogil:             # <<<<<<<<<<<<<<
+ *         # Indices to delete
+ *         cdef vector[int] shouldDelete
+ */
+struct __pyx_ctuple_int__and_int__and_int__and_int {
+  int f0;
+  int f1;
+  int f2;
+  int f3;
+};
+
+/* "sicer/shared/chrom_collections.pxd":12
+ * ctypedef vector[BEDRead]* vec_ptr
  * 
  * cdef class ChromBEDReadCollection:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -902,12 +961,12 @@ struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection {
   struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
-  std::map<std::string,std::vector<BEDRead> >  data;
+  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  data;
 };
 
 
-/* "sicer/bed_reader.pyx":21
- * ctypedef char* cstr
+/* "sicer/bed_reader.pyx":42
+ *                 return i.end < j.end
  * 
  * cdef class BEDReader:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -919,13 +978,15 @@ struct __pyx_obj_5sicer_10bed_reader_BEDReader {
   PyObject *file_name;
   PyObject *species;
   PyObject *chromosomes;
+  int num_cpu;
+  int redundancy_threshold;
   int line_count;
 };
 
 
 
-/* "sicer/shared/chrom_collections.pxd":11
- * ctypedef char* cstr
+/* "sicer/shared/chrom_collections.pxd":12
+ * ctypedef vector[BEDRead]* vec_ptr
  * 
  * cdef class ChromBEDReadCollection:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -934,8 +995,8 @@ struct __pyx_obj_5sicer_10bed_reader_BEDReader {
 
 struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection {
   void (*insertRead)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, BEDRead);
-  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *);
-  std::vector<BEDRead>  (*getChromData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string);
+  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *);
+  __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr (*getChromData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string);
   BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, int);
   PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch);
   std::string (*dataToString)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch);
@@ -944,8 +1005,8 @@ struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
 static struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
 
 
-/* "sicer/bed_reader.pyx":21
- * ctypedef char* cstr
+/* "sicer/bed_reader.pyx":42
+ *                 return i.end < j.end
  * 
  * cdef class BEDReader:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -953,6 +1014,9 @@ static struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCo
  */
 
 struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader {
+  __pyx_ctuple_int__and_int__and_int__and_int (*_remove_redudant_reads)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_vec_ptr, int);
+  std::string (*_preprocess_BED_reads_by_chrom)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_vec_ptr);
+  struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *(*_preprocess_BED_reads)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *);
   BEDRead *(*_parseBEDLine)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_cstr);
   struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *(*_read_file)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *);
   struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *(*read_file)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, int __pyx_skip_dispatch);
@@ -1214,29 +1278,6 @@ static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
 #define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
 #endif
 
-/* IncludeStringH.proto */
-#include <string.h>
-
-/* decode_c_string_utf16.proto */
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 0;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = -1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-
-/* decode_c_string.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
-         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
-
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -1273,13 +1314,76 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 #define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
 #endif
 
-/* RaiseException.proto */
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
-
 /* WriteUnraisableException.proto */
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
+
+/* GetItemInt.proto */
+#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
+    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
+               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
+#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
+                                                     int is_list, int wraparound, int boundscheck);
+
+/* IncludeCppStringH.proto */
+#include <string>
+
+/* decode_c_string_utf16.proto */
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 0;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = -1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+
+/* decode_c_bytes.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
+         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
+
+/* decode_cpp_string.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_cpp_string(
+         std::string cppstring, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
+    return __Pyx_decode_c_bytes(
+        cppstring.data(), cppstring.size(), start, stop, encoding, errors, decode_func);
+}
+
+/* IncludeStringH.proto */
+#include <string.h>
+
+/* decode_c_string.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
+         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
+
+/* RaiseException.proto */
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 /* pyfrozenset_new.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyFrozenSet_New(PyObject* it);
@@ -1405,17 +1509,23 @@ static void __Pyx_CppExn2PyErr() {
 }
 #endif
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
 /* None.proto */
 #include <new>
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* FastTypeChecks.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1436,6 +1546,9 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+static __pyx_ctuple_int__and_int__and_int__and_int __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, __pyx_t_5sicer_10bed_reader_vec_ptr __pyx_v_vec, int __pyx_v_threshold); /* proto*/
+static std::string __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chrom(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, __pyx_t_5sicer_10bed_reader_vec_ptr __pyx_v_vec); /* proto*/
+static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_reads); /* proto*/
 static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, __pyx_t_5sicer_10bed_reader_cstr __pyx_v_line); /* proto*/
 static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_f_5sicer_10bed_reader_9BEDReader__read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self); /* proto*/
 static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
@@ -1455,22 +1568,43 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
 /* Module declarations from 'sicer.shared.chrom_collections' */
 static PyTypeObject *__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = 0;
 
+/* Module declarations from 'sicer.utils_cpp' */
+
+/* Module declarations from 'cython' */
+
+/* Module declarations from 'libcpp' */
+
 /* Module declarations from 'libc.stdlib' */
 
 /* Module declarations from 'libc.stdio' */
 
 /* Module declarations from 'libcpp.set' */
 
+/* Module declarations from 'libcpp.algorithm' */
+
 /* Module declarations from 'sicer.bed_reader' */
 static PyTypeObject *__pyx_ptype_5sicer_10bed_reader_BEDReader = 0;
+static char __pyx_v_5sicer_10bed_reader_PLUS;
+static std::string __pyx_v_5sicer_10bed_reader_TAB;
+static std::string __pyx_v_5sicer_10bed_reader_NEWLINE;
+static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead, BEDRead); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &); /*proto*/
 #define __Pyx_MODULE_NAME "sicer.bed_reader"
 extern int __pyx_module_is_main_sicer__bed_reader;
 int __pyx_module_is_main_sicer__bed_reader = 0;
 
 /* Implementation of 'sicer.bed_reader' */
 static PyObject *__pyx_builtin_map;
+static PyObject *__pyx_builtin_range;
+static PyObject *__pyx_builtin_print;
+static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_TypeError;
+static const char __pyx_k__3[] = "\" ...";
 static const char __pyx_k_os[] = "os";
 static const char __pyx_k_map[] = "map";
 static const char __pyx_k_main[] = "__main__";
@@ -1478,10 +1612,13 @@ static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_UTF_8[] = "UTF-8";
 static const char __pyx_k_errno[] = "errno";
+static const char __pyx_k_print[] = "print";
+static const char __pyx_k_range[] = "range";
 static const char __pyx_k_ENOENT[] = "ENOENT";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_reduce[] = "__reduce__";
+static const char __pyx_k_num_cpu[] = "num_cpu";
 static const char __pyx_k_species[] = "species";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_setstate[] = "__setstate__";
@@ -1494,6 +1631,8 @@ static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_GenomeData[] = "GenomeData";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
+static const char __pyx_k_MemoryError[] = "MemoryError";
+static const char __pyx_k_Reading_file[] = "Reading file \"";
 static const char __pyx_k_sicer_shared[] = "sicer.shared";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_species_chroms[] = "species_chroms";
@@ -1501,17 +1640,25 @@ static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_sicer_bed_reader[] = "sicer.bed_reader";
 static const char __pyx_k_FileNotFoundError[] = "FileNotFoundError";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_Preprocessing_reads[] = "Preprocessing reads...";
+static const char __pyx_k_redundancy_threshold[] = "redundancy_threshold";
 static const char __pyx_k_cinit___locals_lambda[] = "__cinit__.<locals>.<lambda>";
 static const char __pyx_k_Not_a_valid_BED6_line_s[] = "Not a valid BED6 line: %s ";
+static const char __pyx_k_Chromsome_Total_Plus_Reads_Retai[] = "Chromsome\t Total Plus Reads \t Retained Plus Reads \t Total Minus Reads \t Retained Minus Reads";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_n_s_BEDReader;
+static PyObject *__pyx_kp_u_Chromsome_Total_Plus_Reads_Retai;
 static PyObject *__pyx_n_s_ENOENT;
 static PyObject *__pyx_n_s_FileNotFoundError;
 static PyObject *__pyx_n_s_GenomeData;
+static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_kp_u_Not_a_valid_BED6_line_s;
+static PyObject *__pyx_kp_u_Preprocessing_reads;
+static PyObject *__pyx_kp_u_Reading_file;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_u_UTF_8;
 static PyObject *__pyx_n_s_ValueError;
+static PyObject *__pyx_kp_u__3;
 static PyObject *__pyx_n_s_cinit___locals_lambda;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_encode;
@@ -1523,12 +1670,16 @@ static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_map;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
+static PyObject *__pyx_n_s_num_cpu;
 static PyObject *__pyx_n_s_os;
+static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_vtable;
+static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_read_file;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
+static PyObject *__pyx_n_s_redundancy_threshold;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_sicer_bed_reader;
@@ -1538,21 +1689,120 @@ static PyObject *__pyx_n_s_species_chroms;
 static PyObject *__pyx_n_s_strerror;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x); /* proto */
-static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_species); /* proto */
+static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_species, int __pyx_v_num_cpu, int __pyx_v_redundancy_threshold); /* proto */
 static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_2read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_5sicer_10bed_reader_BEDReader(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
+static PyObject *__pyx_tuple__4;
+static PyObject *__pyx_tuple__5;
 /* Late includes */
 
-/* "sicer/bed_reader.pyx":28
+/* "sicer/bed_reader.pyx":33
+ * cdef string NEWLINE = string(b'\n')
+ * 
+ * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:             # <<<<<<<<<<<<<<
+ *         if i.strand != j.strand:
+ *             return i.strand < j.strand
+ */
+
+static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead __pyx_v_j) {
+  bool __pyx_r;
+  int __pyx_t_1;
+
+  /* "sicer/bed_reader.pyx":34
+ * 
+ * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
+ *         if i.strand != j.strand:             # <<<<<<<<<<<<<<
+ *             return i.strand < j.strand
+ *         else:
+ */
+  __pyx_t_1 = ((__pyx_v_i.strand != __pyx_v_j.strand) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/bed_reader.pyx":35
+ * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
+ *         if i.strand != j.strand:
+ *             return i.strand < j.strand             # <<<<<<<<<<<<<<
+ *         else:
+ *             if i.start != j.start:
+ */
+    __pyx_r = (__pyx_v_i.strand < __pyx_v_j.strand);
+    goto __pyx_L0;
+
+    /* "sicer/bed_reader.pyx":34
+ * 
+ * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
+ *         if i.strand != j.strand:             # <<<<<<<<<<<<<<
+ *             return i.strand < j.strand
+ *         else:
+ */
+  }
+
+  /* "sicer/bed_reader.pyx":37
+ *             return i.strand < j.strand
+ *         else:
+ *             if i.start != j.start:             # <<<<<<<<<<<<<<
+ *                 return i.start < j.start
+ *             else:
+ */
+  /*else*/ {
+    __pyx_t_1 = ((__pyx_v_i.start != __pyx_v_j.start) != 0);
+    if (__pyx_t_1) {
+
+      /* "sicer/bed_reader.pyx":38
+ *         else:
+ *             if i.start != j.start:
+ *                 return i.start < j.start             # <<<<<<<<<<<<<<
+ *             else:
+ *                 return i.end < j.end
+ */
+      __pyx_r = (__pyx_v_i.start < __pyx_v_j.start);
+      goto __pyx_L0;
+
+      /* "sicer/bed_reader.pyx":37
+ *             return i.strand < j.strand
+ *         else:
+ *             if i.start != j.start:             # <<<<<<<<<<<<<<
+ *                 return i.start < j.start
+ *             else:
+ */
+    }
+
+    /* "sicer/bed_reader.pyx":40
+ *                 return i.start < j.start
+ *             else:
+ *                 return i.end < j.end             # <<<<<<<<<<<<<<
+ * 
+ * cdef class BEDReader:
+ */
+    /*else*/ {
+      __pyx_r = (__pyx_v_i.end < __pyx_v_j.end);
+      goto __pyx_L0;
+    }
+  }
+
+  /* "sicer/bed_reader.pyx":33
+ * cdef string NEWLINE = string(b'\n')
+ * 
+ * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:             # <<<<<<<<<<<<<<
+ *         if i.strand != j.strand:
+ *             return i.strand < j.strand
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sicer/bed_reader.pyx":51
  *         int line_count
  * 
- *     def __cinit__(self, str file_name, str species):             # <<<<<<<<<<<<<<
- *         self.file_name = file_name
- *         self.species = species
+ *     def __cinit__(             # <<<<<<<<<<<<<<
+ *         self,
+ *         str file_name,
  */
 
 /* Python wrapper */
@@ -1560,16 +1810,22 @@ static int __pyx_pw_5sicer_10bed_reader_9BEDReader_1__cinit__(PyObject *__pyx_v_
 static int __pyx_pw_5sicer_10bed_reader_9BEDReader_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_file_name = 0;
   PyObject *__pyx_v_species = 0;
+  int __pyx_v_num_cpu;
+  int __pyx_v_redundancy_threshold;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_file_name,&__pyx_n_s_species,0};
-    PyObject* values[2] = {0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_file_name,&__pyx_n_s_species,&__pyx_n_s_num_cpu,&__pyx_n_s_redundancy_threshold,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         CYTHON_FALLTHROUGH;
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -1586,32 +1842,48 @@ static int __pyx_pw_5sicer_10bed_reader_9BEDReader_1__cinit__(PyObject *__pyx_v_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_species)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, 1); __PYX_ERR(0, 28, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 1); __PYX_ERR(0, 51, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 2); __PYX_ERR(0, 51, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_redundancy_threshold)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 3); __PYX_ERR(0, 51, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 28, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 51, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
     __pyx_v_file_name = ((PyObject*)values[0]);
     __pyx_v_species = ((PyObject*)values[1]);
+    __pyx_v_num_cpu = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_num_cpu == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L3_error)
+    __pyx_v_redundancy_threshold = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_redundancy_threshold == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 28, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 51, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.bed_reader.BEDReader.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 28, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_species), (&PyUnicode_Type), 1, "species", 1))) __PYX_ERR(0, 28, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(((struct __pyx_obj_5sicer_10bed_reader_BEDReader *)__pyx_v_self), __pyx_v_file_name, __pyx_v_species);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_species), (&PyUnicode_Type), 1, "species", 1))) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(((struct __pyx_obj_5sicer_10bed_reader_BEDReader *)__pyx_v_self), __pyx_v_file_name, __pyx_v_species, __pyx_v_num_cpu, __pyx_v_redundancy_threshold);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1622,12 +1894,12 @@ static int __pyx_pw_5sicer_10bed_reader_9BEDReader_1__cinit__(PyObject *__pyx_v_
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":31
+/* "sicer/bed_reader.pyx":60
  *         self.file_name = file_name
  *         self.species = species
  *         self.chromosomes = set(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))             # <<<<<<<<<<<<<<
- *         self.line_count = 0
- * 
+ *         self.num_cpu = num_cpu
+ *         self.redundancy_threshold = redundancy_threshold
  */
 
 /* Python wrapper */
@@ -1652,7 +1924,7 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("lambda", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_x, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_x, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1666,7 +1938,7 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_kp_u_UTF_8) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_kp_u_UTF_8);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
@@ -1686,15 +1958,15 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":28
+/* "sicer/bed_reader.pyx":51
  *         int line_count
  * 
- *     def __cinit__(self, str file_name, str species):             # <<<<<<<<<<<<<<
- *         self.file_name = file_name
- *         self.species = species
+ *     def __cinit__(             # <<<<<<<<<<<<<<
+ *         self,
+ *         str file_name,
  */
 
-static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_species) {
+static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_species, int __pyx_v_num_cpu, int __pyx_v_redundancy_threshold) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1702,9 +1974,9 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "sicer/bed_reader.pyx":29
- * 
- *     def __cinit__(self, str file_name, str species):
+  /* "sicer/bed_reader.pyx":58
+ *         int redundancy_threshold
+ *     ):
  *         self.file_name = file_name             # <<<<<<<<<<<<<<
  *         self.species = species
  *         self.chromosomes = set(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
@@ -1715,12 +1987,12 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
   __Pyx_DECREF(__pyx_v_self->file_name);
   __pyx_v_self->file_name = __pyx_v_file_name;
 
-  /* "sicer/bed_reader.pyx":30
- *     def __cinit__(self, str file_name, str species):
+  /* "sicer/bed_reader.pyx":59
+ *     ):
  *         self.file_name = file_name
  *         self.species = species             # <<<<<<<<<<<<<<
  *         self.chromosomes = set(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
- *         self.line_count = 0
+ *         self.num_cpu = num_cpu
  */
   __Pyx_INCREF(__pyx_v_species);
   __Pyx_GIVEREF(__pyx_v_species);
@@ -1728,24 +2000,24 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
   __Pyx_DECREF(__pyx_v_self->species);
   __pyx_v_self->species = __pyx_v_species;
 
-  /* "sicer/bed_reader.pyx":31
+  /* "sicer/bed_reader.pyx":60
  *         self.file_name = file_name
  *         self.species = species
  *         self.chromosomes = set(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))             # <<<<<<<<<<<<<<
- *         self.line_count = 0
- * 
+ *         self.num_cpu = num_cpu
+ *         self.redundancy_threshold = redundancy_threshold
  */
-  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5sicer_10bed_reader_9BEDReader_9__cinit___lambda, 0, __pyx_n_s_cinit___locals_lambda, NULL, __pyx_n_s_sicer_bed_reader, __pyx_d, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5sicer_10bed_reader_9BEDReader_9__cinit___lambda, 0, __pyx_n_s_cinit___locals_lambda, NULL, __pyx_n_s_sicer_bed_reader, __pyx_d, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GenomeData); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GenomeData); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_species_chroms); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_species_chroms); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_t_3, __pyx_v_species); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_t_3, __pyx_v_species); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -1753,10 +2025,10 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
   __pyx_t_1 = 0;
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_map, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_map, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PySet_New(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_3 = PySet_New(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_GIVEREF(__pyx_t_3);
@@ -1765,21 +2037,39 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
   __pyx_v_self->chromosomes = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "sicer/bed_reader.pyx":32
+  /* "sicer/bed_reader.pyx":61
  *         self.species = species
  *         self.chromosomes = set(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
+ *         self.num_cpu = num_cpu             # <<<<<<<<<<<<<<
+ *         self.redundancy_threshold = redundancy_threshold
+ *         self.line_count = 0
+ */
+  __pyx_v_self->num_cpu = __pyx_v_num_cpu;
+
+  /* "sicer/bed_reader.pyx":62
+ *         self.chromosomes = set(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
+ *         self.num_cpu = num_cpu
+ *         self.redundancy_threshold = redundancy_threshold             # <<<<<<<<<<<<<<
+ *         self.line_count = 0
+ * 
+ */
+  __pyx_v_self->redundancy_threshold = __pyx_v_redundancy_threshold;
+
+  /* "sicer/bed_reader.pyx":63
+ *         self.num_cpu = num_cpu
+ *         self.redundancy_threshold = redundancy_threshold
  *         self.line_count = 0             # <<<<<<<<<<<<<<
  * 
- *     cdef BEDRead * _parseBEDLine(self, cstr line):
+ *     cdef (int, int, int, int) _remove_redudant_reads(self, vec_ptr vec, int threshold) nogil:
  */
   __pyx_v_self->line_count = 0;
 
-  /* "sicer/bed_reader.pyx":28
+  /* "sicer/bed_reader.pyx":51
  *         int line_count
  * 
- *     def __cinit__(self, str file_name, str species):             # <<<<<<<<<<<<<<
- *         self.file_name = file_name
- *         self.species = species
+ *     def __cinit__(             # <<<<<<<<<<<<<<
+ *         self,
+ *         str file_name,
  */
 
   /* function exit code */
@@ -1796,8 +2086,765 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":34
+/* "sicer/bed_reader.pyx":65
  *         self.line_count = 0
+ * 
+ *     cdef (int, int, int, int) _remove_redudant_reads(self, vec_ptr vec, int threshold) nogil:             # <<<<<<<<<<<<<<
+ *         # Indices to delete
+ *         cdef vector[int] shouldDelete
+ */
+
+static __pyx_ctuple_int__and_int__and_int__and_int __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, __pyx_t_5sicer_10bed_reader_vec_ptr __pyx_v_vec, int __pyx_v_threshold) {
+  std::vector<int>  __pyx_v_shouldDelete;
+  int __pyx_v_start;
+  int __pyx_v_end;
+  int __pyx_v_redund_count;
+  bool __pyx_v_retain;
+  int __pyx_v_plus_total_count;
+  int __pyx_v_plus_retained_count;
+  int __pyx_v_minus_total_count;
+  int __pyx_v_minus_retained_count;
+  std::vector<BEDRead> ::size_type __pyx_v_i;
+  BEDRead __pyx_v_read;
+  __pyx_ctuple_int__and_int__and_int__and_int __pyx_r;
+  std::vector<BEDRead> ::size_type __pyx_t_1;
+  std::vector<BEDRead> ::size_type __pyx_t_2;
+  std::vector<BEDRead> ::size_type __pyx_t_3;
+  __Pyx_FakeReference<BEDRead> __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  int __pyx_t_7;
+  __pyx_ctuple_int__and_int__and_int__and_int __pyx_t_8;
+
+  /* "sicer/bed_reader.pyx":69
+ *         cdef vector[int] shouldDelete
+ * 
+ *         cdef int start = -1             # <<<<<<<<<<<<<<
+ *         cdef int end = -1
+ *         cdef int redund_count = 0
+ */
+  __pyx_v_start = -1;
+
+  /* "sicer/bed_reader.pyx":70
+ * 
+ *         cdef int start = -1
+ *         cdef int end = -1             # <<<<<<<<<<<<<<
+ *         cdef int redund_count = 0
+ *         cdef bool retain = 0
+ */
+  __pyx_v_end = -1;
+
+  /* "sicer/bed_reader.pyx":71
+ *         cdef int start = -1
+ *         cdef int end = -1
+ *         cdef int redund_count = 0             # <<<<<<<<<<<<<<
+ *         cdef bool retain = 0
+ * 
+ */
+  __pyx_v_redund_count = 0;
+
+  /* "sicer/bed_reader.pyx":72
+ *         cdef int end = -1
+ *         cdef int redund_count = 0
+ *         cdef bool retain = 0             # <<<<<<<<<<<<<<
+ * 
+ *         cdef int plus_total_count = 0
+ */
+  __pyx_v_retain = 0;
+
+  /* "sicer/bed_reader.pyx":74
+ *         cdef bool retain = 0
+ * 
+ *         cdef int plus_total_count = 0             # <<<<<<<<<<<<<<
+ *         cdef int plus_retained_count = 0
+ *         cdef int minus_total_count = 0
+ */
+  __pyx_v_plus_total_count = 0;
+
+  /* "sicer/bed_reader.pyx":75
+ * 
+ *         cdef int plus_total_count = 0
+ *         cdef int plus_retained_count = 0             # <<<<<<<<<<<<<<
+ *         cdef int minus_total_count = 0
+ *         cdef int minus_retained_count = 0
+ */
+  __pyx_v_plus_retained_count = 0;
+
+  /* "sicer/bed_reader.pyx":76
+ *         cdef int plus_total_count = 0
+ *         cdef int plus_retained_count = 0
+ *         cdef int minus_total_count = 0             # <<<<<<<<<<<<<<
+ *         cdef int minus_retained_count = 0
+ * 
+ */
+  __pyx_v_minus_total_count = 0;
+
+  /* "sicer/bed_reader.pyx":77
+ *         cdef int plus_retained_count = 0
+ *         cdef int minus_total_count = 0
+ *         cdef int minus_retained_count = 0             # <<<<<<<<<<<<<<
+ * 
+ *         for i in range(deref(vec).size()):
+ */
+  __pyx_v_minus_retained_count = 0;
+
+  /* "sicer/bed_reader.pyx":79
+ *         cdef int minus_retained_count = 0
+ * 
+ *         for i in range(deref(vec).size()):             # <<<<<<<<<<<<<<
+ *             read = deref(vec).at(i)
+ * 
+ */
+  __pyx_t_1 = (*__pyx_v_vec).size();
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "sicer/bed_reader.pyx":80
+ * 
+ *         for i in range(deref(vec).size()):
+ *             read = deref(vec).at(i)             # <<<<<<<<<<<<<<
+ * 
+ *             if read.start != start or read.end != end:
+ */
+    try {
+      __pyx_t_4 = (*__pyx_v_vec).at(__pyx_v_i);
+    } catch(...) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      __Pyx_CppExn2PyErr();
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 80, __pyx_L1_error)
+    }
+    __pyx_v_read = __pyx_t_4;
+
+    /* "sicer/bed_reader.pyx":82
+ *             read = deref(vec).at(i)
+ * 
+ *             if read.start != start or read.end != end:             # <<<<<<<<<<<<<<
+ *                 start = read.start
+ *                 end = read.end
+ */
+    __pyx_t_6 = ((__pyx_v_read.start != __pyx_v_start) != 0);
+    if (!__pyx_t_6) {
+    } else {
+      __pyx_t_5 = __pyx_t_6;
+      goto __pyx_L6_bool_binop_done;
+    }
+    __pyx_t_6 = ((__pyx_v_read.end != __pyx_v_end) != 0);
+    __pyx_t_5 = __pyx_t_6;
+    __pyx_L6_bool_binop_done:;
+    if (__pyx_t_5) {
+
+      /* "sicer/bed_reader.pyx":83
+ * 
+ *             if read.start != start or read.end != end:
+ *                 start = read.start             # <<<<<<<<<<<<<<
+ *                 end = read.end
+ *                 redund_count = 1
+ */
+      __pyx_t_7 = __pyx_v_read.start;
+      __pyx_v_start = __pyx_t_7;
+
+      /* "sicer/bed_reader.pyx":84
+ *             if read.start != start or read.end != end:
+ *                 start = read.start
+ *                 end = read.end             # <<<<<<<<<<<<<<
+ *                 redund_count = 1
+ *                 retain = 1
+ */
+      __pyx_t_7 = __pyx_v_read.end;
+      __pyx_v_end = __pyx_t_7;
+
+      /* "sicer/bed_reader.pyx":85
+ *                 start = read.start
+ *                 end = read.end
+ *                 redund_count = 1             # <<<<<<<<<<<<<<
+ *                 retain = 1
+ *             else:
+ */
+      __pyx_v_redund_count = 1;
+
+      /* "sicer/bed_reader.pyx":86
+ *                 end = read.end
+ *                 redund_count = 1
+ *                 retain = 1             # <<<<<<<<<<<<<<
+ *             else:
+ *                 postinc(redund_count)
+ */
+      __pyx_v_retain = 1;
+
+      /* "sicer/bed_reader.pyx":82
+ *             read = deref(vec).at(i)
+ * 
+ *             if read.start != start or read.end != end:             # <<<<<<<<<<<<<<
+ *                 start = read.start
+ *                 end = read.end
+ */
+      goto __pyx_L5;
+    }
+
+    /* "sicer/bed_reader.pyx":88
+ *                 retain = 1
+ *             else:
+ *                 postinc(redund_count)             # <<<<<<<<<<<<<<
+ *                 if redund_count <= threshold:
+ *                     retain = 1
+ */
+    /*else*/ {
+      (void)((__pyx_v_redund_count++));
+
+      /* "sicer/bed_reader.pyx":89
+ *             else:
+ *                 postinc(redund_count)
+ *                 if redund_count <= threshold:             # <<<<<<<<<<<<<<
+ *                     retain = 1
+ *                 else:
+ */
+      __pyx_t_5 = ((__pyx_v_redund_count <= __pyx_v_threshold) != 0);
+      if (__pyx_t_5) {
+
+        /* "sicer/bed_reader.pyx":90
+ *                 postinc(redund_count)
+ *                 if redund_count <= threshold:
+ *                     retain = 1             # <<<<<<<<<<<<<<
+ *                 else:
+ *                     # Delete read
+ */
+        __pyx_v_retain = 1;
+
+        /* "sicer/bed_reader.pyx":89
+ *             else:
+ *                 postinc(redund_count)
+ *                 if redund_count <= threshold:             # <<<<<<<<<<<<<<
+ *                     retain = 1
+ *                 else:
+ */
+        goto __pyx_L8;
+      }
+
+      /* "sicer/bed_reader.pyx":93
+ *                 else:
+ *                     # Delete read
+ *                     retain = 0             # <<<<<<<<<<<<<<
+ *                     shouldDelete.push_back(i)
+ * 
+ */
+      /*else*/ {
+        __pyx_v_retain = 0;
+
+        /* "sicer/bed_reader.pyx":94
+ *                     # Delete read
+ *                     retain = 0
+ *                     shouldDelete.push_back(i)             # <<<<<<<<<<<<<<
+ * 
+ *             if read.strand == PLUS:
+ */
+        try {
+          __pyx_v_shouldDelete.push_back(__pyx_v_i);
+        } catch(...) {
+          #ifdef WITH_THREAD
+          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+          #endif
+          __Pyx_CppExn2PyErr();
+          #ifdef WITH_THREAD
+          __Pyx_PyGILState_Release(__pyx_gilstate_save);
+          #endif
+          __PYX_ERR(0, 94, __pyx_L1_error)
+        }
+      }
+      __pyx_L8:;
+    }
+    __pyx_L5:;
+
+    /* "sicer/bed_reader.pyx":96
+ *                     shouldDelete.push_back(i)
+ * 
+ *             if read.strand == PLUS:             # <<<<<<<<<<<<<<
+ *                 postinc(plus_total_count)
+ *                 if retain:
+ */
+    __pyx_t_5 = ((__pyx_v_read.strand == __pyx_v_5sicer_10bed_reader_PLUS) != 0);
+    if (__pyx_t_5) {
+
+      /* "sicer/bed_reader.pyx":97
+ * 
+ *             if read.strand == PLUS:
+ *                 postinc(plus_total_count)             # <<<<<<<<<<<<<<
+ *                 if retain:
+ *                     postinc(plus_retained_count)
+ */
+      (void)((__pyx_v_plus_total_count++));
+
+      /* "sicer/bed_reader.pyx":98
+ *             if read.strand == PLUS:
+ *                 postinc(plus_total_count)
+ *                 if retain:             # <<<<<<<<<<<<<<
+ *                     postinc(plus_retained_count)
+ *             else:
+ */
+      __pyx_t_5 = (__pyx_v_retain != 0);
+      if (__pyx_t_5) {
+
+        /* "sicer/bed_reader.pyx":99
+ *                 postinc(plus_total_count)
+ *                 if retain:
+ *                     postinc(plus_retained_count)             # <<<<<<<<<<<<<<
+ *             else:
+ *                 postinc(minus_total_count)
+ */
+        (void)((__pyx_v_plus_retained_count++));
+
+        /* "sicer/bed_reader.pyx":98
+ *             if read.strand == PLUS:
+ *                 postinc(plus_total_count)
+ *                 if retain:             # <<<<<<<<<<<<<<
+ *                     postinc(plus_retained_count)
+ *             else:
+ */
+      }
+
+      /* "sicer/bed_reader.pyx":96
+ *                     shouldDelete.push_back(i)
+ * 
+ *             if read.strand == PLUS:             # <<<<<<<<<<<<<<
+ *                 postinc(plus_total_count)
+ *                 if retain:
+ */
+      goto __pyx_L9;
+    }
+
+    /* "sicer/bed_reader.pyx":101
+ *                     postinc(plus_retained_count)
+ *             else:
+ *                 postinc(minus_total_count)             # <<<<<<<<<<<<<<
+ *                 if retain:
+ *                     postinc(minus_retained_count)
+ */
+    /*else*/ {
+      (void)((__pyx_v_minus_total_count++));
+
+      /* "sicer/bed_reader.pyx":102
+ *             else:
+ *                 postinc(minus_total_count)
+ *                 if retain:             # <<<<<<<<<<<<<<
+ *                     postinc(minus_retained_count)
+ * 
+ */
+      __pyx_t_5 = (__pyx_v_retain != 0);
+      if (__pyx_t_5) {
+
+        /* "sicer/bed_reader.pyx":103
+ *                 postinc(minus_total_count)
+ *                 if retain:
+ *                     postinc(minus_retained_count)             # <<<<<<<<<<<<<<
+ * 
+ *         # Remove duplicate reads
+ */
+        (void)((__pyx_v_minus_retained_count++));
+
+        /* "sicer/bed_reader.pyx":102
+ *             else:
+ *                 postinc(minus_total_count)
+ *                 if retain:             # <<<<<<<<<<<<<<
+ *                     postinc(minus_retained_count)
+ * 
+ */
+      }
+    }
+    __pyx_L9:;
+  }
+
+  /* "sicer/bed_reader.pyx":106
+ * 
+ *         # Remove duplicate reads
+ *         deref(vec).erase(remove_at(deref(vec).begin(), deref(vec).end(), shouldDelete.begin(), shouldDelete.end()), deref(vec).end())             # <<<<<<<<<<<<<<
+ * 
+ *         return plus_total_count, plus_retained_count, minus_total_count, minus_retained_count
+ */
+  (void)((*__pyx_v_vec).erase(remove_at<std::vector<BEDRead> ::iterator,std::vector<int> ::iterator>((*__pyx_v_vec).begin(), (*__pyx_v_vec).end(), __pyx_v_shouldDelete.begin(), __pyx_v_shouldDelete.end()), (*__pyx_v_vec).end()));
+
+  /* "sicer/bed_reader.pyx":108
+ *         deref(vec).erase(remove_at(deref(vec).begin(), deref(vec).end(), shouldDelete.begin(), shouldDelete.end()), deref(vec).end())
+ * 
+ *         return plus_total_count, plus_retained_count, minus_total_count, minus_retained_count             # <<<<<<<<<<<<<<
+ * 
+ *     cdef string _preprocess_BED_reads_by_chrom(self, vec_ptr vec) nogil:
+ */
+  __pyx_t_8.f0 = __pyx_v_plus_total_count;
+  __pyx_t_8.f1 = __pyx_v_plus_retained_count;
+  __pyx_t_8.f2 = __pyx_v_minus_total_count;
+  __pyx_t_8.f3 = __pyx_v_minus_retained_count;
+  __pyx_r = __pyx_t_8;
+  goto __pyx_L0;
+
+  /* "sicer/bed_reader.pyx":65
+ *         self.line_count = 0
+ * 
+ *     cdef (int, int, int, int) _remove_redudant_reads(self, vec_ptr vec, int threshold) nogil:             # <<<<<<<<<<<<<<
+ *         # Indices to delete
+ *         cdef vector[int] shouldDelete
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("sicer.bed_reader.BEDReader._remove_redudant_reads", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sicer/bed_reader.pyx":110
+ *         return plus_total_count, plus_retained_count, minus_total_count, minus_retained_count
+ * 
+ *     cdef string _preprocess_BED_reads_by_chrom(self, vec_ptr vec) nogil:             # <<<<<<<<<<<<<<
+ *         # First, sort reads by strand, start pos, and end pos order
+ *         sort[vector[BEDRead].iterator, cmp_f](deref(vec).begin(), deref(vec).end(), compare_reads)
+ */
+
+static std::string __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chrom(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, __pyx_t_5sicer_10bed_reader_vec_ptr __pyx_v_vec) {
+  int __pyx_v_pt;
+  int __pyx_v_pr;
+  int __pyx_v_mt;
+  int __pyx_v_mr;
+  std::string __pyx_r;
+  __pyx_ctuple_int__and_int__and_int__and_int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+
+  /* "sicer/bed_reader.pyx":112
+ *     cdef string _preprocess_BED_reads_by_chrom(self, vec_ptr vec) nogil:
+ *         # First, sort reads by strand, start pos, and end pos order
+ *         sort[vector[BEDRead].iterator, cmp_f](deref(vec).begin(), deref(vec).end(), compare_reads)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef int pt
+ */
+  std::sort<std::vector<BEDRead> ::iterator,__pyx_t_5sicer_10bed_reader_cmp_f>((*__pyx_v_vec).begin(), (*__pyx_v_vec).end(), __pyx_f_5sicer_10bed_reader_compare_reads);
+
+  /* "sicer/bed_reader.pyx":119
+ *         cdef int mr
+ * 
+ *         pt, pr, mt, mr = self._remove_redudant_reads(vec, self.redundancy_threshold)             # <<<<<<<<<<<<<<
+ * 
+ *         return to_string(pt) + TAB + to_string(pr) + TAB + to_string(mt) + TAB + to_string(mr)
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_remove_redudant_reads(__pyx_v_self, __pyx_v_vec, __pyx_v_self->redundancy_threshold);
+  __pyx_t_2 = __pyx_t_1.f0;
+  __pyx_t_3 = __pyx_t_1.f1;
+  __pyx_t_4 = __pyx_t_1.f2;
+  __pyx_t_5 = __pyx_t_1.f3;
+  __pyx_v_pt = __pyx_t_2;
+  __pyx_v_pr = __pyx_t_3;
+  __pyx_v_mt = __pyx_t_4;
+  __pyx_v_mr = __pyx_t_5;
+
+  /* "sicer/bed_reader.pyx":121
+ *         pt, pr, mt, mr = self._remove_redudant_reads(vec, self.redundancy_threshold)
+ * 
+ *         return to_string(pt) + TAB + to_string(pr) + TAB + to_string(mt) + TAB + to_string(mr)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef ChromBEDReadCollection _preprocess_BED_reads(self, ChromBEDReadCollection reads):
+ */
+  __pyx_r = ((((((std::to_string(__pyx_v_pt) + __pyx_v_5sicer_10bed_reader_TAB) + std::to_string(__pyx_v_pr)) + __pyx_v_5sicer_10bed_reader_TAB) + std::to_string(__pyx_v_mt)) + __pyx_v_5sicer_10bed_reader_TAB) + std::to_string(__pyx_v_mr));
+  goto __pyx_L0;
+
+  /* "sicer/bed_reader.pyx":110
+ *         return plus_total_count, plus_retained_count, minus_total_count, minus_retained_count
+ * 
+ *     cdef string _preprocess_BED_reads_by_chrom(self, vec_ptr vec) nogil:             # <<<<<<<<<<<<<<
+ *         # First, sort reads by strand, start pos, and end pos order
+ *         sort[vector[BEDRead].iterator, cmp_f](deref(vec).begin(), deref(vec).end(), compare_reads)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sicer/bed_reader.pyx":123
+ *         return to_string(pt) + TAB + to_string(pr) + TAB + to_string(mt) + TAB + to_string(mr)
+ * 
+ *     cdef ChromBEDReadCollection _preprocess_BED_reads(self, ChromBEDReadCollection reads):             # <<<<<<<<<<<<<<
+ *         print("Preprocessing reads...")
+ * 
+ */
+
+static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_reads) {
+  int __pyx_v_num_chroms;
+  __pyx_t_5sicer_10bed_reader_cstr *__pyx_v_chroms;
+  int __pyx_v_j;
+  std::map<std::string,__pyx_t_5sicer_10bed_reader_vec_ptr>  __pyx_v_data;
+  int __pyx_v_i;
+  std::string __pyx_v_s;
+  struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  __pyx_t_5sicer_10bed_reader_cstr __pyx_t_8;
+  __Pyx_RefNannySetupContext("_preprocess_BED_reads", 0);
+
+  /* "sicer/bed_reader.pyx":124
+ * 
+ *     cdef ChromBEDReadCollection _preprocess_BED_reads(self, ChromBEDReadCollection reads):
+ *         print("Preprocessing reads...")             # <<<<<<<<<<<<<<
+ * 
+ *         # Convert Python list to C-array for no-GIL use
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "sicer/bed_reader.pyx":127
+ * 
+ *         # Convert Python list to C-array for no-GIL use
+ *         cdef int num_chroms = len(reads.getChromosomes())             # <<<<<<<<<<<<<<
+ *         cdef cstr *chroms = <cstr *>malloc(num_chroms*cython.sizeof(cstr))
+ *         if chroms is NULL:
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (unlikely(__pyx_t_1 == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 127, __pyx_L1_error)
+  }
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_num_chroms = __pyx_t_2;
+
+  /* "sicer/bed_reader.pyx":128
+ *         # Convert Python list to C-array for no-GIL use
+ *         cdef int num_chroms = len(reads.getChromosomes())
+ *         cdef cstr *chroms = <cstr *>malloc(num_chroms*cython.sizeof(cstr))             # <<<<<<<<<<<<<<
+ *         if chroms is NULL:
+ *             raise MemoryError()
+ */
+  __pyx_v_chroms = ((__pyx_t_5sicer_10bed_reader_cstr *)malloc((__pyx_v_num_chroms * (sizeof(__pyx_t_5sicer_10bed_reader_cstr)))));
+
+  /* "sicer/bed_reader.pyx":129
+ *         cdef int num_chroms = len(reads.getChromosomes())
+ *         cdef cstr *chroms = <cstr *>malloc(num_chroms*cython.sizeof(cstr))
+ *         if chroms is NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         for j in range(num_chroms):
+ */
+  __pyx_t_3 = ((__pyx_v_chroms == NULL) != 0);
+  if (unlikely(__pyx_t_3)) {
+
+    /* "sicer/bed_reader.pyx":130
+ *         cdef cstr *chroms = <cstr *>malloc(num_chroms*cython.sizeof(cstr))
+ *         if chroms is NULL:
+ *             raise MemoryError()             # <<<<<<<<<<<<<<
+ *         for j in range(num_chroms):
+ *             chroms[j] = reads.getChromosomes()[j]
+ */
+    PyErr_NoMemory(); __PYX_ERR(0, 130, __pyx_L1_error)
+
+    /* "sicer/bed_reader.pyx":129
+ *         cdef int num_chroms = len(reads.getChromosomes())
+ *         cdef cstr *chroms = <cstr *>malloc(num_chroms*cython.sizeof(cstr))
+ *         if chroms is NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         for j in range(num_chroms):
+ */
+  }
+
+  /* "sicer/bed_reader.pyx":131
+ *         if chroms is NULL:
+ *             raise MemoryError()
+ *         for j in range(num_chroms):             # <<<<<<<<<<<<<<
+ *             chroms[j] = reads.getChromosomes()[j]
+ * 
+ */
+  __pyx_t_4 = __pyx_v_num_chroms;
+  __pyx_t_5 = __pyx_t_4;
+  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+    __pyx_v_j = __pyx_t_6;
+
+    /* "sicer/bed_reader.pyx":132
+ *             raise MemoryError()
+ *         for j in range(num_chroms):
+ *             chroms[j] = reads.getChromosomes()[j]             # <<<<<<<<<<<<<<
+ * 
+ *         cdef mapcpp[string, vec_ptr] data = reads.getData()
+ */
+    __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (unlikely(__pyx_t_1 == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 132, __pyx_L1_error)
+    }
+    __pyx_t_7 = __Pyx_GetItemInt_List(__pyx_t_1, __pyx_v_j, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 132, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_8 = __Pyx_PyObject_AsWritableString(__pyx_t_7); if (unlikely((!__pyx_t_8) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L1_error)
+    (__pyx_v_chroms[__pyx_v_j]) = __pyx_t_8;
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  }
+
+  /* "sicer/bed_reader.pyx":134
+ *             chroms[j] = reads.getChromosomes()[j]
+ * 
+ *         cdef mapcpp[string, vec_ptr] data = reads.getData()             # <<<<<<<<<<<<<<
+ *         cdef int i
+ *         cdef string s
+ */
+  __pyx_v_data = ((struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_reads->__pyx_vtab)->getData(__pyx_v_reads);
+
+  /* "sicer/bed_reader.pyx":138
+ *         cdef string s
+ * 
+ *         for i in prange(num_chroms, schedule='guided', num_threads=self.num_cpu, nogil=True):             # <<<<<<<<<<<<<<
+ *             s += self._preprocess_BED_reads_by_chrom(data[chroms[i]]) + NEWLINE
+ * 
+ */
+  {
+      #ifdef WITH_THREAD
+      PyThreadState *_save;
+      Py_UNBLOCK_THREADS
+      __Pyx_FastGIL_Remember();
+      #endif
+      /*try:*/ {
+        __pyx_t_4 = __pyx_v_num_chroms;
+        if (1 == 0) abort();
+        {
+            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+                #undef likely
+                #undef unlikely
+                #define likely(x)   (x)
+                #define unlikely(x) (x)
+            #endif
+            __pyx_t_6 = (__pyx_t_4 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_6 > 0)
+            {
+                #ifdef _OPENMP
+                #pragma omp parallel reduction(+:__pyx_v_s) num_threads(__pyx_v_self->num_cpu)
+                #endif /* _OPENMP */
+                {
+                    #ifdef _OPENMP
+                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) schedule(guided)
+                    #endif /* _OPENMP */
+                    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_6; __pyx_t_5++){
+                        {
+                            __pyx_v_i = (int)(0 + 1 * __pyx_t_5);
+
+                            /* "sicer/bed_reader.pyx":139
+ * 
+ *         for i in prange(num_chroms, schedule='guided', num_threads=self.num_cpu, nogil=True):
+ *             s += self._preprocess_BED_reads_by_chrom(data[chroms[i]]) + NEWLINE             # <<<<<<<<<<<<<<
+ * 
+ *         free(chroms)
+ */
+                            __pyx_v_s += (((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads_by_chrom(__pyx_v_self, (__pyx_v_data[(__pyx_v_chroms[__pyx_v_i])])) + __pyx_v_5sicer_10bed_reader_NEWLINE);
+                        }
+                    }
+                }
+            }
+        }
+        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+            #undef likely
+            #undef unlikely
+            #define likely(x)   __builtin_expect(!!(x), 1)
+            #define unlikely(x) __builtin_expect(!!(x), 0)
+        #endif
+      }
+
+      /* "sicer/bed_reader.pyx":138
+ *         cdef string s
+ * 
+ *         for i in prange(num_chroms, schedule='guided', num_threads=self.num_cpu, nogil=True):             # <<<<<<<<<<<<<<
+ *             s += self._preprocess_BED_reads_by_chrom(data[chroms[i]]) + NEWLINE
+ * 
+ */
+      /*finally:*/ {
+        /*normal exit:*/{
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L8;
+        }
+        __pyx_L8:;
+      }
+  }
+
+  /* "sicer/bed_reader.pyx":141
+ *             s += self._preprocess_BED_reads_by_chrom(data[chroms[i]]) + NEWLINE
+ * 
+ *         free(chroms)             # <<<<<<<<<<<<<<
+ * 
+ *         # Print summary of preprocessing
+ */
+  free(__pyx_v_chroms);
+
+  /* "sicer/bed_reader.pyx":144
+ * 
+ *         # Print summary of preprocessing
+ *         print("Chromsome\t Total Plus Reads \t Retained Plus Reads \t Total Minus Reads \t Retained Minus Reads")             # <<<<<<<<<<<<<<
+ *         print(s.decode("UTF-8"))
+ * 
+ */
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "sicer/bed_reader.pyx":145
+ *         # Print summary of preprocessing
+ *         print("Chromsome\t Total Plus Reads \t Retained Plus Reads \t Total Minus Reads \t Retained Minus Reads")
+ *         print(s.decode("UTF-8"))             # <<<<<<<<<<<<<<
+ * 
+ *         return reads
+ */
+  __pyx_t_7 = __Pyx_decode_cpp_string(__pyx_v_s, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "sicer/bed_reader.pyx":147
+ *         print(s.decode("UTF-8"))
+ * 
+ *         return reads             # <<<<<<<<<<<<<<
+ * 
+ *     cdef BEDRead * _parseBEDLine(self, cstr line):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_reads));
+  __pyx_r = __pyx_v_reads;
+  goto __pyx_L0;
+
+  /* "sicer/bed_reader.pyx":123
+ *         return to_string(pt) + TAB + to_string(pr) + TAB + to_string(mt) + TAB + to_string(mr)
+ * 
+ *     cdef ChromBEDReadCollection _preprocess_BED_reads(self, ChromBEDReadCollection reads):             # <<<<<<<<<<<<<<
+ *         print("Preprocessing reads...")
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_AddTraceback("sicer.bed_reader.BEDReader._preprocess_BED_reads", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/bed_reader.pyx":149
+ *         return reads
  * 
  *     cdef BEDRead * _parseBEDLine(self, cstr line):             # <<<<<<<<<<<<<<
  *         cdef cstr read[6]
@@ -1817,7 +2864,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
   std::string __pyx_t_5;
   __Pyx_RefNannySetupContext("_parseBEDLine", 0);
 
-  /* "sicer/bed_reader.pyx":36
+  /* "sicer/bed_reader.pyx":151
  *     cdef BEDRead * _parseBEDLine(self, cstr line):
  *         cdef cstr read[6]
  *         cdef int count = 0             # <<<<<<<<<<<<<<
@@ -1826,7 +2873,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
  */
   __pyx_v_count = 0;
 
-  /* "sicer/bed_reader.pyx":38
+  /* "sicer/bed_reader.pyx":153
  *         cdef int count = 0
  * 
  *         cdef cstr token = strtok(line, "\t")             # <<<<<<<<<<<<<<
@@ -1835,7 +2882,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
  */
   __pyx_v_token = strtok(__pyx_v_line, ((char const *)"\t"));
 
-  /* "sicer/bed_reader.pyx":40
+  /* "sicer/bed_reader.pyx":155
  *         cdef cstr token = strtok(line, "\t")
  * 
  *         while token != NULL:             # <<<<<<<<<<<<<<
@@ -1846,7 +2893,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
     __pyx_t_1 = ((__pyx_v_token != NULL) != 0);
     if (!__pyx_t_1) break;
 
-    /* "sicer/bed_reader.pyx":41
+    /* "sicer/bed_reader.pyx":156
  * 
  *         while token != NULL:
  *             read[count] = token             # <<<<<<<<<<<<<<
@@ -1855,7 +2902,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
  */
     (__pyx_v_read[__pyx_v_count]) = __pyx_v_token;
 
-    /* "sicer/bed_reader.pyx":42
+    /* "sicer/bed_reader.pyx":157
  *         while token != NULL:
  *             read[count] = token
  *             count += 1             # <<<<<<<<<<<<<<
@@ -1864,7 +2911,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
  */
     __pyx_v_count = (__pyx_v_count + 1);
 
-    /* "sicer/bed_reader.pyx":43
+    /* "sicer/bed_reader.pyx":158
  *             read[count] = token
  *             count += 1
  *             token = strtok(NULL, "\t")             # <<<<<<<<<<<<<<
@@ -1874,7 +2921,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
     __pyx_v_token = strtok(NULL, ((char const *)"\t"));
   }
 
-  /* "sicer/bed_reader.pyx":45
+  /* "sicer/bed_reader.pyx":160
  *             token = strtok(NULL, "\t")
  * 
  *         if count != 6:             # <<<<<<<<<<<<<<
@@ -1884,26 +2931,26 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
   __pyx_t_1 = ((__pyx_v_count != 6) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "sicer/bed_reader.pyx":46
+    /* "sicer/bed_reader.pyx":161
  * 
  *         if count != 6:
  *             raise ValueError("Not a valid BED6 line: %s " % line.decode("UTF-8"))             # <<<<<<<<<<<<<<
  * 
  *         return new BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])
  */
-    __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_line, 0, strlen(__pyx_v_line), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_line, 0, strlen(__pyx_v_line), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_Not_a_valid_BED6_line_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_Not_a_valid_BED6_line_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 46, __pyx_L1_error)
+    __PYX_ERR(0, 161, __pyx_L1_error)
 
-    /* "sicer/bed_reader.pyx":45
+    /* "sicer/bed_reader.pyx":160
  *             token = strtok(NULL, "\t")
  * 
  *         if count != 6:             # <<<<<<<<<<<<<<
@@ -1912,7 +2959,7 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
  */
   }
 
-  /* "sicer/bed_reader.pyx":48
+  /* "sicer/bed_reader.pyx":163
  *             raise ValueError("Not a valid BED6 line: %s " % line.decode("UTF-8"))
  * 
  *         return new BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])             # <<<<<<<<<<<<<<
@@ -1923,19 +2970,19 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
     __pyx_t_4 = std::string((__pyx_v_read[0]));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 48, __pyx_L1_error)
+    __PYX_ERR(0, 163, __pyx_L1_error)
   }
   try {
     __pyx_t_5 = std::string((__pyx_v_read[3]));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 48, __pyx_L1_error)
+    __PYX_ERR(0, 163, __pyx_L1_error)
   }
   __pyx_r = new BEDRead(__pyx_t_4, atoi((__pyx_v_read[1])), atoi((__pyx_v_read[2])), __pyx_t_5, atoi((__pyx_v_read[4])), ((__pyx_v_read[5])[0]));
   goto __pyx_L0;
 
-  /* "sicer/bed_reader.pyx":34
- *         self.line_count = 0
+  /* "sicer/bed_reader.pyx":149
+ *         return reads
  * 
  *     cdef BEDRead * _parseBEDLine(self, cstr line):             # <<<<<<<<<<<<<<
  *         cdef cstr read[6]
@@ -1953,12 +3000,12 @@ static BEDRead *__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":50
+/* "sicer/bed_reader.pyx":165
  *         return new BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])
  * 
  *     cdef ChromBEDReadCollection _read_file(self):             # <<<<<<<<<<<<<<
+ *         print("Reading file \"" + self.file_name + "\" ...")
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")
- * 
  */
 
 static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_f_5sicer_10bed_reader_9BEDReader__read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self) {
@@ -1970,9 +3017,9 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
   struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  char const *__pyx_t_2;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  char const *__pyx_t_3;
+  int __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
@@ -1980,55 +3027,72 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
   int __pyx_t_9;
   __Pyx_RefNannySetupContext("_read_file", 0);
 
-  /* "sicer/bed_reader.pyx":51
+  /* "sicer/bed_reader.pyx":166
  * 
  *     cdef ChromBEDReadCollection _read_file(self):
+ *         print("Reading file \"" + self.file_name + "\" ...")             # <<<<<<<<<<<<<<
+ *         fp = fopen(self.file_name.encode("UTF-8"), "r")
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_Reading_file, __pyx_v_self->file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_t_1, __pyx_kp_u__3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "sicer/bed_reader.pyx":167
+ *     cdef ChromBEDReadCollection _read_file(self):
+ *         print("Reading file \"" + self.file_name + "\" ...")
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")             # <<<<<<<<<<<<<<
  * 
  *         if fp == NULL:
  */
   if (unlikely(__pyx_v_self->file_name == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-    __PYX_ERR(0, 51, __pyx_L1_error)
+    __PYX_ERR(0, 167, __pyx_L1_error)
   }
-  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_self->file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsUTF8String(__pyx_v_self->file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
-  __pyx_v_fp = fopen(__pyx_t_2, ((char const *)"r"));
+  __pyx_t_3 = __Pyx_PyBytes_AsString(__pyx_t_1); if (unlikely((!__pyx_t_3) && PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_v_fp = fopen(__pyx_t_3, ((char const *)"r"));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/bed_reader.pyx":53
+  /* "sicer/bed_reader.pyx":169
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")
  * 
  *         if fp == NULL:             # <<<<<<<<<<<<<<
  *             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), self.file_name)
  * 
  */
-  __pyx_t_3 = ((__pyx_v_fp == NULL) != 0);
-  if (unlikely(__pyx_t_3)) {
+  __pyx_t_4 = ((__pyx_v_fp == NULL) != 0);
+  if (unlikely(__pyx_t_4)) {
 
-    /* "sicer/bed_reader.pyx":54
+    /* "sicer/bed_reader.pyx":170
  * 
  *         if fp == NULL:
  *             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), self.file_name)             # <<<<<<<<<<<<<<
  * 
  *         cdef ChromBEDReadCollection read_collection = ChromBEDReadCollection(self.species)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FileNotFoundError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FileNotFoundError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_errno); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_ENOENT); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_errno); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_ENOENT); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_os); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_os); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_strerror); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_strerror); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_errno); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_errno); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_ENOENT); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_ENOENT); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_6 = NULL;
@@ -2041,32 +3105,32 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
         __Pyx_DECREF_SET(__pyx_t_7, function);
       }
     }
-    __pyx_t_4 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_6, __pyx_t_8) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8);
+    __pyx_t_2 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_6, __pyx_t_8) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_2);
     __Pyx_INCREF(__pyx_v_self->file_name);
     __Pyx_GIVEREF(__pyx_v_self->file_name);
     PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_v_self->file_name);
     __pyx_t_5 = 0;
-    __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 170, __pyx_L1_error)
 
-    /* "sicer/bed_reader.pyx":53
+    /* "sicer/bed_reader.pyx":169
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")
  * 
  *         if fp == NULL:             # <<<<<<<<<<<<<<
@@ -2075,19 +3139,19 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
   }
 
-  /* "sicer/bed_reader.pyx":56
+  /* "sicer/bed_reader.pyx":172
  *             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), self.file_name)
  * 
  *         cdef ChromBEDReadCollection read_collection = ChromBEDReadCollection(self.species)             # <<<<<<<<<<<<<<
  * 
  *         cdef cstr line = NULL
  */
-  __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection), __pyx_v_self->species); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_v_read_collection = ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_t_4);
-  __pyx_t_4 = 0;
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection), __pyx_v_self->species); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_read_collection = ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "sicer/bed_reader.pyx":58
+  /* "sicer/bed_reader.pyx":174
  *         cdef ChromBEDReadCollection read_collection = ChromBEDReadCollection(self.species)
  * 
  *         cdef cstr line = NULL             # <<<<<<<<<<<<<<
@@ -2096,7 +3160,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
   __pyx_v_line = NULL;
 
-  /* "sicer/bed_reader.pyx":59
+  /* "sicer/bed_reader.pyx":175
  * 
  *         cdef cstr line = NULL
  *         cdef size_t len = 0             # <<<<<<<<<<<<<<
@@ -2105,7 +3169,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
   __pyx_v_len = 0;
 
-  /* "sicer/bed_reader.pyx":62
+  /* "sicer/bed_reader.pyx":178
  *         cdef BEDRead read
  * 
  *         while getline(&line, &len, fp) != -1:             # <<<<<<<<<<<<<<
@@ -2113,10 +3177,10 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  *             read = deref(self._parseBEDLine(line))
  */
   while (1) {
-    __pyx_t_3 = ((getline((&__pyx_v_line), (&__pyx_v_len), __pyx_v_fp) != -1L) != 0);
-    if (!__pyx_t_3) break;
+    __pyx_t_4 = ((getline((&__pyx_v_line), (&__pyx_v_len), __pyx_v_fp) != -1L) != 0);
+    if (!__pyx_t_4) break;
 
-    /* "sicer/bed_reader.pyx":63
+    /* "sicer/bed_reader.pyx":179
  * 
  *         while getline(&line, &len, fp) != -1:
  *             self.line_count+=1             # <<<<<<<<<<<<<<
@@ -2125,7 +3189,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
     __pyx_v_self->line_count = (__pyx_v_self->line_count + 1);
 
-    /* "sicer/bed_reader.pyx":64
+    /* "sicer/bed_reader.pyx":180
  *         while getline(&line, &len, fp) != -1:
  *             self.line_count+=1
  *             read = deref(self._parseBEDLine(line))             # <<<<<<<<<<<<<<
@@ -2134,25 +3198,25 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
     __pyx_v_read = (*((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_parseBEDLine(__pyx_v_self, __pyx_v_line));
 
-    /* "sicer/bed_reader.pyx":65
+    /* "sicer/bed_reader.pyx":181
  *             self.line_count+=1
  *             read = deref(self._parseBEDLine(line))
  *             if read.chrom.c_str() in self.chromosomes:             # <<<<<<<<<<<<<<
  *                 read_collection.insertRead(read.chrom, read)
  * 
  */
-    __pyx_t_4 = __Pyx_PyBytes_FromString(__pyx_v_read.chrom.c_str()); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 65, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = __Pyx_PyBytes_FromString(__pyx_v_read.chrom.c_str()); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-      __PYX_ERR(0, 65, __pyx_L1_error)
+      __PYX_ERR(0, 181, __pyx_L1_error)
     }
-    __pyx_t_3 = (__Pyx_PySet_ContainsTF(__pyx_t_4, __pyx_v_self->chromosomes, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 65, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_9 = (__pyx_t_3 != 0);
+    __pyx_t_4 = (__Pyx_PySet_ContainsTF(__pyx_t_2, __pyx_v_self->chromosomes, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_9 = (__pyx_t_4 != 0);
     if (__pyx_t_9) {
 
-      /* "sicer/bed_reader.pyx":66
+      /* "sicer/bed_reader.pyx":182
  *             read = deref(self._parseBEDLine(line))
  *             if read.chrom.c_str() in self.chromosomes:
  *                 read_collection.insertRead(read.chrom, read)             # <<<<<<<<<<<<<<
@@ -2161,7 +3225,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
       ((struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_read_collection->__pyx_vtab)->insertRead(__pyx_v_read_collection, __pyx_v_read.chrom, __pyx_v_read);
 
-      /* "sicer/bed_reader.pyx":65
+      /* "sicer/bed_reader.pyx":181
  *             self.line_count+=1
  *             read = deref(self._parseBEDLine(line))
  *             if read.chrom.c_str() in self.chromosomes:             # <<<<<<<<<<<<<<
@@ -2171,7 +3235,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
     }
   }
 
-  /* "sicer/bed_reader.pyx":68
+  /* "sicer/bed_reader.pyx":184
  *                 read_collection.insertRead(read.chrom, read)
  * 
  *         fclose(fp)             # <<<<<<<<<<<<<<
@@ -2180,7 +3244,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
   (void)(fclose(__pyx_v_fp));
 
-  /* "sicer/bed_reader.pyx":69
+  /* "sicer/bed_reader.pyx":185
  * 
  *         fclose(fp)
  *         free(line)             # <<<<<<<<<<<<<<
@@ -2189,7 +3253,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
  */
   free(__pyx_v_line);
 
-  /* "sicer/bed_reader.pyx":71
+  /* "sicer/bed_reader.pyx":187
  *         free(line)
  * 
  *         return read_collection             # <<<<<<<<<<<<<<
@@ -2201,18 +3265,18 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
   __pyx_r = __pyx_v_read_collection;
   goto __pyx_L0;
 
-  /* "sicer/bed_reader.pyx":50
+  /* "sicer/bed_reader.pyx":165
  *         return new BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])
  * 
  *     cdef ChromBEDReadCollection _read_file(self):             # <<<<<<<<<<<<<<
+ *         print("Reading file \"" + self.file_name + "\" ...")
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")
- * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
@@ -2226,11 +3290,11 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":73
+/* "sicer/bed_reader.pyx":189
  *         return read_collection
  * 
  *     cpdef ChromBEDReadCollection read_file(self):             # <<<<<<<<<<<<<<
- *         return self._read_file()
+ *         return self._preprocess_BED_reads(self._read_file())
  */
 
 static PyObject *__pyx_pw_5sicer_10bed_reader_9BEDReader_3read_file(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
@@ -2251,7 +3315,7 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_read_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_read_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_10bed_reader_9BEDReader_3read_file)) {
         __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -2268,10 +3332,10 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection))))) __PYX_ERR(0, 73, __pyx_L1_error)
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection))))) __PYX_ERR(0, 189, __pyx_L1_error)
         __pyx_r = ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2290,23 +3354,26 @@ static struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollectio
     #endif
   }
 
-  /* "sicer/bed_reader.pyx":74
+  /* "sicer/bed_reader.pyx":190
  * 
  *     cpdef ChromBEDReadCollection read_file(self):
- *         return self._read_file()             # <<<<<<<<<<<<<<
+ *         return self._preprocess_BED_reads(self._read_file())             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_read_file(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_read_file(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads(__pyx_v_self, ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_t_2);
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "sicer/bed_reader.pyx":73
+  /* "sicer/bed_reader.pyx":189
  *         return read_collection
  * 
  *     cpdef ChromBEDReadCollection read_file(self):             # <<<<<<<<<<<<<<
- *         return self._read_file()
+ *         return self._preprocess_BED_reads(self._read_file())
  */
 
   /* function exit code */
@@ -2342,7 +3409,7 @@ static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_2read_file(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("read_file", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2390,7 +3457,7 @@ static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_4__reduce_cython__(CYTH
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2443,7 +3510,7 @@ static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_6__setstate_cython__(CY
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2461,6 +3528,240 @@ static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_6__setstate_cython__(CY
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("sicer.bed_reader.BEDReader.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":31
+ * 
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyObject_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":32
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyUnicode_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyObject_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":31
+ * 
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyObject_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":37
+ * 
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyUnicode_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":38
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyStr_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyUnicode_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":37
+ * 
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyUnicode_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":43
+ * 
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyStr_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":44
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyBytes_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyStr_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":43
+ * 
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyStr_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":49
+ * 
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyBytes_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":50
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyByteArray_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":49
+ * 
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyBytes_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":55
+ * 
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyByteArray_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":56
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyByteArray_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":55
+ * 
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyByteArray_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -2643,13 +3944,18 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_BEDReader, __pyx_k_BEDReader, sizeof(__pyx_k_BEDReader), 0, 0, 1, 1},
+  {&__pyx_kp_u_Chromsome_Total_Plus_Reads_Retai, __pyx_k_Chromsome_Total_Plus_Reads_Retai, sizeof(__pyx_k_Chromsome_Total_Plus_Reads_Retai), 0, 1, 0, 0},
   {&__pyx_n_s_ENOENT, __pyx_k_ENOENT, sizeof(__pyx_k_ENOENT), 0, 0, 1, 1},
   {&__pyx_n_s_FileNotFoundError, __pyx_k_FileNotFoundError, sizeof(__pyx_k_FileNotFoundError), 0, 0, 1, 1},
   {&__pyx_n_s_GenomeData, __pyx_k_GenomeData, sizeof(__pyx_k_GenomeData), 0, 0, 1, 1},
+  {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_kp_u_Not_a_valid_BED6_line_s, __pyx_k_Not_a_valid_BED6_line_s, sizeof(__pyx_k_Not_a_valid_BED6_line_s), 0, 1, 0, 0},
+  {&__pyx_kp_u_Preprocessing_reads, __pyx_k_Preprocessing_reads, sizeof(__pyx_k_Preprocessing_reads), 0, 1, 0, 0},
+  {&__pyx_kp_u_Reading_file, __pyx_k_Reading_file, sizeof(__pyx_k_Reading_file), 0, 1, 0, 0},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_u_UTF_8, __pyx_k_UTF_8, sizeof(__pyx_k_UTF_8), 0, 1, 0, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
+  {&__pyx_kp_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
   {&__pyx_n_s_cinit___locals_lambda, __pyx_k_cinit___locals_lambda, sizeof(__pyx_k_cinit___locals_lambda), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
@@ -2661,12 +3967,16 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_map, __pyx_k_map, sizeof(__pyx_k_map), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
+  {&__pyx_n_s_num_cpu, __pyx_k_num_cpu, sizeof(__pyx_k_num_cpu), 0, 0, 1, 1},
   {&__pyx_n_s_os, __pyx_k_os, sizeof(__pyx_k_os), 0, 0, 1, 1},
+  {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
+  {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_read_file, __pyx_k_read_file, sizeof(__pyx_k_read_file), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
+  {&__pyx_n_s_redundancy_threshold, __pyx_k_redundancy_threshold, sizeof(__pyx_k_redundancy_threshold), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_sicer_bed_reader, __pyx_k_sicer_bed_reader, sizeof(__pyx_k_sicer_bed_reader), 0, 0, 1, 1},
@@ -2678,8 +3988,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_map = __Pyx_GetBuiltinName(__pyx_n_s_map); if (!__pyx_builtin_map) __PYX_ERR(0, 31, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_builtin_map = __Pyx_GetBuiltinName(__pyx_n_s_map); if (!__pyx_builtin_map) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 161, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -2690,24 +4003,46 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
+  /* "sicer/bed_reader.pyx":124
+ * 
+ *     cdef ChromBEDReadCollection _preprocess_BED_reads(self, ChromBEDReadCollection reads):
+ *         print("Preprocessing reads...")             # <<<<<<<<<<<<<<
+ * 
+ *         # Convert Python list to C-array for no-GIL use
+ */
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Preprocessing_reads); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple_);
+  __Pyx_GIVEREF(__pyx_tuple_);
+
+  /* "sicer/bed_reader.pyx":144
+ * 
+ *         # Print summary of preprocessing
+ *         print("Chromsome\t Total Plus Reads \t Retained Plus Reads \t Total Minus Reads \t Retained Minus Reads")             # <<<<<<<<<<<<<<
+ *         print(s.decode("UTF-8"))
+ * 
+ */
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_Chromsome_Total_Plus_Reads_Retai); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
+
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__2);
-  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2716,6 +4051,13 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 }
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
+  /* InitThreads.init */
+  #ifdef WITH_THREAD
+PyEval_InitThreads();
+#endif
+
+if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
+
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   return 0;
   __pyx_L1_error:;
@@ -2759,19 +4101,22 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
   __pyx_vtabptr_5sicer_10bed_reader_BEDReader = &__pyx_vtable_5sicer_10bed_reader_BEDReader;
+  __pyx_vtable_5sicer_10bed_reader_BEDReader._remove_redudant_reads = (__pyx_ctuple_int__and_int__and_int__and_int (*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_vec_ptr, int))__pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads;
+  __pyx_vtable_5sicer_10bed_reader_BEDReader._preprocess_BED_reads_by_chrom = (std::string (*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_vec_ptr))__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chrom;
+  __pyx_vtable_5sicer_10bed_reader_BEDReader._preprocess_BED_reads = (struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *))__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads;
   __pyx_vtable_5sicer_10bed_reader_BEDReader._parseBEDLine = (BEDRead *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_cstr))__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine;
   __pyx_vtable_5sicer_10bed_reader_BEDReader._read_file = (struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *))__pyx_f_5sicer_10bed_reader_9BEDReader__read_file;
   __pyx_vtable_5sicer_10bed_reader_BEDReader.read_file = (struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, int __pyx_skip_dispatch))__pyx_f_5sicer_10bed_reader_9BEDReader_read_file;
-  if (PyType_Ready(&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5sicer_10bed_reader_BEDReader.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5sicer_10bed_reader_BEDReader.tp_dictoffset && __pyx_type_5sicer_10bed_reader_BEDReader.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5sicer_10bed_reader_BEDReader.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5sicer_10bed_reader_BEDReader.tp_dict, __pyx_vtabptr_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BEDReader, (PyObject *)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_5sicer_10bed_reader_BEDReader.tp_dict, __pyx_vtabptr_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BEDReader, (PyObject *)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
   __pyx_ptype_5sicer_10bed_reader_BEDReader = &__pyx_type_5sicer_10bed_reader_BEDReader;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -2785,11 +4130,11 @@ static int __Pyx_modinit_type_import_code(void) {
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_collections"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 11, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_collections"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_collections", "ChromBEDReadCollection", sizeof(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection) __PYX_ERR(2, 11, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = (struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection)) __PYX_ERR(2, 11, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection) __PYX_ERR(2, 12, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = (struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection)) __PYX_ERR(2, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -2909,6 +4254,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_bed_reader(PyObject *__pyx_pyinit_
 {
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
+  std::string __pyx_t_3;
   __Pyx_RefNannyDeclarations
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
@@ -3049,6 +4395,45 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
+  /* "sicer/bed_reader.pyx":29
+ * ctypedef vector[BEDRead]* vec_ptr
+ * 
+ * cdef char PLUS = b'+'             # <<<<<<<<<<<<<<
+ * cdef string TAB = string(b'\t')
+ * cdef string NEWLINE = string(b'\n')
+ */
+  __pyx_v_5sicer_10bed_reader_PLUS = '+';
+
+  /* "sicer/bed_reader.pyx":30
+ * 
+ * cdef char PLUS = b'+'
+ * cdef string TAB = string(b'\t')             # <<<<<<<<<<<<<<
+ * cdef string NEWLINE = string(b'\n')
+ * 
+ */
+  try {
+    __pyx_t_3 = std::string(((char const *)"\t"));
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 30, __pyx_L1_error)
+  }
+  __pyx_v_5sicer_10bed_reader_TAB = __pyx_t_3;
+
+  /* "sicer/bed_reader.pyx":31
+ * cdef char PLUS = b'+'
+ * cdef string TAB = string(b'\t')
+ * cdef string NEWLINE = string(b'\n')             # <<<<<<<<<<<<<<
+ * 
+ * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
+ */
+  try {
+    __pyx_t_3 = std::string(((char const *)"\n"));
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 31, __pyx_L1_error)
+  }
+  __pyx_v_5sicer_10bed_reader_NEWLINE = __pyx_t_3;
+
   /* "sicer/bed_reader.pyx":1
  * # Python Imports             # <<<<<<<<<<<<<<
  * import os, errno
@@ -3058,6 +4443,14 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "string.to_py":55
+ * 
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
+ */
 
   /*--- Wrapped vars code ---*/
 
@@ -4270,6 +5663,186 @@ static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
 }
 #endif
 
+/* PyErrFetchRestore */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
+
+/* GetItemInt */
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+    PyObject *r;
+    if (!j) return NULL;
+    r = PyObject_GetItem(o, j);
+    Py_DECREF(j);
+    return r;
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyList_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
+        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyTuple_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
+        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
+                                                     CYTHON_NCP_UNUSED int wraparound,
+                                                     CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
+    if (is_list || PyList_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
+        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
+            PyObject *r = PyList_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    }
+    else if (PyTuple_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
+        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
+            PyObject *r = PyTuple_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    } else {
+        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
+        if (likely(m && m->sq_item)) {
+            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
+                Py_ssize_t l = m->sq_length(o);
+                if (likely(l >= 0)) {
+                    i += l;
+                } else {
+                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                        return NULL;
+                    PyErr_Clear();
+                }
+            }
+            return m->sq_item(o, i);
+        }
+    }
+#else
+    if (is_list || PySequence_Check(o)) {
+        return PySequence_GetItem(o, i);
+    }
+#endif
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+}
+
+/* decode_c_bytes */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
+         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
+    if (unlikely((start < 0) | (stop < 0))) {
+        if (start < 0) {
+            start += length;
+            if (start < 0)
+                start = 0;
+        }
+        if (stop < 0)
+            stop += length;
+    }
+    if (stop > length)
+        stop = length;
+    length = stop - start;
+    if (unlikely(length <= 0))
+        return PyUnicode_FromUnicode(NULL, 0);
+    cstring += start;
+    if (decode_func) {
+        return decode_func(cstring, length, errors);
+    } else {
+        return PyUnicode_Decode(cstring, length, encoding, errors);
+    }
+}
+
 /* decode_c_string */
 static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
          const char* cstring, Py_ssize_t start, Py_ssize_t stop,
@@ -4302,30 +5875,6 @@ static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
         return PyUnicode_Decode(cstring, length, encoding, errors);
     }
 }
-
-/* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
-}
-#endif
 
 /* RaiseException */
 #if PY_MAJOR_VERSION < 3
@@ -4485,48 +6034,6 @@ bad:
     return;
 }
 #endif
-
-/* WriteUnraisableException */
-static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
-                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
-                                  int full_traceback, CYTHON_UNUSED int nogil) {
-    PyObject *old_exc, *old_val, *old_tb;
-    PyObject *ctx;
-    __Pyx_PyThreadState_declare
-#ifdef WITH_THREAD
-    PyGILState_STATE state;
-    if (nogil)
-        state = PyGILState_Ensure();
-#ifdef _MSC_VER
-    else state = (PyGILState_STATE)-1;
-#endif
-#endif
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
-    if (full_traceback) {
-        Py_XINCREF(old_exc);
-        Py_XINCREF(old_val);
-        Py_XINCREF(old_tb);
-        __Pyx_ErrRestore(old_exc, old_val, old_tb);
-        PyErr_PrintEx(1);
-    }
-    #if PY_MAJOR_VERSION < 3
-    ctx = PyString_FromString(name);
-    #else
-    ctx = PyUnicode_FromString(name);
-    #endif
-    __Pyx_ErrRestore(old_exc, old_val, old_tb);
-    if (!ctx) {
-        PyErr_WriteUnraisable(Py_None);
-    } else {
-        PyErr_WriteUnraisable(ctx);
-        Py_DECREF(ctx);
-    }
-#ifdef WITH_THREAD
-    if (nogil)
-        PyGILState_Release(state);
-#endif
-}
 
 /* pyfrozenset_new */
 static CYTHON_INLINE PyObject* __Pyx_PyFrozenSet_New(PyObject* it) {
@@ -5128,37 +6635,6 @@ bad:
     Py_XDECREF(py_frame);
 }
 
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
-}
-
 /* CIntFromPyVerify */
 #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
@@ -5181,193 +6657,35 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
         return (target_type) value;\
     }
 
-/* CIntFromPy */
-static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
-    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(long) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (long) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (long) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(long, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) >= 2 * PyLong_SHIFT) {
-                            return (long) (((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) >= 3 * PyLong_SHIFT) {
-                            return (long) (((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) >= 4 * PyLong_SHIFT) {
-                            return (long) (((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (long) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(long) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned long, PyLong_AsUnsignedLong(x))
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-            } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (long) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(long,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(long) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                            return (long) (((long)-1)*(((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                            return (long) ((((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                            return (long) (((long)-1)*(((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                            return (long) ((((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                            return (long) (((long)-1)*(((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                            return (long) ((((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(long) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            long val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (long) -1;
         }
     } else {
-        long val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (long) -1;
-        val = __Pyx_PyInt_As_long(tmp);
-        Py_DECREF(tmp);
-        return val;
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
     }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to long");
-    return (long) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to long");
-    return (long) -1;
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
+                                     little, !is_unsigned);
+    }
 }
 
 /* CIntFromPy */
@@ -5557,6 +6875,415 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+    const size_t neg_one = (size_t) ((size_t) 0 - (size_t) 1), const_zero = (size_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (size_t) -1;
+        }
+    } else {
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
+}
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(long) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (long) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (long) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(long, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) >= 2 * PyLong_SHIFT) {
+                            return (long) (((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) >= 3 * PyLong_SHIFT) {
+                            return (long) (((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) >= 4 * PyLong_SHIFT) {
+                            return (long) (((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (long) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(long) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (long) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(long,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(long) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                            return (long) (((long)-1)*(((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                            return (long) ((((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                            return (long) (((long)-1)*(((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                            return (long) ((((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                            return (long) (((long)-1)*(((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                            return (long) ((((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(long) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            long val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (long) -1;
+        }
+    } else {
+        long val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (long) -1;
+        val = __Pyx_PyInt_As_long(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to long");
+    return (long) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to long");
+    return (long) -1;
 }
 
 /* FastTypeChecks */
