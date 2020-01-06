@@ -1,0 +1,8 @@
+{
+    "chrom": [
+        "chr1"
+    ],
+    "chrom_length": {
+        "chr1": 100000000
+    }
+}

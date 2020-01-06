@@ -12,9 +12,9 @@ cpu_available = os.cpu_count() - 1  #leave one core for I/O
 import subprocess
 import argparse
 
-# Imports from SICER package
-from sicer.main import run_RECOGNICER_df
-from sicer.lib import Utility, GenomeData
+# SICER Internal Imports
+from sicer.recognicer_df import run_recognicer_df
+from sicer.shared.genome_data import get_available_species
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
         return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
@@ -168,7 +168,7 @@ def main():
         if not(os.path.isabs(file)):
             args.treatment_file[i] = os.path.join(curr_path, file)
 
-        if (not (Utility.fileExists(args.treatment_file[i]))):
+        if not os.path.isfile(args.treatment_file[i]):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file)
 
         if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
@@ -177,7 +177,7 @@ def main():
         if (file.lower().endswith('.bam')):
             bed_file_name = args.treatment_file[i].replace('.bam', '.bed')
 
-            if not Utility.fileExists(bed_file_name):
+            if not os.path.isfile(bed_file_name):
                 process =  subprocess.Popen("bedtools bamtobed -i %s > %s" % (file, bed_file_name),
                                 stdin=subprocess.PIPE,
                                 shell=True,
@@ -188,8 +188,8 @@ def main():
                     sys.exit(1)
             args.treatment_file[i] = bed_file_name
 
-    if (not (args.species in GenomeData.species_chroms.keys())):
-        sys.stderr.write("Error: Species " + args.species + " not recognized.\n")
+    if not args.species in get_available_species():
+        sys.stderr.write("Error: Species " + args.species + " is not available.\n")
         sys.exit(1)
 
     if (not (args.effective_genome_fraction <= 1 and args.effective_genome_fraction >= 0)):
@@ -223,7 +223,7 @@ def main():
             if not(os.path.isabs(file)):
                 args.control_file[i] = os.path.join(curr_path, file)
 
-            if (not (Utility.fileExists(args.control_file[i]))):
+            if not os.path.isfile(args.control_file[i]):
                 raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file)
 
             if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
@@ -232,7 +232,7 @@ def main():
             if (file.lower().endswith('.bam')):
                 bed_file_name = args.control_file[i].replace('.bam', '.bed')
 
-                if not Utility.fileExists(bed_file_name):
+                if not os.path.isfile(bed_file_name):
                     process =  subprocess.Popen("bedtools bamtobed -i %s > %s" % (file, bed_file_name),
                                 stdin=subprocess.PIPE,
                                 shell=True,
@@ -246,7 +246,7 @@ def main():
 
     print("Running RECOGNICER with given arguments \n")
     run_RECOGNICER_df.main(args)
-    print("\nProgram Finished Running")
+    print("Program Finished Running")
 
 
 if __name__ == '__main__':

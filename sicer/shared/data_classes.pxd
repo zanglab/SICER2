@@ -1,11 +1,9 @@
-from libcpp.vector cimport vector
-from libcpp.map cimport map as mapcpp
 from libcpp.string cimport string
 
 ctypedef char* cstr
 
-# Represents a single line of BED file
-cdef extern from "dataStructs.h":
+cdef extern from "data_objects.h" nogil:
+    # Represents a single line of BED file
     cdef cppclass BEDRead:
         string chrom
         int start
@@ -18,3 +16,22 @@ cdef extern from "dataStructs.h":
         BEDRead(string chrom, int start, int end, string name, int score, char strand)
         string toString()
 
+    cdef cppclass Window:
+        string chrom
+        int start
+        int end
+        int count
+
+        Window()
+        Window(string chrom, int start, int end, int count)
+        string toString()
+
+    cdef cppclass Island:
+        string chrom
+        int start
+        int end
+        double score
+
+        Island()
+        Island(string chrom, int start, int end, double score)
+        string toString()

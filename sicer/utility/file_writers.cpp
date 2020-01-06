@@ -4,7 +4,8 @@
 {
     "distutils": {
         "depends": [
-            "sicer/shared/dataStructs.h"
+            "sicer/shared/data_objects.h",
+            "sicer/utility/removeAt.cpp"
         ],
         "extra_compile_args": [
             "-O3",
@@ -14,15 +15,17 @@
         "include_dirs": [
             "sicer/shared",
             "./sicer/shared",
+            "./sicer/utility",
+            "sicer/utility",
             "."
         ],
         "language": "c++",
-        "name": "sicer.shared.chrom_collections",
+        "name": "sicer.utility.file_writers",
         "sources": [
-            "sicer/shared/chrom_collections.pyx"
+            "sicer/utility/file_writers.pyx"
         ]
     },
-    "module_name": "sicer.shared.chrom_collections"
+    "module_name": "sicer.utility.file_writers"
 }
 END: Cython Metadata */
 
@@ -630,19 +633,21 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__sicer__shared__chrom_collections
-#define __PYX_HAVE_API__sicer__shared__chrom_collections
+#define __PYX_HAVE__sicer__utility__file_writers
+#define __PYX_HAVE_API__sicer__utility__file_writers
 /* Early includes */
+#include <string.h>
 #include "ios"
 #include "new"
 #include "stdexcept"
 #include "typeinfo"
-#include <vector>
+#include <string>
+#include "data_objects.h"
 #include <utility>
 #include <map>
-#include <string.h>
-#include <string>
-#include "dataStructs.h"
+#include <vector>
+#include "removeAt.cpp"
+#include <stdio.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -851,75 +856,231 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "sicer/shared/chrom_collections.pyx",
+  "sicer/utility/file_writers.pyx",
   "stringsource",
+  "sicer/shared/chrom_containers.pxd",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter;
 
-/* "sicer/shared/data_classes.pxd":5
+/* "sicer/shared/data_classes.pxd":3
  * from libcpp.string cimport string
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
- * # Represents a single line of BED file
+ * cdef extern from "data_objects.h" nogil:
  */
 typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
 
-/* "sicer/shared/chrom_collections.pxd":9
+/* "sicer/shared/chrom_containers.pxd":11
  * from libcpp.string cimport string
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
- * ctypedef vector[BEDRead]* vec_ptr
- * 
+ * ctypedef vector[BEDRead]* bed_vec_ptr
+ * ctypedef vector[Window]* win_vec_ptr
  */
-typedef char *__pyx_t_5sicer_6shared_17chrom_collections_cstr;
+typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
 
-/* "sicer/shared/chrom_collections.pxd":10
+/* "sicer/shared/chrom_containers.pxd":12
  * 
  * ctypedef char* cstr
- * ctypedef vector[BEDRead]* vec_ptr             # <<<<<<<<<<<<<<
- * 
- * cdef class ChromBEDReadCollection:
+ * ctypedef vector[BEDRead]* bed_vec_ptr             # <<<<<<<<<<<<<<
+ * ctypedef vector[Window]* win_vec_ptr
+ * ctypedef vector[Island]* isl_vec_ptr
  */
-typedef std::vector<BEDRead>  *__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr;
+typedef std::vector<BEDRead>  *__pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr;
 
-/* "sicer/shared/chrom_collections.pxd":12
- * ctypedef vector[BEDRead]* vec_ptr
+/* "sicer/shared/chrom_containers.pxd":13
+ * ctypedef char* cstr
+ * ctypedef vector[BEDRead]* bed_vec_ptr
+ * ctypedef vector[Window]* win_vec_ptr             # <<<<<<<<<<<<<<
+ * ctypedef vector[Island]* isl_vec_ptr
  * 
- * cdef class ChromBEDReadCollection:             # <<<<<<<<<<<<<<
+ */
+typedef std::vector<Window>  *__pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr;
+
+/* "sicer/shared/chrom_containers.pxd":14
+ * ctypedef vector[BEDRead]* bed_vec_ptr
+ * ctypedef vector[Window]* win_vec_ptr
+ * ctypedef vector[Island]* isl_vec_ptr             # <<<<<<<<<<<<<<
+ * 
+ * cdef class ChromBEDReadContainer:
+ */
+typedef std::vector<Island>  *__pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr;
+
+/* "sicer/utility/file_writers.pxd":4
+ * from sicer.shared.chrom_containers cimport ChromWindowContainer
+ * 
+ * ctypedef char* cstr             # <<<<<<<<<<<<<<
+ * 
+ * cdef class WigFileWriter:
+ */
+typedef char *__pyx_t_5sicer_7utility_12file_writers_cstr;
+
+/* "sicer/utility/file_writers.pyx":14
+ * from cython.operator cimport dereference as deref
+ * 
+ * ctypedef vector[Window]* win_vec_ptr             # <<<<<<<<<<<<<<
+ * 
+ * cdef class WigFileWriter:
+ */
+typedef std::vector<Window>  *__pyx_t_5sicer_7utility_12file_writers_win_vec_ptr;
+
+/* "sicer/shared/chrom_containers.pxd":16
+ * ctypedef vector[Island]* isl_vec_ptr
+ * 
+ * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
-  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  data;
+  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr>  data;
+  int read_count;
+};
+
+
+/* "sicer/shared/chrom_containers.pxd":36
+ * 
+ * 
+ * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtab;
+  PyObject *species;
+  PyObject *chromosomes;
+  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr>  data;
+  int window_count;
+  int total_tag_count;
+};
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtab;
+  PyObject *species;
+  PyObject *chromosomes;
+  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr>  data;
+  int island_count;
+};
+
+
+/* "sicer/utility/file_writers.pxd":6
+ * ctypedef char* cstr
+ * 
+ * cdef class WigFileWriter:             # <<<<<<<<<<<<<<
+ *     # Writes .wig file of windows
+ *     cdef:
+ */
+struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *__pyx_vtab;
+  PyObject *file_name;
+  PyObject *output_dir;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *windows;
+  int window_size;
+  int filtered;
 };
 
 
 
-/* "sicer/shared/chrom_collections.pyx":7
- * import sys
+/* "sicer/shared/chrom_containers.pxd":16
+ * ctypedef vector[Island]* isl_vec_ptr
  * 
- * cdef class ChromBEDReadCollection:             # <<<<<<<<<<<<<<
- * 
- *     def __cinit__(self, str species):
+ * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection {
-  void (*insertRead)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, BEDRead);
-  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *);
-  __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr (*getChromData)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string);
-  BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, int);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch);
-  std::string (*dataToString)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch);
-  void (*printDataHead)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
+  void (*insertRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, BEDRead);
+  void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
+  int (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *);
+  __pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr (*getChromVector)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string);
+  BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, int);
+  void (*printDataHead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
+
+
+/* "sicer/shared/chrom_containers.pxd":36
+ * 
+ * 
+ * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer {
+  void (*insertWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, Window);
+  void (*updateCounts)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
+  int (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
+  int (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *);
+  __pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr (*getChromVector)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string);
+  Window (*getWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, int);
+  void (*printDataHead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
+  void (*printChrCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
+};
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer;
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer {
+  void (*insertIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, Island);
+  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
+  int (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *);
+  __pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr (*getChromVector)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string);
+  Island (*getIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, int);
+  void (*printDataHead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
+  void (*printChrCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
+};
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+
+
+/* "sicer/utility/file_writers.pyx":16
+ * ctypedef vector[Window]* win_vec_ptr
+ * 
+ * cdef class WigFileWriter:             # <<<<<<<<<<<<<<
+ *     # Writes .wig file of windows
+ * 
+ */
+
+struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter {
+  __pyx_t_5sicer_7utility_12file_writers_cstr (*format_line)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, int, double);
+  void (*c_write)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr, __pyx_t_5sicer_7utility_12file_writers_cstr, int, double);
+  void (*write)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, int __pyx_skip_dispatch);
+};
+static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *__pyx_vtabptr_5sicer_7utility_12file_writers_WigFileWriter;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -995,6 +1156,10 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+/* RaiseArgTupleInvalid.proto */
+static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
+    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+
 /* RaiseDoubleKeywords.proto */
 static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
 
@@ -1003,178 +1168,11 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
 
-/* RaiseArgTupleInvalid.proto */
-static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
-    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
-
 /* ArgTypeTest.proto */
 #define __Pyx_ArgTypeTest(obj, type, none_allowed, name, exact)\
     ((likely((Py_TYPE(obj) == type) | (none_allowed && (obj == Py_None)))) ? 1 :\
         __Pyx__ArgTypeTest(obj, type, name, exact))
 static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
-
-/* PyCFunctionFastCall.proto */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
-#else
-#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
-#endif
-
-/* PyFunctionFastCall.proto */
-#if CYTHON_FAST_PYCALL
-#define __Pyx_PyFunction_FastCall(func, args, nargs)\
-    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
-#if 1 || PY_VERSION_HEX < 0x030600B1
-static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs);
-#else
-#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
-#endif
-#define __Pyx_BUILD_ASSERT_EXPR(cond)\
-    (sizeof(char [1 - 2*!(cond)]) - 1)
-#ifndef Py_MEMBER_SIZE
-#define Py_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
-#endif
-  static size_t __pyx_pyframe_localsplus_offset = 0;
-  #include "frameobject.h"
-  #define __Pxy_PyFrame_Initialize_Offsets()\
-    ((void)__Pyx_BUILD_ASSERT_EXPR(sizeof(PyFrameObject) == offsetof(PyFrameObject, f_localsplus) + Py_MEMBER_SIZE(PyFrameObject, f_localsplus)),\
-     (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
-  #define __Pyx_PyFrame_GetLocalsplus(frame)\
-    (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
-#endif
-
-/* PyObjectCall.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
-#else
-#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
-#endif
-
-/* PyObjectCall2Args.proto */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* PyObjectCallMethO.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
-#endif
-
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* FetchCommonType.proto */
-static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type);
-
-/* CythonFunction.proto */
-#define __Pyx_CyFunction_USED 1
-#define __Pyx_CYFUNCTION_STATICMETHOD  0x01
-#define __Pyx_CYFUNCTION_CLASSMETHOD   0x02
-#define __Pyx_CYFUNCTION_CCLASS        0x04
-#define __Pyx_CyFunction_GetClosure(f)\
-    (((__pyx_CyFunctionObject *) (f))->func_closure)
-#define __Pyx_CyFunction_GetClassObj(f)\
-    (((__pyx_CyFunctionObject *) (f))->func_classobj)
-#define __Pyx_CyFunction_Defaults(type, f)\
-    ((type *)(((__pyx_CyFunctionObject *) (f))->defaults))
-#define __Pyx_CyFunction_SetDefaultsGetter(f, g)\
-    ((__pyx_CyFunctionObject *) (f))->defaults_getter = (g)
-typedef struct {
-    PyCFunctionObject func;
-#if PY_VERSION_HEX < 0x030500A0
-    PyObject *func_weakreflist;
-#endif
-    PyObject *func_dict;
-    PyObject *func_name;
-    PyObject *func_qualname;
-    PyObject *func_doc;
-    PyObject *func_globals;
-    PyObject *func_code;
-    PyObject *func_closure;
-    PyObject *func_classobj;
-    void *defaults;
-    int defaults_pyobjects;
-    int flags;
-    PyObject *defaults_tuple;
-    PyObject *defaults_kwdict;
-    PyObject *(*defaults_getter)(PyObject *);
-    PyObject *func_annotations;
-} __pyx_CyFunctionObject;
-static PyTypeObject *__pyx_CyFunctionType = 0;
-#define __Pyx_CyFunction_Check(obj)  (__Pyx_TypeCheck(obj, __pyx_CyFunctionType))
-#define __Pyx_CyFunction_NewEx(ml, flags, qualname, self, module, globals, code)\
-    __Pyx_CyFunction_New(__pyx_CyFunctionType, ml, flags, qualname, self, module, globals, code)
-static PyObject *__Pyx_CyFunction_New(PyTypeObject *, PyMethodDef *ml,
-                                      int flags, PyObject* qualname,
-                                      PyObject *self,
-                                      PyObject *module, PyObject *globals,
-                                      PyObject* code);
-static CYTHON_INLINE void *__Pyx_CyFunction_InitDefaults(PyObject *m,
-                                                         size_t size,
-                                                         int pyobjects);
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsTuple(PyObject *m,
-                                                            PyObject *tuple);
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsKwDict(PyObject *m,
-                                                             PyObject *dict);
-static CYTHON_INLINE void __Pyx_CyFunction_SetAnnotationsDict(PyObject *m,
-                                                              PyObject *dict);
-static int __pyx_CyFunction_init(void);
-
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
-#endif
-
-/* GetModuleGlobalName.proto */
-#if CYTHON_USE_DICT_VERSIONS
-#define __Pyx_GetModuleGlobalName(var, name)  {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
-        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
-        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-}
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  {\
-    PY_UINT64_T __pyx_dict_version;\
-    PyObject *__pyx_dict_cached_value;\
-    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-}
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
-#else
-#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
-#endif
-
-/* DictGetItem.proto */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
-#define __Pyx_PyObject_Dict_GetItem(obj, name)\
-    (likely(PyDict_CheckExact(obj)) ?\
-     __Pyx_PyDict_GetItem(obj, name) : PyObject_GetItem(obj, name))
-#else
-#define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
-#define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
-#endif
 
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1217,6 +1215,67 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
+/* PyFunctionFastCall.proto */
+#if CYTHON_FAST_PYCALL
+#define __Pyx_PyFunction_FastCall(func, args, nargs)\
+    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
+#if 1 || PY_VERSION_HEX < 0x030600B1
+static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs);
+#else
+#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
+#endif
+#define __Pyx_BUILD_ASSERT_EXPR(cond)\
+    (sizeof(char [1 - 2*!(cond)]) - 1)
+#ifndef Py_MEMBER_SIZE
+#define Py_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
+#endif
+  static size_t __pyx_pyframe_localsplus_offset = 0;
+  #include "frameobject.h"
+  #define __Pxy_PyFrame_Initialize_Offsets()\
+    ((void)__Pyx_BUILD_ASSERT_EXPR(sizeof(PyFrameObject) == offsetof(PyFrameObject, f_localsplus) + Py_MEMBER_SIZE(PyFrameObject, f_localsplus)),\
+     (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
+  #define __Pyx_PyFrame_GetLocalsplus(frame)\
+    (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
+#endif
+
+/* PyObjectCall.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
+#else
+#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
+#endif
+
+/* PyObjectCallMethO.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
+#endif
+
 /* PyObjectCallNoArg.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
@@ -1224,37 +1283,15 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
 #define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
 #endif
 
-/* IncludeCppStringH.proto */
-#include <string>
+/* PyCFunctionFastCall.proto */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
+#else
+#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
+#endif
 
-/* decode_c_string_utf16.proto */
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 0;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = -1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-
-/* decode_c_bytes.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
-         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
-
-/* decode_cpp_string.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_cpp_string(
-         std::string cppstring, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    return __Pyx_decode_c_bytes(
-        cppstring.data(), cppstring.size(), start, stop, encoding, errors, decode_func);
-}
+/* PyObjectCallOneArg.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
@@ -1279,11 +1316,19 @@ static int __Pyx_SetVtable(PyObject *dict, void *vtable);
 /* SetupReduce.proto */
 static int __Pyx_setup_reduce(PyObject* type_obj);
 
-/* Import.proto */
-static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
+/* TypeImport.proto */
+#ifndef __PYX_HAVE_RT_ImportType_proto
+#define __PYX_HAVE_RT_ImportType_proto
+enum __Pyx_ImportType_CheckSize {
+   __Pyx_ImportType_CheckSize_Error = 0,
+   __Pyx_ImportType_CheckSize_Warn = 1,
+   __Pyx_ImportType_CheckSize_Ignore = 2
+};
+static PyTypeObject *__Pyx_ImportType(PyObject* module, const char *module_name, const char *class_name, size_t size, enum __Pyx_ImportType_CheckSize check_size);
+#endif
 
-/* ImportFrom.proto */
-static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
+/* GetVTable.proto */
+static void* __Pyx_GetVtable(PyObject *dict);
 
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
@@ -1311,62 +1356,23 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
 /* None.proto */
 #include <new>
 
-/* CppExceptionConversion.proto */
-#ifndef __Pyx_CppExn2PyErr
-#include <new>
-#include <typeinfo>
-#include <stdexcept>
-#include <ios>
-static void __Pyx_CppExn2PyErr() {
-  try {
-    if (PyErr_Occurred())
-      ; // let the latest Python exn pass through and ignore the current one
-    else
-      throw;
-  } catch (const std::bad_alloc& exn) {
-    PyErr_SetString(PyExc_MemoryError, exn.what());
-  } catch (const std::bad_cast& exn) {
-    PyErr_SetString(PyExc_TypeError, exn.what());
-  } catch (const std::bad_typeid& exn) {
-    PyErr_SetString(PyExc_TypeError, exn.what());
-  } catch (const std::domain_error& exn) {
-    PyErr_SetString(PyExc_ValueError, exn.what());
-  } catch (const std::invalid_argument& exn) {
-    PyErr_SetString(PyExc_ValueError, exn.what());
-  } catch (const std::ios_base::failure& exn) {
-    PyErr_SetString(PyExc_IOError, exn.what());
-  } catch (const std::out_of_range& exn) {
-    PyErr_SetString(PyExc_IndexError, exn.what());
-  } catch (const std::overflow_error& exn) {
-    PyErr_SetString(PyExc_OverflowError, exn.what());
-  } catch (const std::range_error& exn) {
-    PyErr_SetString(PyExc_ArithmeticError, exn.what());
-  } catch (const std::underflow_error& exn) {
-    PyErr_SetString(PyExc_ArithmeticError, exn.what());
-  } catch (const std::exception& exn) {
-    PyErr_SetString(PyExc_RuntimeError, exn.what());
-  }
-  catch (...)
-  {
-    PyErr_SetString(PyExc_RuntimeError, "Unknown exception");
-  }
-}
-#endif
+/* CIntFromPy.proto */
+static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
-
-/* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* FastTypeChecks.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1387,19 +1393,9 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_insertRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, BEDRead __pyx_v_input_data); /* proto*/
-static std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto*/
-static __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom); /* proto*/
-static BEDRead __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, int __pyx_v_i); /* proto*/
-static PyObject *__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromosomes(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_dataToString(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_printDataHead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-
-/* Module declarations from 'libcpp.vector' */
-
-/* Module declarations from 'libcpp.utility' */
-
-/* Module declarations from 'libcpp.map' */
+static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_format_line(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, int __pyx_v_pos, double __pyx_v_count); /* proto*/
+static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_outfile_path, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_header, int __pyx_v_window_size, double __pyx_v_scaling_factor); /* proto*/
+static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'libc.string' */
 
@@ -1407,74 +1403,87 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
 
 /* Module declarations from 'sicer.shared.data_classes' */
 
-/* Module declarations from 'sicer.shared.chrom_collections' */
-static PyTypeObject *__pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = 0;
+/* Module declarations from 'libcpp.utility' */
+
+/* Module declarations from 'libcpp.map' */
+
+/* Module declarations from 'libcpp.vector' */
+
+/* Module declarations from 'sicer.shared.chrom_containers' */
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = 0;
+
+/* Module declarations from 'sicer.utility.utils' */
+
+/* Module declarations from 'libc.stdio' */
+
+/* Module declarations from 'sicer.utility.file_writers' */
+static PyTypeObject *__pyx_ptype_5sicer_7utility_12file_writers_WigFileWriter = 0;
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
+static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &); /*proto*/
-#define __Pyx_MODULE_NAME "sicer.shared.chrom_collections"
-extern int __pyx_module_is_main_sicer__shared__chrom_collections;
-int __pyx_module_is_main_sicer__shared__chrom_collections = 0;
+#define __Pyx_MODULE_NAME "sicer.utility.file_writers"
+extern int __pyx_module_is_main_sicer__utility__file_writers;
+int __pyx_module_is_main_sicer__utility__file_writers = 0;
 
-/* Implementation of 'sicer.shared.chrom_collections' */
-static PyObject *__pyx_builtin_map;
+/* Implementation of 'sicer.utility.file_writers' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_print;
 static PyObject *__pyx_builtin_TypeError;
-static const char __pyx_k_[] = "";
-static const char __pyx_k__2[] = "\n";
-static const char __pyx_k_map[] = "map";
-static const char __pyx_k_sys[] = "sys";
+static const char __pyx_k_[] = "\n";
+static const char __pyx_k_W[] = "-W";
+static const char __pyx_k__3[] = "/";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
+static const char __pyx_k_span[] = " span=";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_UTF_8[] = "UTF-8";
 static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
-static const char __pyx_k_encode[] = "encode";
-static const char __pyx_k_import[] = "__import__";
+static const char __pyx_k_write[] = "write";
 static const char __pyx_k_reduce[] = "__reduce__";
-static const char __pyx_k_species[] = "species";
+static const char __pyx_k_windows[] = "windows";
+static const char __pyx_k_filtered[] = "filtered";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_TypeError[] = "TypeError";
+static const char __pyx_k_file_name[] = "file_name";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
-static const char __pyx_k_GenomeData[] = "GenomeData";
+static const char __pyx_k_output_dir[] = "output_dir";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
-static const char __pyx_k_dataToString[] = "dataToString";
-static const char __pyx_k_sicer_shared[] = "sicer.shared";
-static const char __pyx_k_printDataHead[] = "printDataHead";
+static const char __pyx_k_window_size[] = "window_size";
+static const char __pyx_k_WigFileWriter[] = "WigFileWriter";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
-static const char __pyx_k_getChromosomes[] = "getChromosomes";
-static const char __pyx_k_species_chroms[] = "species_chroms";
+static const char __pyx_k_islandfiltered[] = "-islandfiltered";
+static const char __pyx_k_normalized_wig[] = "-normalized.wig";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_cinit___locals_lambda[] = "__cinit__.<locals>.<lambda>";
-static const char __pyx_k_ChromBEDReadCollection[] = "ChromBEDReadCollection";
-static const char __pyx_k_sicer_shared_chrom_collections[] = "sicer.shared.chrom_collections";
+static const char __pyx_k_variableStep_chrom[] = "variableStep chrom=";
+static const char __pyx_k_track_type_wiggle_0_name[] = "track type=wiggle_0 name=";
+static const char __pyx_k_Normalizing_graphs_by_total_isla[] = "Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_kp_b_;
-static PyObject *__pyx_n_s_ChromBEDReadCollection;
-static PyObject *__pyx_n_s_GenomeData;
+static PyObject *__pyx_kp_u_;
+static PyObject *__pyx_kp_u_Normalizing_graphs_by_total_isla;
 static PyObject *__pyx_n_s_TypeError;
-static PyObject *__pyx_kp_u_UTF_8;
-static PyObject *__pyx_kp_u__2;
-static PyObject *__pyx_n_s_cinit___locals_lambda;
+static PyObject *__pyx_kp_u_W;
+static PyObject *__pyx_n_s_WigFileWriter;
+static PyObject *__pyx_kp_u__3;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_dataToString;
-static PyObject *__pyx_n_s_encode;
-static PyObject *__pyx_n_s_getChromosomes;
+static PyObject *__pyx_n_s_file_name;
+static PyObject *__pyx_n_s_filtered;
 static PyObject *__pyx_n_s_getstate;
-static PyObject *__pyx_n_s_import;
+static PyObject *__pyx_kp_u_islandfiltered;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_map;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
+static PyObject *__pyx_kp_u_normalized_wig;
+static PyObject *__pyx_n_s_output_dir;
 static PyObject *__pyx_n_s_print;
-static PyObject *__pyx_n_s_printDataHead;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reduce;
@@ -1482,47 +1491,57 @@ static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
-static PyObject *__pyx_n_s_sicer_shared;
-static PyObject *__pyx_n_s_sicer_shared_chrom_collections;
-static PyObject *__pyx_n_s_species;
-static PyObject *__pyx_n_s_species_chroms;
-static PyObject *__pyx_n_s_sys;
+static PyObject *__pyx_kp_b_span;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x); /* proto */
-static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection___cinit__(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, PyObject *__pyx_v_species); /* proto */
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_2getChromosomes(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_4dataToString(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_6printDataHead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto */
-static void __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_8__dealloc__(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_tp_new_5sicer_6shared_17chrom_collections_ChromBEDReadCollection(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tuple__3;
+static PyObject *__pyx_kp_u_track_type_wiggle_0_name;
+static PyObject *__pyx_kp_b_variableStep_chrom;
+static PyObject *__pyx_n_s_window_size;
+static PyObject *__pyx_n_s_windows;
+static PyObject *__pyx_n_s_write;
+static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows, int __pyx_v_window_size, int __pyx_v_filtered); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_2write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_WigFileWriter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__4;
+static PyObject *__pyx_tuple__5;
 /* Late includes */
 
-/* "sicer/shared/chrom_collections.pyx":9
- * cdef class ChromBEDReadCollection:
+/* "sicer/utility/file_writers.pyx":19
+ *     # Writes .wig file of windows
  * 
- *     def __cinit__(self, str species):             # <<<<<<<<<<<<<<
- *         self.species = species
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
+ *     def __cinit__(self,             # <<<<<<<<<<<<<<
+ *         str file_name,
+ *         str output_dir,
  */
 
 /* Python wrapper */
-static int __pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_species = 0;
+static int __pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_file_name = 0;
+  PyObject *__pyx_v_output_dir = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows = 0;
+  int __pyx_v_window_size;
+  int __pyx_v_filtered;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_species,0};
-    PyObject* values[1] = {0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_file_name,&__pyx_n_s_output_dir,&__pyx_n_s_windows,&__pyx_n_s_window_size,&__pyx_n_s_filtered,0};
+    PyObject* values[5] = {0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
         CYTHON_FALLTHROUGH;
         case  0: break;
@@ -1531,29 +1550,63 @@ static int __pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
       kw_args = PyDict_Size(__pyx_kwds);
       switch (pos_args) {
         case  0:
-        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_species)) != 0)) kw_args--;
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_file_name)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_dir)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 5, 5, 1); __PYX_ERR(0, 19, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_windows)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 5, 5, 2); __PYX_ERR(0, 19, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 5, 5, 3); __PYX_ERR(0, 19, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_filtered)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 5, 5, 4); __PYX_ERR(0, 19, __pyx_L3_error)
+        }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 19, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
-    __pyx_v_species = ((PyObject*)values[0]);
+    __pyx_v_file_name = ((PyObject*)values[0]);
+    __pyx_v_output_dir = ((PyObject*)values[1]);
+    __pyx_v_windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)values[2]);
+    __pyx_v_window_size = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_window_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L3_error)
+    __pyx_v_filtered = __Pyx_PyObject_IsTrue(values[4]); if (unlikely((__pyx_v_filtered == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 9, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 19, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.utility.file_writers.WigFileWriter.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_species), (&PyUnicode_Type), 1, "species", 1))) __PYX_ERR(0, 9, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection___cinit__(((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_self), __pyx_v_species);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 20, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_dir), (&PyUnicode_Type), 1, "output_dir", 1))) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_windows), __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer, 1, "windows", 0))) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(((struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self), __pyx_v_file_name, __pyx_v_output_dir, __pyx_v_windows, __pyx_v_window_size, __pyx_v_filtered);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1564,811 +1617,348 @@ static int __pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
   return __pyx_r;
 }
 
-/* "sicer/shared/chrom_collections.pyx":11
- *     def __cinit__(self, str species):
- *         self.species = species
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))             # <<<<<<<<<<<<<<
- * 
- *         for chrom in self.chromosomes:
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__cinit___lambda(PyObject *__pyx_self, PyObject *__pyx_v_x); /*proto*/
-static PyMethodDef __pyx_mdef_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__cinit___lambda = {"lambda", (PyCFunction)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__cinit___lambda, METH_O, 0};
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__cinit___lambda(PyObject *__pyx_self, PyObject *__pyx_v_x) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("lambda (wrapper)", 0);
-  __pyx_r = __pyx_lambda_funcdef_lambda(__pyx_self, ((PyObject *)__pyx_v_x));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  __Pyx_RefNannySetupContext("lambda", 0);
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_x, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_kp_u_UTF_8) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_kp_u_UTF_8);
-  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.__cinit__.lambda", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":9
- * cdef class ChromBEDReadCollection:
- * 
- *     def __cinit__(self, str species):             # <<<<<<<<<<<<<<
- *         self.species = species
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
- */
-
-static int __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection___cinit__(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, PyObject *__pyx_v_species) {
-  PyObject *__pyx_v_chrom = NULL;
+static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows, int __pyx_v_window_size, int __pyx_v_filtered) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  std::string __pyx_t_5;
-  std::vector<BEDRead>  *__pyx_t_6;
-  std::pair<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_t_7;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "sicer/shared/chrom_collections.pyx":10
- * 
- *     def __cinit__(self, str species):
- *         self.species = species             # <<<<<<<<<<<<<<
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
- * 
+  /* "sicer/utility/file_writers.pyx":26
+ *         bint filtered
+ *     ):
+ *         self.file_name = file_name             # <<<<<<<<<<<<<<
+ *         self.output_dir = output_dir
+ *         self.windows = windows
  */
-  __Pyx_INCREF(__pyx_v_species);
-  __Pyx_GIVEREF(__pyx_v_species);
-  __Pyx_GOTREF(__pyx_v_self->species);
-  __Pyx_DECREF(__pyx_v_self->species);
-  __pyx_v_self->species = __pyx_v_species;
+  __Pyx_INCREF(__pyx_v_file_name);
+  __Pyx_GIVEREF(__pyx_v_file_name);
+  __Pyx_GOTREF(__pyx_v_self->file_name);
+  __Pyx_DECREF(__pyx_v_self->file_name);
+  __pyx_v_self->file_name = __pyx_v_file_name;
 
-  /* "sicer/shared/chrom_collections.pyx":11
- *     def __cinit__(self, str species):
- *         self.species = species
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))             # <<<<<<<<<<<<<<
- * 
- *         for chrom in self.chromosomes:
+  /* "sicer/utility/file_writers.pyx":27
+ *     ):
+ *         self.file_name = file_name
+ *         self.output_dir = output_dir             # <<<<<<<<<<<<<<
+ *         self.windows = windows
+ *         self.window_size = window_size
  */
-  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__cinit___lambda, 0, __pyx_n_s_cinit___locals_lambda, NULL, __pyx_n_s_sicer_shared_chrom_collections, __pyx_d, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_v_output_dir);
+  __Pyx_GIVEREF(__pyx_v_output_dir);
+  __Pyx_GOTREF(__pyx_v_self->output_dir);
+  __Pyx_DECREF(__pyx_v_self->output_dir);
+  __pyx_v_self->output_dir = __pyx_v_output_dir;
+
+  /* "sicer/utility/file_writers.pyx":28
+ *         self.file_name = file_name
+ *         self.output_dir = output_dir
+ *         self.windows = windows             # <<<<<<<<<<<<<<
+ *         self.window_size = window_size
+ *         self.filtered = filtered
+ */
+  __Pyx_INCREF(((PyObject *)__pyx_v_windows));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_windows));
+  __Pyx_GOTREF(__pyx_v_self->windows);
+  __Pyx_DECREF(((PyObject *)__pyx_v_self->windows));
+  __pyx_v_self->windows = __pyx_v_windows;
+
+  /* "sicer/utility/file_writers.pyx":29
+ *         self.output_dir = output_dir
+ *         self.windows = windows
+ *         self.window_size = window_size             # <<<<<<<<<<<<<<
+ *         self.filtered = filtered
+ * 
+ */
+  __pyx_v_self->window_size = __pyx_v_window_size;
+
+  /* "sicer/utility/file_writers.pyx":30
+ *         self.windows = windows
+ *         self.window_size = window_size
+ *         self.filtered = filtered             # <<<<<<<<<<<<<<
+ * 
+ *     cdef cstr format_line(self, int pos, double count):
+ */
+  __pyx_v_self->filtered = __pyx_v_filtered;
+
+  /* "sicer/utility/file_writers.pyx":19
+ *     # Writes .wig file of windows
+ * 
+ *     def __cinit__(self,             # <<<<<<<<<<<<<<
+ *         str file_name,
+ *         str output_dir,
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pyx":32
+ *         self.filtered = filtered
+ * 
+ *     cdef cstr format_line(self, int pos, double count):             # <<<<<<<<<<<<<<
+ *         cdef char buffer[50]
+ *         snprintf (buffer, 44, "%d\t%.2f\n", pos, count)
+ */
+
+static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_format_line(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, int __pyx_v_pos, double __pyx_v_count) {
+  char __pyx_v_buffer[50];
+  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("format_line", 0);
+
+  /* "sicer/utility/file_writers.pyx":34
+ *     cdef cstr format_line(self, int pos, double count):
+ *         cdef char buffer[50]
+ *         snprintf (buffer, 44, "%d\t%.2f\n", pos, count)             # <<<<<<<<<<<<<<
+ *         return buffer
+ * 
+ */
+  (void)(snprintf(__pyx_v_buffer, 44, ((char const *)"%d\t%.2f\n"), __pyx_v_pos, __pyx_v_count));
+
+  /* "sicer/utility/file_writers.pyx":35
+ *         cdef char buffer[50]
+ *         snprintf (buffer, 44, "%d\t%.2f\n", pos, count)
+ *         return buffer             # <<<<<<<<<<<<<<
+ * 
+ *     cdef void c_write(self,
+ */
+  __pyx_r = __pyx_v_buffer;
+  goto __pyx_L0;
+
+  /* "sicer/utility/file_writers.pyx":32
+ *         self.filtered = filtered
+ * 
+ *     cdef cstr format_line(self, int pos, double count):             # <<<<<<<<<<<<<<
+ *         cdef char buffer[50]
+ *         snprintf (buffer, 44, "%d\t%.2f\n", pos, count)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pyx":37
+ *         return buffer
+ * 
+ *     cdef void c_write(self,             # <<<<<<<<<<<<<<
+ *         cstr outfile_path,
+ *         cstr header,
+ */
+
+static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_outfile_path, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_header, int __pyx_v_window_size, double __pyx_v_scaling_factor) {
+  FILE *__pyx_v_fp;
+  std::vector<std::string>  __pyx_v_chroms;
+  std::string __pyx_v_chrom_header;
+  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_line;
+  __pyx_t_5sicer_7utility_12file_writers_win_vec_ptr __pyx_v_vptr;
+  std::vector<std::string> ::size_type __pyx_v_i;
+  std::vector<Window> ::size_type __pyx_v_j;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  std::vector<std::string>  __pyx_t_2;
+  std::vector<std::string> ::size_type __pyx_t_3;
+  std::vector<std::string> ::size_type __pyx_t_4;
+  std::vector<std::string> ::size_type __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  std::string __pyx_t_9;
+  std::vector<Window> ::size_type __pyx_t_10;
+  std::vector<Window> ::size_type __pyx_t_11;
+  std::vector<Window> ::size_type __pyx_t_12;
+  int __pyx_t_13;
+  __Pyx_RefNannySetupContext("c_write", 0);
+
+  /* "sicer/utility/file_writers.pyx":43
+ *         double scaling_factor
+ *     ):
+ *         cdef FILE *fp = fopen(outfile_path, "w")             # <<<<<<<<<<<<<<
+ *         fprintf(fp, header)
+ * 
+ */
+  __pyx_v_fp = fopen(__pyx_v_outfile_path, ((char const *)"w"));
+
+  /* "sicer/utility/file_writers.pyx":44
+ *     ):
+ *         cdef FILE *fp = fopen(outfile_path, "w")
+ *         fprintf(fp, header)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef vector[string] chroms = self.windows.getChromosomes()
+ */
+  (void)(fprintf(__pyx_v_fp, __pyx_v_header));
+
+  /* "sicer/utility/file_writers.pyx":46
+ *         fprintf(fp, header)
+ * 
+ *         cdef vector[string] chroms = self.windows.getChromosomes()             # <<<<<<<<<<<<<<
+ *         cdef string chrom_header
+ *         cdef int pos
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getChromosomes(__pyx_v_self->windows, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GenomeData); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_species_chroms); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_t_3, __pyx_v_species); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
-  __pyx_t_1 = 0;
-  __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_map, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GIVEREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_v_self->chromosomes);
-  __Pyx_DECREF(__pyx_v_self->chromosomes);
-  __pyx_v_self->chromosomes = ((PyObject*)__pyx_t_3);
-  __pyx_t_3 = 0;
-
-  /* "sicer/shared/chrom_collections.pyx":13
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
- * 
- *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
- * 
- */
-  if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 13, __pyx_L1_error)
-  }
-  __pyx_t_3 = __pyx_v_self->chromosomes; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
-  for (;;) {
-    if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 13, __pyx_L1_error)
-    #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_2);
-    __pyx_t_2 = 0;
-
-    /* "sicer/shared/chrom_collections.pyx":14
- * 
- *         for chrom in self.chromosomes:
- *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))             # <<<<<<<<<<<<<<
- * 
- *     cdef void insertRead(self, string chrom, BEDRead input_data):
- */
-    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 14, __pyx_L1_error)
-    try {
-      __pyx_t_6 = new std::vector<BEDRead> (0);
-    } catch(...) {
-      __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 14, __pyx_L1_error)
-    }
-    try {
-      __pyx_t_7 = std::pair<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> (__pyx_t_5, __pyx_t_6);
-    } catch(...) {
-      __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 14, __pyx_L1_error)
-    }
-    try {
-      __pyx_v_self->data.insert(__pyx_t_7);
-    } catch(...) {
-      __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 14, __pyx_L1_error)
-    }
-
-    /* "sicer/shared/chrom_collections.pyx":13
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
- * 
- *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
- * 
- */
-  }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "sicer/shared/chrom_collections.pyx":9
- * cdef class ChromBEDReadCollection:
- * 
- *     def __cinit__(self, str species):             # <<<<<<<<<<<<<<
- *         self.species = species
- *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), GenomeData.species_chroms[species]))
- */
-
-  /* function exit code */
-  __pyx_r = 0;
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_chrom);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":16
- *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
- * 
- *     cdef void insertRead(self, string chrom, BEDRead input_data):             # <<<<<<<<<<<<<<
- *         deref(self.data.at(chrom)).push_back(input_data)
- * 
- */
-
-static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_insertRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, BEDRead __pyx_v_input_data) {
-  __Pyx_RefNannyDeclarations
-  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_1;
-  __Pyx_RefNannySetupContext("insertRead", 0);
-
-  /* "sicer/shared/chrom_collections.pyx":17
- * 
- *     cdef void insertRead(self, string chrom, BEDRead input_data):
- *         deref(self.data.at(chrom)).push_back(input_data)             # <<<<<<<<<<<<<<
- * 
- *     cdef mapcpp[string, vec_ptr] getData(self):
- */
-  try {
-    __pyx_t_1 = __pyx_v_self->data.at(__pyx_v_chrom);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 17, __pyx_L1_error)
-  }
-  try {
-    (*__pyx_t_1).push_back(__pyx_v_input_data);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 17, __pyx_L1_error)
-  }
-
-  /* "sicer/shared/chrom_collections.pyx":16
- *             self.data.insert(pair[string, vec_ptr](chrom, new vector[BEDRead](0)))
- * 
- *     cdef void insertRead(self, string chrom, BEDRead input_data):             # <<<<<<<<<<<<<<
- *         deref(self.data.at(chrom)).push_back(input_data)
- * 
- */
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.shared.chrom_collections.ChromBEDReadCollection.insertRead", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-}
-
-/* "sicer/shared/chrom_collections.pyx":19
- *         deref(self.data.at(chrom)).push_back(input_data)
- * 
- *     cdef mapcpp[string, vec_ptr] getData(self):             # <<<<<<<<<<<<<<
- *         return self.data
- * 
- */
-
-static std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
-  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getData", 0);
-
-  /* "sicer/shared/chrom_collections.pyx":20
- * 
- *     cdef mapcpp[string, vec_ptr] getData(self):
- *         return self.data             # <<<<<<<<<<<<<<
- * 
- *     cdef vec_ptr getChromData(self, string chrom):
- */
-  __pyx_r = __pyx_v_self->data;
-  goto __pyx_L0;
-
-  /* "sicer/shared/chrom_collections.pyx":19
- *         deref(self.data.at(chrom)).push_back(input_data)
- * 
- *     cdef mapcpp[string, vec_ptr] getData(self):             # <<<<<<<<<<<<<<
- *         return self.data
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":22
- *         return self.data
- * 
- *     cdef vec_ptr getChromData(self, string chrom):             # <<<<<<<<<<<<<<
- *         return self.data.at(chrom)
- * 
- */
-
-static __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom) {
-  __pyx_t_5sicer_6shared_17chrom_collections_vec_ptr __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_1;
-  __Pyx_RefNannySetupContext("getChromData", 0);
-
-  /* "sicer/shared/chrom_collections.pyx":23
- * 
- *     cdef vec_ptr getChromData(self, string chrom):
- *         return self.data.at(chrom)             # <<<<<<<<<<<<<<
- * 
- *     cdef BEDRead getRead(self, string chrom, int i):
- */
-  try {
-    __pyx_t_1 = __pyx_v_self->data.at(__pyx_v_chrom);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 23, __pyx_L1_error)
-  }
-  __pyx_r = __pyx_t_1;
-  goto __pyx_L0;
-
-  /* "sicer/shared/chrom_collections.pyx":22
- *         return self.data
- * 
- *     cdef vec_ptr getChromData(self, string chrom):             # <<<<<<<<<<<<<<
- *         return self.data.at(chrom)
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.shared.chrom_collections.ChromBEDReadCollection.getChromData", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":25
- *         return self.data.at(chrom)
- * 
- *     cdef BEDRead getRead(self, string chrom, int i):             # <<<<<<<<<<<<<<
- *         return deref(self.data.at(chrom)).at(i)
- * 
- */
-
-static BEDRead __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getRead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, std::string __pyx_v_chrom, int __pyx_v_i) {
-  BEDRead __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_1;
-  __Pyx_FakeReference<BEDRead> __pyx_t_2;
-  __Pyx_RefNannySetupContext("getRead", 0);
-
-  /* "sicer/shared/chrom_collections.pyx":26
- * 
- *     cdef BEDRead getRead(self, string chrom, int i):
- *         return deref(self.data.at(chrom)).at(i)             # <<<<<<<<<<<<<<
- * 
- *     cpdef list getChromosomes(self):
- */
-  try {
-    __pyx_t_1 = __pyx_v_self->data.at(__pyx_v_chrom);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 26, __pyx_L1_error)
-  }
-  try {
-    __pyx_t_2 = (*__pyx_t_1).at(__pyx_v_i);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 26, __pyx_L1_error)
-  }
-  __pyx_r = __pyx_t_2;
-  goto __pyx_L0;
-
-  /* "sicer/shared/chrom_collections.pyx":25
- *         return self.data.at(chrom)
- * 
- *     cdef BEDRead getRead(self, string chrom, int i):             # <<<<<<<<<<<<<<
- *         return deref(self.data.at(chrom)).at(i)
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.shared.chrom_collections.ChromBEDReadCollection.getRead", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":28
- *         return deref(self.data.at(chrom)).at(i)
- * 
- *     cpdef list getChromosomes(self):             # <<<<<<<<<<<<<<
- *         return self.chromosomes
- * 
- */
-
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_3getChromosomes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromosomes(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  __Pyx_RefNannySetupContext("getChromosomes", 0);
-  /* Check if called by wrapper */
-  if (unlikely(__pyx_skip_dispatch)) ;
-  /* Check if overridden in Python */
-  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
-    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
-    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
-      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
-      #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getChromosomes); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_3getChromosomes)) {
-        __Pyx_XDECREF(__pyx_r);
-        __Pyx_INCREF(__pyx_t_1);
-        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
-        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-          if (likely(__pyx_t_4)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-            __Pyx_INCREF(__pyx_t_4);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_3, function);
-          }
-        }
-        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
-        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 28, __pyx_L1_error)
-        __pyx_r = ((PyObject*)__pyx_t_2);
-        __pyx_t_2 = 0;
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        goto __pyx_L0;
-      }
-      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
-      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
-      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
-        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
-      }
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-    }
-    #endif
-  }
-
-  /* "sicer/shared/chrom_collections.pyx":29
- * 
- *     cpdef list getChromosomes(self):
- *         return self.chromosomes             # <<<<<<<<<<<<<<
- * 
- *     cpdef string dataToString(self):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_self->chromosomes);
-  __pyx_r = __pyx_v_self->chromosomes;
-  goto __pyx_L0;
-
-  /* "sicer/shared/chrom_collections.pyx":28
- *         return deref(self.data.at(chrom)).at(i)
- * 
- *     cpdef list getChromosomes(self):             # <<<<<<<<<<<<<<
- *         return self.chromosomes
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.getChromosomes", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_3getChromosomes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_3getChromosomes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getChromosomes (wrapper)", 0);
-  __pyx_r = __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_2getChromosomes(((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_2getChromosomes(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("getChromosomes", 0);
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromosomes(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.getChromosomes", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":31
- *         return self.chromosomes
- * 
- *     cpdef string dataToString(self):             # <<<<<<<<<<<<<<
- *         cdef string s = "".encode("UTF-8")
- *         for chrom in self.chromosomes:
- */
-
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_5dataToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static std::string __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_dataToString(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch) {
-  std::string __pyx_v_s;
-  PyObject *__pyx_v_chrom = NULL;
-  std::vector<BEDRead> ::size_type __pyx_v_i;
-  std::string __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  std::string __pyx_t_5;
-  Py_ssize_t __pyx_t_6;
-  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_7;
-  std::vector<BEDRead> ::size_type __pyx_t_8;
-  std::vector<BEDRead> ::size_type __pyx_t_9;
-  std::vector<BEDRead> ::size_type __pyx_t_10;
-  __Pyx_FakeReference<__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> __pyx_t_11;
-  __Pyx_FakeReference<BEDRead> __pyx_t_12;
-  __Pyx_RefNannySetupContext("dataToString", 0);
-  /* Check if called by wrapper */
-  if (unlikely(__pyx_skip_dispatch)) ;
-  /* Check if overridden in Python */
-  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
-    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
-    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
-      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
-      #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_dataToString); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_5dataToString)) {
-        __Pyx_INCREF(__pyx_t_1);
-        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
-        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-          if (likely(__pyx_t_4)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-            __Pyx_INCREF(__pyx_t_4);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_3, function);
-          }
-        }
-        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
-        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_r = __pyx_t_5;
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        goto __pyx_L0;
-      }
-      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
-      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
-      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
-        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
-      }
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-    }
-    #endif
-  }
-
-  /* "sicer/shared/chrom_collections.pyx":32
- * 
- *     cpdef string dataToString(self):
- *         cdef string s = "".encode("UTF-8")             # <<<<<<<<<<<<<<
- *         for chrom in self.chromosomes:
- *             for i in range(deref(self.data.at(chrom)).size()):
- */
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_kp_b_); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L1_error)
-  __pyx_v_s = __pyx_t_5;
-
-  /* "sicer/shared/chrom_collections.pyx":33
- *     cpdef string dataToString(self):
- *         cdef string s = "".encode("UTF-8")
- *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             for i in range(deref(self.data.at(chrom)).size()):
- *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
- */
-  if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 33, __pyx_L1_error)
-  }
-  __pyx_t_1 = __pyx_v_self->chromosomes; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
-  for (;;) {
-    if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
-    #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_2);
-    __pyx_t_2 = 0;
-
-    /* "sicer/shared/chrom_collections.pyx":34
- *         cdef string s = "".encode("UTF-8")
- *         for chrom in self.chromosomes:
- *             for i in range(deref(self.data.at(chrom)).size()):             # <<<<<<<<<<<<<<
- *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
- *         return s
- */
-    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L1_error)
-    try {
-      __pyx_t_7 = __pyx_v_self->data.at(__pyx_t_5);
-    } catch(...) {
-      __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 34, __pyx_L1_error)
-    }
-    __pyx_t_8 = (*__pyx_t_7).size();
-    __pyx_t_9 = __pyx_t_8;
-    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-      __pyx_v_i = __pyx_t_10;
-
-      /* "sicer/shared/chrom_collections.pyx":35
- *         for chrom in self.chromosomes:
- *             for i in range(deref(self.data.at(chrom)).size()):
- *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"             # <<<<<<<<<<<<<<
- *         return s
- * 
- */
-      __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_s); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 35, __pyx_L1_error)
-      try {
-        __pyx_t_11 = __pyx_v_self->data.at(__pyx_t_5);
-      } catch(...) {
-        __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 35, __pyx_L1_error)
-      }
-      try {
-        __pyx_t_12 = (*__pyx_t_11).at(__pyx_v_i);
-      } catch(...) {
-        __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 35, __pyx_L1_error)
-      }
-      __pyx_t_3 = __Pyx_decode_cpp_string(__pyx_t_12->toString(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyUnicode_Concat(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = PyNumber_Add(__pyx_t_4, __pyx_kp_u__2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 35, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_s = __pyx_t_5;
-    }
-
-    /* "sicer/shared/chrom_collections.pyx":33
- *     cpdef string dataToString(self):
- *         cdef string s = "".encode("UTF-8")
- *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             for i in range(deref(self.data.at(chrom)).size()):
- *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
- */
-  }
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/shared/chrom_collections.pyx":36
- *             for i in range(deref(self.data.at(chrom)).size()):
- *                 s = s + deref(self.data.at(chrom)).at(i).toString().decode("UTF-8") + "\n"
- *         return s             # <<<<<<<<<<<<<<
+  /* "sicer/utility/file_writers.pyx":53
+ *         cdef win_vec_ptr vptr
  * 
- *     cpdef void printDataHead(self):
+ *         for i in range(chroms.size()):             # <<<<<<<<<<<<<<
+ *             vptr = self.windows.getChromVector(chroms[i])
+ *             if deref(vptr).size() > 0:
  */
-  __pyx_r = __pyx_v_s;
-  goto __pyx_L0;
+  __pyx_t_3 = __pyx_v_chroms.size();
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+    __pyx_v_i = __pyx_t_5;
 
-  /* "sicer/shared/chrom_collections.pyx":31
- *         return self.chromosomes
+    /* "sicer/utility/file_writers.pyx":54
  * 
- *     cpdef string dataToString(self):             # <<<<<<<<<<<<<<
- *         cdef string s = "".encode("UTF-8")
- *         for chrom in self.chromosomes:
+ *         for i in range(chroms.size()):
+ *             vptr = self.windows.getChromVector(chroms[i])             # <<<<<<<<<<<<<<
+ *             if deref(vptr).size() > 0:
+ *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
+ */
+    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getChromVector(__pyx_v_self->windows, (__pyx_v_chroms[__pyx_v_i]));
+
+    /* "sicer/utility/file_writers.pyx":55
+ *         for i in range(chroms.size()):
+ *             vptr = self.windows.getChromVector(chroms[i])
+ *             if deref(vptr).size() > 0:             # <<<<<<<<<<<<<<
+ *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
+ *                 fprintf(fp, chrom_header.c_str())
+ */
+    __pyx_t_6 = (((*__pyx_v_vptr).size() > 0) != 0);
+    if (__pyx_t_6) {
+
+      /* "sicer/utility/file_writers.pyx":56
+ *             vptr = self.windows.getChromVector(chroms[i])
+ *             if deref(vptr).size() > 0:
+ *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"             # <<<<<<<<<<<<<<
+ *                 fprintf(fp, chrom_header.c_str())
+ *                 for j in range(deref(vptr).size()):
+ */
+      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string((__pyx_v_chroms[__pyx_v_i])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_7 = PyNumber_Add(__pyx_kp_b_variableStep_chrom, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = PyNumber_Add(__pyx_t_7, __pyx_kp_b_span); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = __pyx_convert_PyBytes_string_to_py_std__in_string(std::to_string(__pyx_v_window_size)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_8 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = PyNumber_Add(__pyx_t_8, __pyx_kp_b_); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_7); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_v_chrom_header = __pyx_t_9;
+
+      /* "sicer/utility/file_writers.pyx":57
+ *             if deref(vptr).size() > 0:
+ *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
+ *                 fprintf(fp, chrom_header.c_str())             # <<<<<<<<<<<<<<
+ *                 for j in range(deref(vptr).size()):
+ *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
+ */
+      (void)(fprintf(__pyx_v_fp, __pyx_v_chrom_header.c_str()));
+
+      /* "sicer/utility/file_writers.pyx":58
+ *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
+ *                 fprintf(fp, chrom_header.c_str())
+ *                 for j in range(deref(vptr).size()):             # <<<<<<<<<<<<<<
+ *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
+ *                     fprintf(fp, line)
+ */
+      __pyx_t_10 = (*__pyx_v_vptr).size();
+      __pyx_t_11 = __pyx_t_10;
+      for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
+        __pyx_v_j = __pyx_t_12;
+
+        /* "sicer/utility/file_writers.pyx":59
+ *                 fprintf(fp, chrom_header.c_str())
+ *                 for j in range(deref(vptr).size()):
+ *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)             # <<<<<<<<<<<<<<
+ *                     fprintf(fp, line)
+ * 
+ */
+        __pyx_t_13 = ((*__pyx_v_vptr)[__pyx_v_j]).count;
+        if (unlikely(__pyx_v_scaling_factor == 0)) {
+          PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+          __PYX_ERR(0, 59, __pyx_L1_error)
+        }
+        __pyx_v_line = ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self->__pyx_vtab)->format_line(__pyx_v_self, (((*__pyx_v_vptr)[__pyx_v_j]).start + 1), (((double)__pyx_t_13) / __pyx_v_scaling_factor));
+
+        /* "sicer/utility/file_writers.pyx":60
+ *                 for j in range(deref(vptr).size()):
+ *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
+ *                     fprintf(fp, line)             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef void write(self):
+ */
+        (void)(fprintf(__pyx_v_fp, __pyx_v_line));
+      }
+
+      /* "sicer/utility/file_writers.pyx":55
+ *         for i in range(chroms.size()):
+ *             vptr = self.windows.getChromVector(chroms[i])
+ *             if deref(vptr).size() > 0:             # <<<<<<<<<<<<<<
+ *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
+ *                 fprintf(fp, chrom_header.c_str())
+ */
+    }
+  }
+
+  /* "sicer/utility/file_writers.pyx":37
+ *         return buffer
+ * 
+ *     cdef void c_write(self,             # <<<<<<<<<<<<<<
+ *         cstr outfile_path,
+ *         cstr header,
  */
 
   /* function exit code */
+  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("sicer.shared.chrom_collections.ChromBEDReadCollection.dataToString", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __Pyx_pretend_to_initialize(&__pyx_r);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_WriteUnraisable("sicer.utility.file_writers.WigFileWriter.c_write", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_chrom);
   __Pyx_RefNannyFinishContext();
-  return __pyx_r;
 }
 
-/* Python wrapper */
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_5dataToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_5dataToString(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("dataToString (wrapper)", 0);
-  __pyx_r = __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_4dataToString(((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_4dataToString(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("dataToString", 0);
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_dataToString(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.dataToString", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":38
- *         return s
+/* "sicer/utility/file_writers.pyx":62
+ *                     fprintf(fp, line)
  * 
- *     cpdef void printDataHead(self):             # <<<<<<<<<<<<<<
- *         head = 10;
- *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
+ *     cpdef void write(self):             # <<<<<<<<<<<<<<
+ *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
+ *         # We first need to normalize
  */
 
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_7printDataHead(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_printDataHead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, int __pyx_skip_dispatch) {
-  long __pyx_v_head;
-  std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> ::iterator __pyx_v_it;
-  long __pyx_v_i;
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_3write(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, int __pyx_skip_dispatch) {
+  int __pyx_v_count;
+  double __pyx_v_scaling_factor;
+  PyObject *__pyx_v_wig_header = 0;
+  PyObject *__pyx_v_outfile_path = 0;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
-  long __pyx_t_6;
-  long __pyx_t_7;
-  long __pyx_t_8;
-  __Pyx_FakeReference<BEDRead> __pyx_t_9;
-  __Pyx_RefNannySetupContext("printDataHead", 0);
+  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_t_6;
+  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_t_7;
+  __Pyx_RefNannySetupContext("write", 0);
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -2378,9 +1968,9 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_printDataHead); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_7printDataHead)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_3write)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -2394,7 +1984,7 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2414,103 +2004,167 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
     #endif
   }
 
-  /* "sicer/shared/chrom_collections.pyx":39
+  /* "sicer/utility/file_writers.pyx":63
  * 
- *     cpdef void printDataHead(self):
- *         head = 10;             # <<<<<<<<<<<<<<
- *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
- *         while(it != self.data.end()):
+ *     cpdef void write(self):
+ *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")             # <<<<<<<<<<<<<<
+ *         # We first need to normalize
+ *         cdef int count = self.windows.getTotalTagCount()
  */
-  __pyx_v_head = 10;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/shared/chrom_collections.pyx":40
- *     cpdef void printDataHead(self):
- *         head = 10;
- *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()             # <<<<<<<<<<<<<<
- *         while(it != self.data.end()):
- *             if deref(deref(it).second).size() > 0:
- */
-  __pyx_v_it = __pyx_v_self->data.begin();
-
-  /* "sicer/shared/chrom_collections.pyx":41
- *         head = 10;
- *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
- *         while(it != self.data.end()):             # <<<<<<<<<<<<<<
- *             if deref(deref(it).second).size() > 0:
- *                 for i in range(head):
- */
-  while (1) {
-    __pyx_t_5 = ((__pyx_v_it != __pyx_v_self->data.end()) != 0);
-    if (!__pyx_t_5) break;
-
-    /* "sicer/shared/chrom_collections.pyx":42
- *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
- *         while(it != self.data.end()):
- *             if deref(deref(it).second).size() > 0:             # <<<<<<<<<<<<<<
- *                 for i in range(head):
- *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
- */
-    __pyx_t_5 = (((*(*__pyx_v_it).second).size() > 0) != 0);
-    if (__pyx_t_5) {
-
-      /* "sicer/shared/chrom_collections.pyx":43
- *         while(it != self.data.end()):
- *             if deref(deref(it).second).size() > 0:
- *                 for i in range(head):             # <<<<<<<<<<<<<<
- *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
- *             postincrement(it)
- */
-      __pyx_t_6 = __pyx_v_head;
-      __pyx_t_7 = __pyx_t_6;
-      for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-        __pyx_v_i = __pyx_t_8;
-
-        /* "sicer/shared/chrom_collections.pyx":44
- *             if deref(deref(it).second).size() > 0:
- *                 for i in range(head):
- *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))             # <<<<<<<<<<<<<<
- *             postincrement(it)
+  /* "sicer/utility/file_writers.pyx":65
+ *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
+ *         # We first need to normalize
+ *         cdef int count = self.windows.getTotalTagCount()             # <<<<<<<<<<<<<<
+ *         cdef double scaling_factor =  count / 1000000.0 * (self.window_size / 1000.0)
  * 
  */
-        try {
-          __pyx_t_9 = (*(*__pyx_v_it).second).at(__pyx_v_i);
-        } catch(...) {
-          __Pyx_CppExn2PyErr();
-          __PYX_ERR(0, 44, __pyx_L1_error)
-        }
-        __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_t_9->toString(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      }
+  __pyx_v_count = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getTotalTagCount(__pyx_v_self->windows, 0);
 
-      /* "sicer/shared/chrom_collections.pyx":42
- *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
- *         while(it != self.data.end()):
- *             if deref(deref(it).second).size() > 0:             # <<<<<<<<<<<<<<
- *                 for i in range(head):
- *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
- */
-    }
-
-    /* "sicer/shared/chrom_collections.pyx":45
- *                 for i in range(head):
- *                     print(deref(deref(it).second).at(i).toString().decode("UTF-8"))
- *             postincrement(it)             # <<<<<<<<<<<<<<
+  /* "sicer/utility/file_writers.pyx":66
+ *         # We first need to normalize
+ *         cdef int count = self.windows.getTotalTagCount()
+ *         cdef double scaling_factor =  count / 1000000.0 * (self.window_size / 1000.0)             # <<<<<<<<<<<<<<
  * 
- *     def __dealloc__(self):
+ *         # Format final file_name
  */
-    (void)((__pyx_v_it++));
+  __pyx_v_scaling_factor = ((((double)__pyx_v_count) / 1000000.0) * (((double)__pyx_v_self->window_size) / 1000.0));
+
+  /* "sicer/utility/file_writers.pyx":69
+ * 
+ *         # Format final file_name
+ *         self.file_name += "-W" + str(self.window_size)             # <<<<<<<<<<<<<<
+ *         if self.filtered:
+ *             self.file_name += "-islandfiltered"
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_GIVEREF(__pyx_t_2);
+  __Pyx_GOTREF(__pyx_v_self->file_name);
+  __Pyx_DECREF(__pyx_v_self->file_name);
+  __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "sicer/utility/file_writers.pyx":70
+ *         # Format final file_name
+ *         self.file_name += "-W" + str(self.window_size)
+ *         if self.filtered:             # <<<<<<<<<<<<<<
+ *             self.file_name += "-islandfiltered"
+ * 
+ */
+  __pyx_t_5 = (__pyx_v_self->filtered != 0);
+  if (__pyx_t_5) {
+
+    /* "sicer/utility/file_writers.pyx":71
+ *         self.file_name += "-W" + str(self.window_size)
+ *         if self.filtered:
+ *             self.file_name += "-islandfiltered"             # <<<<<<<<<<<<<<
+ * 
+ *         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")
+ */
+    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_islandfiltered); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    __Pyx_GOTREF(__pyx_v_self->file_name);
+    __Pyx_DECREF(__pyx_v_self->file_name);
+    __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
+    __pyx_t_2 = 0;
+
+    /* "sicer/utility/file_writers.pyx":70
+ *         # Format final file_name
+ *         self.file_name += "-W" + str(self.window_size)
+ *         if self.filtered:             # <<<<<<<<<<<<<<
+ *             self.file_name += "-islandfiltered"
+ * 
+ */
   }
 
-  /* "sicer/shared/chrom_collections.pyx":38
- *         return s
+  /* "sicer/utility/file_writers.pyx":73
+ *             self.file_name += "-islandfiltered"
  * 
- *     cpdef void printDataHead(self):             # <<<<<<<<<<<<<<
- *         head = 10;
- *         cdef mapcpp[string, vec_ptr].iterator it = self.data.begin()
+ *         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")             # <<<<<<<<<<<<<<
+ *         self.file_name += "-normalized.wig"
+ * 
+ */
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_track_type_wiggle_0_name, __pyx_v_self->file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_t_2, __pyx_kp_u_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_wig_header = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "sicer/utility/file_writers.pyx":74
+ * 
+ *         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")
+ *         self.file_name += "-normalized.wig"             # <<<<<<<<<<<<<<
+ * 
+ *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
+ */
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_normalized_wig); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  __Pyx_GOTREF(__pyx_v_self->file_name);
+  __Pyx_DECREF(__pyx_v_self->file_name);
+  __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "sicer/utility/file_writers.pyx":76
+ *         self.file_name += "-normalized.wig"
+ * 
+ *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")             # <<<<<<<<<<<<<<
+ * 
+ *         self.c_write(outfile_path, wig_header, self.window_size, scaling_factor)
+ */
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_2, __pyx_v_self->file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_outfile_path = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "sicer/utility/file_writers.pyx":78
+ *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
+ * 
+ *         self.c_write(outfile_path, wig_header, self.window_size, scaling_factor)             # <<<<<<<<<<<<<<
+ */
+  if (unlikely(__pyx_v_outfile_path == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
+    __PYX_ERR(0, 78, __pyx_L1_error)
+  }
+  __pyx_t_6 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_6) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
+  if (unlikely(__pyx_v_wig_header == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
+    __PYX_ERR(0, 78, __pyx_L1_error)
+  }
+  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_wig_header); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self->__pyx_vtab)->c_write(__pyx_v_self, __pyx_t_6, __pyx_t_7, __pyx_v_self->window_size, __pyx_v_scaling_factor);
+
+  /* "sicer/utility/file_writers.pyx":62
+ *                     fprintf(fp, line)
+ * 
+ *     cpdef void write(self):             # <<<<<<<<<<<<<<
+ *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
+ *         # We first need to normalize
  */
 
   /* function exit code */
@@ -2520,31 +2174,33 @@ static void __pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("sicer.shared.chrom_collections.ChromBEDReadCollection.printDataHead", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("sicer.utility.file_writers.WigFileWriter.write", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_wig_header);
+  __Pyx_XDECREF(__pyx_v_outfile_path);
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_7printDataHead(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_7printDataHead(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_3write(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_3write(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("printDataHead (wrapper)", 0);
-  __pyx_r = __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_6printDataHead(((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("write (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_2write(((struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_6printDataHead(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_2write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("printDataHead", 0);
+  __Pyx_RefNannySetupContext("write", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_printDataHead(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2553,109 +2209,12 @@ static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadColle
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.printDataHead", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.utility.file_writers.WigFileWriter.write", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
-}
-
-/* "sicer/shared/chrom_collections.pyx":47
- *             postincrement(it)
- * 
- *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         for chrom in self.chromosomes:
- *             self.data[chrom].clear()
- */
-
-/* Python wrapper */
-static void __pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__dealloc__(PyObject *__pyx_v_self); /*proto*/
-static void __pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__dealloc__(PyObject *__pyx_v_self) {
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__dealloc__ (wrapper)", 0);
-  __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_8__dealloc__(((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
-
-static void __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_8__dealloc__(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
-  PyObject *__pyx_v_chrom = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  Py_ssize_t __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  std::string __pyx_t_4;
-  __Pyx_RefNannySetupContext("__dealloc__", 0);
-
-  /* "sicer/shared/chrom_collections.pyx":48
- * 
- *     def __dealloc__(self):
- *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             self.data[chrom].clear()
- *             self.data[chrom].shrink_to_fit()
- */
-  if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 48, __pyx_L1_error)
-  }
-  __pyx_t_1 = __pyx_v_self->chromosomes; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
-  for (;;) {
-    if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 48, __pyx_L1_error)
-    #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_3);
-    __pyx_t_3 = 0;
-
-    /* "sicer/shared/chrom_collections.pyx":49
- *     def __dealloc__(self):
- *         for chrom in self.chromosomes:
- *             self.data[chrom].clear()             # <<<<<<<<<<<<<<
- *             self.data[chrom].shrink_to_fit()
- */
-    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L1_error)
-    (__pyx_v_self->data[__pyx_t_4])->clear();
-
-    /* "sicer/shared/chrom_collections.pyx":50
- *         for chrom in self.chromosomes:
- *             self.data[chrom].clear()
- *             self.data[chrom].shrink_to_fit()             # <<<<<<<<<<<<<<
- */
-    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
-    (__pyx_v_self->data[__pyx_t_4])->shrink_to_fit();
-
-    /* "sicer/shared/chrom_collections.pyx":48
- * 
- *     def __dealloc__(self):
- *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             self.data[chrom].clear()
- *             self.data[chrom].shrink_to_fit()
- */
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "sicer/shared/chrom_collections.pyx":47
- *             postincrement(it)
- * 
- *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         for chrom in self.chromosomes:
- *             self.data[chrom].clear()
- */
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_WriteUnraisable("sicer.shared.chrom_collections.ChromBEDReadCollection.__dealloc__", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_chrom);
-  __Pyx_RefNannyFinishContext();
 }
 
 /* "(tree fragment)":1
@@ -2665,19 +2224,19 @@ static void __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_10__reduce_cython__(((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_4__reduce_cython__(((struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self) {
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2689,7 +2248,7 @@ static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadColle
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2704,7 +2263,7 @@ static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadColle
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.utility.file_writers.WigFileWriter.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -2719,19 +2278,19 @@ static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadColle
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_12__setstate_cython__(((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_6__setstate_cython__(((struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2742,7 +2301,7 @@ static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadColle
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2758,7 +2317,7 @@ static PyObject *__pyx_pf_5sicer_6shared_17chrom_collections_22ChromBEDReadColle
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.shared.chrom_collections.ChromBEDReadCollection.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.utility.file_writers.WigFileWriter.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -2823,6 +2382,125 @@ static std::string __pyx_convert_string_from_py_std__in_string(PyObject *__pyx_v
   __Pyx_AddTraceback("string.from_py.__pyx_convert_string_from_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "vector.from_py":45
+ * 
+ * @cname("__pyx_convert_vector_from_py_std_3a__3a_string")
+ * cdef vector[X] __pyx_convert_vector_from_py_std_3a__3a_string(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef vector[X] v
+ *     for item in o:
+ */
+
+static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *__pyx_v_o) {
+  std::vector<std::string>  __pyx_v_v;
+  PyObject *__pyx_v_item = NULL;
+  std::vector<std::string>  __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  PyObject *(*__pyx_t_3)(PyObject *);
+  PyObject *__pyx_t_4 = NULL;
+  std::string __pyx_t_5;
+  __Pyx_RefNannySetupContext("__pyx_convert_vector_from_py_std_3a__3a_string", 0);
+
+  /* "vector.from_py":47
+ * cdef vector[X] __pyx_convert_vector_from_py_std_3a__3a_string(object o) except *:
+ *     cdef vector[X] v
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         v.push_back(<X>item)
+ *     return v
+ */
+  if (likely(PyList_CheckExact(__pyx_v_o)) || PyTuple_CheckExact(__pyx_v_o)) {
+    __pyx_t_1 = __pyx_v_o; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
+    __pyx_t_3 = NULL;
+  } else {
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 47, __pyx_L1_error)
+  }
+  for (;;) {
+    if (likely(!__pyx_t_3)) {
+      if (likely(PyList_CheckExact(__pyx_t_1))) {
+        if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 47, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      } else {
+        if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 47, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      }
+    } else {
+      __pyx_t_4 = __pyx_t_3(__pyx_t_1);
+      if (unlikely(!__pyx_t_4)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(1, 47, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_4);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_4);
+    __pyx_t_4 = 0;
+
+    /* "vector.from_py":48
+ *     cdef vector[X] v
+ *     for item in o:
+ *         v.push_back(<X>item)             # <<<<<<<<<<<<<<
+ *     return v
+ * 
+ */
+    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_item); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L1_error)
+    __pyx_v_v.push_back(((std::string)__pyx_t_5));
+
+    /* "vector.from_py":47
+ * cdef vector[X] __pyx_convert_vector_from_py_std_3a__3a_string(object o) except *:
+ *     cdef vector[X] v
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         v.push_back(<X>item)
+ *     return v
+ */
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "vector.from_py":49
+ *     for item in o:
+ *         v.push_back(<X>item)
+ *     return v             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_v;
+  goto __pyx_L0;
+
+  /* "vector.from_py":45
+ * 
+ * @cname("__pyx_convert_vector_from_py_std_3a__3a_string")
+ * cdef vector[X] __pyx_convert_vector_from_py_std_3a__3a_string(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef vector[X] v
+ *     for item in o:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("vector.from_py.__pyx_convert_vector_from_py_std_3a__3a_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_item);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3060,10 +2738,10 @@ static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_st
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_5sicer_6shared_17chrom_collections_ChromBEDReadCollection __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
+static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter __pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter;
 
-static PyObject *__pyx_tp_new_5sicer_6shared_17chrom_collections_ChromBEDReadCollection(PyTypeObject *t, PyObject *a, PyObject *k) {
-  struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *p;
+static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_WigFileWriter(PyTypeObject *t, PyObject *a, PyObject *k) {
+  struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -3071,73 +2749,63 @@ static PyObject *__pyx_tp_new_5sicer_6shared_17chrom_collections_ChromBEDReadCol
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
-  new((void*)&(p->data)) std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr> ();
-  p->species = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->chromosomes = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  if (unlikely(__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_1__cinit__(o, a, k) < 0)) goto bad;
+  p = ((struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)o);
+  p->__pyx_vtab = __pyx_vtabptr_5sicer_7utility_12file_writers_WigFileWriter;
+  p->file_name = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  p->output_dir = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  p->windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)Py_None); Py_INCREF(Py_None);
+  if (unlikely(__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(o, a, k) < 0)) goto bad;
   return o;
   bad:
   Py_DECREF(o); o = 0;
   return NULL;
 }
 
-static void __pyx_tp_dealloc_5sicer_6shared_17chrom_collections_ChromBEDReadCollection(PyObject *o) {
-  struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *p = (struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)o;
+static void __pyx_tp_dealloc_5sicer_7utility_12file_writers_WigFileWriter(PyObject *o) {
+  struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
   }
   #endif
   PyObject_GC_UnTrack(o);
-  {
-    PyObject *etype, *eval, *etb;
-    PyErr_Fetch(&etype, &eval, &etb);
-    ++Py_REFCNT(o);
-    __pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_9__dealloc__(o);
-    --Py_REFCNT(o);
-    PyErr_Restore(etype, eval, etb);
-  }
-  __Pyx_call_destructor(p->data);
-  Py_CLEAR(p->species);
-  Py_CLEAR(p->chromosomes);
+  Py_CLEAR(p->file_name);
+  Py_CLEAR(p->output_dir);
+  Py_CLEAR(p->windows);
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_5sicer_6shared_17chrom_collections_ChromBEDReadCollection(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_5sicer_7utility_12file_writers_WigFileWriter(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *p = (struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)o;
-  if (p->chromosomes) {
-    e = (*v)(p->chromosomes, a); if (e) return e;
+  struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)o;
+  if (p->windows) {
+    e = (*v)(((PyObject *)p->windows), a); if (e) return e;
   }
   return 0;
 }
 
-static int __pyx_tp_clear_5sicer_6shared_17chrom_collections_ChromBEDReadCollection(PyObject *o) {
+static int __pyx_tp_clear_5sicer_7utility_12file_writers_WigFileWriter(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *p = (struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *)o;
-  tmp = ((PyObject*)p->chromosomes);
-  p->chromosomes = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)o;
+  tmp = ((PyObject*)p->windows);
+  p->windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyMethodDef __pyx_methods_5sicer_6shared_17chrom_collections_ChromBEDReadCollection[] = {
-  {"getChromosomes", (PyCFunction)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_3getChromosomes, METH_NOARGS, 0},
-  {"dataToString", (PyCFunction)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_5dataToString, METH_NOARGS, 0},
-  {"printDataHead", (PyCFunction)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_7printDataHead, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_11__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_13__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_5sicer_7utility_12file_writers_WigFileWriter[] = {
+  {"write", (PyCFunction)__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_3write, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_5__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_7__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = {
+static PyTypeObject __pyx_type_5sicer_7utility_12file_writers_WigFileWriter = {
   PyVarObject_HEAD_INIT(0, 0)
-  "sicer.shared.chrom_collections.ChromBEDReadCollection", /*tp_name*/
-  sizeof(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection), /*tp_basicsize*/
+  "sicer.utility.file_writers.WigFileWriter", /*tp_name*/
+  sizeof(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5sicer_6shared_17chrom_collections_ChromBEDReadCollection, /*tp_dealloc*/
+  __pyx_tp_dealloc_5sicer_7utility_12file_writers_WigFileWriter, /*tp_dealloc*/
   #if PY_VERSION_HEX < 0x030800b4
   0, /*tp_print*/
   #endif
@@ -3164,13 +2832,13 @@ static PyTypeObject __pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCo
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_5sicer_6shared_17chrom_collections_ChromBEDReadCollection, /*tp_traverse*/
-  __pyx_tp_clear_5sicer_6shared_17chrom_collections_ChromBEDReadCollection, /*tp_clear*/
+  __pyx_tp_traverse_5sicer_7utility_12file_writers_WigFileWriter, /*tp_traverse*/
+  __pyx_tp_clear_5sicer_7utility_12file_writers_WigFileWriter, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5sicer_6shared_17chrom_collections_ChromBEDReadCollection, /*tp_methods*/
+  __pyx_methods_5sicer_7utility_12file_writers_WigFileWriter, /*tp_methods*/
   0, /*tp_members*/
   0, /*tp_getset*/
   0, /*tp_base*/
@@ -3180,7 +2848,7 @@ static PyTypeObject __pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCo
   0, /*tp_dictoffset*/
   0, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5sicer_6shared_17chrom_collections_ChromBEDReadCollection, /*tp_new*/
+  __pyx_tp_new_5sicer_7utility_12file_writers_WigFileWriter, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -3208,17 +2876,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_chrom_collections(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_file_writers(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_chrom_collections},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_file_writers},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "chrom_collections",
+    "file_writers",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -3248,24 +2916,23 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_b_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 0, 0},
-  {&__pyx_n_s_ChromBEDReadCollection, __pyx_k_ChromBEDReadCollection, sizeof(__pyx_k_ChromBEDReadCollection), 0, 0, 1, 1},
-  {&__pyx_n_s_GenomeData, __pyx_k_GenomeData, sizeof(__pyx_k_GenomeData), 0, 0, 1, 1},
+  {&__pyx_kp_u_, __pyx_k_, sizeof(__pyx_k_), 0, 1, 0, 0},
+  {&__pyx_kp_u_Normalizing_graphs_by_total_isla, __pyx_k_Normalizing_graphs_by_total_isla, sizeof(__pyx_k_Normalizing_graphs_by_total_isla), 0, 1, 0, 0},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
-  {&__pyx_kp_u_UTF_8, __pyx_k_UTF_8, sizeof(__pyx_k_UTF_8), 0, 1, 0, 0},
-  {&__pyx_kp_u__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
-  {&__pyx_n_s_cinit___locals_lambda, __pyx_k_cinit___locals_lambda, sizeof(__pyx_k_cinit___locals_lambda), 0, 0, 1, 1},
+  {&__pyx_kp_u_W, __pyx_k_W, sizeof(__pyx_k_W), 0, 1, 0, 0},
+  {&__pyx_n_s_WigFileWriter, __pyx_k_WigFileWriter, sizeof(__pyx_k_WigFileWriter), 0, 0, 1, 1},
+  {&__pyx_kp_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_dataToString, __pyx_k_dataToString, sizeof(__pyx_k_dataToString), 0, 0, 1, 1},
-  {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
-  {&__pyx_n_s_getChromosomes, __pyx_k_getChromosomes, sizeof(__pyx_k_getChromosomes), 0, 0, 1, 1},
+  {&__pyx_n_s_file_name, __pyx_k_file_name, sizeof(__pyx_k_file_name), 0, 0, 1, 1},
+  {&__pyx_n_s_filtered, __pyx_k_filtered, sizeof(__pyx_k_filtered), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
-  {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
+  {&__pyx_kp_u_islandfiltered, __pyx_k_islandfiltered, sizeof(__pyx_k_islandfiltered), 0, 1, 0, 0},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_map, __pyx_k_map, sizeof(__pyx_k_map), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
+  {&__pyx_kp_u_normalized_wig, __pyx_k_normalized_wig, sizeof(__pyx_k_normalized_wig), 0, 1, 0, 0},
+  {&__pyx_n_s_output_dir, __pyx_k_output_dir, sizeof(__pyx_k_output_dir), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
-  {&__pyx_n_s_printDataHead, __pyx_k_printDataHead, sizeof(__pyx_k_printDataHead), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
@@ -3273,18 +2940,18 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
-  {&__pyx_n_s_sicer_shared, __pyx_k_sicer_shared, sizeof(__pyx_k_sicer_shared), 0, 0, 1, 1},
-  {&__pyx_n_s_sicer_shared_chrom_collections, __pyx_k_sicer_shared_chrom_collections, sizeof(__pyx_k_sicer_shared_chrom_collections), 0, 0, 1, 1},
-  {&__pyx_n_s_species, __pyx_k_species, sizeof(__pyx_k_species), 0, 0, 1, 1},
-  {&__pyx_n_s_species_chroms, __pyx_k_species_chroms, sizeof(__pyx_k_species_chroms), 0, 0, 1, 1},
-  {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
+  {&__pyx_kp_b_span, __pyx_k_span, sizeof(__pyx_k_span), 0, 0, 0, 0},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_kp_u_track_type_wiggle_0_name, __pyx_k_track_type_wiggle_0_name, sizeof(__pyx_k_track_type_wiggle_0_name), 0, 1, 0, 0},
+  {&__pyx_kp_b_variableStep_chrom, __pyx_k_variableStep_chrom, sizeof(__pyx_k_variableStep_chrom), 0, 0, 0, 0},
+  {&__pyx_n_s_window_size, __pyx_k_window_size, sizeof(__pyx_k_window_size), 0, 0, 1, 1},
+  {&__pyx_n_s_windows, __pyx_k_windows, sizeof(__pyx_k_windows), 0, 0, 1, 1},
+  {&__pyx_n_s_write, __pyx_k_write, sizeof(__pyx_k_write), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_map = __Pyx_GetBuiltinName(__pyx_n_s_map); if (!__pyx_builtin_map) __PYX_ERR(0, 11, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 34, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 63, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -3295,24 +2962,35 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
+  /* "sicer/utility/file_writers.pyx":63
+ * 
+ *     cpdef void write(self):
+ *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")             # <<<<<<<<<<<<<<
+ *         # We first need to normalize
+ *         cdef int count = self.windows.getTotalTagCount()
+ */
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_Normalizing_graphs_by_total_isla); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
+
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3363,25 +3041,21 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = &__pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.insertRead = (void (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, BEDRead))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_insertRead;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getData = (std::map<std::string,__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr>  (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getData;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getChromData = (__pyx_t_5sicer_6shared_17chrom_collections_vec_ptr (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromData;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getRead = (BEDRead (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, std::string, int))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getRead;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.getChromosomes = (PyObject *(*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_getChromosomes;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.dataToString = (std::string (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_dataToString;
-  __pyx_vtable_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.printDataHead = (void (*)(struct __pyx_obj_5sicer_6shared_17chrom_collections_ChromBEDReadCollection *, int __pyx_skip_dispatch))__pyx_f_5sicer_6shared_17chrom_collections_22ChromBEDReadCollection_printDataHead;
-  if (PyType_Ready(&__pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_7utility_12file_writers_WigFileWriter = &__pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter;
+  __pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter.format_line = (__pyx_t_5sicer_7utility_12file_writers_cstr (*)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, int, double))__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_format_line;
+  __pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter.c_write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr, __pyx_t_5sicer_7utility_12file_writers_cstr, int, double))__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write;
+  __pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter.write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, int __pyx_skip_dispatch))__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write;
+  if (PyType_Ready(&__pyx_type_5sicer_7utility_12file_writers_WigFileWriter) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.tp_print = 0;
+  __pyx_type_5sicer_7utility_12file_writers_WigFileWriter.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.tp_dictoffset && __pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5sicer_7utility_12file_writers_WigFileWriter.tp_dictoffset && __pyx_type_5sicer_7utility_12file_writers_WigFileWriter.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_5sicer_7utility_12file_writers_WigFileWriter.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection.tp_dict, __pyx_vtabptr_5sicer_6shared_17chrom_collections_ChromBEDReadCollection) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_ChromBEDReadCollection, (PyObject *)&__pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
-  __pyx_ptype_5sicer_6shared_17chrom_collections_ChromBEDReadCollection = &__pyx_type_5sicer_6shared_17chrom_collections_ChromBEDReadCollection;
+  if (__Pyx_SetVtable(__pyx_type_5sicer_7utility_12file_writers_WigFileWriter.tp_dict, __pyx_vtabptr_5sicer_7utility_12file_writers_WigFileWriter) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_WigFileWriter, (PyObject *)&__pyx_type_5sicer_7utility_12file_writers_WigFileWriter) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_7utility_12file_writers_WigFileWriter) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_ptype_5sicer_7utility_12file_writers_WigFileWriter = &__pyx_type_5sicer_7utility_12file_writers_WigFileWriter;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3391,10 +3065,27 @@ static int __Pyx_modinit_type_init_code(void) {
 
 static int __Pyx_modinit_type_import_code(void) {
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
+  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 16, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromBEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer) __PYX_ERR(2, 16, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer)) __PYX_ERR(2, 16, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromWindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer) __PYX_ERR(2, 36, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer)) __PYX_ERR(2, 36, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer) __PYX_ERR(2, 59, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer)) __PYX_ERR(2, 59, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_variable_import_code(void) {
@@ -3430,11 +3121,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initchrom_collections(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initchrom_collections(void)
+__Pyx_PyMODINIT_FUNC initfile_writers(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initfile_writers(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_chrom_collections(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_chrom_collections(void)
+__Pyx_PyMODINIT_FUNC PyInit_file_writers(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_file_writers(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -3501,17 +3192,16 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_chrom_collections(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_file_writers(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannyDeclarations
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'chrom_collections' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'file_writers' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -3526,7 +3216,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_chrom_collections(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_file_writers(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -3565,7 +3255,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("chrom_collections", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("file_writers", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -3583,14 +3273,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_sicer__shared__chrom_collections) {
+  if (__pyx_module_is_main_sicer__utility__file_writers) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "sicer.shared.chrom_collections")) {
-      if (unlikely(PyDict_SetItemString(modules, "sicer.shared.chrom_collections", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "sicer.utility.file_writers")) {
+      if (unlikely(PyDict_SetItemString(modules, "sicer.utility.file_writers", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -3603,7 +3293,7 @@ if (!__Pyx_RefNanny) {
   (void)__Pyx_modinit_variable_export_code();
   (void)__Pyx_modinit_function_export_code();
   if (unlikely(__Pyx_modinit_type_init_code() != 0)) goto __pyx_L1_error;
-  (void)__Pyx_modinit_type_import_code();
+  if (unlikely(__Pyx_modinit_type_import_code() != 0)) goto __pyx_L1_error;
   (void)__Pyx_modinit_variable_import_code();
   (void)__Pyx_modinit_function_import_code();
   /*--- Execution code ---*/
@@ -3611,46 +3301,15 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/shared/chrom_collections.pyx":1
- * from sicer.shared import GenomeData             # <<<<<<<<<<<<<<
- * from cython.operator cimport dereference as deref
- * from cython.operator cimport postincrement
+  /* "sicer/utility/file_writers.pyx":1
+ * # SICER Internal Imports             # <<<<<<<<<<<<<<
+ * from sicer.shared.data_classes cimport BEDRead, Window
+ * from sicer.utility.utils cimport to_string
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s_GenomeData);
-  __Pyx_GIVEREF(__pyx_n_s_GenomeData);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_GenomeData);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sicer_shared, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_GenomeData); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_GenomeData, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "sicer/shared/chrom_collections.pyx":5
- * from cython.operator cimport postincrement
- * from libcpp.utility cimport pair
- * import sys             # <<<<<<<<<<<<<<
- * 
- * cdef class ChromBEDReadCollection:
- */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sys, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sys, __pyx_t_2) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "sicer/shared/chrom_collections.pyx":1
- * from sicer.shared import GenomeData             # <<<<<<<<<<<<<<
- * from cython.operator cimport dereference as deref
- * from cython.operator cimport postincrement
- */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "string.to_py":55
  * 
@@ -3665,14 +3324,13 @@ if (!__Pyx_RefNanny) {
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init sicer.shared.chrom_collections", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init sicer.utility.file_writers", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init sicer.shared.chrom_collections");
+    PyErr_SetString(PyExc_ImportError, "init sicer.utility.file_writers");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -3729,6 +3387,32 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
 #endif
     }
     return result;
+}
+
+/* RaiseArgTupleInvalid */
+static void __Pyx_RaiseArgtupleInvalid(
+    const char* func_name,
+    int exact,
+    Py_ssize_t num_min,
+    Py_ssize_t num_max,
+    Py_ssize_t num_found)
+{
+    Py_ssize_t num_expected;
+    const char *more_or_less;
+    if (num_found < num_min) {
+        num_expected = num_min;
+        more_or_less = "at least";
+    } else {
+        num_expected = num_max;
+        more_or_less = "at most";
+    }
+    if (exact) {
+        more_or_less = "exactly";
+    }
+    PyErr_Format(PyExc_TypeError,
+                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
+                 func_name, more_or_less, num_expected,
+                 (num_expected == 1) ? "" : "s", num_found);
 }
 
 /* RaiseDoubleKeywords */
@@ -3847,32 +3531,6 @@ bad:
     return -1;
 }
 
-/* RaiseArgTupleInvalid */
-static void __Pyx_RaiseArgtupleInvalid(
-    const char* func_name,
-    int exact,
-    Py_ssize_t num_min,
-    Py_ssize_t num_max,
-    Py_ssize_t num_found)
-{
-    Py_ssize_t num_expected;
-    const char *more_or_less;
-    if (num_found < num_min) {
-        num_expected = num_min;
-        more_or_less = "at least";
-    } else {
-        num_expected = num_max;
-        more_or_less = "at most";
-    }
-    if (exact) {
-        more_or_less = "exactly";
-    }
-    PyErr_Format(PyExc_TypeError,
-                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                 func_name, more_or_less, num_expected,
-                 (num_expected == 1) ? "" : "s", num_found);
-}
-
 /* ArgTypeTest */
 static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact)
 {
@@ -3894,26 +3552,95 @@ static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *nam
     return 0;
 }
 
-/* PyCFunctionFastCall */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
-    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
-    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
-    PyObject *self = PyCFunction_GET_SELF(func);
-    int flags = PyCFunction_GET_FLAGS(func);
-    assert(PyCFunction_Check(func));
-    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
-    assert(nargs >= 0);
-    assert(nargs == 0 || args != NULL);
-    /* _PyCFunction_FastCallDict() must not be called with an exception set,
-       because it may clear it (directly or indirectly) and so the
-       caller loses its exception */
-    assert(!PyErr_Occurred());
-    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
-        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
-    } else {
-        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
+/* PyErrFetchRestore */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
     }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
+
+/* PyDictVersioning */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
+    PyObject **dictptr = NULL;
+    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
+    if (offset) {
+#if CYTHON_COMPILING_IN_CPYTHON
+        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
+#else
+        dictptr = _PyObject_GetDictPtr(obj);
+#endif
+    }
+    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+}
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+        return 0;
+    return obj_dict_version == __Pyx_get_object_dict_version(obj);
 }
 #endif
 
@@ -4056,35 +3783,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 }
 #endif
 
-/* PyObjectCall2Args */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args, *result = NULL;
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyFunction_FastCall(function, args, 2);
-    }
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyCFunction_FastCall(function, args, 2);
-    }
-    #endif
-    args = PyTuple_New(2);
-    if (unlikely(!args)) goto done;
-    Py_INCREF(arg1);
-    PyTuple_SET_ITEM(args, 0, arg1);
-    Py_INCREF(arg2);
-    PyTuple_SET_ITEM(args, 1, arg2);
-    Py_INCREF(function);
-    result = __Pyx_PyObject_Call(function, args, NULL);
-    Py_DECREF(args);
-    Py_DECREF(function);
-done:
-    return result;
-}
-
 /* PyObjectCallMethO */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
@@ -4102,6 +3800,51 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
             "NULL result without error in PyObject_Call");
     }
     return result;
+}
+#endif
+
+/* PyObjectCallNoArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, NULL, 0);
+    }
+#endif
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
+#else
+    if (likely(PyCFunction_Check(func)))
+#endif
+    {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
+}
+#endif
+
+/* PyCFunctionFastCall */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
+    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
+    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
+    PyObject *self = PyCFunction_GET_SELF(func);
+    int flags = PyCFunction_GET_FLAGS(func);
+    assert(PyCFunction_Check(func));
+    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
+    assert(nargs >= 0);
+    assert(nargs == 0 || args != NULL);
+    /* _PyCFunction_FastCallDict() must not be called with an exception set,
+       because it may clear it (directly or indirectly) and so the
+       caller loses its exception */
+    assert(!PyErr_Occurred());
+    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
+        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
+    } else {
+        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
+    }
 }
 #endif
 
@@ -4144,847 +3887,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     return result;
 }
 #endif
-
-/* FetchCommonType */
-static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type) {
-    PyObject* fake_module;
-    PyTypeObject* cached_type = NULL;
-    fake_module = PyImport_AddModule((char*) "_cython_" CYTHON_ABI);
-    if (!fake_module) return NULL;
-    Py_INCREF(fake_module);
-    cached_type = (PyTypeObject*) PyObject_GetAttrString(fake_module, type->tp_name);
-    if (cached_type) {
-        if (!PyType_Check((PyObject*)cached_type)) {
-            PyErr_Format(PyExc_TypeError,
-                "Shared Cython type %.200s is not a type object",
-                type->tp_name);
-            goto bad;
-        }
-        if (cached_type->tp_basicsize != type->tp_basicsize) {
-            PyErr_Format(PyExc_TypeError,
-                "Shared Cython type %.200s has the wrong size, try recompiling",
-                type->tp_name);
-            goto bad;
-        }
-    } else {
-        if (!PyErr_ExceptionMatches(PyExc_AttributeError)) goto bad;
-        PyErr_Clear();
-        if (PyType_Ready(type) < 0) goto bad;
-        if (PyObject_SetAttrString(fake_module, type->tp_name, (PyObject*) type) < 0)
-            goto bad;
-        Py_INCREF(type);
-        cached_type = type;
-    }
-done:
-    Py_DECREF(fake_module);
-    return cached_type;
-bad:
-    Py_XDECREF(cached_type);
-    cached_type = NULL;
-    goto done;
-}
-
-/* CythonFunction */
-#include <structmember.h>
-static PyObject *
-__Pyx_CyFunction_get_doc(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *closure)
-{
-    if (unlikely(op->func_doc == NULL)) {
-        if (op->func.m_ml->ml_doc) {
-#if PY_MAJOR_VERSION >= 3
-            op->func_doc = PyUnicode_FromString(op->func.m_ml->ml_doc);
-#else
-            op->func_doc = PyString_FromString(op->func.m_ml->ml_doc);
-#endif
-            if (unlikely(op->func_doc == NULL))
-                return NULL;
-        } else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
-    }
-    Py_INCREF(op->func_doc);
-    return op->func_doc;
-}
-static int
-__Pyx_CyFunction_set_doc(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp = op->func_doc;
-    if (value == NULL) {
-        value = Py_None;
-    }
-    Py_INCREF(value);
-    op->func_doc = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_name(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    if (unlikely(op->func_name == NULL)) {
-#if PY_MAJOR_VERSION >= 3
-        op->func_name = PyUnicode_InternFromString(op->func.m_ml->ml_name);
-#else
-        op->func_name = PyString_InternFromString(op->func.m_ml->ml_name);
-#endif
-        if (unlikely(op->func_name == NULL))
-            return NULL;
-    }
-    Py_INCREF(op->func_name);
-    return op->func_name;
-}
-static int
-__Pyx_CyFunction_set_name(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp;
-#if PY_MAJOR_VERSION >= 3
-    if (unlikely(value == NULL || !PyUnicode_Check(value)))
-#else
-    if (unlikely(value == NULL || !PyString_Check(value)))
-#endif
-    {
-        PyErr_SetString(PyExc_TypeError,
-                        "__name__ must be set to a string object");
-        return -1;
-    }
-    tmp = op->func_name;
-    Py_INCREF(value);
-    op->func_name = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_qualname(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    Py_INCREF(op->func_qualname);
-    return op->func_qualname;
-}
-static int
-__Pyx_CyFunction_set_qualname(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp;
-#if PY_MAJOR_VERSION >= 3
-    if (unlikely(value == NULL || !PyUnicode_Check(value)))
-#else
-    if (unlikely(value == NULL || !PyString_Check(value)))
-#endif
-    {
-        PyErr_SetString(PyExc_TypeError,
-                        "__qualname__ must be set to a string object");
-        return -1;
-    }
-    tmp = op->func_qualname;
-    Py_INCREF(value);
-    op->func_qualname = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_self(__pyx_CyFunctionObject *m, CYTHON_UNUSED void *closure)
-{
-    PyObject *self;
-    self = m->func_closure;
-    if (self == NULL)
-        self = Py_None;
-    Py_INCREF(self);
-    return self;
-}
-static PyObject *
-__Pyx_CyFunction_get_dict(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    if (unlikely(op->func_dict == NULL)) {
-        op->func_dict = PyDict_New();
-        if (unlikely(op->func_dict == NULL))
-            return NULL;
-    }
-    Py_INCREF(op->func_dict);
-    return op->func_dict;
-}
-static int
-__Pyx_CyFunction_set_dict(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp;
-    if (unlikely(value == NULL)) {
-        PyErr_SetString(PyExc_TypeError,
-               "function's dictionary may not be deleted");
-        return -1;
-    }
-    if (unlikely(!PyDict_Check(value))) {
-        PyErr_SetString(PyExc_TypeError,
-               "setting function's dictionary to a non-dict");
-        return -1;
-    }
-    tmp = op->func_dict;
-    Py_INCREF(value);
-    op->func_dict = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_globals(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    Py_INCREF(op->func_globals);
-    return op->func_globals;
-}
-static PyObject *
-__Pyx_CyFunction_get_closure(CYTHON_UNUSED __pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-static PyObject *
-__Pyx_CyFunction_get_code(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    PyObject* result = (op->func_code) ? op->func_code : Py_None;
-    Py_INCREF(result);
-    return result;
-}
-static int
-__Pyx_CyFunction_init_defaults(__pyx_CyFunctionObject *op) {
-    int result = 0;
-    PyObject *res = op->defaults_getter((PyObject *) op);
-    if (unlikely(!res))
-        return -1;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    op->defaults_tuple = PyTuple_GET_ITEM(res, 0);
-    Py_INCREF(op->defaults_tuple);
-    op->defaults_kwdict = PyTuple_GET_ITEM(res, 1);
-    Py_INCREF(op->defaults_kwdict);
-    #else
-    op->defaults_tuple = PySequence_ITEM(res, 0);
-    if (unlikely(!op->defaults_tuple)) result = -1;
-    else {
-        op->defaults_kwdict = PySequence_ITEM(res, 1);
-        if (unlikely(!op->defaults_kwdict)) result = -1;
-    }
-    #endif
-    Py_DECREF(res);
-    return result;
-}
-static int
-__Pyx_CyFunction_set_defaults(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
-    PyObject* tmp;
-    if (!value) {
-        value = Py_None;
-    } else if (value != Py_None && !PyTuple_Check(value)) {
-        PyErr_SetString(PyExc_TypeError,
-                        "__defaults__ must be set to a tuple object");
-        return -1;
-    }
-    Py_INCREF(value);
-    tmp = op->defaults_tuple;
-    op->defaults_tuple = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_defaults(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
-    PyObject* result = op->defaults_tuple;
-    if (unlikely(!result)) {
-        if (op->defaults_getter) {
-            if (__Pyx_CyFunction_init_defaults(op) < 0) return NULL;
-            result = op->defaults_tuple;
-        } else {
-            result = Py_None;
-        }
-    }
-    Py_INCREF(result);
-    return result;
-}
-static int
-__Pyx_CyFunction_set_kwdefaults(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
-    PyObject* tmp;
-    if (!value) {
-        value = Py_None;
-    } else if (value != Py_None && !PyDict_Check(value)) {
-        PyErr_SetString(PyExc_TypeError,
-                        "__kwdefaults__ must be set to a dict object");
-        return -1;
-    }
-    Py_INCREF(value);
-    tmp = op->defaults_kwdict;
-    op->defaults_kwdict = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_kwdefaults(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
-    PyObject* result = op->defaults_kwdict;
-    if (unlikely(!result)) {
-        if (op->defaults_getter) {
-            if (__Pyx_CyFunction_init_defaults(op) < 0) return NULL;
-            result = op->defaults_kwdict;
-        } else {
-            result = Py_None;
-        }
-    }
-    Py_INCREF(result);
-    return result;
-}
-static int
-__Pyx_CyFunction_set_annotations(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
-    PyObject* tmp;
-    if (!value || value == Py_None) {
-        value = NULL;
-    } else if (!PyDict_Check(value)) {
-        PyErr_SetString(PyExc_TypeError,
-                        "__annotations__ must be set to a dict object");
-        return -1;
-    }
-    Py_XINCREF(value);
-    tmp = op->func_annotations;
-    op->func_annotations = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_annotations(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
-    PyObject* result = op->func_annotations;
-    if (unlikely(!result)) {
-        result = PyDict_New();
-        if (unlikely(!result)) return NULL;
-        op->func_annotations = result;
-    }
-    Py_INCREF(result);
-    return result;
-}
-static PyGetSetDef __pyx_CyFunction_getsets[] = {
-    {(char *) "func_doc", (getter)__Pyx_CyFunction_get_doc, (setter)__Pyx_CyFunction_set_doc, 0, 0},
-    {(char *) "__doc__",  (getter)__Pyx_CyFunction_get_doc, (setter)__Pyx_CyFunction_set_doc, 0, 0},
-    {(char *) "func_name", (getter)__Pyx_CyFunction_get_name, (setter)__Pyx_CyFunction_set_name, 0, 0},
-    {(char *) "__name__", (getter)__Pyx_CyFunction_get_name, (setter)__Pyx_CyFunction_set_name, 0, 0},
-    {(char *) "__qualname__", (getter)__Pyx_CyFunction_get_qualname, (setter)__Pyx_CyFunction_set_qualname, 0, 0},
-    {(char *) "__self__", (getter)__Pyx_CyFunction_get_self, 0, 0, 0},
-    {(char *) "func_dict", (getter)__Pyx_CyFunction_get_dict, (setter)__Pyx_CyFunction_set_dict, 0, 0},
-    {(char *) "__dict__", (getter)__Pyx_CyFunction_get_dict, (setter)__Pyx_CyFunction_set_dict, 0, 0},
-    {(char *) "func_globals", (getter)__Pyx_CyFunction_get_globals, 0, 0, 0},
-    {(char *) "__globals__", (getter)__Pyx_CyFunction_get_globals, 0, 0, 0},
-    {(char *) "func_closure", (getter)__Pyx_CyFunction_get_closure, 0, 0, 0},
-    {(char *) "__closure__", (getter)__Pyx_CyFunction_get_closure, 0, 0, 0},
-    {(char *) "func_code", (getter)__Pyx_CyFunction_get_code, 0, 0, 0},
-    {(char *) "__code__", (getter)__Pyx_CyFunction_get_code, 0, 0, 0},
-    {(char *) "func_defaults", (getter)__Pyx_CyFunction_get_defaults, (setter)__Pyx_CyFunction_set_defaults, 0, 0},
-    {(char *) "__defaults__", (getter)__Pyx_CyFunction_get_defaults, (setter)__Pyx_CyFunction_set_defaults, 0, 0},
-    {(char *) "__kwdefaults__", (getter)__Pyx_CyFunction_get_kwdefaults, (setter)__Pyx_CyFunction_set_kwdefaults, 0, 0},
-    {(char *) "__annotations__", (getter)__Pyx_CyFunction_get_annotations, (setter)__Pyx_CyFunction_set_annotations, 0, 0},
-    {0, 0, 0, 0, 0}
-};
-static PyMemberDef __pyx_CyFunction_members[] = {
-    {(char *) "__module__", T_OBJECT, offsetof(PyCFunctionObject, m_module), PY_WRITE_RESTRICTED, 0},
-    {0, 0, 0,  0, 0}
-};
-static PyObject *
-__Pyx_CyFunction_reduce(__pyx_CyFunctionObject *m, CYTHON_UNUSED PyObject *args)
-{
-#if PY_MAJOR_VERSION >= 3
-    return PyUnicode_FromString(m->func.m_ml->ml_name);
-#else
-    return PyString_FromString(m->func.m_ml->ml_name);
-#endif
-}
-static PyMethodDef __pyx_CyFunction_methods[] = {
-    {"__reduce__", (PyCFunction)__Pyx_CyFunction_reduce, METH_VARARGS, 0},
-    {0, 0, 0, 0}
-};
-#if PY_VERSION_HEX < 0x030500A0
-#define __Pyx_CyFunction_weakreflist(cyfunc) ((cyfunc)->func_weakreflist)
-#else
-#define __Pyx_CyFunction_weakreflist(cyfunc) ((cyfunc)->func.m_weakreflist)
-#endif
-static PyObject *__Pyx_CyFunction_New(PyTypeObject *type, PyMethodDef *ml, int flags, PyObject* qualname,
-                                      PyObject *closure, PyObject *module, PyObject* globals, PyObject* code) {
-    __pyx_CyFunctionObject *op = PyObject_GC_New(__pyx_CyFunctionObject, type);
-    if (op == NULL)
-        return NULL;
-    op->flags = flags;
-    __Pyx_CyFunction_weakreflist(op) = NULL;
-    op->func.m_ml = ml;
-    op->func.m_self = (PyObject *) op;
-    Py_XINCREF(closure);
-    op->func_closure = closure;
-    Py_XINCREF(module);
-    op->func.m_module = module;
-    op->func_dict = NULL;
-    op->func_name = NULL;
-    Py_INCREF(qualname);
-    op->func_qualname = qualname;
-    op->func_doc = NULL;
-    op->func_classobj = NULL;
-    op->func_globals = globals;
-    Py_INCREF(op->func_globals);
-    Py_XINCREF(code);
-    op->func_code = code;
-    op->defaults_pyobjects = 0;
-    op->defaults = NULL;
-    op->defaults_tuple = NULL;
-    op->defaults_kwdict = NULL;
-    op->defaults_getter = NULL;
-    op->func_annotations = NULL;
-    PyObject_GC_Track(op);
-    return (PyObject *) op;
-}
-static int
-__Pyx_CyFunction_clear(__pyx_CyFunctionObject *m)
-{
-    Py_CLEAR(m->func_closure);
-    Py_CLEAR(m->func.m_module);
-    Py_CLEAR(m->func_dict);
-    Py_CLEAR(m->func_name);
-    Py_CLEAR(m->func_qualname);
-    Py_CLEAR(m->func_doc);
-    Py_CLEAR(m->func_globals);
-    Py_CLEAR(m->func_code);
-    Py_CLEAR(m->func_classobj);
-    Py_CLEAR(m->defaults_tuple);
-    Py_CLEAR(m->defaults_kwdict);
-    Py_CLEAR(m->func_annotations);
-    if (m->defaults) {
-        PyObject **pydefaults = __Pyx_CyFunction_Defaults(PyObject *, m);
-        int i;
-        for (i = 0; i < m->defaults_pyobjects; i++)
-            Py_XDECREF(pydefaults[i]);
-        PyObject_Free(m->defaults);
-        m->defaults = NULL;
-    }
-    return 0;
-}
-static void __Pyx__CyFunction_dealloc(__pyx_CyFunctionObject *m)
-{
-    if (__Pyx_CyFunction_weakreflist(m) != NULL)
-        PyObject_ClearWeakRefs((PyObject *) m);
-    __Pyx_CyFunction_clear(m);
-    PyObject_GC_Del(m);
-}
-static void __Pyx_CyFunction_dealloc(__pyx_CyFunctionObject *m)
-{
-    PyObject_GC_UnTrack(m);
-    __Pyx__CyFunction_dealloc(m);
-}
-static int __Pyx_CyFunction_traverse(__pyx_CyFunctionObject *m, visitproc visit, void *arg)
-{
-    Py_VISIT(m->func_closure);
-    Py_VISIT(m->func.m_module);
-    Py_VISIT(m->func_dict);
-    Py_VISIT(m->func_name);
-    Py_VISIT(m->func_qualname);
-    Py_VISIT(m->func_doc);
-    Py_VISIT(m->func_globals);
-    Py_VISIT(m->func_code);
-    Py_VISIT(m->func_classobj);
-    Py_VISIT(m->defaults_tuple);
-    Py_VISIT(m->defaults_kwdict);
-    if (m->defaults) {
-        PyObject **pydefaults = __Pyx_CyFunction_Defaults(PyObject *, m);
-        int i;
-        for (i = 0; i < m->defaults_pyobjects; i++)
-            Py_VISIT(pydefaults[i]);
-    }
-    return 0;
-}
-static PyObject *__Pyx_CyFunction_descr_get(PyObject *func, PyObject *obj, PyObject *type)
-{
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    if (m->flags & __Pyx_CYFUNCTION_STATICMETHOD) {
-        Py_INCREF(func);
-        return func;
-    }
-    if (m->flags & __Pyx_CYFUNCTION_CLASSMETHOD) {
-        if (type == NULL)
-            type = (PyObject *)(Py_TYPE(obj));
-        return __Pyx_PyMethod_New(func, type, (PyObject *)(Py_TYPE(type)));
-    }
-    if (obj == Py_None)
-        obj = NULL;
-    return __Pyx_PyMethod_New(func, obj, type);
-}
-static PyObject*
-__Pyx_CyFunction_repr(__pyx_CyFunctionObject *op)
-{
-#if PY_MAJOR_VERSION >= 3
-    return PyUnicode_FromFormat("<cyfunction %U at %p>",
-                                op->func_qualname, (void *)op);
-#else
-    return PyString_FromFormat("<cyfunction %s at %p>",
-                               PyString_AsString(op->func_qualname), (void *)op);
-#endif
-}
-static PyObject * __Pyx_CyFunction_CallMethod(PyObject *func, PyObject *self, PyObject *arg, PyObject *kw) {
-    PyCFunctionObject* f = (PyCFunctionObject*)func;
-    PyCFunction meth = f->m_ml->ml_meth;
-    Py_ssize_t size;
-    switch (f->m_ml->ml_flags & (METH_VARARGS | METH_KEYWORDS | METH_NOARGS | METH_O)) {
-    case METH_VARARGS:
-        if (likely(kw == NULL || PyDict_Size(kw) == 0))
-            return (*meth)(self, arg);
-        break;
-    case METH_VARARGS | METH_KEYWORDS:
-        return (*(PyCFunctionWithKeywords)(void*)meth)(self, arg, kw);
-    case METH_NOARGS:
-        if (likely(kw == NULL || PyDict_Size(kw) == 0)) {
-            size = PyTuple_GET_SIZE(arg);
-            if (likely(size == 0))
-                return (*meth)(self, NULL);
-            PyErr_Format(PyExc_TypeError,
-                "%.200s() takes no arguments (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                f->m_ml->ml_name, size);
-            return NULL;
-        }
-        break;
-    case METH_O:
-        if (likely(kw == NULL || PyDict_Size(kw) == 0)) {
-            size = PyTuple_GET_SIZE(arg);
-            if (likely(size == 1)) {
-                PyObject *result, *arg0;
-                #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                arg0 = PyTuple_GET_ITEM(arg, 0);
-                #else
-                arg0 = PySequence_ITEM(arg, 0); if (unlikely(!arg0)) return NULL;
-                #endif
-                result = (*meth)(self, arg0);
-                #if !(CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS)
-                Py_DECREF(arg0);
-                #endif
-                return result;
-            }
-            PyErr_Format(PyExc_TypeError,
-                "%.200s() takes exactly one argument (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                f->m_ml->ml_name, size);
-            return NULL;
-        }
-        break;
-    default:
-        PyErr_SetString(PyExc_SystemError, "Bad call flags in "
-                        "__Pyx_CyFunction_Call. METH_OLDARGS is no "
-                        "longer supported!");
-        return NULL;
-    }
-    PyErr_Format(PyExc_TypeError, "%.200s() takes no keyword arguments",
-                 f->m_ml->ml_name);
-    return NULL;
-}
-static CYTHON_INLINE PyObject *__Pyx_CyFunction_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    return __Pyx_CyFunction_CallMethod(func, ((PyCFunctionObject*)func)->m_self, arg, kw);
-}
-static PyObject *__Pyx_CyFunction_CallAsMethod(PyObject *func, PyObject *args, PyObject *kw) {
-    PyObject *result;
-    __pyx_CyFunctionObject *cyfunc = (__pyx_CyFunctionObject *) func;
-    if ((cyfunc->flags & __Pyx_CYFUNCTION_CCLASS) && !(cyfunc->flags & __Pyx_CYFUNCTION_STATICMETHOD)) {
-        Py_ssize_t argc;
-        PyObject *new_args;
-        PyObject *self;
-        argc = PyTuple_GET_SIZE(args);
-        new_args = PyTuple_GetSlice(args, 1, argc);
-        if (unlikely(!new_args))
-            return NULL;
-        self = PyTuple_GetItem(args, 0);
-        if (unlikely(!self)) {
-            Py_DECREF(new_args);
-            return NULL;
-        }
-        result = __Pyx_CyFunction_CallMethod(func, self, new_args, kw);
-        Py_DECREF(new_args);
-    } else {
-        result = __Pyx_CyFunction_Call(func, args, kw);
-    }
-    return result;
-}
-static PyTypeObject __pyx_CyFunctionType_type = {
-    PyVarObject_HEAD_INIT(0, 0)
-    "cython_function_or_method",
-    sizeof(__pyx_CyFunctionObject),
-    0,
-    (destructor) __Pyx_CyFunction_dealloc,
-    0,
-    0,
-    0,
-#if PY_MAJOR_VERSION < 3
-    0,
-#else
-    0,
-#endif
-    (reprfunc) __Pyx_CyFunction_repr,
-    0,
-    0,
-    0,
-    0,
-    __Pyx_CyFunction_CallAsMethod,
-    0,
-    0,
-    0,
-    0,
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-    0,
-    (traverseproc) __Pyx_CyFunction_traverse,
-    (inquiry) __Pyx_CyFunction_clear,
-    0,
-#if PY_VERSION_HEX < 0x030500A0
-    offsetof(__pyx_CyFunctionObject, func_weakreflist),
-#else
-    offsetof(PyCFunctionObject, m_weakreflist),
-#endif
-    0,
-    0,
-    __pyx_CyFunction_methods,
-    __pyx_CyFunction_members,
-    __pyx_CyFunction_getsets,
-    0,
-    0,
-    __Pyx_CyFunction_descr_get,
-    0,
-    offsetof(__pyx_CyFunctionObject, func_dict),
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-#if PY_VERSION_HEX >= 0x030400a1
-    0,
-#endif
-#if PY_VERSION_HEX >= 0x030800b1
-    0,
-#endif
-#if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
-    0,
-#endif
-};
-static int __pyx_CyFunction_init(void) {
-    __pyx_CyFunctionType = __Pyx_FetchCommonType(&__pyx_CyFunctionType_type);
-    if (unlikely(__pyx_CyFunctionType == NULL)) {
-        return -1;
-    }
-    return 0;
-}
-static CYTHON_INLINE void *__Pyx_CyFunction_InitDefaults(PyObject *func, size_t size, int pyobjects) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->defaults = PyObject_Malloc(size);
-    if (unlikely(!m->defaults))
-        return PyErr_NoMemory();
-    memset(m->defaults, 0, size);
-    m->defaults_pyobjects = pyobjects;
-    return m->defaults;
-}
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsTuple(PyObject *func, PyObject *tuple) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->defaults_tuple = tuple;
-    Py_INCREF(tuple);
-}
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsKwDict(PyObject *func, PyObject *dict) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->defaults_kwdict = dict;
-    Py_INCREF(dict);
-}
-static CYTHON_INLINE void __Pyx_CyFunction_SetAnnotationsDict(PyObject *func, PyObject *dict) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->func_annotations = dict;
-    Py_INCREF(dict);
-}
-
-/* PyDictVersioning */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
-    PyObject **dictptr = NULL;
-    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
-    if (offset) {
-#if CYTHON_COMPILING_IN_CPYTHON
-        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
-#else
-        dictptr = _PyObject_GetDictPtr(obj);
-#endif
-    }
-    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
-}
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
-        return 0;
-    return obj_dict_version == __Pyx_get_object_dict_version(obj);
-}
-#endif
-
-/* GetModuleGlobalName */
-#if CYTHON_USE_DICT_VERSIONS
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
-#else
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
-#endif
-{
-    PyObject *result;
-#if !CYTHON_AVOID_BORROWED_REFS
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
-    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    } else if (unlikely(PyErr_Occurred())) {
-        return NULL;
-    }
-#else
-    result = PyDict_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-#endif
-#else
-    result = PyObject_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-    PyErr_Clear();
-#endif
-    return __Pyx_GetBuiltinName(name);
-}
-
-/* DictGetItem */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
-    PyObject *value;
-    value = PyDict_GetItemWithError(d, key);
-    if (unlikely(!value)) {
-        if (!PyErr_Occurred()) {
-            if (unlikely(PyTuple_Check(key))) {
-                PyObject* args = PyTuple_Pack(1, key);
-                if (likely(args)) {
-                    PyErr_SetObject(PyExc_KeyError, args);
-                    Py_DECREF(args);
-                }
-            } else {
-                PyErr_SetObject(PyExc_KeyError, key);
-            }
-        }
-        return NULL;
-    }
-    Py_INCREF(value);
-    return value;
-}
-#endif
-
-/* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
-}
-#endif
-
-/* WriteUnraisableException */
-static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
-                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
-                                  int full_traceback, CYTHON_UNUSED int nogil) {
-    PyObject *old_exc, *old_val, *old_tb;
-    PyObject *ctx;
-    __Pyx_PyThreadState_declare
-#ifdef WITH_THREAD
-    PyGILState_STATE state;
-    if (nogil)
-        state = PyGILState_Ensure();
-#ifdef _MSC_VER
-    else state = (PyGILState_STATE)-1;
-#endif
-#endif
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
-    if (full_traceback) {
-        Py_XINCREF(old_exc);
-        Py_XINCREF(old_val);
-        Py_XINCREF(old_tb);
-        __Pyx_ErrRestore(old_exc, old_val, old_tb);
-        PyErr_PrintEx(1);
-    }
-    #if PY_MAJOR_VERSION < 3
-    ctx = PyString_FromString(name);
-    #else
-    ctx = PyUnicode_FromString(name);
-    #endif
-    __Pyx_ErrRestore(old_exc, old_val, old_tb);
-    if (!ctx) {
-        PyErr_WriteUnraisable(Py_None);
-    } else {
-        PyErr_WriteUnraisable(ctx);
-        Py_DECREF(ctx);
-    }
-#ifdef WITH_THREAD
-    if (nogil)
-        PyGILState_Release(state);
-#endif
-}
-
-/* PyObjectCallNoArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, NULL, 0);
-    }
-#endif
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
-#else
-    if (likely(PyCFunction_Check(func)))
-#endif
-    {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
-            return __Pyx_PyObject_CallMethO(func, NULL);
-        }
-    }
-    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
-}
-#endif
-
-/* decode_c_bytes */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
-         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    if (unlikely((start < 0) | (stop < 0))) {
-        if (start < 0) {
-            start += length;
-            if (start < 0)
-                start = 0;
-        }
-        if (stop < 0)
-            stop += length;
-    }
-    if (stop > length)
-        stop = length;
-    length = stop - start;
-    if (unlikely(length <= 0))
-        return PyUnicode_FromUnicode(NULL, 0);
-    cstring += start;
-    if (decode_func) {
-        return decode_func(cstring, length, errors);
-    } else {
-        return PyUnicode_Decode(cstring, length, encoding, errors);
-    }
-}
 
 /* RaiseException */
 #if PY_MAJOR_VERSION < 3
@@ -5289,83 +4191,85 @@ GOOD:
     return ret;
 }
 
-/* Import */
-static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
-    PyObject *empty_list = 0;
-    PyObject *module = 0;
-    PyObject *global_dict = 0;
-    PyObject *empty_dict = 0;
-    PyObject *list;
-    #if PY_MAJOR_VERSION < 3
-    PyObject *py_import;
-    py_import = __Pyx_PyObject_GetAttrStr(__pyx_b, __pyx_n_s_import);
-    if (!py_import)
+/* TypeImport */
+#ifndef __PYX_HAVE_RT_ImportType
+#define __PYX_HAVE_RT_ImportType
+static PyTypeObject *__Pyx_ImportType(PyObject *module, const char *module_name, const char *class_name,
+    size_t size, enum __Pyx_ImportType_CheckSize check_size)
+{
+    PyObject *result = 0;
+    char warning[200];
+    Py_ssize_t basicsize;
+#ifdef Py_LIMITED_API
+    PyObject *py_basicsize;
+#endif
+    result = PyObject_GetAttrString(module, class_name);
+    if (!result)
         goto bad;
-    #endif
-    if (from_list)
-        list = from_list;
-    else {
-        empty_list = PyList_New(0);
-        if (!empty_list)
-            goto bad;
-        list = empty_list;
+    if (!PyType_Check(result)) {
+        PyErr_Format(PyExc_TypeError,
+            "%.200s.%.200s is not a type object",
+            module_name, class_name);
+        goto bad;
     }
-    global_dict = PyModule_GetDict(__pyx_m);
-    if (!global_dict)
+#ifndef Py_LIMITED_API
+    basicsize = ((PyTypeObject *)result)->tp_basicsize;
+#else
+    py_basicsize = PyObject_GetAttrString(result, "__basicsize__");
+    if (!py_basicsize)
         goto bad;
-    empty_dict = PyDict_New();
-    if (!empty_dict)
+    basicsize = PyLong_AsSsize_t(py_basicsize);
+    Py_DECREF(py_basicsize);
+    py_basicsize = 0;
+    if (basicsize == (Py_ssize_t)-1 && PyErr_Occurred())
         goto bad;
-    {
-        #if PY_MAJOR_VERSION >= 3
-        if (level == -1) {
-            if (strchr(__Pyx_MODULE_NAME, '.')) {
-                module = PyImport_ImportModuleLevelObject(
-                    name, global_dict, empty_dict, list, 1);
-                if (!module) {
-                    if (!PyErr_ExceptionMatches(PyExc_ImportError))
-                        goto bad;
-                    PyErr_Clear();
-                }
-            }
-            level = 0;
-        }
-        #endif
-        if (!module) {
-            #if PY_MAJOR_VERSION < 3
-            PyObject *py_level = PyInt_FromLong(level);
-            if (!py_level)
-                goto bad;
-            module = PyObject_CallFunctionObjArgs(py_import,
-                name, global_dict, empty_dict, list, py_level, (PyObject *)NULL);
-            Py_DECREF(py_level);
-            #else
-            module = PyImport_ImportModuleLevelObject(
-                name, global_dict, empty_dict, list, level);
-            #endif
-        }
+#endif
+    if ((size_t)basicsize < size) {
+        PyErr_Format(PyExc_ValueError,
+            "%.200s.%.200s size changed, may indicate binary incompatibility. "
+            "Expected %zd from C header, got %zd from PyObject",
+            module_name, class_name, size, basicsize);
+        goto bad;
     }
+    if (check_size == __Pyx_ImportType_CheckSize_Error && (size_t)basicsize != size) {
+        PyErr_Format(PyExc_ValueError,
+            "%.200s.%.200s size changed, may indicate binary incompatibility. "
+            "Expected %zd from C header, got %zd from PyObject",
+            module_name, class_name, size, basicsize);
+        goto bad;
+    }
+    else if (check_size == __Pyx_ImportType_CheckSize_Warn && (size_t)basicsize > size) {
+        PyOS_snprintf(warning, sizeof(warning),
+            "%s.%s size changed, may indicate binary incompatibility. "
+            "Expected %zd from C header, got %zd from PyObject",
+            module_name, class_name, size, basicsize);
+        if (PyErr_WarnEx(NULL, warning, 0) < 0) goto bad;
+    }
+    return (PyTypeObject *)result;
 bad:
-    #if PY_MAJOR_VERSION < 3
-    Py_XDECREF(py_import);
-    #endif
-    Py_XDECREF(empty_list);
-    Py_XDECREF(empty_dict);
-    return module;
+    Py_XDECREF(result);
+    return NULL;
 }
+#endif
 
-/* ImportFrom */
-static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
-    PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
-    if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
-        PyErr_Format(PyExc_ImportError,
-        #if PY_MAJOR_VERSION < 3
-            "cannot import name %.230s", PyString_AS_STRING(name));
-        #else
-            "cannot import name %S", name);
-        #endif
-    }
-    return value;
+/* GetVTable */
+static void* __Pyx_GetVtable(PyObject *dict) {
+    void* ptr;
+    PyObject *ob = PyObject_GetItem(dict, __pyx_n_s_pyx_vtable);
+    if (!ob)
+        goto bad;
+#if PY_VERSION_HEX >= 0x02070000
+    ptr = PyCapsule_GetPointer(ob, 0);
+#else
+    ptr = PyCObject_AsVoidPtr(ob);
+#endif
+    if (!ptr && !PyErr_Occurred())
+        PyErr_SetString(PyExc_RuntimeError, "invalid vtable found for imported type");
+    Py_DECREF(ob);
+    return ptr;
+bad:
+    Py_XDECREF(ob);
+    return NULL;
 }
 
 /* CLineInTraceback */
@@ -5598,24 +4502,24 @@ bad:
     }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
+        if (sizeof(int) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
         }
     } else {
-        if (sizeof(long) <= sizeof(long)) {
+        if (sizeof(int) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
         }
@@ -5623,9 +4527,198 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
+        return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(int) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(int, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (int) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (int) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(int, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) >= 2 * PyLong_SHIFT) {
+                            return (int) (((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) >= 3 * PyLong_SHIFT) {
+                            return (int) (((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) >= 4 * PyLong_SHIFT) {
+                            return (int) (((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (int) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(int) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (int) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(int, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(int,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(int) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
+                            return (int) (((int)-1)*(((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
+                            return (int) ((((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
+                            return (int) (((int)-1)*(((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
+                            return (int) ((((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
+                            return (int) (((int)-1)*(((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
+                            return (int) ((((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(int) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            int val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (int) -1;
+        }
+    } else {
+        int val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (int) -1;
+        val = __Pyx_PyInt_As_int(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to int");
+    return (int) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to int");
+    return (int) -1;
 }
 
 /* CIntFromPy */
@@ -5817,6 +4910,37 @@ raise_neg_overflow:
     return (size_t) -1;
 }
 
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
 /* CIntFromPy */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
@@ -6004,195 +5128,6 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to long");
     return (long) -1;
-}
-
-/* CIntFromPy */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
-    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(int) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(int, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (int) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (int) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(int, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) >= 2 * PyLong_SHIFT) {
-                            return (int) (((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) >= 3 * PyLong_SHIFT) {
-                            return (int) (((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) >= 4 * PyLong_SHIFT) {
-                            return (int) (((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (int) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(int) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (int) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(int, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(int,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(int) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
-                            return (int) (((int)-1)*(((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
-                            return (int) ((((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
-                            return (int) (((int)-1)*(((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
-                            return (int) ((((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
-                            return (int) (((int)-1)*(((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
-                            return (int) ((((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(int) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            int val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (int) -1;
-        }
-    } else {
-        int val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (int) -1;
-        val = __Pyx_PyInt_As_int(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to int");
-    return (int) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to int");
-    return (int) -1;
 }
 
 /* FastTypeChecks */

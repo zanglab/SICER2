@@ -4,7 +4,7 @@
 {
     "distutils": {
         "depends": [
-            "sicer/shared/dataStructs.h"
+            "sicer/shared/data_objects.h"
         ],
         "extra_compile_args": [
             "-O3",
@@ -632,16 +632,13 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__sicer__shared__data_classes
 #define __PYX_HAVE_API__sicer__shared__data_classes
 /* Early includes */
+#include <string.h>
 #include "ios"
 #include "new"
 #include "stdexcept"
 #include "typeinfo"
-#include <vector>
-#include <utility>
-#include <map>
-#include <string.h>
 #include <string>
-#include "dataStructs.h"
+#include "data_objects.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -855,12 +852,12 @@ static const char *__pyx_f[] = {
 
 /*--- Type declarations ---*/
 
-/* "sicer/shared/data_classes.pxd":5
+/* "sicer/shared/data_classes.pxd":3
  * from libcpp.string cimport string
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
- * # Represents a single line of BED file
+ * cdef extern from "data_objects.h" nogil:
  */
 typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
 
@@ -1051,12 +1048,6 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-
-/* Module declarations from 'libcpp.vector' */
-
-/* Module declarations from 'libcpp.utility' */
-
-/* Module declarations from 'libcpp.map' */
 
 /* Module declarations from 'libc.string' */
 

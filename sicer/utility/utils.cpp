@@ -4,7 +4,7 @@
 {
     "distutils": {
         "depends": [
-            "sicer/removeAt.cpp"
+            "sicer/utility/removeAt.cpp"
         ],
         "extra_compile_args": [
             "-O3",
@@ -12,17 +12,17 @@
             "-stdlib=libc++"
         ],
         "include_dirs": [
-            "./sicer",
-            "sicer",
+            "./sicer/utility",
+            "sicer/utility",
             "."
         ],
         "language": "c++",
-        "name": "sicer.utils_cpp",
+        "name": "sicer.utility.utils",
         "sources": [
-            "sicer/utils_cpp.pyx"
+            "sicer/utility/utils.pyx"
         ]
     },
-    "module_name": "sicer.utils_cpp"
+    "module_name": "sicer.utility.utils"
 }
 END: Cython Metadata */
 
@@ -630,8 +630,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__sicer__utils_cpp
-#define __PYX_HAVE_API__sicer__utils_cpp
+#define __PYX_HAVE__sicer__utility__utils
+#define __PYX_HAVE_API__sicer__utility__utils
 /* Early includes */
 #include <string.h>
 #include "ios"
@@ -639,7 +639,9 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include <vector>
 #include "removeAt.cpp"
+#include <math.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -848,8 +850,20 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "sicer/utils_cpp.pyx",
+  "sicer/utility/utils.pyx",
 };
+/* ForceInitThreads.proto */
+#ifndef __PYX_FORCE_INIT_THREADS
+  #define __PYX_FORCE_INIT_THREADS 0
+#endif
+
+/* NoFastGil.proto */
+#define __Pyx_PyGILState_Ensure PyGILState_Ensure
+#define __Pyx_PyGILState_Release PyGILState_Release
+#define __Pyx_FastGIL_Remember()
+#define __Pyx_FastGIL_Forget()
+#define __Pyx_FastGilFuncInit()
+
 
 /*--- Type declarations ---*/
 
@@ -917,39 +931,6 @@ static const char *__pyx_f[] = {
 #define __Pyx_CLEAR(r)    do { PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
 #define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
 
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
-#endif
-
-/* PyObjectGetAttrStr.proto */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name);
-#else
-#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
-#endif
-
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -984,6 +965,44 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 #define __Pyx_ErrFetchInState(tstate, type, value, tb)  PyErr_Fetch(type, value, tb)
 #define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
 #define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
+#endif
+
+/* WriteUnraisableException.proto */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil);
+
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
+/* PyObjectGetAttrStr.proto */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name);
+#else
+#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
 #endif
 
 /* CLineInTraceback.proto */
@@ -1037,6 +1056,9 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
+/* FunctionExport.proto */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
+
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
@@ -1045,12 +1067,18 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.string' */
 
-/* Module declarations from 'sicer.utils_cpp' */
-#define __Pyx_MODULE_NAME "sicer.utils_cpp"
-extern int __pyx_module_is_main_sicer__utils_cpp;
-int __pyx_module_is_main_sicer__utils_cpp = 0;
+/* Module declarations from 'libcpp.vector' */
 
-/* Implementation of 'sicer.utils_cpp' */
+/* Module declarations from 'libc.math' */
+
+/* Module declarations from 'sicer.utility.utils' */
+static int __pyx_f_5sicer_7utility_5utils_fact(int); /*proto*/
+static double __pyx_f_5sicer_7utility_5utils_factln(int); /*proto*/
+#define __Pyx_MODULE_NAME "sicer.utility.utils"
+extern int __pyx_module_is_main_sicer__utility__utils;
+int __pyx_module_is_main_sicer__utility__utils = 0;
+
+/* Implementation of 'sicer.utility.utils' */
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
@@ -1061,6 +1089,247 @@ static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_test;
 /* Late includes */
 
+/* "sicer/utility/utils.pyx":4
+ * from libc.math cimport M_PI, log, exp, pow
+ * 
+ * cdef int fact(int n) nogil:             # <<<<<<<<<<<<<<
+ *     cdef int val = 1
+ *     if n != 0:
+ */
+
+static int __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
+  int __pyx_v_val;
+  int __pyx_r;
+  int __pyx_t_1;
+
+  /* "sicer/utility/utils.pyx":5
+ * 
+ * cdef int fact(int n) nogil:
+ *     cdef int val = 1             # <<<<<<<<<<<<<<
+ *     if n != 0:
+ *         while n != 1:
+ */
+  __pyx_v_val = 1;
+
+  /* "sicer/utility/utils.pyx":6
+ * cdef int fact(int n) nogil:
+ *     cdef int val = 1
+ *     if n != 0:             # <<<<<<<<<<<<<<
+ *         while n != 1:
+ *             val = val * n;
+ */
+  __pyx_t_1 = ((__pyx_v_n != 0) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/utility/utils.pyx":7
+ *     cdef int val = 1
+ *     if n != 0:
+ *         while n != 1:             # <<<<<<<<<<<<<<
+ *             val = val * n;
+ *             predec(n)
+ */
+    while (1) {
+      __pyx_t_1 = ((__pyx_v_n != 1) != 0);
+      if (!__pyx_t_1) break;
+
+      /* "sicer/utility/utils.pyx":8
+ *     if n != 0:
+ *         while n != 1:
+ *             val = val * n;             # <<<<<<<<<<<<<<
+ *             predec(n)
+ *     return val
+ */
+      __pyx_v_val = (__pyx_v_val * __pyx_v_n);
+
+      /* "sicer/utility/utils.pyx":9
+ *         while n != 1:
+ *             val = val * n;
+ *             predec(n)             # <<<<<<<<<<<<<<
+ *     return val
+ * 
+ */
+      (void)((--__pyx_v_n));
+    }
+
+    /* "sicer/utility/utils.pyx":6
+ * cdef int fact(int n) nogil:
+ *     cdef int val = 1
+ *     if n != 0:             # <<<<<<<<<<<<<<
+ *         while n != 1:
+ *             val = val * n;
+ */
+  }
+
+  /* "sicer/utility/utils.pyx":10
+ *             val = val * n;
+ *             predec(n)
+ *     return val             # <<<<<<<<<<<<<<
+ * 
+ * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
+ */
+  __pyx_r = __pyx_v_val;
+  goto __pyx_L0;
+
+  /* "sicer/utility/utils.pyx":4
+ * from libc.math cimport M_PI, log, exp, pow
+ * 
+ * cdef int fact(int n) nogil:             # <<<<<<<<<<<<<<
+ *     cdef int val = 1
+ *     if n != 0:
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sicer/utility/utils.pyx":13
+ * 
+ * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
+ * cdef double factln(int n) nogil:             # <<<<<<<<<<<<<<
+ *     if n < 20:
+ *         return log(fact(n))
+ */
+
+static double __pyx_f_5sicer_7utility_5utils_factln(int __pyx_v_n) {
+  double __pyx_r;
+  int __pyx_t_1;
+
+  /* "sicer/utility/utils.pyx":14
+ * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
+ * cdef double factln(int n) nogil:
+ *     if n < 20:             # <<<<<<<<<<<<<<
+ *         return log(fact(n))
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_n < 20) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/utility/utils.pyx":15
+ * cdef double factln(int n) nogil:
+ *     if n < 20:
+ *         return log(fact(n))             # <<<<<<<<<<<<<<
+ *     else:
+ *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2
+ */
+    __pyx_r = log(__pyx_f_5sicer_7utility_5utils_fact(__pyx_v_n));
+    goto __pyx_L0;
+
+    /* "sicer/utility/utils.pyx":14
+ * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
+ * cdef double factln(int n) nogil:
+ *     if n < 20:             # <<<<<<<<<<<<<<
+ *         return log(fact(n))
+ *     else:
+ */
+  }
+
+  /* "sicer/utility/utils.pyx":17
+ *         return log(fact(n))
+ *     else:
+ *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2             # <<<<<<<<<<<<<<
+ * 
+ * cdef double poisson(int n, double avg) nogil:
+ */
+  /*else*/ {
+    __pyx_r = ((((__pyx_v_n * log(__pyx_v_n)) - __pyx_v_n) + (log((__pyx_v_n * (1 + ((4 * __pyx_v_n) * (1 + (2 * __pyx_v_n)))))) / 6.0)) + (log(M_PI) / 2.0));
+    goto __pyx_L0;
+  }
+
+  /* "sicer/utility/utils.pyx":13
+ * 
+ * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
+ * cdef double factln(int n) nogil:             # <<<<<<<<<<<<<<
+ *     if n < 20:
+ *         return log(fact(n))
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sicer/utility/utils.pyx":19
+ *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2
+ * 
+ * cdef double poisson(int n, double avg) nogil:             # <<<<<<<<<<<<<<
+ *     if n < 20:
+ *         return exp(-avg) * pow(avg, n) / fact(n)
+ */
+
+static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx_v_avg) {
+  double __pyx_r;
+  int __pyx_t_1;
+  double __pyx_t_2;
+  int __pyx_t_3;
+
+  /* "sicer/utility/utils.pyx":20
+ * 
+ * cdef double poisson(int n, double avg) nogil:
+ *     if n < 20:             # <<<<<<<<<<<<<<
+ *         return exp(-avg) * pow(avg, n) / fact(n)
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_n < 20) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/utility/utils.pyx":21
+ * cdef double poisson(int n, double avg) nogil:
+ *     if n < 20:
+ *         return exp(-avg) * pow(avg, n) / fact(n)             # <<<<<<<<<<<<<<
+ *     else:
+ *         return exp(-avg + n * log(avg) - factln(n))
+ */
+    __pyx_t_2 = (exp((-__pyx_v_avg)) * pow(__pyx_v_avg, __pyx_v_n));
+    __pyx_t_3 = __pyx_f_5sicer_7utility_5utils_fact(__pyx_v_n);
+    if (unlikely(__pyx_t_3 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 21, __pyx_L1_error)
+    }
+    __pyx_r = (__pyx_t_2 / ((double)__pyx_t_3));
+    goto __pyx_L0;
+
+    /* "sicer/utility/utils.pyx":20
+ * 
+ * cdef double poisson(int n, double avg) nogil:
+ *     if n < 20:             # <<<<<<<<<<<<<<
+ *         return exp(-avg) * pow(avg, n) / fact(n)
+ *     else:
+ */
+  }
+
+  /* "sicer/utility/utils.pyx":23
+ *         return exp(-avg) * pow(avg, n) / fact(n)
+ *     else:
+ *         return exp(-avg + n * log(avg) - factln(n))             # <<<<<<<<<<<<<<
+ */
+  /*else*/ {
+    __pyx_r = exp((((-__pyx_v_avg) + (__pyx_v_n * log(__pyx_v_avg))) - __pyx_f_5sicer_7utility_5utils_factln(__pyx_v_n)));
+    goto __pyx_L0;
+  }
+
+  /* "sicer/utility/utils.pyx":19
+ *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2
+ * 
+ * cdef double poisson(int n, double avg) nogil:             # <<<<<<<<<<<<<<
+ *     if n < 20:
+ *         return exp(-avg) * pow(avg, n) / fact(n)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("sicer.utility.utils.poisson", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __pyx_r = 0;
+  __pyx_L0:;
+  return __pyx_r;
+}
+
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
 };
@@ -1068,17 +1337,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_utils_cpp(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_utils(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_utils_cpp},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_utils},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "utils_cpp",
+    "utils",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -1159,8 +1428,14 @@ static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("fact", (void (*)(void))__pyx_f_5sicer_7utility_5utils_fact, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("factln", (void (*)(void))__pyx_f_5sicer_7utility_5utils_factln, "double (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("poisson", (void (*)(void))__pyx_f_5sicer_7utility_5utils_poisson, "double (int, double)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_type_init_code(void) {
@@ -1212,11 +1487,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initutils_cpp(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initutils_cpp(void)
+__Pyx_PyMODINIT_FUNC initutils(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initutils(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_utils_cpp(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_utils_cpp(void)
+__Pyx_PyMODINIT_FUNC PyInit_utils(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_utils(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -1283,7 +1558,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_utils_cpp(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_utils(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -1292,7 +1567,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_utils_cpp(PyObject *__pyx_pyinit_m
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'utils_cpp' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'utils' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -1307,7 +1582,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_utils_cpp(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_utils(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -1346,7 +1621,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("utils_cpp", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("utils", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -1364,14 +1639,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_sicer__utils_cpp) {
+  if (__pyx_module_is_main_sicer__utility__utils) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "sicer.utils_cpp")) {
-      if (unlikely(PyDict_SetItemString(modules, "sicer.utils_cpp", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "sicer.utility.utils")) {
+      if (unlikely(PyDict_SetItemString(modules, "sicer.utility.utils", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -1382,7 +1657,7 @@ if (!__Pyx_RefNanny) {
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
   (void)__Pyx_modinit_variable_export_code();
-  (void)__Pyx_modinit_function_export_code();
+  if (unlikely(__Pyx_modinit_function_export_code() != 0)) goto __pyx_L1_error;
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
   (void)__Pyx_modinit_variable_import_code();
@@ -1392,8 +1667,10 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/utils_cpp.pyx":1
-             # <<<<<<<<<<<<<<
+  /* "sicer/utility/utils.pyx":1
+ * from cython.operator cimport predecrement as predec             # <<<<<<<<<<<<<<
+ * from libc.math cimport M_PI, log, exp, pow
+ * 
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -1407,11 +1684,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init sicer.utils_cpp", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init sicer.utility.utils", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init sicer.utils_cpp");
+    PyErr_SetString(PyExc_ImportError, "init sicer.utility.utils");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -1441,6 +1718,72 @@ end:
     return (__Pyx_RefNannyAPIStruct *)r;
 }
 #endif
+
+/* PyErrFetchRestore */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
 
 /* PyDictVersioning */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -1479,30 +1822,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
         return tp->tp_getattr(obj, PyString_AS_STRING(attr_name));
 #endif
     return PyObject_GetAttr(obj, attr_name);
-}
-#endif
-
-/* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
 }
 #endif
 
@@ -2258,6 +2577,43 @@ static int __Pyx_check_binary_version(void) {
         return PyErr_WarnEx(NULL, message, 1);
     }
     return 0;
+}
+
+/* FunctionExport */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(__pyx_m, (char *)"__pyx_capi__");
+    if (!d) {
+        PyErr_Clear();
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        Py_INCREF(d);
+        if (PyModule_AddObject(__pyx_m, (char *)"__pyx_capi__", d) < 0)
+            goto bad;
+    }
+    tmp.fp = f;
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(tmp.p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(tmp.p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItemString(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
 }
 
 /* InitStrings */

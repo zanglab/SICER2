@@ -1,0 +1,32 @@
+{
+    "chrom": [
+        "chr2h",
+        "chr2L",
+        "chr2R",
+        "chr3h",
+        "chr3L",
+        "chr3R",
+        "chr4",
+        "chr4h",
+        "chrM",
+        "chrU",
+        "chrX",
+        "chrXh",
+        "chrYh"
+    ],
+    "chrom_length": {
+        "chr2h": 1694122,
+        "chr2L": 22407834,
+        "chr2R": 20766785,
+        "chr3h": 2955737,
+        "chr3L": 23771897,
+        "chr3R": 27905053,
+        "chr4h": 88110,
+        "chr4": 1281640,
+        "chrXh": 359526,
+        "chrX": 22224390,
+        "chrYh": 396896,
+        "chrM": 19517,
+        "chrU": 8724946
+    }
+}

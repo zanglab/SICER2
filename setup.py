@@ -23,9 +23,21 @@ extensions = [
                 extra_compile_args=extra_cpp_args,
                 language='c++'
                 ),
-            Extension('sicer.shared.chrom_collections',
+            Extension('sicer.shared.chrom_containers',
                 include_dirs=['.'],
-                sources=['sicer/shared/chrom_collections' + EXT],
+                sources=['sicer/shared/chrom_containers' + EXT],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
+                ),
+            Extension('sicer.utility.utils',
+                sources=['sicer/utility/utils' + EXT],
+                include_dirs=['.'],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
+                ),
+            Extension('sicer.utility.file_writers',
+                sources=['sicer/utility/file_writers' + EXT],
+                include_dirs=['.'],
                 extra_compile_args=extra_cpp_args,
                 language='c++'
                 ),
@@ -35,8 +47,14 @@ extensions = [
                 extra_compile_args=extra_cpp_args,
                 language='c++'
                 ),
-            Extension('sicer.utils_cpp',
-                sources=['sicer/utils_cpp' + EXT],
+            Extension('sicer.generate_windows',
+                sources=['sicer/generate_windows' + EXT],
+                include_dirs=['.'],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
+                ),
+            Extension('sicer.find_islands',
+                sources=['sicer/find_islands' + EXT],
                 include_dirs=['.'],
                 extra_compile_args=extra_cpp_args,
                 language='c++'
@@ -52,7 +70,7 @@ if USE_CYTHON:
     from Cython.Build import cythonize
     extensions = cythonize(extensions, language_level="3")
 
-print(find_packages)
+data_ext = ['*.pyx', '*.pxd', '*.h', '*.c', '*.hpp', '*.cpp']
 
 setup(
     name='SICER2',
@@ -64,8 +82,9 @@ setup(
     author_email='zang@virginia.edu',
     license='MIT',
     packages=find_packages(),
-    package_data={'sicer': ['*.pyx', '*.pxd', '*.h', '*.cpp', '*.c'],
-                'sicer.shared': ['*.pyx', '*.pxd', '*.h', '*.cpp', '*.c']
+    package_data={'sicer': data_ext + ['genomedata/*.json'],
+                'sicer.shared': data_ext,
+                'sicer.utility': data_ext
                 },
     scripts=['bin/sicer','bin/sicer_df', 'bin/recognicer', 'bin/recognicer_df'],
     setup_requires=['numpy','scipy>=1.0.0'],
