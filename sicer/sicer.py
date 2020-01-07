@@ -56,7 +56,10 @@ def run_sicer(args, df_run=False):
     islands = find_islands(windows, genome_data, min_tag_threshold, score_threshold, 
                             args.gap_size, avg_tag_count, args.cpu)
 
+    genome_size = args.effective_genome_fraction * genome_length
+    scaling_factor = treatment_reads.getReadCount() / control_reads.getReadCount()
 
+    
 
 
     

@@ -48,11 +48,19 @@ typedef struct Island {
     int start;
     int end;
     double score;
+    // Below fields might be set optionally later
+    int obs_count;
+    int control_count;
+    double pvalue;
+    double fc;
+    double alpha_stat;
 public:
     Island():
-        chrom(""), start(0), end(0), score(0.0) {}
+        chrom(""), start(0), end(0), score(0.0),
+        obs_count(0), control_count(0), pvalue(0.0), fc(0.0), alpha_stat(0.0) {}
     Island(string chr, int start, int end, double score):
-        chrom(chr), start(start), end(end), score(score) {}
+        chrom(chr), start(start), end(end), score(score),
+        obs_count(0), control_count(0), pvalue(0.0), fc(0.0), alpha_stat(0.0) {}
     string toString()
     {
         return chrom + "\t" + to_string(start) + "\t" 
