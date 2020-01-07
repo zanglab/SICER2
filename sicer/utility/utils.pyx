@@ -1,20 +1,20 @@
 from cython.operator cimport predecrement as predec
-from libc.math cimport M_PI, log, exp, pow
+from libc.math cimport M_PI, log, exp, pow, round
 from libcpp.algorithm cimport upper_bound, lower_bound
 
 cdef int get_tag_pos(BEDRead read, int frag_size) nogil:
-    cdef int shift = frag_size / 2
+    cdef int shift = <int> round(frag_size / 2.0)
     if read.strand == b'+':
-        return read.start + frag_size / 2
+        return read.start + shift
     else:
-        return read.end - (frag_size / 2) - 1
+        return read.end - shift - 1
 
 cdef int bin_tag_in_island(
     vector[int] &island_starts,
     vector[int] &island_ends,
     int tag_pos
 ) nogil:
-    start_index
+    pass
     
 
 cdef int fact(int n) nogil:

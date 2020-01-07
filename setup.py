@@ -59,11 +59,11 @@ extensions = [
                 extra_compile_args=extra_cpp_args,
                 language='c++'
                 ),
-            Extension('sicer.coarsegraining',
-                sources=['sicer/coarsegraining' + EXT],
-                include_dirs=['.'],
-                extra_compile_args=extra_cpp_args
-                )
+            # Extension('sicer.coarsegraining',
+            #     sources=['sicer/coarsegraining' + EXT],
+            #     include_dirs=['.'],
+            #     extra_compile_args=extra_cpp_args
+            #     )
             ]
 
 if USE_CYTHON:

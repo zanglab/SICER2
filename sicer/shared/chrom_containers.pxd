@@ -9,15 +9,12 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 
 ctypedef char* cstr
-ctypedef vector[BEDRead]* bed_vec_ptr
-ctypedef vector[Window]* win_vec_ptr
-ctypedef vector[Island]* isl_vec_ptr
 
 cdef class ChromBEDReadContainer:
     cdef:
         str species
         list chromosomes
-        mapcpp[string, bed_vec_ptr] data
+        mapcpp[string, vector[BEDRead]] data
         int read_count
 
     cdef void insertRead(self, string chrom, BEDRead item)
@@ -25,19 +22,16 @@ cdef class ChromBEDReadContainer:
 
     cpdef int getReadCount(self)
     cpdef list getChromosomes(self)
-    cdef mapcpp[string, bed_vec_ptr] getData(self)
-    cdef bed_vec_ptr getChromVector(self, string chrom) nogil
+    cdef mapcpp[string, vector[BEDRead]] getData(self)
+    cdef vector[BEDRead]* getVectorPtr(self, string chrom) nogil
     cdef BEDRead getRead(self, string chrom, int index)
-
-    # For debugging
-    cpdef void printDataHead(self)
 
 
 cdef class ChromWindowContainer:
     cdef:
         str species
         list chromosomes
-        mapcpp[string, win_vec_ptr] data
+        mapcpp[string, vector[Window]] data
         int window_count
         int total_tag_count
 
@@ -47,20 +41,16 @@ cdef class ChromWindowContainer:
     cpdef int getWindowCount(self)
     cpdef list getChromosomes(self)
     cpdef int getTotalTagCount(self)
-    cdef mapcpp[string, win_vec_ptr] getData(self)
-    cdef win_vec_ptr getChromVector(self, string chrom) nogil
+    cdef mapcpp[string, vector[Window]] getData(self)
+    cdef vector[Window]* getVectorPtr(self, string chrom) nogil
     cdef Window getWindow(self, string chrom, int index)
-
-    # For debugging
-    cpdef void printDataHead(self)
-    cpdef void printChrCount(self)
 
 
 cdef class ChromIslandContainer:
     cdef:
         str species
         list chromosomes
-        mapcpp[string, isl_vec_ptr] data
+        mapcpp[string, vector[Island]] data
         int island_count
 
     cdef void insertIsland(self, string chrom, Island item)
@@ -68,11 +58,7 @@ cdef class ChromIslandContainer:
 
     cpdef int getIslandCount(self)
     cpdef list getChromosomes(self)
-    cdef mapcpp[string, isl_vec_ptr] getData(self)
-    cdef isl_vec_ptr getChromVector(self, string chrom) nogil
+    cdef mapcpp[string, vector[Island]] getData(self)
+    cdef vector[Island]* getVectorPtr(self, string chrom) nogil
     cdef Island getIsland(self, string chrom, int index)
-
-    # For debugging
-    cpdef void printDataHead(self)
-    cpdef void printChrCount(self)
 

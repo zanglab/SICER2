@@ -59,7 +59,7 @@ def run_sicer(args, df_run=False):
     genome_size = args.effective_genome_fraction * genome_length
     scaling_factor = treatment_reads.getReadCount() / control_reads.getReadCount()
 
-    
+
 
 
     

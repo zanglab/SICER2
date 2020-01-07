@@ -642,9 +642,9 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include "data_objects.h"
 #include <vector>
 #include "removeAt.cpp"
-#include "data_objects.h"
 #include <utility>
 #include <map>
 #include <math.h>
@@ -892,67 +892,13 @@ typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
  * from libcpp.string cimport string
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
- * ctypedef vector[BEDRead]* bed_vec_ptr
- * ctypedef vector[Window]* win_vec_ptr
- */
-typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
-
-/* "sicer/shared/chrom_containers.pxd":12
- * 
- * ctypedef char* cstr
- * ctypedef vector[BEDRead]* bed_vec_ptr             # <<<<<<<<<<<<<<
- * ctypedef vector[Window]* win_vec_ptr
- * ctypedef vector[Island]* isl_vec_ptr
- */
-typedef std::vector<BEDRead>  *__pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr;
-
-/* "sicer/shared/chrom_containers.pxd":13
- * ctypedef char* cstr
- * ctypedef vector[BEDRead]* bed_vec_ptr
- * ctypedef vector[Window]* win_vec_ptr             # <<<<<<<<<<<<<<
- * ctypedef vector[Island]* isl_vec_ptr
- * 
- */
-typedef std::vector<Window>  *__pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr;
-
-/* "sicer/shared/chrom_containers.pxd":14
- * ctypedef vector[BEDRead]* bed_vec_ptr
- * ctypedef vector[Window]* win_vec_ptr
- * ctypedef vector[Island]* isl_vec_ptr             # <<<<<<<<<<<<<<
  * 
  * cdef class ChromBEDReadContainer:
  */
-typedef std::vector<Island>  *__pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr;
+typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
 
-/* "sicer/find_islands.pyx":18
- * 
- * # Typedefs
- * ctypedef char* cstr             # <<<<<<<<<<<<<<
- * ctypedef vector[Window]* win_vec_ptr
- * ctypedef vector[Island]* isl_vec_ptr
- */
-typedef char *__pyx_t_5sicer_12find_islands_cstr;
-
-/* "sicer/find_islands.pyx":19
- * # Typedefs
+/* "sicer/shared/chrom_containers.pxd":13
  * ctypedef char* cstr
- * ctypedef vector[Window]* win_vec_ptr             # <<<<<<<<<<<<<<
- * ctypedef vector[Island]* isl_vec_ptr
- * 
- */
-typedef std::vector<Window>  *__pyx_t_5sicer_12find_islands_win_vec_ptr;
-
-/* "sicer/find_islands.pyx":20
- * ctypedef char* cstr
- * ctypedef vector[Window]* win_vec_ptr
- * ctypedef vector[Island]* isl_vec_ptr             # <<<<<<<<<<<<<<
- * 
- * cdef char PLUS = b'+'
- */
-typedef std::vector<Island>  *__pyx_t_5sicer_12find_islands_isl_vec_ptr;
-
-/* "sicer/shared/chrom_containers.pxd":16
- * ctypedef vector[Island]* isl_vec_ptr
  * 
  * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -963,12 +909,12 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
   struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
-  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr>  data;
+  std::map<std::string,std::vector<BEDRead> >  data;
   int read_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":36
+/* "sicer/shared/chrom_containers.pxd":30
  * 
  * 
  * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
@@ -980,13 +926,13 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer {
   struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
-  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr>  data;
+  std::map<std::string,std::vector<Window> >  data;
   int window_count;
   int total_tag_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":59
+/* "sicer/shared/chrom_containers.pxd":49
  * 
  * 
  * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
@@ -998,14 +944,14 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer {
   struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
-  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr>  data;
+  std::map<std::string,std::vector<Island> >  data;
   int island_count;
 };
 
 
 
-/* "sicer/shared/chrom_containers.pxd":16
- * ctypedef vector[Island]* isl_vec_ptr
+/* "sicer/shared/chrom_containers.pxd":13
+ * ctypedef char* cstr
  * 
  * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -1017,15 +963,14 @@ struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
   int (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
   PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *);
-  __pyx_t_5sicer_6shared_16chrom_containers_bed_vec_ptr (*getChromVector)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string);
+  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *);
+  std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string);
   BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, int);
-  void (*printDataHead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":36
+/* "sicer/shared/chrom_containers.pxd":30
  * 
  * 
  * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
@@ -1039,16 +984,14 @@ struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer {
   int (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
   PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
   int (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *);
-  __pyx_t_5sicer_6shared_16chrom_containers_win_vec_ptr (*getChromVector)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string);
+  std::map<std::string,std::vector<Window> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *);
+  std::vector<Window>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string);
   Window (*getWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, int);
-  void (*printDataHead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  void (*printChrCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":59
+/* "sicer/shared/chrom_containers.pxd":49
  * 
  * 
  * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
@@ -1061,11 +1004,9 @@ struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer {
   void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
   int (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
   PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,__pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr>  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *);
-  __pyx_t_5sicer_6shared_16chrom_containers_isl_vec_ptr (*getChromVector)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string);
+  std::map<std::string,std::vector<Island> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *);
+  std::vector<Island>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string);
   Island (*getIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, int);
-  void (*printDataHead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  void (*printChrCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer;
 
@@ -1397,12 +1338,12 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.string' */
 
+/* Module declarations from 'sicer.shared.data_classes' */
+
 /* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'sicer.utility.utils' */
 static double (*__pyx_f_5sicer_7utility_5utils_poisson)(int, double); /*proto*/
-
-/* Module declarations from 'sicer.shared.data_classes' */
 
 /* Module declarations from 'libcpp.utility' */
 
@@ -1420,12 +1361,11 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandCo
 /* Module declarations from 'libcpp.algorithm' */
 
 /* Module declarations from 'sicer.find_islands' */
-static char __pyx_v_5sicer_12find_islands_PLUS;
 static int __pyx_v_5sicer_12find_islands_WINDOW_SIZE_BUFFER;
-static void __pyx_f_5sicer_12find_islands__filter_by_threshold(__pyx_t_5sicer_12find_islands_isl_vec_ptr, double); /*proto*/
-static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_t_5sicer_12find_islands_isl_vec_ptr, int); /*proto*/
-static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12find_islands_win_vec_ptr, __pyx_t_5sicer_12find_islands_isl_vec_ptr, int, double); /*proto*/
-static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(__pyx_t_5sicer_12find_islands_win_vec_ptr, __pyx_t_5sicer_12find_islands_isl_vec_ptr, int, double, int, double); /*proto*/
+static void __pyx_f_5sicer_12find_islands__filter_by_threshold(std::vector<Island>  &, double); /*proto*/
+static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(std::vector<Island>  &, int); /*proto*/
+static void __pyx_f_5sicer_12find_islands__generate_islands(std::vector<Window>  &, std::vector<Island>  &, int, double); /*proto*/
+static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(std::vector<Window>  &, std::vector<Island>  &, int, double, int, double); /*proto*/
 static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_12find_islands__find_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, PyObject *, int, double, int, double, int); /*proto*/
 static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_12find_islands_find_islands(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
@@ -1473,15 +1413,15 @@ static PyObject *__pyx_pf_5sicer_12find_islands_find_islands(CYTHON_UNUSED PyObj
 static PyObject *__pyx_tuple_;
 /* Late includes */
 
-/* "sicer/find_islands.pyx":25
+/* "sicer/find_islands.pyx":19
  * cdef int WINDOW_SIZE_BUFFER = 2
  * 
- * cdef void _filter_by_threshold(isl_vec_ptr islands, double score_threshold) nogil:             # <<<<<<<<<<<<<<
+ * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:             # <<<<<<<<<<<<<<
  *     cdef vector[Island] filtered_islands
- *     if deref(islands).size() > 0:
+ *     if islands.size() > 0:
  */
 
-static void __pyx_f_5sicer_12find_islands__filter_by_threshold(__pyx_t_5sicer_12find_islands_isl_vec_ptr __pyx_v_islands, double __pyx_v_score_threshold) {
+static void __pyx_f_5sicer_12find_islands__filter_by_threshold(std::vector<Island>  &__pyx_v_islands, double __pyx_v_score_threshold) {
   std::vector<Island>  __pyx_v_filtered_islands;
   std::vector<Island> ::size_type __pyx_v_i;
   int __pyx_t_1;
@@ -1489,47 +1429,47 @@ static void __pyx_f_5sicer_12find_islands__filter_by_threshold(__pyx_t_5sicer_12
   std::vector<Island> ::size_type __pyx_t_3;
   std::vector<Island> ::size_type __pyx_t_4;
 
-  /* "sicer/find_islands.pyx":27
- * cdef void _filter_by_threshold(isl_vec_ptr islands, double score_threshold) nogil:
+  /* "sicer/find_islands.pyx":21
+ * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
  *     cdef vector[Island] filtered_islands
- *     if deref(islands).size() > 0:             # <<<<<<<<<<<<<<
- *         for i in range(0, deref(islands).size()):
- *             if deref(islands)[i].score >= (score_threshold - .0000000001):
+ *     if islands.size() > 0:             # <<<<<<<<<<<<<<
+ *         for i in range(0, islands.size()):
+ *             if islands[i].score >= (score_threshold - .0000000001):
  */
-  __pyx_t_1 = (((*__pyx_v_islands).size() > 0) != 0);
+  __pyx_t_1 = ((__pyx_v_islands.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/find_islands.pyx":28
+    /* "sicer/find_islands.pyx":22
  *     cdef vector[Island] filtered_islands
- *     if deref(islands).size() > 0:
- *         for i in range(0, deref(islands).size()):             # <<<<<<<<<<<<<<
- *             if deref(islands)[i].score >= (score_threshold - .0000000001):
- *                 filtered_islands.push_back(deref(islands)[i])
+ *     if islands.size() > 0:
+ *         for i in range(0, islands.size()):             # <<<<<<<<<<<<<<
+ *             if islands[i].score >= (score_threshold - .0000000001):
+ *                 filtered_islands.push_back(islands[i])
  */
-    __pyx_t_2 = (*__pyx_v_islands).size();
+    __pyx_t_2 = __pyx_v_islands.size();
     __pyx_t_3 = __pyx_t_2;
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_i = __pyx_t_4;
 
-      /* "sicer/find_islands.pyx":29
- *     if deref(islands).size() > 0:
- *         for i in range(0, deref(islands).size()):
- *             if deref(islands)[i].score >= (score_threshold - .0000000001):             # <<<<<<<<<<<<<<
- *                 filtered_islands.push_back(deref(islands)[i])
+      /* "sicer/find_islands.pyx":23
+ *     if islands.size() > 0:
+ *         for i in range(0, islands.size()):
+ *             if islands[i].score >= (score_threshold - .0000000001):             # <<<<<<<<<<<<<<
+ *                 filtered_islands.push_back(islands[i])
  * 
  */
-      __pyx_t_1 = ((((*__pyx_v_islands)[__pyx_v_i]).score >= (__pyx_v_score_threshold - .0000000001)) != 0);
+      __pyx_t_1 = (((__pyx_v_islands[__pyx_v_i]).score >= (__pyx_v_score_threshold - .0000000001)) != 0);
       if (__pyx_t_1) {
 
-        /* "sicer/find_islands.pyx":30
- *         for i in range(0, deref(islands).size()):
- *             if deref(islands)[i].score >= (score_threshold - .0000000001):
- *                 filtered_islands.push_back(deref(islands)[i])             # <<<<<<<<<<<<<<
+        /* "sicer/find_islands.pyx":24
+ *         for i in range(0, islands.size()):
+ *             if islands[i].score >= (score_threshold - .0000000001):
+ *                 filtered_islands.push_back(islands[i])             # <<<<<<<<<<<<<<
  * 
- *         deref(islands).swap(filtered_islands)
+ *         islands.swap(filtered_islands)
  */
         try {
-          __pyx_v_filtered_islands.push_back(((*__pyx_v_islands)[__pyx_v_i]));
+          __pyx_v_filtered_islands.push_back((__pyx_v_islands[__pyx_v_i]));
         } catch(...) {
           #ifdef WITH_THREAD
           PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1538,43 +1478,43 @@ static void __pyx_f_5sicer_12find_islands__filter_by_threshold(__pyx_t_5sicer_12
           #ifdef WITH_THREAD
           __Pyx_PyGILState_Release(__pyx_gilstate_save);
           #endif
-          __PYX_ERR(0, 30, __pyx_L1_error)
+          __PYX_ERR(0, 24, __pyx_L1_error)
         }
 
-        /* "sicer/find_islands.pyx":29
- *     if deref(islands).size() > 0:
- *         for i in range(0, deref(islands).size()):
- *             if deref(islands)[i].score >= (score_threshold - .0000000001):             # <<<<<<<<<<<<<<
- *                 filtered_islands.push_back(deref(islands)[i])
+        /* "sicer/find_islands.pyx":23
+ *     if islands.size() > 0:
+ *         for i in range(0, islands.size()):
+ *             if islands[i].score >= (score_threshold - .0000000001):             # <<<<<<<<<<<<<<
+ *                 filtered_islands.push_back(islands[i])
  * 
  */
       }
     }
 
-    /* "sicer/find_islands.pyx":32
- *                 filtered_islands.push_back(deref(islands)[i])
+    /* "sicer/find_islands.pyx":26
+ *                 filtered_islands.push_back(islands[i])
  * 
- *         deref(islands).swap(filtered_islands)             # <<<<<<<<<<<<<<
+ *         islands.swap(filtered_islands)             # <<<<<<<<<<<<<<
  * 
- * cdef void _combine_proximal_islands(isl_vec_ptr islands, int gap_size) nogil:
+ * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:
  */
-    (*__pyx_v_islands).swap(__pyx_v_filtered_islands);
+    __pyx_v_islands.swap(__pyx_v_filtered_islands);
 
-    /* "sicer/find_islands.pyx":27
- * cdef void _filter_by_threshold(isl_vec_ptr islands, double score_threshold) nogil:
+    /* "sicer/find_islands.pyx":21
+ * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
  *     cdef vector[Island] filtered_islands
- *     if deref(islands).size() > 0:             # <<<<<<<<<<<<<<
- *         for i in range(0, deref(islands).size()):
- *             if deref(islands)[i].score >= (score_threshold - .0000000001):
+ *     if islands.size() > 0:             # <<<<<<<<<<<<<<
+ *         for i in range(0, islands.size()):
+ *             if islands[i].score >= (score_threshold - .0000000001):
  */
   }
 
-  /* "sicer/find_islands.pyx":25
+  /* "sicer/find_islands.pyx":19
  * cdef int WINDOW_SIZE_BUFFER = 2
  * 
- * cdef void _filter_by_threshold(isl_vec_ptr islands, double score_threshold) nogil:             # <<<<<<<<<<<<<<
+ * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:             # <<<<<<<<<<<<<<
  *     cdef vector[Island] filtered_islands
- *     if deref(islands).size() > 0:
+ *     if islands.size() > 0:
  */
 
   /* function exit code */
@@ -1584,15 +1524,15 @@ static void __pyx_f_5sicer_12find_islands__filter_by_threshold(__pyx_t_5sicer_12
   __pyx_L0:;
 }
 
-/* "sicer/find_islands.pyx":34
- *         deref(islands).swap(filtered_islands)
+/* "sicer/find_islands.pyx":28
+ *         islands.swap(filtered_islands)
  * 
- * cdef void _combine_proximal_islands(isl_vec_ptr islands, int gap_size) nogil:             # <<<<<<<<<<<<<<
+ * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:             # <<<<<<<<<<<<<<
  *     cdef int proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
  *     # Create new vector of islands b/c we generally throw away majority of islands
  */
 
-static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_t_5sicer_12find_islands_isl_vec_ptr __pyx_v_islands, int __pyx_v_gap_size) {
+static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(std::vector<Island>  &__pyx_v_islands, int __pyx_v_gap_size) {
   int __pyx_v_proximal_island_dist;
   std::vector<Island>  __pyx_v_final_islands;
   std::string __pyx_v_chrom;
@@ -1609,159 +1549,159 @@ static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_t_5sic
   std::vector<Island> ::size_type __pyx_t_6;
   std::vector<Island> ::size_type __pyx_t_7;
 
-  /* "sicer/find_islands.pyx":35
+  /* "sicer/find_islands.pyx":29
  * 
- * cdef void _combine_proximal_islands(isl_vec_ptr islands, int gap_size) nogil:
+ * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:
  *     cdef int proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER             # <<<<<<<<<<<<<<
  *     # Create new vector of islands b/c we generally throw away majority of islands
  *     cdef vector[Island] final_islands
  */
   __pyx_v_proximal_island_dist = (__pyx_v_gap_size + __pyx_v_5sicer_12find_islands_WINDOW_SIZE_BUFFER);
 
-  /* "sicer/find_islands.pyx":43
+  /* "sicer/find_islands.pyx":37
  *     cdef double curr_score
  * 
- *     if deref(islands).size() > 0:             # <<<<<<<<<<<<<<
- *         if deref(islands).size() == 1:
+ *     if islands.size() > 0:             # <<<<<<<<<<<<<<
+ *         if islands.size() == 1:
  *             return
  */
-  __pyx_t_1 = (((*__pyx_v_islands).size() > 0) != 0);
+  __pyx_t_1 = ((__pyx_v_islands.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/find_islands.pyx":44
+    /* "sicer/find_islands.pyx":38
  * 
- *     if deref(islands).size() > 0:
- *         if deref(islands).size() == 1:             # <<<<<<<<<<<<<<
+ *     if islands.size() > 0:
+ *         if islands.size() == 1:             # <<<<<<<<<<<<<<
  *             return
  * 
  */
-    __pyx_t_1 = (((*__pyx_v_islands).size() == 1) != 0);
+    __pyx_t_1 = ((__pyx_v_islands.size() == 1) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/find_islands.pyx":45
- *     if deref(islands).size() > 0:
- *         if deref(islands).size() == 1:
+      /* "sicer/find_islands.pyx":39
+ *     if islands.size() > 0:
+ *         if islands.size() == 1:
  *             return             # <<<<<<<<<<<<<<
  * 
- *         chrom = deref(islands)[0].chrom
+ *         chrom = islands[0].chrom
  */
       goto __pyx_L0;
 
-      /* "sicer/find_islands.pyx":44
+      /* "sicer/find_islands.pyx":38
  * 
- *     if deref(islands).size() > 0:
- *         if deref(islands).size() == 1:             # <<<<<<<<<<<<<<
+ *     if islands.size() > 0:
+ *         if islands.size() == 1:             # <<<<<<<<<<<<<<
  *             return
  * 
  */
     }
 
-    /* "sicer/find_islands.pyx":47
+    /* "sicer/find_islands.pyx":41
  *             return
  * 
- *         chrom = deref(islands)[0].chrom             # <<<<<<<<<<<<<<
- *         curr_start = deref(islands)[0].start
- *         curr_end = deref(islands)[0].end
+ *         chrom = islands[0].chrom             # <<<<<<<<<<<<<<
+ *         curr_start = islands[0].start
+ *         curr_end = islands[0].end
  */
-    __pyx_t_2 = ((*__pyx_v_islands)[0]).chrom;
+    __pyx_t_2 = (__pyx_v_islands[0]).chrom;
     __pyx_v_chrom = __pyx_t_2;
 
-    /* "sicer/find_islands.pyx":48
+    /* "sicer/find_islands.pyx":42
  * 
- *         chrom = deref(islands)[0].chrom
- *         curr_start = deref(islands)[0].start             # <<<<<<<<<<<<<<
- *         curr_end = deref(islands)[0].end
- *         curr_score = deref(islands)[0].score
+ *         chrom = islands[0].chrom
+ *         curr_start = islands[0].start             # <<<<<<<<<<<<<<
+ *         curr_end = islands[0].end
+ *         curr_score = islands[0].score
  */
-    __pyx_t_3 = ((*__pyx_v_islands)[0]).start;
+    __pyx_t_3 = (__pyx_v_islands[0]).start;
     __pyx_v_curr_start = __pyx_t_3;
 
-    /* "sicer/find_islands.pyx":49
- *         chrom = deref(islands)[0].chrom
- *         curr_start = deref(islands)[0].start
- *         curr_end = deref(islands)[0].end             # <<<<<<<<<<<<<<
- *         curr_score = deref(islands)[0].score
- *         for i in range(1, deref(islands).size()):
+    /* "sicer/find_islands.pyx":43
+ *         chrom = islands[0].chrom
+ *         curr_start = islands[0].start
+ *         curr_end = islands[0].end             # <<<<<<<<<<<<<<
+ *         curr_score = islands[0].score
+ *         for i in range(1, islands.size()):
  */
-    __pyx_t_3 = ((*__pyx_v_islands)[0]).end;
+    __pyx_t_3 = (__pyx_v_islands[0]).end;
     __pyx_v_curr_end = __pyx_t_3;
 
-    /* "sicer/find_islands.pyx":50
- *         curr_start = deref(islands)[0].start
- *         curr_end = deref(islands)[0].end
- *         curr_score = deref(islands)[0].score             # <<<<<<<<<<<<<<
- *         for i in range(1, deref(islands).size()):
- *             dist = deref(islands)[i].start - curr_end
+    /* "sicer/find_islands.pyx":44
+ *         curr_start = islands[0].start
+ *         curr_end = islands[0].end
+ *         curr_score = islands[0].score             # <<<<<<<<<<<<<<
+ *         for i in range(1, islands.size()):
+ *             dist = islands[i].start - curr_end
  */
-    __pyx_t_4 = ((*__pyx_v_islands)[0]).score;
+    __pyx_t_4 = (__pyx_v_islands[0]).score;
     __pyx_v_curr_score = __pyx_t_4;
 
-    /* "sicer/find_islands.pyx":51
- *         curr_end = deref(islands)[0].end
- *         curr_score = deref(islands)[0].score
- *         for i in range(1, deref(islands).size()):             # <<<<<<<<<<<<<<
- *             dist = deref(islands)[i].start - curr_end
+    /* "sicer/find_islands.pyx":45
+ *         curr_end = islands[0].end
+ *         curr_score = islands[0].score
+ *         for i in range(1, islands.size()):             # <<<<<<<<<<<<<<
+ *             dist = islands[i].start - curr_end
  *             if dist <= proximal_island_dist:
  */
-    __pyx_t_5 = (*__pyx_v_islands).size();
+    __pyx_t_5 = __pyx_v_islands.size();
     __pyx_t_6 = __pyx_t_5;
     for (__pyx_t_7 = 1; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
       __pyx_v_i = __pyx_t_7;
 
-      /* "sicer/find_islands.pyx":52
- *         curr_score = deref(islands)[0].score
- *         for i in range(1, deref(islands).size()):
- *             dist = deref(islands)[i].start - curr_end             # <<<<<<<<<<<<<<
+      /* "sicer/find_islands.pyx":46
+ *         curr_score = islands[0].score
+ *         for i in range(1, islands.size()):
+ *             dist = islands[i].start - curr_end             # <<<<<<<<<<<<<<
  *             if dist <= proximal_island_dist:
- *                 curr_end = deref(islands)[i].end
+ *                 curr_end = islands[i].end
  */
-      __pyx_v_dist = (((*__pyx_v_islands)[__pyx_v_i]).start - __pyx_v_curr_end);
+      __pyx_v_dist = ((__pyx_v_islands[__pyx_v_i]).start - __pyx_v_curr_end);
 
-      /* "sicer/find_islands.pyx":53
- *         for i in range(1, deref(islands).size()):
- *             dist = deref(islands)[i].start - curr_end
+      /* "sicer/find_islands.pyx":47
+ *         for i in range(1, islands.size()):
+ *             dist = islands[i].start - curr_end
  *             if dist <= proximal_island_dist:             # <<<<<<<<<<<<<<
- *                 curr_end = deref(islands)[i].end
- *                 curr_score += deref(islands)[i].score
+ *                 curr_end = islands[i].end
+ *                 curr_score += islands[i].score
  */
       __pyx_t_1 = ((__pyx_v_dist <= __pyx_v_proximal_island_dist) != 0);
       if (__pyx_t_1) {
 
-        /* "sicer/find_islands.pyx":54
- *             dist = deref(islands)[i].start - curr_end
+        /* "sicer/find_islands.pyx":48
+ *             dist = islands[i].start - curr_end
  *             if dist <= proximal_island_dist:
- *                 curr_end = deref(islands)[i].end             # <<<<<<<<<<<<<<
- *                 curr_score += deref(islands)[i].score
+ *                 curr_end = islands[i].end             # <<<<<<<<<<<<<<
+ *                 curr_score += islands[i].score
  *             else:
  */
-        __pyx_t_3 = ((*__pyx_v_islands)[__pyx_v_i]).end;
+        __pyx_t_3 = (__pyx_v_islands[__pyx_v_i]).end;
         __pyx_v_curr_end = __pyx_t_3;
 
-        /* "sicer/find_islands.pyx":55
+        /* "sicer/find_islands.pyx":49
  *             if dist <= proximal_island_dist:
- *                 curr_end = deref(islands)[i].end
- *                 curr_score += deref(islands)[i].score             # <<<<<<<<<<<<<<
+ *                 curr_end = islands[i].end
+ *                 curr_score += islands[i].score             # <<<<<<<<<<<<<<
  *             else:
  *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
  */
-        __pyx_v_curr_score = (__pyx_v_curr_score + ((*__pyx_v_islands)[__pyx_v_i]).score);
+        __pyx_v_curr_score = (__pyx_v_curr_score + (__pyx_v_islands[__pyx_v_i]).score);
 
-        /* "sicer/find_islands.pyx":53
- *         for i in range(1, deref(islands).size()):
- *             dist = deref(islands)[i].start - curr_end
+        /* "sicer/find_islands.pyx":47
+ *         for i in range(1, islands.size()):
+ *             dist = islands[i].start - curr_end
  *             if dist <= proximal_island_dist:             # <<<<<<<<<<<<<<
- *                 curr_end = deref(islands)[i].end
- *                 curr_score += deref(islands)[i].score
+ *                 curr_end = islands[i].end
+ *                 curr_score += islands[i].score
  */
         goto __pyx_L7;
       }
 
-      /* "sicer/find_islands.pyx":57
- *                 curr_score += deref(islands)[i].score
+      /* "sicer/find_islands.pyx":51
+ *                 curr_score += islands[i].score
  *             else:
  *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))             # <<<<<<<<<<<<<<
- *                 curr_start = deref(islands)[i].start
- *                 curr_end = deref(islands)[i].end
+ *                 curr_start = islands[i].start
+ *                 curr_end = islands[i].end
  */
       /*else*/ {
         try {
@@ -1774,44 +1714,44 @@ static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_t_5sic
           #ifdef WITH_THREAD
           __Pyx_PyGILState_Release(__pyx_gilstate_save);
           #endif
-          __PYX_ERR(0, 57, __pyx_L1_error)
+          __PYX_ERR(0, 51, __pyx_L1_error)
         }
 
-        /* "sicer/find_islands.pyx":58
+        /* "sicer/find_islands.pyx":52
  *             else:
  *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
- *                 curr_start = deref(islands)[i].start             # <<<<<<<<<<<<<<
- *                 curr_end = deref(islands)[i].end
- *                 curr_score = deref(islands)[i].score
+ *                 curr_start = islands[i].start             # <<<<<<<<<<<<<<
+ *                 curr_end = islands[i].end
+ *                 curr_score = islands[i].score
  */
-        __pyx_t_3 = ((*__pyx_v_islands)[__pyx_v_i]).start;
+        __pyx_t_3 = (__pyx_v_islands[__pyx_v_i]).start;
         __pyx_v_curr_start = __pyx_t_3;
 
-        /* "sicer/find_islands.pyx":59
+        /* "sicer/find_islands.pyx":53
  *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
- *                 curr_start = deref(islands)[i].start
- *                 curr_end = deref(islands)[i].end             # <<<<<<<<<<<<<<
- *                 curr_score = deref(islands)[i].score
+ *                 curr_start = islands[i].start
+ *                 curr_end = islands[i].end             # <<<<<<<<<<<<<<
+ *                 curr_score = islands[i].score
  * 
  */
-        __pyx_t_3 = ((*__pyx_v_islands)[__pyx_v_i]).end;
+        __pyx_t_3 = (__pyx_v_islands[__pyx_v_i]).end;
         __pyx_v_curr_end = __pyx_t_3;
 
-        /* "sicer/find_islands.pyx":60
- *                 curr_start = deref(islands)[i].start
- *                 curr_end = deref(islands)[i].end
- *                 curr_score = deref(islands)[i].score             # <<<<<<<<<<<<<<
+        /* "sicer/find_islands.pyx":54
+ *                 curr_start = islands[i].start
+ *                 curr_end = islands[i].end
+ *                 curr_score = islands[i].score             # <<<<<<<<<<<<<<
  * 
  *         final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
  */
-        __pyx_t_4 = ((*__pyx_v_islands)[__pyx_v_i]).score;
+        __pyx_t_4 = (__pyx_v_islands[__pyx_v_i]).score;
         __pyx_v_curr_score = __pyx_t_4;
       }
       __pyx_L7:;
     }
 
-    /* "sicer/find_islands.pyx":62
- *                 curr_score = deref(islands)[i].score
+    /* "sicer/find_islands.pyx":56
+ *                 curr_score = islands[i].score
  * 
  *         final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))             # <<<<<<<<<<<<<<
  * 
@@ -1827,31 +1767,31 @@ static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_t_5sic
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 62, __pyx_L1_error)
+      __PYX_ERR(0, 56, __pyx_L1_error)
     }
 
-    /* "sicer/find_islands.pyx":65
+    /* "sicer/find_islands.pyx":59
  * 
  *         # Swap with our final islands
- *         deref(islands).swap(final_islands)             # <<<<<<<<<<<<<<
+ *         islands.swap(final_islands)             # <<<<<<<<<<<<<<
  * 
  * cdef void _generate_islands(
  */
-    (*__pyx_v_islands).swap(__pyx_v_final_islands);
+    __pyx_v_islands.swap(__pyx_v_final_islands);
 
-    /* "sicer/find_islands.pyx":43
+    /* "sicer/find_islands.pyx":37
  *     cdef double curr_score
  * 
- *     if deref(islands).size() > 0:             # <<<<<<<<<<<<<<
- *         if deref(islands).size() == 1:
+ *     if islands.size() > 0:             # <<<<<<<<<<<<<<
+ *         if islands.size() == 1:
  *             return
  */
   }
 
-  /* "sicer/find_islands.pyx":34
- *         deref(islands).swap(filtered_islands)
+  /* "sicer/find_islands.pyx":28
+ *         islands.swap(filtered_islands)
  * 
- * cdef void _combine_proximal_islands(isl_vec_ptr islands, int gap_size) nogil:             # <<<<<<<<<<<<<<
+ * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:             # <<<<<<<<<<<<<<
  *     cdef int proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
  *     # Create new vector of islands b/c we generally throw away majority of islands
  */
@@ -1863,16 +1803,15 @@ static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_t_5sic
   __pyx_L0:;
 }
 
-/* "sicer/find_islands.pyx":67
- *         deref(islands).swap(final_islands)
+/* "sicer/find_islands.pyx":61
+ *         islands.swap(final_islands)
  * 
  * cdef void _generate_islands(             # <<<<<<<<<<<<<<
- *     win_vec_ptr windows,
- *     isl_vec_ptr islands,
+ *     vector[Window]& windows,
+ *     vector[Island]& islands,
  */
 
-static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12find_islands_win_vec_ptr __pyx_v_windows, __pyx_t_5sicer_12find_islands_isl_vec_ptr __pyx_v_islands, int __pyx_v_min_tag_threshold, double __pyx_v_avg_tag_count) {
-  Window __pyx_v_window;
+static void __pyx_f_5sicer_12find_islands__generate_islands(std::vector<Window>  &__pyx_v_windows, std::vector<Island>  &__pyx_v_islands, int __pyx_v_min_tag_threshold, double __pyx_v_avg_tag_count) {
   double __pyx_v_score;
   std::vector<Window> ::size_type __pyx_v_i;
   double __pyx_v_prob;
@@ -1881,57 +1820,48 @@ static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12fin
   std::vector<Window> ::size_type __pyx_t_3;
   int __pyx_t_4;
 
-  /* "sicer/find_islands.pyx":75
- *     cdef Window window
+  /* "sicer/find_islands.pyx":68
+ * ) nogil:
  *     cdef double score
- *     for i in range(deref(windows).size()):             # <<<<<<<<<<<<<<
- *         window = deref(windows)[i]
+ *     for i in range(windows.size()):             # <<<<<<<<<<<<<<
  *         score = -1
+ *         if windows[i].count >= min_tag_threshold:
  */
-  __pyx_t_1 = (*__pyx_v_windows).size();
+  __pyx_t_1 = __pyx_v_windows.size();
   __pyx_t_2 = __pyx_t_1;
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "sicer/find_islands.pyx":76
+    /* "sicer/find_islands.pyx":69
  *     cdef double score
- *     for i in range(deref(windows).size()):
- *         window = deref(windows)[i]             # <<<<<<<<<<<<<<
- *         score = -1
- *         if window.count >= min_tag_threshold:
- */
-    __pyx_v_window = ((*__pyx_v_windows)[__pyx_v_i]);
-
-    /* "sicer/find_islands.pyx":77
- *     for i in range(deref(windows).size()):
- *         window = deref(windows)[i]
+ *     for i in range(windows.size()):
  *         score = -1             # <<<<<<<<<<<<<<
- *         if window.count >= min_tag_threshold:
- *             prob = poisson(window.count, avg_tag_count)
+ *         if windows[i].count >= min_tag_threshold:
+ *             prob = poisson(windows[i].count, avg_tag_count)
  */
     __pyx_v_score = -1.0;
 
-    /* "sicer/find_islands.pyx":78
- *         window = deref(windows)[i]
+    /* "sicer/find_islands.pyx":70
+ *     for i in range(windows.size()):
  *         score = -1
- *         if window.count >= min_tag_threshold:             # <<<<<<<<<<<<<<
- *             prob = poisson(window.count, avg_tag_count)
+ *         if windows[i].count >= min_tag_threshold:             # <<<<<<<<<<<<<<
+ *             prob = poisson(windows[i].count, avg_tag_count)
  * 
  */
-    __pyx_t_4 = ((__pyx_v_window.count >= __pyx_v_min_tag_threshold) != 0);
+    __pyx_t_4 = (((__pyx_v_windows[__pyx_v_i]).count >= __pyx_v_min_tag_threshold) != 0);
     if (__pyx_t_4) {
 
-      /* "sicer/find_islands.pyx":79
+      /* "sicer/find_islands.pyx":71
  *         score = -1
- *         if window.count >= min_tag_threshold:
- *             prob = poisson(window.count, avg_tag_count)             # <<<<<<<<<<<<<<
+ *         if windows[i].count >= min_tag_threshold:
+ *             prob = poisson(windows[i].count, avg_tag_count)             # <<<<<<<<<<<<<<
  * 
  *             if prob < 1e-250:
  */
-      __pyx_v_prob = __pyx_f_5sicer_7utility_5utils_poisson(__pyx_v_window.count, __pyx_v_avg_tag_count);
+      __pyx_v_prob = __pyx_f_5sicer_7utility_5utils_poisson((__pyx_v_windows[__pyx_v_i]).count, __pyx_v_avg_tag_count);
 
-      /* "sicer/find_islands.pyx":81
- *             prob = poisson(window.count, avg_tag_count)
+      /* "sicer/find_islands.pyx":73
+ *             prob = poisson(windows[i].count, avg_tag_count)
  * 
  *             if prob < 1e-250:             # <<<<<<<<<<<<<<
  *                 # Outside of the scale, so take an arbitrary value
@@ -1940,7 +1870,7 @@ static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12fin
       __pyx_t_4 = ((__pyx_v_prob < 1e-250) != 0);
       if (__pyx_t_4) {
 
-        /* "sicer/find_islands.pyx":83
+        /* "sicer/find_islands.pyx":75
  *             if prob < 1e-250:
  *                 # Outside of the scale, so take an arbitrary value
  *                 score = 1000             # <<<<<<<<<<<<<<
@@ -1949,8 +1879,8 @@ static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12fin
  */
         __pyx_v_score = 1000.0;
 
-        /* "sicer/find_islands.pyx":81
- *             prob = poisson(window.count, avg_tag_count)
+        /* "sicer/find_islands.pyx":73
+ *             prob = poisson(windows[i].count, avg_tag_count)
  * 
  *             if prob < 1e-250:             # <<<<<<<<<<<<<<
  *                 # Outside of the scale, so take an arbitrary value
@@ -1959,7 +1889,7 @@ static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12fin
         goto __pyx_L6;
       }
 
-      /* "sicer/find_islands.pyx":85
+      /* "sicer/find_islands.pyx":77
  *                 score = 1000
  *             else:
  *                 score = -log(prob)             # <<<<<<<<<<<<<<
@@ -1971,25 +1901,25 @@ static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12fin
       }
       __pyx_L6:;
 
-      /* "sicer/find_islands.pyx":86
+      /* "sicer/find_islands.pyx":78
  *             else:
  *                 score = -log(prob)
  *             if score > 0:             # <<<<<<<<<<<<<<
  *                 # Create Island
- *                 deref(islands).push_back(Island(window.chrom, window.start, window.end, score))
+ *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
  */
       __pyx_t_4 = ((__pyx_v_score > 0.0) != 0);
       if (__pyx_t_4) {
 
-        /* "sicer/find_islands.pyx":88
+        /* "sicer/find_islands.pyx":80
  *             if score > 0:
  *                 # Create Island
- *                 deref(islands).push_back(Island(window.chrom, window.start, window.end, score))             # <<<<<<<<<<<<<<
+ *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))             # <<<<<<<<<<<<<<
  * 
  * cdef void _find_islands_by_chrom(
  */
         try {
-          (*__pyx_v_islands).push_back(Island(__pyx_v_window.chrom, __pyx_v_window.start, __pyx_v_window.end, __pyx_v_score));
+          __pyx_v_islands.push_back(Island((__pyx_v_windows[__pyx_v_i]).chrom, (__pyx_v_windows[__pyx_v_i]).start, (__pyx_v_windows[__pyx_v_i]).end, __pyx_v_score));
         } catch(...) {
           #ifdef WITH_THREAD
           PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1998,34 +1928,34 @@ static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12fin
           #ifdef WITH_THREAD
           __Pyx_PyGILState_Release(__pyx_gilstate_save);
           #endif
-          __PYX_ERR(0, 88, __pyx_L1_error)
+          __PYX_ERR(0, 80, __pyx_L1_error)
         }
 
-        /* "sicer/find_islands.pyx":86
+        /* "sicer/find_islands.pyx":78
  *             else:
  *                 score = -log(prob)
  *             if score > 0:             # <<<<<<<<<<<<<<
  *                 # Create Island
- *                 deref(islands).push_back(Island(window.chrom, window.start, window.end, score))
+ *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
  */
       }
 
-      /* "sicer/find_islands.pyx":78
- *         window = deref(windows)[i]
+      /* "sicer/find_islands.pyx":70
+ *     for i in range(windows.size()):
  *         score = -1
- *         if window.count >= min_tag_threshold:             # <<<<<<<<<<<<<<
- *             prob = poisson(window.count, avg_tag_count)
+ *         if windows[i].count >= min_tag_threshold:             # <<<<<<<<<<<<<<
+ *             prob = poisson(windows[i].count, avg_tag_count)
  * 
  */
     }
   }
 
-  /* "sicer/find_islands.pyx":67
- *         deref(islands).swap(final_islands)
+  /* "sicer/find_islands.pyx":61
+ *         islands.swap(final_islands)
  * 
  * cdef void _generate_islands(             # <<<<<<<<<<<<<<
- *     win_vec_ptr windows,
- *     isl_vec_ptr islands,
+ *     vector[Window]& windows,
+ *     vector[Island]& islands,
  */
 
   /* function exit code */
@@ -2035,29 +1965,29 @@ static void __pyx_f_5sicer_12find_islands__generate_islands(__pyx_t_5sicer_12fin
   __pyx_L0:;
 }
 
-/* "sicer/find_islands.pyx":90
- *                 deref(islands).push_back(Island(window.chrom, window.start, window.end, score))
+/* "sicer/find_islands.pyx":82
+ *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
  * 
  * cdef void _find_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     win_vec_ptr windows,
- *     isl_vec_ptr islands,
+ *     vector[Window]& windows,
+ *     vector[Island]& islands,
  */
 
-static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(__pyx_t_5sicer_12find_islands_win_vec_ptr __pyx_v_windows, __pyx_t_5sicer_12find_islands_isl_vec_ptr __pyx_v_islands, int __pyx_v_min_tag_threshold, double __pyx_v_score_threshold, int __pyx_v_gap_size, double __pyx_v_avg_tag_count) {
+static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(std::vector<Window>  &__pyx_v_windows, std::vector<Island>  &__pyx_v_islands, int __pyx_v_min_tag_threshold, double __pyx_v_score_threshold, int __pyx_v_gap_size, double __pyx_v_avg_tag_count) {
   int __pyx_t_1;
 
-  /* "sicer/find_islands.pyx":99
+  /* "sicer/find_islands.pyx":91
  * ) nogil:
  * 
- *     if deref(windows).size() > 0:             # <<<<<<<<<<<<<<
+ *     if windows.size() > 0:             # <<<<<<<<<<<<<<
  *         # First create base islands from windows
  *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
  */
-  __pyx_t_1 = (((*__pyx_v_windows).size() > 0) != 0);
+  __pyx_t_1 = ((__pyx_v_windows.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/find_islands.pyx":101
- *     if deref(windows).size() > 0:
+    /* "sicer/find_islands.pyx":93
+ *     if windows.size() > 0:
  *         # First create base islands from windows
  *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)             # <<<<<<<<<<<<<<
  *         _combine_proximal_islands(islands, gap_size)
@@ -2065,7 +1995,7 @@ static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(__pyx_t_5sicer_
  */
     __pyx_f_5sicer_12find_islands__generate_islands(__pyx_v_windows, __pyx_v_islands, __pyx_v_min_tag_threshold, __pyx_v_avg_tag_count);
 
-    /* "sicer/find_islands.pyx":102
+    /* "sicer/find_islands.pyx":94
  *         # First create base islands from windows
  *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
  *         _combine_proximal_islands(islands, gap_size)             # <<<<<<<<<<<<<<
@@ -2074,7 +2004,7 @@ static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(__pyx_t_5sicer_
  */
     __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_v_islands, __pyx_v_gap_size);
 
-    /* "sicer/find_islands.pyx":103
+    /* "sicer/find_islands.pyx":95
  *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
  *         _combine_proximal_islands(islands, gap_size)
  *         _filter_by_threshold(islands, score_threshold)             # <<<<<<<<<<<<<<
@@ -2083,27 +2013,27 @@ static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(__pyx_t_5sicer_
  */
     __pyx_f_5sicer_12find_islands__filter_by_threshold(__pyx_v_islands, __pyx_v_score_threshold);
 
-    /* "sicer/find_islands.pyx":99
+    /* "sicer/find_islands.pyx":91
  * ) nogil:
  * 
- *     if deref(windows).size() > 0:             # <<<<<<<<<<<<<<
+ *     if windows.size() > 0:             # <<<<<<<<<<<<<<
  *         # First create base islands from windows
  *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
  */
   }
 
-  /* "sicer/find_islands.pyx":90
- *                 deref(islands).push_back(Island(window.chrom, window.start, window.end, score))
+  /* "sicer/find_islands.pyx":82
+ *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
  * 
  * cdef void _find_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     win_vec_ptr windows,
- *     isl_vec_ptr islands,
+ *     vector[Window]& windows,
+ *     vector[Island]& islands,
  */
 
   /* function exit code */
 }
 
-/* "sicer/find_islands.pyx":105
+/* "sicer/find_islands.pyx":97
  *         _filter_by_threshold(islands, score_threshold)
  * 
  * cdef ChromIslandContainer _find_islands(             # <<<<<<<<<<<<<<
@@ -2122,42 +2052,40 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   std::vector<std::string> ::size_type __pyx_t_3;
   std::vector<std::string> ::size_type __pyx_t_4;
   std::vector<std::string> ::size_type __pyx_t_5;
-  __Pyx_FakeReference<std::string> __pyx_t_6;
-  __Pyx_FakeReference<std::string> __pyx_t_7;
-  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("_find_islands", 0);
 
-  /* "sicer/find_islands.pyx":115
+  /* "sicer/find_islands.pyx":107
  * ):
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = windows.getChromosomes()             # <<<<<<<<<<<<<<
  * 
  *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getChromosomes(__pyx_v_windows, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getChromosomes(__pyx_v_windows, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/find_islands.pyx":117
+  /* "sicer/find_islands.pyx":109
  *     cdef vector[string] chroms = windows.getChromosomes()
  * 
  *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)             # <<<<<<<<<<<<<<
  * 
  *     cdef int i
  */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "sicer/find_islands.pyx":120
+  /* "sicer/find_islands.pyx":112
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
  *         _find_islands_by_chrom(
- *             windows.getChromVector(chroms.at(i)),
+ *             deref(windows.getVectorPtr(chroms[i])),
  */
   {
       #ifdef WITH_THREAD
@@ -2169,11 +2097,6 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
         __pyx_t_3 = __pyx_v_chroms.size();
         if (1 == 0) abort();
         {
-            int __pyx_parallel_temp0 = ((int)0xbad0bad0);
-            const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
-            PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
-            int __pyx_parallel_why;
-            __pyx_parallel_why = 0;
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
                 #undef likely
                 #undef unlikely
@@ -2184,142 +2107,27 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
             if (__pyx_t_5 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel num_threads(__pyx_v_num_cpu) private(__pyx_t_6, __pyx_t_7) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
+                #pragma omp parallel num_threads(__pyx_v_num_cpu)
                 #endif /* _OPENMP */
                 {
-                    #ifdef _OPENMP
-                    #ifdef WITH_THREAD
-                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                    #endif
-                    Py_BEGIN_ALLOW_THREADS
-                    #endif /* _OPENMP */
                     #ifdef _OPENMP
                     #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) schedule(guided)
                     #endif /* _OPENMP */
                     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4++){
-                        if (__pyx_parallel_why < 2)
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/find_islands.pyx":122
- *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
- *         _find_islands_by_chrom(
- *             windows.getChromVector(chroms.at(i)),             # <<<<<<<<<<<<<<
- *             islands.getChromVector(chroms.at(i)),
- *             min_tag_threshold,
- */
-                            try {
-                              __pyx_t_6 = __pyx_v_chroms.at(__pyx_v_i);
-                            } catch(...) {
-                              #ifdef WITH_THREAD
-                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                              #endif
-                              __Pyx_CppExn2PyErr();
-                              #ifdef WITH_THREAD
-                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                              #endif
-                              __PYX_ERR(0, 122, __pyx_L8_error)
-                            }
-
-                            /* "sicer/find_islands.pyx":123
- *         _find_islands_by_chrom(
- *             windows.getChromVector(chroms.at(i)),
- *             islands.getChromVector(chroms.at(i)),             # <<<<<<<<<<<<<<
- *             min_tag_threshold,
- *             score_threshold,
- */
-                            try {
-                              __pyx_t_7 = __pyx_v_chroms.at(__pyx_v_i);
-                            } catch(...) {
-                              #ifdef WITH_THREAD
-                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                              #endif
-                              __Pyx_CppExn2PyErr();
-                              #ifdef WITH_THREAD
-                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                              #endif
-                              __PYX_ERR(0, 123, __pyx_L8_error)
-                            }
-
-                            /* "sicer/find_islands.pyx":121
+                            /* "sicer/find_islands.pyx":113
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         _find_islands_by_chrom(             # <<<<<<<<<<<<<<
- *             windows.getChromVector(chroms.at(i)),
- *             islands.getChromVector(chroms.at(i)),
+ *             deref(windows.getVectorPtr(chroms[i])),
+ *             deref(islands.getVectorPtr(chroms[i])),
  */
-                            __pyx_f_5sicer_12find_islands__find_islands_by_chrom(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getChromVector(__pyx_v_windows, __pyx_t_6), ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromVector(__pyx_v_islands, __pyx_t_7), __pyx_v_min_tag_threshold, __pyx_v_score_threshold, __pyx_v_gap_size, __pyx_v_avg_tag_count);
-                            goto __pyx_L11;
-                            __pyx_L8_error:;
-                            {
-                                #ifdef WITH_THREAD
-                                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                                #endif
-                                #ifdef _OPENMP
-                                #pragma omp flush(__pyx_parallel_exc_type)
-                                #endif /* _OPENMP */
-                                if (!__pyx_parallel_exc_type) {
-                                  __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
-                                  __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
-                                  __Pyx_GOTREF(__pyx_parallel_exc_type);
-                                }
-                                #ifdef WITH_THREAD
-                                __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                                #endif
-                            }
-                            __pyx_parallel_why = 4;
-                            goto __pyx_L10;
-                            __pyx_L10:;
-                            #ifdef _OPENMP
-                            #pragma omp critical(__pyx_parallel_lastprivates0)
-                            #endif /* _OPENMP */
-                            {
-                                __pyx_parallel_temp0 = __pyx_v_i;
-                            }
-                            __pyx_L11:;
-                            #ifdef _OPENMP
-                            #pragma omp flush(__pyx_parallel_why)
-                            #endif /* _OPENMP */
+                            __pyx_f_5sicer_12find_islands__find_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getVectorPtr(__pyx_v_windows, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, (__pyx_v_chroms[__pyx_v_i]))), __pyx_v_min_tag_threshold, __pyx_v_score_threshold, __pyx_v_gap_size, __pyx_v_avg_tag_count);
                         }
                     }
-                    #ifdef _OPENMP
-                    Py_END_ALLOW_THREADS
-                    #else
-{
-#ifdef WITH_THREAD
-                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                    #endif
-                    #endif /* _OPENMP */
-                    /* Clean up any temporaries */
-                    #ifdef WITH_THREAD
-                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                    #endif
-                    #ifndef _OPENMP
-}
-#endif /* _OPENMP */
                 }
-            }
-            if (__pyx_parallel_exc_type) {
-              /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
-              __pyx_parallel_why = 4;
-            }
-            if (__pyx_parallel_why) {
-              __pyx_v_i = __pyx_parallel_temp0;
-              switch (__pyx_parallel_why) {
-                    case 4:
-                {
-                    #ifdef WITH_THREAD
-                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                    #endif
-                    __Pyx_GIVEREF(__pyx_parallel_exc_type);
-                    __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
-                    __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
-                    #ifdef WITH_THREAD
-                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                    #endif
-                }
-                goto __pyx_L4_error;
-              }
             }
         }
         #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -2330,12 +2138,12 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
         #endif
       }
 
-      /* "sicer/find_islands.pyx":120
+      /* "sicer/find_islands.pyx":112
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
  *         _find_islands_by_chrom(
- *             windows.getChromVector(chroms.at(i)),
+ *             deref(windows.getVectorPtr(chroms[i])),
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -2345,18 +2153,11 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
           #endif
           goto __pyx_L5;
         }
-        __pyx_L4_error: {
-          #ifdef WITH_THREAD
-          __Pyx_FastGIL_Forget();
-          Py_BLOCK_THREADS
-          #endif
-          goto __pyx_L1_error;
-        }
         __pyx_L5:;
       }
   }
 
-  /* "sicer/find_islands.pyx":130
+  /* "sicer/find_islands.pyx":122
  *         )
  * 
  *     islands.updateIslandCount()             # <<<<<<<<<<<<<<
@@ -2365,29 +2166,29 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
   ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->updateIslandCount(__pyx_v_islands, 0);
 
-  /* "sicer/find_islands.pyx":131
+  /* "sicer/find_islands.pyx":123
  * 
  *     islands.updateIslandCount()
  *     print("Island count: ", islands.getIslandCount())             # <<<<<<<<<<<<<<
  * 
  *     return islands
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getIslandCount(__pyx_v_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getIslandCount(__pyx_v_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 131, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_kp_u_Island_count);
   __Pyx_GIVEREF(__pyx_kp_u_Island_count);
-  PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_kp_u_Island_count);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_kp_u_Island_count);
   __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/find_islands.pyx":133
+  /* "sicer/find_islands.pyx":125
  *     print("Island count: ", islands.getIslandCount())
  * 
  *     return islands             # <<<<<<<<<<<<<<
@@ -2399,7 +2200,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   __pyx_r = __pyx_v_islands;
   goto __pyx_L0;
 
-  /* "sicer/find_islands.pyx":105
+  /* "sicer/find_islands.pyx":97
  *         _filter_by_threshold(islands, score_threshold)
  * 
  * cdef ChromIslandContainer _find_islands(             # <<<<<<<<<<<<<<
@@ -2410,7 +2211,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_6);
   __Pyx_AddTraceback("sicer.find_islands._find_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -2420,7 +2221,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   return __pyx_r;
 }
 
-/* "sicer/find_islands.pyx":135
+/* "sicer/find_islands.pyx":127
  *     return islands
  * 
  * cpdef ChromIslandContainer find_islands(             # <<<<<<<<<<<<<<
@@ -2440,18 +2241,18 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("find_islands", 0);
 
-  /* "sicer/find_islands.pyx":144
+  /* "sicer/find_islands.pyx":136
  *     num_cpu
  * ):
  *     print("Finding candidate islands exhibiting clustering...")             # <<<<<<<<<<<<<<
  *     return _find_islands(
  *         windows,
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/find_islands.pyx":145
+  /* "sicer/find_islands.pyx":137
  * ):
  *     print("Finding candidate islands exhibiting clustering...")
  *     return _find_islands(             # <<<<<<<<<<<<<<
@@ -2460,74 +2261,74 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
 
-  /* "sicer/find_islands.pyx":146
+  /* "sicer/find_islands.pyx":138
  *     print("Finding candidate islands exhibiting clustering...")
  *     return _find_islands(
  *         windows,             # <<<<<<<<<<<<<<
  *         genome_data,
  *         min_tag_threshold,
  */
-  if (!(likely(((__pyx_v_windows) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_windows, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer))))) __PYX_ERR(0, 146, __pyx_L1_error)
+  if (!(likely(((__pyx_v_windows) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_windows, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer))))) __PYX_ERR(0, 138, __pyx_L1_error)
 
-  /* "sicer/find_islands.pyx":148
+  /* "sicer/find_islands.pyx":140
  *         windows,
  *         genome_data,
  *         min_tag_threshold,             # <<<<<<<<<<<<<<
  *         score_threshold,
  *         gap_size,
  */
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_min_tag_threshold); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_min_tag_threshold); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
 
-  /* "sicer/find_islands.pyx":149
+  /* "sicer/find_islands.pyx":141
  *         genome_data,
  *         min_tag_threshold,
  *         score_threshold,             # <<<<<<<<<<<<<<
  *         gap_size,
  *         avg_tag_count,
  */
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_score_threshold); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_score_threshold); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 141, __pyx_L1_error)
 
-  /* "sicer/find_islands.pyx":150
+  /* "sicer/find_islands.pyx":142
  *         min_tag_threshold,
  *         score_threshold,
  *         gap_size,             # <<<<<<<<<<<<<<
  *         avg_tag_count,
  *         num_cpu
  */
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_gap_size); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_gap_size); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L1_error)
 
-  /* "sicer/find_islands.pyx":151
+  /* "sicer/find_islands.pyx":143
  *         score_threshold,
  *         gap_size,
  *         avg_tag_count,             # <<<<<<<<<<<<<<
  *         num_cpu
  *     )
  */
-  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_avg_tag_count); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_avg_tag_count); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 143, __pyx_L1_error)
 
-  /* "sicer/find_islands.pyx":152
+  /* "sicer/find_islands.pyx":144
  *         gap_size,
  *         avg_tag_count,
  *         num_cpu             # <<<<<<<<<<<<<<
  *     )
  * 
  */
-  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
 
-  /* "sicer/find_islands.pyx":145
+  /* "sicer/find_islands.pyx":137
  * ):
  *     print("Finding candidate islands exhibiting clustering...")
  *     return _find_islands(             # <<<<<<<<<<<<<<
  *         windows,
  *         genome_data,
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_12find_islands__find_islands(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows), __pyx_v_genome_data, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_12find_islands__find_islands(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows), __pyx_v_genome_data, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/find_islands.pyx":135
+  /* "sicer/find_islands.pyx":127
  *     return islands
  * 
  * cpdef ChromIslandContainer find_islands(             # <<<<<<<<<<<<<<
@@ -2592,41 +2393,41 @@ static PyObject *__pyx_pw_5sicer_12find_islands_1find_islands(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 1); __PYX_ERR(0, 135, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 1); __PYX_ERR(0, 127, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_min_tag_threshold)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 2); __PYX_ERR(0, 135, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 2); __PYX_ERR(0, 127, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_score_threshold)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 3); __PYX_ERR(0, 135, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 3); __PYX_ERR(0, 127, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_gap_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 4); __PYX_ERR(0, 135, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 4); __PYX_ERR(0, 127, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_avg_tag_count)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 5); __PYX_ERR(0, 135, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 5); __PYX_ERR(0, 127, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 6); __PYX_ERR(0, 135, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 6); __PYX_ERR(0, 127, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_islands") < 0)) __PYX_ERR(0, 135, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_islands") < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 7) {
       goto __pyx_L5_argtuple_error;
@@ -2649,7 +2450,7 @@ static PyObject *__pyx_pw_5sicer_12find_islands_1find_islands(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 135, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 127, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.find_islands.find_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2668,7 +2469,7 @@ static PyObject *__pyx_pf_5sicer_12find_islands_find_islands(CYTHON_UNUSED PyObj
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("find_islands", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_12find_islands_find_islands(__pyx_v_windows, __pyx_v_genome_data, __pyx_v_min_tag_threshold, __pyx_v_score_threshold, __pyx_v_gap_size, __pyx_v_avg_tag_count, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_12find_islands_find_islands(__pyx_v_windows, __pyx_v_genome_data, __pyx_v_min_tag_threshold, __pyx_v_score_threshold, __pyx_v_gap_size, __pyx_v_avg_tag_count, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2932,8 +2733,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 28, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 123, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2943,14 +2744,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/find_islands.pyx":144
+  /* "sicer/find_islands.pyx":136
  *     num_cpu
  * ):
  *     print("Finding candidate islands exhibiting clustering...")             # <<<<<<<<<<<<<<
  *     return _find_islands(
  *         windows,
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_candidate_islands_exhibi); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_candidate_islands_exhibi); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -3019,17 +2820,17 @@ static int __Pyx_modinit_type_import_code(void) {
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 16, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromBEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer) __PYX_ERR(2, 16, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer)) __PYX_ERR(2, 16, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer) __PYX_ERR(2, 13, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer)) __PYX_ERR(2, 13, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromWindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer) __PYX_ERR(2, 36, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer)) __PYX_ERR(2, 36, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer) __PYX_ERR(2, 30, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer)) __PYX_ERR(2, 30, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer) __PYX_ERR(2, 59, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer)) __PYX_ERR(2, 59, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer) __PYX_ERR(2, 49, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer)) __PYX_ERR(2, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -3260,21 +3061,12 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/find_islands.pyx":22
- * ctypedef vector[Island]* isl_vec_ptr
+  /* "sicer/find_islands.pyx":17
+ * from libcpp.algorithm cimport sort
  * 
- * cdef char PLUS = b'+'             # <<<<<<<<<<<<<<
- * cdef int WINDOW_SIZE_BUFFER = 2
- * 
- */
-  __pyx_v_5sicer_12find_islands_PLUS = '+';
-
-  /* "sicer/find_islands.pyx":23
- * 
- * cdef char PLUS = b'+'
  * cdef int WINDOW_SIZE_BUFFER = 2             # <<<<<<<<<<<<<<
  * 
- * cdef void _filter_by_threshold(isl_vec_ptr islands, double score_threshold) nogil:
+ * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
  */
   __pyx_v_5sicer_12find_islands_WINDOW_SIZE_BUFFER = 2;
 

@@ -14,24 +14,18 @@ from libcpp.string cimport string
 from cython.parallel import parallel, prange
 from libcpp.algorithm cimport sort
 
-# Typedefs
-ctypedef char* cstr
-ctypedef vector[Window]* win_vec_ptr
-ctypedef vector[Island]* isl_vec_ptr
-
-cdef char PLUS = b'+'
 cdef int WINDOW_SIZE_BUFFER = 2
 
-cdef void _filter_by_threshold(isl_vec_ptr islands, double score_threshold) nogil:
+cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
     cdef vector[Island] filtered_islands
-    if deref(islands).size() > 0:
-        for i in range(0, deref(islands).size()):
-            if deref(islands)[i].score >= (score_threshold - .0000000001):
-                filtered_islands.push_back(deref(islands)[i])
+    if islands.size() > 0:
+        for i in range(0, islands.size()):
+            if islands[i].score >= (score_threshold - .0000000001):
+                filtered_islands.push_back(islands[i])
 
-        deref(islands).swap(filtered_islands)
+        islands.swap(filtered_islands)
 
-cdef void _combine_proximal_islands(isl_vec_ptr islands, int gap_size) nogil:
+cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:
     cdef int proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
     # Create new vector of islands b/c we generally throw away majority of islands
     cdef vector[Island] final_islands
@@ -40,43 +34,41 @@ cdef void _combine_proximal_islands(isl_vec_ptr islands, int gap_size) nogil:
     cdef int curr_end
     cdef double curr_score
 
-    if deref(islands).size() > 0:
-        if deref(islands).size() == 1:
+    if islands.size() > 0:
+        if islands.size() == 1:
             return 
 
-        chrom = deref(islands)[0].chrom
-        curr_start = deref(islands)[0].start
-        curr_end = deref(islands)[0].end
-        curr_score = deref(islands)[0].score
-        for i in range(1, deref(islands).size()):
-            dist = deref(islands)[i].start - curr_end
+        chrom = islands[0].chrom
+        curr_start = islands[0].start
+        curr_end = islands[0].end
+        curr_score = islands[0].score
+        for i in range(1, islands.size()):
+            dist = islands[i].start - curr_end
             if dist <= proximal_island_dist:
-                curr_end = deref(islands)[i].end
-                curr_score += deref(islands)[i].score
+                curr_end = islands[i].end
+                curr_score += islands[i].score
             else:
                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
-                curr_start = deref(islands)[i].start
-                curr_end = deref(islands)[i].end
-                curr_score = deref(islands)[i].score
+                curr_start = islands[i].start
+                curr_end = islands[i].end
+                curr_score = islands[i].score
         
         final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
 
         # Swap with our final islands
-        deref(islands).swap(final_islands)
+        islands.swap(final_islands)
 
 cdef void _generate_islands(
-    win_vec_ptr windows,
-    isl_vec_ptr islands, 
+    vector[Window]& windows,
+    vector[Island]& islands,
     int min_tag_threshold, 
     double avg_tag_count
 ) nogil:
-    cdef Window window
     cdef double score
-    for i in range(deref(windows).size()):
-        window = deref(windows)[i]
+    for i in range(windows.size()):
         score = -1
-        if window.count >= min_tag_threshold:
-            prob = poisson(window.count, avg_tag_count)
+        if windows[i].count >= min_tag_threshold:
+            prob = poisson(windows[i].count, avg_tag_count)
 
             if prob < 1e-250:
                 # Outside of the scale, so take an arbitrary value
@@ -85,18 +77,18 @@ cdef void _generate_islands(
                 score = -log(prob)
             if score > 0:
                 # Create Island
-                deref(islands).push_back(Island(window.chrom, window.start, window.end, score))
+                islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
 
 cdef void _find_islands_by_chrom(
-    win_vec_ptr windows,
-    isl_vec_ptr islands,
+    vector[Window]& windows,
+    vector[Island]& islands,
     int min_tag_threshold,
     double score_threshold,
     int gap_size,
     double avg_tag_count
 ) nogil:
     
-    if deref(windows).size() > 0:
+    if windows.size() > 0:
         # First create base islands from windows
         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
         _combine_proximal_islands(islands, gap_size)
@@ -119,8 +111,8 @@ cdef ChromIslandContainer _find_islands(
     cdef int i
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
         _find_islands_by_chrom(
-            windows.getChromVector(chroms.at(i)),
-            islands.getChromVector(chroms.at(i)),
+            deref(windows.getVectorPtr(chroms[i])),
+            deref(islands.getVectorPtr(chroms[i])),
             min_tag_threshold,
             score_threshold,
             gap_size,

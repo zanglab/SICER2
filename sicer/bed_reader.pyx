@@ -22,9 +22,6 @@ from libcpp.algorithm cimport sort
 # Typedefs
 ctypedef char* cstr
 ctypedef bool (*cmp_f)(BEDRead, BEDRead)
-ctypedef vector[BEDRead]* vec_ptr
-
-cdef char PLUS = b'+'
 
 cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
         if i.strand != j.strand:
@@ -56,7 +53,11 @@ cdef class BEDReader:
         self.redundancy_threshold = redundancy_threshold
         self.line_count = 0
 
-    cdef void _remove_redudant_reads(self, vec_ptr vec, int threshold) nogil:
+    cdef void _remove_redudant_reads(
+        self, 
+        vector[BEDRead]& reads, 
+        int threshold
+    ) nogil:
         # Indices to delete
         cdef vector[int] shouldDelete
 
@@ -64,8 +65,8 @@ cdef class BEDReader:
         cdef int end = -1
         cdef int redund_count = 0
 
-        for i in range(deref(vec).size()):
-            read = deref(vec)[i]
+        for i in range(reads.size()):
+            read = reads[i]
 
             if read.start != start or read.end != end:
                 # Retain read
@@ -79,26 +80,23 @@ cdef class BEDReader:
                     shouldDelete.push_back(i)
 
         # Remove duplicate reads
-        deref(vec).erase(remove_at(deref(vec).begin(), deref(vec).end(), shouldDelete.begin(), shouldDelete.end()), deref(vec).end())
+        reads.erase(remove_at(reads.begin(), reads.end(), shouldDelete.begin(), shouldDelete.end()), reads.end())
 
-    cdef void _preprocess_BED_reads_by_chrom(self, vec_ptr vec) nogil:
+    cdef void _preprocess_BED_reads_by_chrom(self, vector[BEDRead]& reads) nogil:
         # First, sort reads by strand, start pos, and end pos order
-        sort[vector[BEDRead].iterator, cmp_f](deref(vec).begin(), deref(vec).end(), compare_reads)
+        sort[vector[BEDRead].iterator, cmp_f](reads.begin(), reads.end(), compare_reads)
 
-        self._remove_redudant_reads(vec, self.redundancy_threshold)
+        self._remove_redudant_reads(reads, self.redundancy_threshold)
 
     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):
         print("Preprocessing reads...")
 
         # Convert Python list to vector for no-GIL use
-        cdef int num_chroms = len(reads.getChromosomes())
         cdef vector[string] chroms = reads.getChromosomes()
-
-        cdef mapcpp[string, vec_ptr] data = reads.getData()
+        cdef vector[BEDRead]* read_vec
         cdef int i
-
-        for i in prange(num_chroms, schedule='guided', num_threads=self.num_cpu, nogil=True):
-            self._preprocess_BED_reads_by_chrom(data.at(chroms.at(i)))
+        for i in prange(chroms.size(), schedule='guided', num_threads=self.num_cpu, nogil=True):
+            self._preprocess_BED_reads_by_chrom(deref(reads.getVectorPtr(chroms.at(i))))
 
         reads.updateReadCount()
 

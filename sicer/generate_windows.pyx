@@ -3,8 +3,8 @@ from sicer.shared.data_classes cimport BEDRead, Window
 from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowContainer
 
 # Cython Imports
-from libc.math cimport round as roundcpp
 from libcpp cimport bool
+from libc.math cimport round
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as preinc
 from libcpp.map cimport map as mapcpp
@@ -13,22 +13,16 @@ from libcpp.string cimport string
 from cython.parallel import parallel, prange
 from libcpp.algorithm cimport sort
 
-# Typedefs
-ctypedef char* cstr
-ctypedef vector[BEDRead]* bed_vec_ptr
-ctypedef vector[Window]* win_vec_ptr
 
-cdef char PLUS = b'+'
-
-cdef vector[int] _get_tag_list(bed_vec_ptr reads, int chrom_length, int frag_size) nogil:
+cdef vector[int] _get_tag_list(vector[BEDRead]& reads, int chrom_length, int frag_size) nogil:
     cdef vector[int] tag_list
-    cdef int shift = <int> roundcpp(frag_size / 2.0)
+    cdef int shift = <int> round(frag_size / 2.0)
     cdef int pos
 
-    for i in range(deref(reads).size()):
-        read = deref(reads)[i]
+    for i in range(reads.size()):
+        read = reads[i]
         if read.start >= 0 and read.end < chrom_length:
-            if read.strand == PLUS:
+            if read.strand == b'+':
                 pos = read.start + shift
                 if pos >= chrom_length:
                     pos = chrom_length - 1
@@ -44,7 +38,7 @@ cdef vector[int] _get_tag_list(bed_vec_ptr reads, int chrom_length, int frag_siz
     return tag_list
 
 cdef void _generate_window_from_tags(
-    win_vec_ptr windows,
+    vector[Window]& windows,
     vector[int] tag_list,
     string chrom,
     int chrom_length,
@@ -70,7 +64,7 @@ cdef void _generate_window_from_tags(
 
                     if curr_win_end < chrom_length:
                         # Create new window
-                        deref(windows).push_back(Window(
+                        windows.push_back(Window(
                             chrom, 
                             curr_win_start, 
                             curr_win_end, 
@@ -82,7 +76,7 @@ cdef void _generate_window_from_tags(
         
         curr_win_end = curr_win_start + window_size - 1
         if curr_win_end < chrom_length:
-            deref(windows).push_back(Window(
+            windows.push_back(Window(
                 chrom, 
                 curr_win_start, 
                 curr_win_end, 
@@ -90,15 +84,15 @@ cdef void _generate_window_from_tags(
             ))
     
 cdef void _generate_windows_by_chrom(
-    bed_vec_ptr reads, 
-    win_vec_ptr windows,
+    vector[BEDRead]& reads, 
+    vector[Window]& windows,
     string chrom, 
     int chrom_length,
     int frag_size,
     int window_size
 ) nogil:
     cdef vector[int] tag_list
-    if deref(reads).size() > 0:
+    if reads.size() > 0:
         tag_list = _get_tag_list(reads, chrom_length, frag_size)
         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
     
@@ -120,10 +114,10 @@ cdef ChromWindowContainer _generate_windows(
     cdef int i
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
         _generate_windows_by_chrom(
-            reads.getChromVector(chroms.at(i)),
-            windows.getChromVector(chroms.at(i)),
-            chroms.at(i),
-            chrom_lengths.at(i),
+            deref(reads.getVectorPtr(chroms.at(i))),
+            deref(windows.getVectorPtr(chroms.at(i))),
+            chroms[i],
+            chrom_lengths[i],
             frag_size,
             window_size
         )

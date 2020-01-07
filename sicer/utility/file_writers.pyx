@@ -51,7 +51,7 @@ cdef class WigFileWriter:
         cdef win_vec_ptr vptr
 
         for i in range(chroms.size()):
-            vptr = self.windows.getChromVector(chroms[i])
+            vptr = self.windows.getVectorPtr(chroms[i])
             if deref(vptr).size() > 0:
                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
                 fprintf(fp, chrom_header.c_str())

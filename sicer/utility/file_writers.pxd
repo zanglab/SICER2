@@ -23,22 +23,23 @@ cdef class WigFileWriter:
 
     cpdef void write(self)
 
-cdef class IslandSummaryFileWriter:
-    # Writes .wig file of windows
-    cdef:
-        str file_name
-        str output_dir
-        ChromWindowContainer windows
-        int window_size
-        bint filtered
 
-        cstr format_line(self, int pos, double count)
+# cdef class IslandSummaryFileWriter:
+#     # Writes .wig file of windows
+#     cdef:
+#         str file_name
+#         str output_dir
+#         ChromWindowContainer windows
+#         int window_size
+#         bint filtered
 
-        void c_write(self, 
-            cstr outfile_path,
-            cstr header, 
-            int window_size,
-            double scaling_factor
-        )
+#         cstr format_line(self, int pos, double count)
 
-    cpdef void write(self)
+#         void c_write(self, 
+#             cstr outfile_path,
+#             cstr header, 
+#             int window_size,
+#             double scaling_factor
+#         )
+
+#     cpdef void write(self)
