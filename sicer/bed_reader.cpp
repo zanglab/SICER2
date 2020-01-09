@@ -642,6 +642,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include <stdint.h>
 #include "data_objects.h"
 #include <utility>
 #include <map>
@@ -881,8 +882,8 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
 struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
 struct __pyx_obj_5sicer_10bed_reader_BEDReader;
 
-/* "sicer/shared/data_classes.pxd":3
- * from libcpp.string cimport string
+/* "sicer/shared/data_classes.pxd":4
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
@@ -899,7 +900,7 @@ typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
  */
 typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
 
-/* "sicer/bed_reader.pyx":23
+/* "sicer/bed_reader.pyx":24
  * 
  * # Typedefs
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
@@ -908,7 +909,7 @@ typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
  */
 typedef char *__pyx_t_5sicer_10bed_reader_cstr;
 
-/* "sicer/bed_reader.pyx":24
+/* "sicer/bed_reader.pyx":25
  * # Typedefs
  * ctypedef char* cstr
  * ctypedef bool (*cmp_f)(BEDRead, BEDRead)             # <<<<<<<<<<<<<<
@@ -969,7 +970,7 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer {
 };
 
 
-/* "sicer/bed_reader.pyx":35
+/* "sicer/bed_reader.pyx":36
  *                 return i.end < j.end
  * 
  * cdef class BEDReader:             # <<<<<<<<<<<<<<
@@ -983,7 +984,6 @@ struct __pyx_obj_5sicer_10bed_reader_BEDReader {
   PyObject *genome_data;
   int num_cpu;
   int redundancy_threshold;
-  int line_count;
 };
 
 
@@ -1049,7 +1049,7 @@ struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer {
 static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer;
 
 
-/* "sicer/bed_reader.pyx":35
+/* "sicer/bed_reader.pyx":36
  *                 return i.end < j.end
  * 
  * cdef class BEDReader:             # <<<<<<<<<<<<<<
@@ -1547,6 +1547,8 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
 
 /* Module declarations from 'libcpp.string' */
 
+/* Module declarations from 'libc.stdint' */
+
 /* Module declarations from 'sicer.shared.data_classes' */
 
 /* Module declarations from 'libcpp.utility' */
@@ -1674,7 +1676,7 @@ static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 /* Late includes */
 
-/* "sicer/bed_reader.pyx":26
+/* "sicer/bed_reader.pyx":27
  * ctypedef bool (*cmp_f)(BEDRead, BEDRead)
  * 
  * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:             # <<<<<<<<<<<<<<
@@ -1686,7 +1688,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
   bool __pyx_r;
   int __pyx_t_1;
 
-  /* "sicer/bed_reader.pyx":27
+  /* "sicer/bed_reader.pyx":28
  * 
  * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
  *         if i.strand != j.strand:             # <<<<<<<<<<<<<<
@@ -1696,7 +1698,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
   __pyx_t_1 = ((__pyx_v_i.strand != __pyx_v_j.strand) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/bed_reader.pyx":28
+    /* "sicer/bed_reader.pyx":29
  * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
  *         if i.strand != j.strand:
  *             return i.strand < j.strand             # <<<<<<<<<<<<<<
@@ -1706,7 +1708,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
     __pyx_r = (__pyx_v_i.strand < __pyx_v_j.strand);
     goto __pyx_L0;
 
-    /* "sicer/bed_reader.pyx":27
+    /* "sicer/bed_reader.pyx":28
  * 
  * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:
  *         if i.strand != j.strand:             # <<<<<<<<<<<<<<
@@ -1715,7 +1717,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
  */
   }
 
-  /* "sicer/bed_reader.pyx":30
+  /* "sicer/bed_reader.pyx":31
  *             return i.strand < j.strand
  *         else:
  *             if i.start != j.start:             # <<<<<<<<<<<<<<
@@ -1726,7 +1728,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
     __pyx_t_1 = ((__pyx_v_i.start != __pyx_v_j.start) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/bed_reader.pyx":31
+      /* "sicer/bed_reader.pyx":32
  *         else:
  *             if i.start != j.start:
  *                 return i.start < j.start             # <<<<<<<<<<<<<<
@@ -1736,7 +1738,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
       __pyx_r = (__pyx_v_i.start < __pyx_v_j.start);
       goto __pyx_L0;
 
-      /* "sicer/bed_reader.pyx":30
+      /* "sicer/bed_reader.pyx":31
  *             return i.strand < j.strand
  *         else:
  *             if i.start != j.start:             # <<<<<<<<<<<<<<
@@ -1745,7 +1747,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
  */
     }
 
-    /* "sicer/bed_reader.pyx":33
+    /* "sicer/bed_reader.pyx":34
  *                 return i.start < j.start
  *             else:
  *                 return i.end < j.end             # <<<<<<<<<<<<<<
@@ -1758,7 +1760,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
     }
   }
 
-  /* "sicer/bed_reader.pyx":26
+  /* "sicer/bed_reader.pyx":27
  * ctypedef bool (*cmp_f)(BEDRead, BEDRead)
  * 
  * cdef bool compare_reads(BEDRead i, BEDRead j) nogil:             # <<<<<<<<<<<<<<
@@ -1772,7 +1774,7 @@ static bool __pyx_f_5sicer_10bed_reader_compare_reads(BEDRead __pyx_v_i, BEDRead
 }
 
 /* "sicer/bed_reader.pyx":43
- *         int line_count
+ *         int redundancy_threshold
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
  *         self,
@@ -1903,7 +1905,7 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
  *         self.genome_data = genome_data
  *         self.num_cpu = num_cpu             # <<<<<<<<<<<<<<
  *         self.redundancy_threshold = redundancy_threshold
- *         self.line_count = 0
+ * 
  */
   __pyx_v_self->num_cpu = __pyx_v_num_cpu;
 
@@ -1911,22 +1913,13 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
  *         self.genome_data = genome_data
  *         self.num_cpu = num_cpu
  *         self.redundancy_threshold = redundancy_threshold             # <<<<<<<<<<<<<<
- *         self.line_count = 0
- * 
- */
-  __pyx_v_self->redundancy_threshold = __pyx_v_redundancy_threshold;
-
-  /* "sicer/bed_reader.pyx":54
- *         self.num_cpu = num_cpu
- *         self.redundancy_threshold = redundancy_threshold
- *         self.line_count = 0             # <<<<<<<<<<<<<<
  * 
  *     cdef void _remove_redudant_reads(
  */
-  __pyx_v_self->line_count = 0;
+  __pyx_v_self->redundancy_threshold = __pyx_v_redundancy_threshold;
 
   /* "sicer/bed_reader.pyx":43
- *         int line_count
+ *         int redundancy_threshold
  * 
  *     def __cinit__(             # <<<<<<<<<<<<<<
  *         self,
@@ -1939,8 +1932,8 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":56
- *         self.line_count = 0
+/* "sicer/bed_reader.pyx":55
+ *         self.redundancy_threshold = redundancy_threshold
  * 
  *     cdef void _remove_redudant_reads(             # <<<<<<<<<<<<<<
  *         self,
@@ -1949,8 +1942,8 @@ static int __pyx_pf_5sicer_10bed_reader_9BEDReader___cinit__(struct __pyx_obj_5s
 
 static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, std::vector<BEDRead>  &__pyx_v_reads, int __pyx_v_threshold) {
   std::vector<int>  __pyx_v_shouldDelete;
-  int __pyx_v_start;
-  int __pyx_v_end;
+  uint32_t __pyx_v_start;
+  uint32_t __pyx_v_end;
   int __pyx_v_redund_count;
   std::vector<BEDRead> ::size_type __pyx_v_i;
   BEDRead __pyx_v_read;
@@ -1959,36 +1952,36 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
   std::vector<BEDRead> ::size_type __pyx_t_3;
   int __pyx_t_4;
   int __pyx_t_5;
-  int __pyx_t_6;
+  uint32_t __pyx_t_6;
 
-  /* "sicer/bed_reader.pyx":64
+  /* "sicer/bed_reader.pyx":63
  *         cdef vector[int] shouldDelete
  * 
- *         cdef int start = -1             # <<<<<<<<<<<<<<
- *         cdef int end = -1
+ *         cdef uint32_t start = -1             # <<<<<<<<<<<<<<
+ *         cdef uint32_t end = -1
  *         cdef int redund_count = 0
  */
   __pyx_v_start = -1;
 
-  /* "sicer/bed_reader.pyx":65
+  /* "sicer/bed_reader.pyx":64
  * 
- *         cdef int start = -1
- *         cdef int end = -1             # <<<<<<<<<<<<<<
+ *         cdef uint32_t start = -1
+ *         cdef uint32_t end = -1             # <<<<<<<<<<<<<<
  *         cdef int redund_count = 0
  * 
  */
   __pyx_v_end = -1;
 
-  /* "sicer/bed_reader.pyx":66
- *         cdef int start = -1
- *         cdef int end = -1
+  /* "sicer/bed_reader.pyx":65
+ *         cdef uint32_t start = -1
+ *         cdef uint32_t end = -1
  *         cdef int redund_count = 0             # <<<<<<<<<<<<<<
  * 
  *         for i in range(reads.size()):
  */
   __pyx_v_redund_count = 0;
 
-  /* "sicer/bed_reader.pyx":68
+  /* "sicer/bed_reader.pyx":67
  *         cdef int redund_count = 0
  * 
  *         for i in range(reads.size()):             # <<<<<<<<<<<<<<
@@ -2000,7 +1993,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "sicer/bed_reader.pyx":69
+    /* "sicer/bed_reader.pyx":68
  * 
  *         for i in range(reads.size()):
  *             read = reads[i]             # <<<<<<<<<<<<<<
@@ -2009,7 +2002,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
  */
     __pyx_v_read = (__pyx_v_reads[__pyx_v_i]);
 
-    /* "sicer/bed_reader.pyx":71
+    /* "sicer/bed_reader.pyx":70
  *             read = reads[i]
  * 
  *             if read.start != start or read.end != end:             # <<<<<<<<<<<<<<
@@ -2027,7 +2020,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "sicer/bed_reader.pyx":73
+      /* "sicer/bed_reader.pyx":72
  *             if read.start != start or read.end != end:
  *                 # Retain read
  *                 start = read.start             # <<<<<<<<<<<<<<
@@ -2037,7 +2030,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
       __pyx_t_6 = __pyx_v_read.start;
       __pyx_v_start = __pyx_t_6;
 
-      /* "sicer/bed_reader.pyx":74
+      /* "sicer/bed_reader.pyx":73
  *                 # Retain read
  *                 start = read.start
  *                 end = read.end             # <<<<<<<<<<<<<<
@@ -2047,7 +2040,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
       __pyx_t_6 = __pyx_v_read.end;
       __pyx_v_end = __pyx_t_6;
 
-      /* "sicer/bed_reader.pyx":75
+      /* "sicer/bed_reader.pyx":74
  *                 start = read.start
  *                 end = read.end
  *                 redund_count = 1             # <<<<<<<<<<<<<<
@@ -2056,7 +2049,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
  */
       __pyx_v_redund_count = 1;
 
-      /* "sicer/bed_reader.pyx":71
+      /* "sicer/bed_reader.pyx":70
  *             read = reads[i]
  * 
  *             if read.start != start or read.end != end:             # <<<<<<<<<<<<<<
@@ -2066,7 +2059,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
       goto __pyx_L5;
     }
 
-    /* "sicer/bed_reader.pyx":77
+    /* "sicer/bed_reader.pyx":76
  *                 redund_count = 1
  *             else:
  *                 preinc(redund_count)             # <<<<<<<<<<<<<<
@@ -2076,7 +2069,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
     /*else*/ {
       (void)((++__pyx_v_redund_count));
 
-      /* "sicer/bed_reader.pyx":78
+      /* "sicer/bed_reader.pyx":77
  *             else:
  *                 preinc(redund_count)
  *                 if redund_count > threshold:             # <<<<<<<<<<<<<<
@@ -2086,7 +2079,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
       __pyx_t_4 = ((__pyx_v_redund_count > __pyx_v_threshold) != 0);
       if (__pyx_t_4) {
 
-        /* "sicer/bed_reader.pyx":80
+        /* "sicer/bed_reader.pyx":79
  *                 if redund_count > threshold:
  *                     # Delete read
  *                     shouldDelete.push_back(i)             # <<<<<<<<<<<<<<
@@ -2103,10 +2096,10 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
           #ifdef WITH_THREAD
           __Pyx_PyGILState_Release(__pyx_gilstate_save);
           #endif
-          __PYX_ERR(0, 80, __pyx_L1_error)
+          __PYX_ERR(0, 79, __pyx_L1_error)
         }
 
-        /* "sicer/bed_reader.pyx":78
+        /* "sicer/bed_reader.pyx":77
  *             else:
  *                 preinc(redund_count)
  *                 if redund_count > threshold:             # <<<<<<<<<<<<<<
@@ -2118,7 +2111,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
     __pyx_L5:;
   }
 
-  /* "sicer/bed_reader.pyx":83
+  /* "sicer/bed_reader.pyx":82
  * 
  *         # Remove duplicate reads
  *         reads.erase(remove_at(reads.begin(), reads.end(), shouldDelete.begin(), shouldDelete.end()), reads.end())             # <<<<<<<<<<<<<<
@@ -2127,8 +2120,8 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
  */
   (void)(__pyx_v_reads.erase(remove_at<std::vector<BEDRead> ::iterator,std::vector<int> ::iterator>(__pyx_v_reads.begin(), __pyx_v_reads.end(), __pyx_v_shouldDelete.begin(), __pyx_v_shouldDelete.end()), __pyx_v_reads.end()));
 
-  /* "sicer/bed_reader.pyx":56
- *         self.line_count = 0
+  /* "sicer/bed_reader.pyx":55
+ *         self.redundancy_threshold = redundancy_threshold
  * 
  *     cdef void _remove_redudant_reads(             # <<<<<<<<<<<<<<
  *         self,
@@ -2142,7 +2135,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
   __pyx_L0:;
 }
 
-/* "sicer/bed_reader.pyx":85
+/* "sicer/bed_reader.pyx":84
  *         reads.erase(remove_at(reads.begin(), reads.end(), shouldDelete.begin(), shouldDelete.end()), reads.end())
  * 
  *     cdef void _preprocess_BED_reads_by_chrom(self, vector[BEDRead]& reads) nogil:             # <<<<<<<<<<<<<<
@@ -2152,7 +2145,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON
 
 static void __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chrom(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, std::vector<BEDRead>  &__pyx_v_reads) {
 
-  /* "sicer/bed_reader.pyx":87
+  /* "sicer/bed_reader.pyx":86
  *     cdef void _preprocess_BED_reads_by_chrom(self, vector[BEDRead]& reads) nogil:
  *         # First, sort reads by strand, start pos, and end pos order
  *         sort[vector[BEDRead].iterator, cmp_f](reads.begin(), reads.end(), compare_reads)             # <<<<<<<<<<<<<<
@@ -2161,7 +2154,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chro
  */
   std::sort<std::vector<BEDRead> ::iterator,__pyx_t_5sicer_10bed_reader_cmp_f>(__pyx_v_reads.begin(), __pyx_v_reads.end(), __pyx_f_5sicer_10bed_reader_compare_reads);
 
-  /* "sicer/bed_reader.pyx":89
+  /* "sicer/bed_reader.pyx":88
  *         sort[vector[BEDRead].iterator, cmp_f](reads.begin(), reads.end(), compare_reads)
  * 
  *         self._remove_redudant_reads(reads, self.redundancy_threshold)             # <<<<<<<<<<<<<<
@@ -2170,7 +2163,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chro
  */
   ((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_remove_redudant_reads(__pyx_v_self, __pyx_v_reads, __pyx_v_self->redundancy_threshold);
 
-  /* "sicer/bed_reader.pyx":85
+  /* "sicer/bed_reader.pyx":84
  *         reads.erase(remove_at(reads.begin(), reads.end(), shouldDelete.begin(), shouldDelete.end()), reads.end())
  * 
  *     cdef void _preprocess_BED_reads_by_chrom(self, vector[BEDRead]& reads) nogil:             # <<<<<<<<<<<<<<
@@ -2181,7 +2174,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chro
   /* function exit code */
 }
 
-/* "sicer/bed_reader.pyx":91
+/* "sicer/bed_reader.pyx":90
  *         self._remove_redudant_reads(reads, self.redundancy_threshold)
  * 
  *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):             # <<<<<<<<<<<<<<
@@ -2203,31 +2196,31 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("_preprocess_BED_reads", 0);
 
-  /* "sicer/bed_reader.pyx":92
+  /* "sicer/bed_reader.pyx":91
  * 
  *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):
  *         print("Preprocessing reads...")             # <<<<<<<<<<<<<<
  * 
  *         # Convert Python list to vector for no-GIL use
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/bed_reader.pyx":95
+  /* "sicer/bed_reader.pyx":94
  * 
  *         # Convert Python list to vector for no-GIL use
  *         cdef vector[string] chroms = reads.getChromosomes()             # <<<<<<<<<<<<<<
  *         cdef vector[BEDRead]* read_vec
  *         cdef int i
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/bed_reader.pyx":98
+  /* "sicer/bed_reader.pyx":97
  *         cdef vector[BEDRead]* read_vec
  *         cdef int i
  *         for i in prange(chroms.size(), schedule='guided', num_threads=self.num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -2276,7 +2269,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/bed_reader.pyx":99
+                            /* "sicer/bed_reader.pyx":98
  *         cdef int i
  *         for i in prange(chroms.size(), schedule='guided', num_threads=self.num_cpu, nogil=True):
  *             self._preprocess_BED_reads_by_chrom(deref(reads.getVectorPtr(chroms.at(i))))             # <<<<<<<<<<<<<<
@@ -2293,7 +2286,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 99, __pyx_L8_error)
+                              __PYX_ERR(0, 98, __pyx_L8_error)
                             }
                             ((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads_by_chrom(__pyx_v_self, (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getVectorPtr(__pyx_v_reads, __pyx_t_6)));
                             goto __pyx_L11;
@@ -2377,7 +2370,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
         #endif
       }
 
-      /* "sicer/bed_reader.pyx":98
+      /* "sicer/bed_reader.pyx":97
  *         cdef vector[BEDRead]* read_vec
  *         cdef int i
  *         for i in prange(chroms.size(), schedule='guided', num_threads=self.num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -2403,7 +2396,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
       }
   }
 
-  /* "sicer/bed_reader.pyx":101
+  /* "sicer/bed_reader.pyx":100
  *             self._preprocess_BED_reads_by_chrom(deref(reads.getVectorPtr(chroms.at(i))))
  * 
  *         reads.updateReadCount()             # <<<<<<<<<<<<<<
@@ -2412,16 +2405,16 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  */
   ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->updateReadCount(__pyx_v_reads, 0);
 
-  /* "sicer/bed_reader.pyx":103
+  /* "sicer/bed_reader.pyx":102
  *         reads.updateReadCount()
  * 
  *         print("Retained read count: ", reads.getReadCount())             # <<<<<<<<<<<<<<
  * 
  *         return reads
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getReadCount(__pyx_v_reads, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getReadCount(__pyx_v_reads, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_kp_u_Retained_read_count);
   __Pyx_GIVEREF(__pyx_kp_u_Retained_read_count);
@@ -2429,12 +2422,12 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/bed_reader.pyx":105
+  /* "sicer/bed_reader.pyx":104
  *         print("Retained read count: ", reads.getReadCount())
  * 
  *         return reads             # <<<<<<<<<<<<<<
@@ -2446,7 +2439,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   __pyx_r = __pyx_v_reads;
   goto __pyx_L0;
 
-  /* "sicer/bed_reader.pyx":91
+  /* "sicer/bed_reader.pyx":90
  *         self._remove_redudant_reads(reads, self.redundancy_threshold)
  * 
  *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):             # <<<<<<<<<<<<<<
@@ -2466,7 +2459,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":107
+/* "sicer/bed_reader.pyx":106
  *         return reads
  * 
  *     cdef BEDRead _parseBEDLine(self, cstr line):             # <<<<<<<<<<<<<<
@@ -2487,7 +2480,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
   std::string __pyx_t_5;
   __Pyx_RefNannySetupContext("_parseBEDLine", 0);
 
-  /* "sicer/bed_reader.pyx":109
+  /* "sicer/bed_reader.pyx":108
  *     cdef BEDRead _parseBEDLine(self, cstr line):
  *         cdef cstr read[6]
  *         cdef int count = 0             # <<<<<<<<<<<<<<
@@ -2496,7 +2489,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
  */
   __pyx_v_count = 0;
 
-  /* "sicer/bed_reader.pyx":111
+  /* "sicer/bed_reader.pyx":110
  *         cdef int count = 0
  * 
  *         cdef cstr token = strtok(line, "\t")             # <<<<<<<<<<<<<<
@@ -2505,7 +2498,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
  */
   __pyx_v_token = strtok(__pyx_v_line, ((char const *)"\t"));
 
-  /* "sicer/bed_reader.pyx":113
+  /* "sicer/bed_reader.pyx":112
  *         cdef cstr token = strtok(line, "\t")
  * 
  *         while token != NULL:             # <<<<<<<<<<<<<<
@@ -2516,7 +2509,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
     __pyx_t_1 = ((__pyx_v_token != NULL) != 0);
     if (!__pyx_t_1) break;
 
-    /* "sicer/bed_reader.pyx":114
+    /* "sicer/bed_reader.pyx":113
  * 
  *         while token != NULL:
  *             read[count] = token             # <<<<<<<<<<<<<<
@@ -2525,7 +2518,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
  */
     (__pyx_v_read[__pyx_v_count]) = __pyx_v_token;
 
-    /* "sicer/bed_reader.pyx":115
+    /* "sicer/bed_reader.pyx":114
  *         while token != NULL:
  *             read[count] = token
  *             preinc(count)             # <<<<<<<<<<<<<<
@@ -2534,7 +2527,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
  */
     (void)((++__pyx_v_count));
 
-    /* "sicer/bed_reader.pyx":116
+    /* "sicer/bed_reader.pyx":115
  *             read[count] = token
  *             preinc(count)
  *             token = strtok(NULL, "\t")             # <<<<<<<<<<<<<<
@@ -2544,7 +2537,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
     __pyx_v_token = strtok(NULL, ((char const *)"\t"));
   }
 
-  /* "sicer/bed_reader.pyx":118
+  /* "sicer/bed_reader.pyx":117
  *             token = strtok(NULL, "\t")
  * 
  *         if count != 6:             # <<<<<<<<<<<<<<
@@ -2554,26 +2547,26 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
   __pyx_t_1 = ((__pyx_v_count != 6) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "sicer/bed_reader.pyx":119
+    /* "sicer/bed_reader.pyx":118
  * 
  *         if count != 6:
  *             raise ValueError("Not a valid BED6 line: %s " % line.decode("UTF-8"))             # <<<<<<<<<<<<<<
  * 
- *         return BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])
+ *         return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10),
  */
-    __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_line, 0, strlen(__pyx_v_line), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_line, 0, strlen(__pyx_v_line), NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_Not_a_valid_BED6_line_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_Not_a_valid_BED6_line_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 119, __pyx_L1_error)
+    __PYX_ERR(0, 118, __pyx_L1_error)
 
-    /* "sicer/bed_reader.pyx":118
+    /* "sicer/bed_reader.pyx":117
  *             token = strtok(NULL, "\t")
  * 
  *         if count != 6:             # <<<<<<<<<<<<<<
@@ -2582,29 +2575,45 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
  */
   }
 
-  /* "sicer/bed_reader.pyx":121
+  /* "sicer/bed_reader.pyx":120
  *             raise ValueError("Not a valid BED6 line: %s " % line.decode("UTF-8"))
  * 
- *         return BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])             # <<<<<<<<<<<<<<
+ *         return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10),             # <<<<<<<<<<<<<<
+ *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])
  * 
- *     cdef ChromBEDReadContainer _read_file(self):
  */
   try {
     __pyx_t_4 = std::string((__pyx_v_read[0]));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 121, __pyx_L1_error)
+    __PYX_ERR(0, 120, __pyx_L1_error)
   }
+
+  /* "sicer/bed_reader.pyx":121
+ * 
+ *         return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10),
+ *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])             # <<<<<<<<<<<<<<
+ * 
+ *     cdef ChromBEDReadContainer _read_file(self):
+ */
   try {
     __pyx_t_5 = std::string((__pyx_v_read[3]));
   } catch(...) {
     __Pyx_CppExn2PyErr();
     __PYX_ERR(0, 121, __pyx_L1_error)
   }
-  __pyx_r = BEDRead(__pyx_t_4, atoi((__pyx_v_read[1])), atoi((__pyx_v_read[2])), __pyx_t_5, atoi((__pyx_v_read[4])), ((__pyx_v_read[5])[0]));
+
+  /* "sicer/bed_reader.pyx":120
+ *             raise ValueError("Not a valid BED6 line: %s " % line.decode("UTF-8"))
+ * 
+ *         return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10),             # <<<<<<<<<<<<<<
+ *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])
+ * 
+ */
+  __pyx_r = BEDRead(__pyx_t_4, strtoul((__pyx_v_read[1]), NULL, 10), strtoul((__pyx_v_read[2]), NULL, 10), __pyx_t_5, strtoul((__pyx_v_read[4]), NULL, 10), ((__pyx_v_read[5])[0]));
   goto __pyx_L0;
 
-  /* "sicer/bed_reader.pyx":107
+  /* "sicer/bed_reader.pyx":106
  *         return reads
  * 
  *     cdef BEDRead _parseBEDLine(self, cstr line):             # <<<<<<<<<<<<<<
@@ -2688,7 +2697,7 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
 }
 
 /* "sicer/bed_reader.pyx":123
- *         return BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])
+ *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])
  * 
  *     cdef ChromBEDReadContainer _read_file(self):             # <<<<<<<<<<<<<<
  *         print("Reading file \"" + self.file_name + "\" ...")
@@ -2889,8 +2898,8 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  *         cdef BEDRead read
  * 
  *         while getline(&line, &len, fp) != -1:             # <<<<<<<<<<<<<<
- *             self.line_count+=1
  *             read = self._parseBEDLine(line)
+ *             if read.chrom.c_str() in chromosomes:
  */
   while (1) {
     __pyx_t_4 = ((getline((&__pyx_v_line), (&__pyx_v_len), __pyx_v_fp) != -1L) != 0);
@@ -2899,36 +2908,27 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
     /* "sicer/bed_reader.pyx":138
  * 
  *         while getline(&line, &len, fp) != -1:
- *             self.line_count+=1             # <<<<<<<<<<<<<<
- *             read = self._parseBEDLine(line)
- *             if read.chrom.c_str() in chromosomes:
- */
-    __pyx_v_self->line_count = (__pyx_v_self->line_count + 1);
-
-    /* "sicer/bed_reader.pyx":139
- *         while getline(&line, &len, fp) != -1:
- *             self.line_count+=1
  *             read = self._parseBEDLine(line)             # <<<<<<<<<<<<<<
  *             if read.chrom.c_str() in chromosomes:
  *                 reads.insertRead(read.chrom, read)
  */
     __pyx_v_read = ((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_parseBEDLine(__pyx_v_self, __pyx_v_line);
 
-    /* "sicer/bed_reader.pyx":140
- *             self.line_count+=1
+    /* "sicer/bed_reader.pyx":139
+ *         while getline(&line, &len, fp) != -1:
  *             read = self._parseBEDLine(line)
  *             if read.chrom.c_str() in chromosomes:             # <<<<<<<<<<<<<<
  *                 reads.insertRead(read.chrom, read)
  * 
  */
-    __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_read.chrom.c_str()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_read.chrom.c_str()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = (__Pyx_PySet_ContainsTF(__pyx_t_1, __pyx_v_chromosomes, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_4 = (__Pyx_PySet_ContainsTF(__pyx_t_1, __pyx_v_chromosomes, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_9 = (__pyx_t_4 != 0);
     if (__pyx_t_9) {
 
-      /* "sicer/bed_reader.pyx":141
+      /* "sicer/bed_reader.pyx":140
  *             read = self._parseBEDLine(line)
  *             if read.chrom.c_str() in chromosomes:
  *                 reads.insertRead(read.chrom, read)             # <<<<<<<<<<<<<<
@@ -2937,8 +2937,8 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  */
       ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->insertRead(__pyx_v_reads, __pyx_v_read.chrom, __pyx_v_read);
 
-      /* "sicer/bed_reader.pyx":140
- *             self.line_count+=1
+      /* "sicer/bed_reader.pyx":139
+ *         while getline(&line, &len, fp) != -1:
  *             read = self._parseBEDLine(line)
  *             if read.chrom.c_str() in chromosomes:             # <<<<<<<<<<<<<<
  *                 reads.insertRead(read.chrom, read)
@@ -2947,7 +2947,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
     }
   }
 
-  /* "sicer/bed_reader.pyx":143
+  /* "sicer/bed_reader.pyx":142
  *                 reads.insertRead(read.chrom, read)
  * 
  *         fclose(fp)             # <<<<<<<<<<<<<<
@@ -2956,7 +2956,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  */
   (void)(fclose(__pyx_v_fp));
 
-  /* "sicer/bed_reader.pyx":144
+  /* "sicer/bed_reader.pyx":143
  * 
  *         fclose(fp)
  *         free(line)             # <<<<<<<<<<<<<<
@@ -2965,7 +2965,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  */
   free(__pyx_v_line);
 
-  /* "sicer/bed_reader.pyx":146
+  /* "sicer/bed_reader.pyx":145
  *         free(line)
  * 
  *         return reads             # <<<<<<<<<<<<<<
@@ -2978,7 +2978,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   goto __pyx_L0;
 
   /* "sicer/bed_reader.pyx":123
- *         return BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])
+ *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])
  * 
  *     cdef ChromBEDReadContainer _read_file(self):             # <<<<<<<<<<<<<<
  *         print("Reading file \"" + self.file_name + "\" ...")
@@ -3003,7 +3003,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   return __pyx_r;
 }
 
-/* "sicer/bed_reader.pyx":148
+/* "sicer/bed_reader.pyx":147
  *         return reads
  * 
  *     cpdef ChromBEDReadContainer read_file(self):             # <<<<<<<<<<<<<<
@@ -3028,7 +3028,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_read_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_read_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_10bed_reader_9BEDReader_3read_file)) {
         __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -3045,10 +3045,10 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 148, __pyx_L1_error)
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 147, __pyx_L1_error)
         __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3067,22 +3067,22 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
     #endif
   }
 
-  /* "sicer/bed_reader.pyx":149
+  /* "sicer/bed_reader.pyx":148
  * 
  *     cpdef ChromBEDReadContainer read_file(self):
  *         return self._preprocess_BED_reads(self._read_file())             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_read_file(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_read_file(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads(__pyx_v_self, ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads(__pyx_v_self, ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "sicer/bed_reader.pyx":148
+  /* "sicer/bed_reader.pyx":147
  *         return reads
  * 
  *     cpdef ChromBEDReadContainer read_file(self):             # <<<<<<<<<<<<<<
@@ -3122,7 +3122,7 @@ static PyObject *__pyx_pf_5sicer_10bed_reader_9BEDReader_2read_file(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("read_file", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3643,9 +3643,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 68, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 92, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 118, __pyx_L1_error)
   __pyx_builtin_map = __Pyx_GetBuiltinName(__pyx_n_s_map); if (!__pyx_builtin_map) __PYX_ERR(0, 132, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
@@ -3657,14 +3657,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/bed_reader.pyx":92
+  /* "sicer/bed_reader.pyx":91
  * 
  *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):
  *         print("Preprocessing reads...")             # <<<<<<<<<<<<<<
  * 
  *         # Convert Python list to vector for no-GIL use
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Preprocessing_reads); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Preprocessing_reads); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -3750,16 +3750,16 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_5sicer_10bed_reader_BEDReader._parseBEDLine = (BEDRead (*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_cstr))__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine;
   __pyx_vtable_5sicer_10bed_reader_BEDReader._read_file = (struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *))__pyx_f_5sicer_10bed_reader_9BEDReader__read_file;
   __pyx_vtable_5sicer_10bed_reader_BEDReader.read_file = (struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, int __pyx_skip_dispatch))__pyx_f_5sicer_10bed_reader_9BEDReader_read_file;
-  if (PyType_Ready(&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5sicer_10bed_reader_BEDReader.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5sicer_10bed_reader_BEDReader.tp_dictoffset && __pyx_type_5sicer_10bed_reader_BEDReader.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5sicer_10bed_reader_BEDReader.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5sicer_10bed_reader_BEDReader.tp_dict, __pyx_vtabptr_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BEDReader, (PyObject *)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_5sicer_10bed_reader_BEDReader.tp_dict, __pyx_vtabptr_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BEDReader, (PyObject *)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
   __pyx_ptype_5sicer_10bed_reader_BEDReader = &__pyx_type_5sicer_10bed_reader_BEDReader;
   __Pyx_RefNannyFinishContext();
   return 0;

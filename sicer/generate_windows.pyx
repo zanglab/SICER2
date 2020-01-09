@@ -5,6 +5,7 @@ from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowCon
 # Cython Imports
 from libcpp cimport bool
 from libc.math cimport round
+from libc.stdint cimport uint32_t
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as preinc
 from libcpp.map cimport map as mapcpp
@@ -14,10 +15,10 @@ from cython.parallel import parallel, prange
 from libcpp.algorithm cimport sort
 
 
-cdef vector[int] _get_tag_list(vector[BEDRead]& reads, int chrom_length, int frag_size) nogil:
-    cdef vector[int] tag_list
+cdef vector[uint32_t] _get_tag_list(vector[BEDRead]& reads, uint32_t chrom_length, int frag_size) nogil:
+    cdef vector[uint32_t] tag_list
     cdef int shift = <int> round(frag_size / 2.0)
-    cdef int pos
+    cdef uint32_t pos
 
     for i in range(reads.size()):
         read = reads[i]
@@ -39,16 +40,16 @@ cdef vector[int] _get_tag_list(vector[BEDRead]& reads, int chrom_length, int fra
 
 cdef void _generate_window_from_tags(
     vector[Window]& windows,
-    vector[int] tag_list,
+    vector[uint32_t] tag_list,
     string chrom,
-    int chrom_length,
+    uint32_t chrom_length,
     int window_size
 ) nogil:
     # Modify window vector in place
-    cdef int curr_win_start
-    cdef int curr_win_end
-    cdef int curr_tag_count
-    cdef int adjusted_tag_pos
+    cdef uint32_t curr_win_start
+    cdef uint32_t curr_win_end
+    cdef uint32_t curr_tag_count
+    cdef uint32_t adjusted_tag_pos
     
     if tag_list.size() > 0:
         curr_win_start = (tag_list.at(0) // window_size) * window_size
@@ -87,11 +88,11 @@ cdef void _generate_windows_by_chrom(
     vector[BEDRead]& reads, 
     vector[Window]& windows,
     string chrom, 
-    int chrom_length,
+    uint32_t chrom_length,
     int frag_size,
     int window_size
 ) nogil:
-    cdef vector[int] tag_list
+    cdef vector[uint32_t] tag_list
     if reads.size() > 0:
         tag_list = _get_tag_list(reads, chrom_length, frag_size)
         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
@@ -105,7 +106,7 @@ cdef ChromWindowContainer _generate_windows(
 ):
     # Convert Python list to vector for no-GIL use
     cdef vector[string] chroms = reads.getChromosomes()
-    cdef vector[int] chrom_lengths
+    cdef vector[uint32_t] chrom_lengths
     for c in genome_data.chrom:
         chrom_lengths.push_back(genome_data.chrom_length[c])
 

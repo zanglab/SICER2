@@ -638,6 +638,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include <stdint.h>
 #include "data_objects.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -852,8 +853,8 @@ static const char *__pyx_f[] = {
 
 /*--- Type declarations ---*/
 
-/* "sicer/shared/data_classes.pxd":3
- * from libcpp.string cimport string
+/* "sicer/shared/data_classes.pxd":4
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
@@ -1052,6 +1053,8 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 /* Module declarations from 'libc.string' */
 
 /* Module declarations from 'libcpp.string' */
+
+/* Module declarations from 'libc.stdint' */
 
 /* Module declarations from 'sicer.shared.data_classes' */
 #define __Pyx_MODULE_NAME "sicer.shared.data_classes"

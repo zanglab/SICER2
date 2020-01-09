@@ -1,7 +1,7 @@
 # SICER Internal Imports
 from sicer.utility.utils cimport get_tag_pos, bin_tag_in_island
 from sicer.shared.data_classes cimport BEDRead, Island
-from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowContainer, ChromIslandContainer
+from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromIslandContainer
 
 # Cython Imports
 from libc.math cimport log, fmin
@@ -11,6 +11,7 @@ from libcpp.map cimport map as mapcpp
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from cython.parallel import parallel, prange
+from libc.stdint cimport uint32_t
 
 from scipy.special.cython_special cimport pdtrc as poisson_sf
 from scipy.stats import rankdata
@@ -28,9 +29,10 @@ cdef vector[double] _associate_tag_count_to_regions_by_chrom (
         # Return empty vector
         return vector[double]()
 
-    cdef int pos, index
-    cdef vector[int] island_starts = vector[int](islands.size())
-    cdef vector[int] island_ends = vector[int](islands.size())
+    cdef uint32_t pos
+    cdef int index
+    cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())
+    cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
     for i in range(islands.size()):
         island_starts[i] = islands[i].start
         island_ends[i] = islands[i].end
@@ -42,20 +44,20 @@ cdef vector[double] _associate_tag_count_to_regions_by_chrom (
             preinc(islands[index].obs_count)
 
     for i in range(control_reads.size()):
-        pos = get_tag_pos(treatment_reads[i], frag_size)
+        pos = get_tag_pos(control_reads[i], frag_size)
         index = bin_tag_in_island(island_starts, island_ends, pos)
         if index >= 0:
             preinc(islands[index].control_count)
 
-    cdef int length
+    cdef uint32_t length
     cdef double avg, fc, pvalue
     cdef vector[double] pvalue_vec = vector[double](islands.size())
     for i in range(islands.size()):
         if (islands[i].control_count > 0):
             avg = islands[i].control_count * scaling_factor
         else:
-            length = islands[i].end - islands[i].start + 1
-            avg = fmin(0.25, (length * ctrl_lib_size / genome_size)) * scaling_factor
+            length = (islands[i].end - islands[i].start + 1) * ctrl_lib_size
+            avg = fmin(0.25, (length / genome_size)) * scaling_factor
         fc = islands[i].obs_count / avg
         if islands[i].obs_count > avg:
             pvalue = poisson_sf(islands[i].obs_count, avg)

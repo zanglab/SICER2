@@ -7,7 +7,7 @@ import os
 import sys, errno, warnings
 
 curr_path = os.getcwd()
-cpu_available = os.cpu_count() - 1  #leave one core for I/O
+cpu_available = os.cpu_count()
 
 import subprocess
 import argparse

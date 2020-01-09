@@ -642,6 +642,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include <stdint.h>
 #include "data_objects.h"
 #include <vector>
 #include "removeAt.cpp"
@@ -872,8 +873,8 @@ static const char *__pyx_f[] = {
 
 /*--- Type declarations ---*/
 
-/* "sicer/shared/data_classes.pxd":3
- * from libcpp.string cimport string
+/* "sicer/shared/data_classes.pxd":4
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
@@ -1093,6 +1094,8 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.string' */
 
+/* Module declarations from 'libc.stdint' */
+
 /* Module declarations from 'sicer.shared.data_classes' */
 
 /* Module declarations from 'libcpp.vector' */
@@ -1104,7 +1107,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 /* Module declarations from 'libcpp.algorithm' */
 
 /* Module declarations from 'sicer.utility.utils' */
-static int __pyx_f_5sicer_7utility_5utils_fact(int); /*proto*/
+static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int); /*proto*/
 static double __pyx_f_5sicer_7utility_5utils_factln(int); /*proto*/
 static double __pyx_f_5sicer_7utility_5utils_poisson(int, double, int __pyx_skip_dispatch); /*proto*/
 #define __Pyx_MODULE_NAME "sicer.utility.utils"
@@ -1207,11 +1210,11 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead __pyx_v_read, int 
  *         return read.end - shift - 1
  * 
  * cdef int bin_tag_in_island(             # <<<<<<<<<<<<<<
- *     vector[int] &island_starts,
- *     vector[int] &island_ends,
+ *     vector[uint32_t] &island_starts,
+ *     vector[uint32_t] &island_ends,
  */
 
-static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<int>  &__pyx_v_island_starts, std::vector<int>  &__pyx_v_island_ends, int __pyx_v_tag_pos) {
+static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t>  &__pyx_v_island_starts, std::vector<uint32_t>  &__pyx_v_island_ends, uint32_t __pyx_v_tag_pos) {
   int __pyx_v_start_index;
   int __pyx_v_end_index;
   int __pyx_r;
@@ -1219,13 +1222,13 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<int>  &_
   int __pyx_t_2;
 
   /* "sicer/utility/utils.pyx":17
- *     int tag_pos
+ *     uint32_t tag_pos
  * ) nogil:
  *     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()             # <<<<<<<<<<<<<<
  *     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()
  */
-  __pyx_v_start_index = (std::upper_bound<std::vector<int> ::iterator,int>(__pyx_v_island_starts.begin(), __pyx_v_island_starts.end(), __pyx_v_tag_pos) - __pyx_v_island_starts.begin());
+  __pyx_v_start_index = (std::upper_bound<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_island_starts.begin(), __pyx_v_island_starts.end(), __pyx_v_tag_pos) - __pyx_v_island_starts.begin());
 
   /* "sicer/utility/utils.pyx":18
  * ) nogil:
@@ -1234,7 +1237,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<int>  &_
  *     if (start_index < island_starts.size()
  *         and end_index < island_ends.size()
  */
-  __pyx_v_end_index = (std::lower_bound<std::vector<int> ::iterator,int>(__pyx_v_island_ends.begin(), __pyx_v_island_ends.end(), __pyx_v_tag_pos) - __pyx_v_island_ends.begin());
+  __pyx_v_end_index = (std::lower_bound<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_island_ends.begin(), __pyx_v_island_ends.end(), __pyx_v_tag_pos) - __pyx_v_island_ends.begin());
 
   /* "sicer/utility/utils.pyx":19
  *     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
@@ -1308,7 +1311,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<int>  &_
  *     else:
  *         return -1;             # <<<<<<<<<<<<<<
  * 
- * cdef int fact(int n) nogil:
+ * cdef uint32_t fact(int n) nogil:
  */
   /*else*/ {
     __pyx_r = -1;
@@ -1319,8 +1322,8 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<int>  &_
  *         return read.end - shift - 1
  * 
  * cdef int bin_tag_in_island(             # <<<<<<<<<<<<<<
- *     vector[int] &island_starts,
- *     vector[int] &island_ends,
+ *     vector[uint32_t] &island_starts,
+ *     vector[uint32_t] &island_ends,
  */
 
   /* function exit code */
@@ -1331,28 +1334,28 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<int>  &_
 /* "sicer/utility/utils.pyx":27
  *         return -1;
  * 
- * cdef int fact(int n) nogil:             # <<<<<<<<<<<<<<
- *     cdef int val = 1
+ * cdef uint32_t fact(int n) nogil:             # <<<<<<<<<<<<<<
+ *     cdef uint32_t val = 1
  *     if n != 0:
  */
 
-static int __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
-  int __pyx_v_val;
-  int __pyx_r;
+static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
+  uint32_t __pyx_v_val;
+  uint32_t __pyx_r;
   int __pyx_t_1;
 
   /* "sicer/utility/utils.pyx":28
  * 
- * cdef int fact(int n) nogil:
- *     cdef int val = 1             # <<<<<<<<<<<<<<
+ * cdef uint32_t fact(int n) nogil:
+ *     cdef uint32_t val = 1             # <<<<<<<<<<<<<<
  *     if n != 0:
  *         while n != 1:
  */
   __pyx_v_val = 1;
 
   /* "sicer/utility/utils.pyx":29
- * cdef int fact(int n) nogil:
- *     cdef int val = 1
+ * cdef uint32_t fact(int n) nogil:
+ *     cdef uint32_t val = 1
  *     if n != 0:             # <<<<<<<<<<<<<<
  *         while n != 1:
  *             val = val * n;
@@ -1361,7 +1364,7 @@ static int __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
   if (__pyx_t_1) {
 
     /* "sicer/utility/utils.pyx":30
- *     cdef int val = 1
+ *     cdef uint32_t val = 1
  *     if n != 0:
  *         while n != 1:             # <<<<<<<<<<<<<<
  *             val = val * n;
@@ -1391,8 +1394,8 @@ static int __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
     }
 
     /* "sicer/utility/utils.pyx":29
- * cdef int fact(int n) nogil:
- *     cdef int val = 1
+ * cdef uint32_t fact(int n) nogil:
+ *     cdef uint32_t val = 1
  *     if n != 0:             # <<<<<<<<<<<<<<
  *         while n != 1:
  *             val = val * n;
@@ -1412,8 +1415,8 @@ static int __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
   /* "sicer/utility/utils.pyx":27
  *         return -1;
  * 
- * cdef int fact(int n) nogil:             # <<<<<<<<<<<<<<
- *     cdef int val = 1
+ * cdef uint32_t fact(int n) nogil:             # <<<<<<<<<<<<<<
+ *     cdef uint32_t val = 1
  *     if n != 0:
  */
 
@@ -1501,7 +1504,7 @@ static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx
   double __pyx_r;
   int __pyx_t_1;
   double __pyx_t_2;
-  int __pyx_t_3;
+  uint32_t __pyx_t_3;
 
   /* "sicer/utility/utils.pyx":43
  * 
@@ -1756,8 +1759,8 @@ static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
   if (__Pyx_ExportFunction("get_tag_pos", (void (*)(void))__pyx_f_5sicer_7utility_5utils_get_tag_pos, "int (BEDRead, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("bin_tag_in_island", (void (*)(void))__pyx_f_5sicer_7utility_5utils_bin_tag_in_island, "int (std::vector<int>  &, std::vector<int>  &, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("fact", (void (*)(void))__pyx_f_5sicer_7utility_5utils_fact, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("bin_tag_in_island", (void (*)(void))__pyx_f_5sicer_7utility_5utils_bin_tag_in_island, "int (std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("fact", (void (*)(void))__pyx_f_5sicer_7utility_5utils_fact, "uint32_t (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("factln", (void (*)(void))__pyx_f_5sicer_7utility_5utils_factln, "double (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("poisson", (void (*)(void))__pyx_f_5sicer_7utility_5utils_poisson, "double (int, double, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();

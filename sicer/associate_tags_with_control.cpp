@@ -13,9 +13,9 @@
             "-stdlib=libc++"
         ],
         "include_dirs": [
+            "./sicer/utility",
             "sicer/shared",
             "./sicer/shared",
-            "./sicer/utility",
             "sicer/utility",
             "."
         ],
@@ -642,6 +642,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include <stdint.h>
 #include "data_objects.h"
 #include <vector>
 #include "removeAt.cpp"
@@ -912,8 +913,8 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
 struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
 struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
 
-/* "sicer/shared/data_classes.pxd":3
- * from libcpp.string cimport string
+/* "sicer/shared/data_classes.pxd":4
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
@@ -1158,13 +1159,6 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
-/* PyObjectCall.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
-#else
-#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
-#endif
-
 /* PyDictVersioning.proto */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
 #define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
@@ -1240,6 +1234,13 @@ static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, 
      (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
   #define __Pyx_PyFrame_GetLocalsplus(frame)\
     (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
+#endif
+
+/* PyObjectCall.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
+#else
+#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
 
 /* PyObjectCall2Args.proto */
@@ -1475,13 +1476,15 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.string' */
 
+/* Module declarations from 'libc.stdint' */
+
 /* Module declarations from 'sicer.shared.data_classes' */
 
 /* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'sicer.utility.utils' */
 static int (*__pyx_f_5sicer_7utility_5utils_get_tag_pos)(BEDRead, int); /*proto*/
-static int (*__pyx_f_5sicer_7utility_5utils_bin_tag_in_island)(std::vector<int>  &, std::vector<int>  &, int); /*proto*/
+static int (*__pyx_f_5sicer_7utility_5utils_bin_tag_in_island)(std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t); /*proto*/
 
 /* Module declarations from 'libcpp.utility' */
 
@@ -1520,7 +1523,6 @@ static const char __pyx_k_range[] = "range";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_islands[] = "islands";
 static const char __pyx_k_num_cpu[] = "num_cpu";
-static const char __pyx_k_fuck_you[] = "fuck you";
 static const char __pyx_k_rankdata[] = "rankdata";
 static const char __pyx_k_frag_size[] = "frag_size";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
@@ -1535,7 +1537,6 @@ static PyObject *__pyx_kp_u_Calculating_significance_of_cand;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_control_reads;
 static PyObject *__pyx_n_s_frag_size;
-static PyObject *__pyx_kp_u_fuck_you;
 static PyObject *__pyx_n_s_genome_size;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_islands;
@@ -1552,10 +1553,9 @@ static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_treatment_reads;
 static PyObject *__pyx_pf_5sicer_27associate_tags_with_control_associate_tags_with_control(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_islands, PyObject *__pyx_v_treatment_reads, PyObject *__pyx_v_control_reads, PyObject *__pyx_v_genome_size, PyObject *__pyx_v_scaling_factor, PyObject *__pyx_v_frag_size, PyObject *__pyx_v_num_cpu); /* proto */
 static PyObject *__pyx_tuple_;
-static PyObject *__pyx_tuple__2;
 /* Late includes */
 
-/* "sicer/associate_tags_with_control.pyx":18
+/* "sicer/associate_tags_with_control.pyx":19
  * from scipy.stats import rankdata
  * 
  * cdef vector[double] _associate_tag_count_to_regions_by_chrom (             # <<<<<<<<<<<<<<
@@ -1564,12 +1564,12 @@ static PyObject *__pyx_tuple__2;
  */
 
 static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associate_tag_count_to_regions_by_chrom(std::vector<Island>  &__pyx_v_islands, std::vector<BEDRead>  &__pyx_v_treatment_reads, std::vector<BEDRead>  &__pyx_v_control_reads, double __pyx_v_genome_size, double __pyx_v_scaling_factor, int __pyx_v_frag_size, int __pyx_v_ctrl_lib_size) {
-  int __pyx_v_pos;
+  uint32_t __pyx_v_pos;
   int __pyx_v_index;
-  std::vector<int>  __pyx_v_island_starts;
-  std::vector<int>  __pyx_v_island_ends;
+  std::vector<uint32_t>  __pyx_v_island_starts;
+  std::vector<uint32_t>  __pyx_v_island_ends;
   std::vector<BEDRead> ::size_type __pyx_v_i;
-  int __pyx_v_length;
+  uint32_t __pyx_v_length;
   double __pyx_v_avg;
   double __pyx_v_fc;
   double __pyx_v_pvalue;
@@ -1577,30 +1577,30 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   std::vector<double>  __pyx_r;
   int __pyx_t_1;
   std::vector<double>  __pyx_t_2;
-  std::vector<int>  __pyx_t_3;
+  std::vector<uint32_t>  __pyx_t_3;
   std::vector<Island> ::size_type __pyx_t_4;
   std::vector<Island> ::size_type __pyx_t_5;
   std::vector<BEDRead> ::size_type __pyx_t_6;
-  int __pyx_t_7;
+  uint32_t __pyx_t_7;
   std::vector<BEDRead> ::size_type __pyx_t_8;
   std::vector<BEDRead> ::size_type __pyx_t_9;
 
-  /* "sicer/associate_tags_with_control.pyx":27
+  /* "sicer/associate_tags_with_control.pyx":28
  *     int ctrl_lib_size
  * ) nogil:
  *     if islands.size() == 0:             # <<<<<<<<<<<<<<
+ *         # Return empty vector
  *         return vector[double]()
- * 
  */
   __pyx_t_1 = ((__pyx_v_islands.size() == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/associate_tags_with_control.pyx":28
- * ) nogil:
+    /* "sicer/associate_tags_with_control.pyx":30
  *     if islands.size() == 0:
+ *         # Return empty vector
  *         return vector[double]()             # <<<<<<<<<<<<<<
  * 
- *     cdef int pos, index
+ *     cdef uint32_t pos
  */
     try {
       __pyx_t_2 = std::vector<double> ();
@@ -1612,29 +1612,29 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 28, __pyx_L1_error)
+      __PYX_ERR(0, 30, __pyx_L1_error)
     }
     __pyx_r = __pyx_t_2;
     goto __pyx_L0;
 
-    /* "sicer/associate_tags_with_control.pyx":27
+    /* "sicer/associate_tags_with_control.pyx":28
  *     int ctrl_lib_size
  * ) nogil:
  *     if islands.size() == 0:             # <<<<<<<<<<<<<<
+ *         # Return empty vector
  *         return vector[double]()
- * 
  */
   }
 
-  /* "sicer/associate_tags_with_control.pyx":31
- * 
- *     cdef int pos, index
- *     cdef vector[int] island_starts = vector[int](islands.size())             # <<<<<<<<<<<<<<
- *     cdef vector[int] island_ends = vector[int](islands.size())
+  /* "sicer/associate_tags_with_control.pyx":34
+ *     cdef uint32_t pos
+ *     cdef int index
+ *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())             # <<<<<<<<<<<<<<
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
  *     for i in range(islands.size()):
  */
   try {
-    __pyx_t_3 = std::vector<int> (__pyx_v_islands.size());
+    __pyx_t_3 = std::vector<uint32_t> (__pyx_v_islands.size());
   } catch(...) {
     #ifdef WITH_THREAD
     PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1643,19 +1643,19 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 31, __pyx_L1_error)
+    __PYX_ERR(0, 34, __pyx_L1_error)
   }
   __pyx_v_island_starts = __pyx_t_3;
 
-  /* "sicer/associate_tags_with_control.pyx":32
- *     cdef int pos, index
- *     cdef vector[int] island_starts = vector[int](islands.size())
- *     cdef vector[int] island_ends = vector[int](islands.size())             # <<<<<<<<<<<<<<
+  /* "sicer/associate_tags_with_control.pyx":35
+ *     cdef int index
+ *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())             # <<<<<<<<<<<<<<
  *     for i in range(islands.size()):
  *         island_starts[i] = islands[i].start
  */
   try {
-    __pyx_t_3 = std::vector<int> (__pyx_v_islands.size());
+    __pyx_t_3 = std::vector<uint32_t> (__pyx_v_islands.size());
   } catch(...) {
     #ifdef WITH_THREAD
     PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1664,13 +1664,13 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 32, __pyx_L1_error)
+    __PYX_ERR(0, 35, __pyx_L1_error)
   }
   __pyx_v_island_ends = __pyx_t_3;
 
-  /* "sicer/associate_tags_with_control.pyx":33
- *     cdef vector[int] island_starts = vector[int](islands.size())
- *     cdef vector[int] island_ends = vector[int](islands.size())
+  /* "sicer/associate_tags_with_control.pyx":36
+ *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
  *     for i in range(islands.size()):             # <<<<<<<<<<<<<<
  *         island_starts[i] = islands[i].start
  *         island_ends[i] = islands[i].end
@@ -1680,8 +1680,8 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "sicer/associate_tags_with_control.pyx":34
- *     cdef vector[int] island_ends = vector[int](islands.size())
+    /* "sicer/associate_tags_with_control.pyx":37
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
  *     for i in range(islands.size()):
  *         island_starts[i] = islands[i].start             # <<<<<<<<<<<<<<
  *         island_ends[i] = islands[i].end
@@ -1690,7 +1690,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     __pyx_t_7 = (__pyx_v_islands[__pyx_v_i]).start;
     (__pyx_v_island_starts[__pyx_v_i]) = __pyx_t_7;
 
-    /* "sicer/associate_tags_with_control.pyx":35
+    /* "sicer/associate_tags_with_control.pyx":38
  *     for i in range(islands.size()):
  *         island_starts[i] = islands[i].start
  *         island_ends[i] = islands[i].end             # <<<<<<<<<<<<<<
@@ -1701,7 +1701,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     (__pyx_v_island_ends[__pyx_v_i]) = __pyx_t_7;
   }
 
-  /* "sicer/associate_tags_with_control.pyx":37
+  /* "sicer/associate_tags_with_control.pyx":40
  *         island_ends[i] = islands[i].end
  * 
  *     for i in range(treatment_reads.size()):             # <<<<<<<<<<<<<<
@@ -1713,7 +1713,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "sicer/associate_tags_with_control.pyx":38
+    /* "sicer/associate_tags_with_control.pyx":41
  * 
  *     for i in range(treatment_reads.size()):
  *         pos = get_tag_pos(treatment_reads[i], frag_size)             # <<<<<<<<<<<<<<
@@ -1722,7 +1722,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  */
     __pyx_v_pos = __pyx_f_5sicer_7utility_5utils_get_tag_pos((__pyx_v_treatment_reads[__pyx_v_i]), __pyx_v_frag_size);
 
-    /* "sicer/associate_tags_with_control.pyx":39
+    /* "sicer/associate_tags_with_control.pyx":42
  *     for i in range(treatment_reads.size()):
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)             # <<<<<<<<<<<<<<
@@ -1731,7 +1731,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  */
     __pyx_v_index = __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(__pyx_v_island_starts, __pyx_v_island_ends, __pyx_v_pos);
 
-    /* "sicer/associate_tags_with_control.pyx":40
+    /* "sicer/associate_tags_with_control.pyx":43
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  *         if index >= 0:             # <<<<<<<<<<<<<<
@@ -1741,7 +1741,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     __pyx_t_1 = ((__pyx_v_index >= 0) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/associate_tags_with_control.pyx":41
+      /* "sicer/associate_tags_with_control.pyx":44
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  *         if index >= 0:
  *             preinc(islands[index].obs_count)             # <<<<<<<<<<<<<<
@@ -1750,7 +1750,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  */
       (void)((++(__pyx_v_islands[__pyx_v_index]).obs_count));
 
-      /* "sicer/associate_tags_with_control.pyx":40
+      /* "sicer/associate_tags_with_control.pyx":43
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  *         if index >= 0:             # <<<<<<<<<<<<<<
@@ -1760,11 +1760,11 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     }
   }
 
-  /* "sicer/associate_tags_with_control.pyx":43
+  /* "sicer/associate_tags_with_control.pyx":46
  *             preinc(islands[index].obs_count)
  * 
  *     for i in range(control_reads.size()):             # <<<<<<<<<<<<<<
- *         pos = get_tag_pos(treatment_reads[i], frag_size)
+ *         pos = get_tag_pos(control_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  */
   __pyx_t_6 = __pyx_v_control_reads.size();
@@ -1772,26 +1772,26 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "sicer/associate_tags_with_control.pyx":44
+    /* "sicer/associate_tags_with_control.pyx":47
  * 
  *     for i in range(control_reads.size()):
- *         pos = get_tag_pos(treatment_reads[i], frag_size)             # <<<<<<<<<<<<<<
+ *         pos = get_tag_pos(control_reads[i], frag_size)             # <<<<<<<<<<<<<<
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  *         if index >= 0:
  */
-    __pyx_v_pos = __pyx_f_5sicer_7utility_5utils_get_tag_pos((__pyx_v_treatment_reads[__pyx_v_i]), __pyx_v_frag_size);
+    __pyx_v_pos = __pyx_f_5sicer_7utility_5utils_get_tag_pos((__pyx_v_control_reads[__pyx_v_i]), __pyx_v_frag_size);
 
-    /* "sicer/associate_tags_with_control.pyx":45
+    /* "sicer/associate_tags_with_control.pyx":48
  *     for i in range(control_reads.size()):
- *         pos = get_tag_pos(treatment_reads[i], frag_size)
+ *         pos = get_tag_pos(control_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)             # <<<<<<<<<<<<<<
  *         if index >= 0:
  *             preinc(islands[index].control_count)
  */
     __pyx_v_index = __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(__pyx_v_island_starts, __pyx_v_island_ends, __pyx_v_pos);
 
-    /* "sicer/associate_tags_with_control.pyx":46
- *         pos = get_tag_pos(treatment_reads[i], frag_size)
+    /* "sicer/associate_tags_with_control.pyx":49
+ *         pos = get_tag_pos(control_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  *         if index >= 0:             # <<<<<<<<<<<<<<
  *             preinc(islands[index].control_count)
@@ -1800,17 +1800,17 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     __pyx_t_1 = ((__pyx_v_index >= 0) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/associate_tags_with_control.pyx":47
+      /* "sicer/associate_tags_with_control.pyx":50
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  *         if index >= 0:
  *             preinc(islands[index].control_count)             # <<<<<<<<<<<<<<
  * 
- *     cdef int length
+ *     cdef uint32_t length
  */
       (void)((++(__pyx_v_islands[__pyx_v_index]).control_count));
 
-      /* "sicer/associate_tags_with_control.pyx":46
- *         pos = get_tag_pos(treatment_reads[i], frag_size)
+      /* "sicer/associate_tags_with_control.pyx":49
+ *         pos = get_tag_pos(control_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  *         if index >= 0:             # <<<<<<<<<<<<<<
  *             preinc(islands[index].control_count)
@@ -1819,8 +1819,8 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     }
   }
 
-  /* "sicer/associate_tags_with_control.pyx":51
- *     cdef int length
+  /* "sicer/associate_tags_with_control.pyx":54
+ *     cdef uint32_t length
  *     cdef double avg, fc, pvalue
  *     cdef vector[double] pvalue_vec = vector[double](islands.size())             # <<<<<<<<<<<<<<
  *     for i in range(islands.size()):
@@ -1836,11 +1836,11 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 51, __pyx_L1_error)
+    __PYX_ERR(0, 54, __pyx_L1_error)
   }
   __pyx_v_pvalue_vec = __pyx_t_2;
 
-  /* "sicer/associate_tags_with_control.pyx":52
+  /* "sicer/associate_tags_with_control.pyx":55
  *     cdef double avg, fc, pvalue
  *     cdef vector[double] pvalue_vec = vector[double](islands.size())
  *     for i in range(islands.size()):             # <<<<<<<<<<<<<<
@@ -1852,7 +1852,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "sicer/associate_tags_with_control.pyx":53
+    /* "sicer/associate_tags_with_control.pyx":56
  *     cdef vector[double] pvalue_vec = vector[double](islands.size())
  *     for i in range(islands.size()):
  *         if (islands[i].control_count > 0):             # <<<<<<<<<<<<<<
@@ -1862,16 +1862,16 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     __pyx_t_1 = (((__pyx_v_islands[__pyx_v_i]).control_count > 0) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/associate_tags_with_control.pyx":54
+      /* "sicer/associate_tags_with_control.pyx":57
  *     for i in range(islands.size()):
  *         if (islands[i].control_count > 0):
  *             avg = islands[i].control_count * scaling_factor             # <<<<<<<<<<<<<<
  *         else:
- *             length = islands[i].end - islands[i].start + 1
+ *             length = (islands[i].end - islands[i].start + 1) * ctrl_lib_size
  */
       __pyx_v_avg = ((__pyx_v_islands[__pyx_v_i]).control_count * __pyx_v_scaling_factor);
 
-      /* "sicer/associate_tags_with_control.pyx":53
+      /* "sicer/associate_tags_with_control.pyx":56
  *     cdef vector[double] pvalue_vec = vector[double](islands.size())
  *     for i in range(islands.size()):
  *         if (islands[i].control_count > 0):             # <<<<<<<<<<<<<<
@@ -1881,24 +1881,23 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
       goto __pyx_L14;
     }
 
-    /* "sicer/associate_tags_with_control.pyx":56
+    /* "sicer/associate_tags_with_control.pyx":59
  *             avg = islands[i].control_count * scaling_factor
  *         else:
- *             length = islands[i].end - islands[i].start + 1             # <<<<<<<<<<<<<<
- *             avg = fmin(0.25, (length * ctrl_lib_size / genome_size)) * scaling_factor
+ *             length = (islands[i].end - islands[i].start + 1) * ctrl_lib_size             # <<<<<<<<<<<<<<
+ *             avg = fmin(0.25, (length / genome_size)) * scaling_factor
  *         fc = islands[i].obs_count / avg
  */
     /*else*/ {
-      __pyx_v_length = (((__pyx_v_islands[__pyx_v_i]).end - (__pyx_v_islands[__pyx_v_i]).start) + 1);
+      __pyx_v_length = ((((__pyx_v_islands[__pyx_v_i]).end - (__pyx_v_islands[__pyx_v_i]).start) + 1) * __pyx_v_ctrl_lib_size);
 
-      /* "sicer/associate_tags_with_control.pyx":57
+      /* "sicer/associate_tags_with_control.pyx":60
  *         else:
- *             length = islands[i].end - islands[i].start + 1
- *             avg = fmin(0.25, (length * ctrl_lib_size / genome_size)) * scaling_factor             # <<<<<<<<<<<<<<
+ *             length = (islands[i].end - islands[i].start + 1) * ctrl_lib_size
+ *             avg = fmin(0.25, (length / genome_size)) * scaling_factor             # <<<<<<<<<<<<<<
  *         fc = islands[i].obs_count / avg
  *         if islands[i].obs_count > avg:
  */
-      __pyx_t_7 = (__pyx_v_length * __pyx_v_ctrl_lib_size);
       if (unlikely(__pyx_v_genome_size == 0)) {
         #ifdef WITH_THREAD
         PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1907,15 +1906,15 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 57, __pyx_L1_error)
+        __PYX_ERR(0, 60, __pyx_L1_error)
       }
-      __pyx_v_avg = (fmin(0.25, (((double)__pyx_t_7) / __pyx_v_genome_size)) * __pyx_v_scaling_factor);
+      __pyx_v_avg = (fmin(0.25, (((double)__pyx_v_length) / __pyx_v_genome_size)) * __pyx_v_scaling_factor);
     }
     __pyx_L14:;
 
-    /* "sicer/associate_tags_with_control.pyx":58
- *             length = islands[i].end - islands[i].start + 1
- *             avg = fmin(0.25, (length * ctrl_lib_size / genome_size)) * scaling_factor
+    /* "sicer/associate_tags_with_control.pyx":61
+ *             length = (islands[i].end - islands[i].start + 1) * ctrl_lib_size
+ *             avg = fmin(0.25, (length / genome_size)) * scaling_factor
  *         fc = islands[i].obs_count / avg             # <<<<<<<<<<<<<<
  *         if islands[i].obs_count > avg:
  *             pvalue = poisson_sf(islands[i].obs_count, avg)
@@ -1929,12 +1928,12 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 58, __pyx_L1_error)
+      __PYX_ERR(0, 61, __pyx_L1_error)
     }
     __pyx_v_fc = (((double)__pyx_t_7) / __pyx_v_avg);
 
-    /* "sicer/associate_tags_with_control.pyx":59
- *             avg = fmin(0.25, (length * ctrl_lib_size / genome_size)) * scaling_factor
+    /* "sicer/associate_tags_with_control.pyx":62
+ *             avg = fmin(0.25, (length / genome_size)) * scaling_factor
  *         fc = islands[i].obs_count / avg
  *         if islands[i].obs_count > avg:             # <<<<<<<<<<<<<<
  *             pvalue = poisson_sf(islands[i].obs_count, avg)
@@ -1943,7 +1942,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     __pyx_t_1 = (((__pyx_v_islands[__pyx_v_i]).obs_count > __pyx_v_avg) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/associate_tags_with_control.pyx":60
+      /* "sicer/associate_tags_with_control.pyx":63
  *         fc = islands[i].obs_count / avg
  *         if islands[i].obs_count > avg:
  *             pvalue = poisson_sf(islands[i].obs_count, avg)             # <<<<<<<<<<<<<<
@@ -1952,8 +1951,8 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  */
       __pyx_v_pvalue = __pyx_f_5scipy_7special_14cython_special_pdtrc((__pyx_v_islands[__pyx_v_i]).obs_count, __pyx_v_avg, 0);
 
-      /* "sicer/associate_tags_with_control.pyx":59
- *             avg = fmin(0.25, (length * ctrl_lib_size / genome_size)) * scaling_factor
+      /* "sicer/associate_tags_with_control.pyx":62
+ *             avg = fmin(0.25, (length / genome_size)) * scaling_factor
  *         fc = islands[i].obs_count / avg
  *         if islands[i].obs_count > avg:             # <<<<<<<<<<<<<<
  *             pvalue = poisson_sf(islands[i].obs_count, avg)
@@ -1962,7 +1961,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
       goto __pyx_L15;
     }
 
-    /* "sicer/associate_tags_with_control.pyx":62
+    /* "sicer/associate_tags_with_control.pyx":65
  *             pvalue = poisson_sf(islands[i].obs_count, avg)
  *         else:
  *             pvalue = 1             # <<<<<<<<<<<<<<
@@ -1974,7 +1973,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     }
     __pyx_L15:;
 
-    /* "sicer/associate_tags_with_control.pyx":64
+    /* "sicer/associate_tags_with_control.pyx":67
  *             pvalue = 1
  * 
  *         pvalue_vec[i] = pvalue             # <<<<<<<<<<<<<<
@@ -1983,7 +1982,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  */
     (__pyx_v_pvalue_vec[__pyx_v_i]) = __pyx_v_pvalue;
 
-    /* "sicer/associate_tags_with_control.pyx":65
+    /* "sicer/associate_tags_with_control.pyx":68
  * 
  *         pvalue_vec[i] = pvalue
  *         islands[i].pvalue = pvalue             # <<<<<<<<<<<<<<
@@ -1992,7 +1991,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  */
     (__pyx_v_islands[__pyx_v_i]).pvalue = __pyx_v_pvalue;
 
-    /* "sicer/associate_tags_with_control.pyx":66
+    /* "sicer/associate_tags_with_control.pyx":69
  *         pvalue_vec[i] = pvalue
  *         islands[i].pvalue = pvalue
  *         islands[i].fc = fc             # <<<<<<<<<<<<<<
@@ -2002,7 +2001,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
     (__pyx_v_islands[__pyx_v_i]).fc = __pyx_v_fc;
   }
 
-  /* "sicer/associate_tags_with_control.pyx":68
+  /* "sicer/associate_tags_with_control.pyx":71
  *         islands[i].fc = fc
  * 
  *     return pvalue_vec             # <<<<<<<<<<<<<<
@@ -2012,7 +2011,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   __pyx_r = __pyx_v_pvalue_vec;
   goto __pyx_L0;
 
-  /* "sicer/associate_tags_with_control.pyx":18
+  /* "sicer/associate_tags_with_control.pyx":19
  * from scipy.stats import rankdata
  * 
  * cdef vector[double] _associate_tag_count_to_regions_by_chrom (             # <<<<<<<<<<<<<<
@@ -2028,7 +2027,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   return __pyx_r;
 }
 
-/* "sicer/associate_tags_with_control.pyx":70
+/* "sicer/associate_tags_with_control.pyx":73
  *     return pvalue_vec
  * 
  * cdef ChromIslandContainer _associate_tag_count_to_region(             # <<<<<<<<<<<<<<
@@ -2070,20 +2069,20 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   int __pyx_t_18;
   __Pyx_RefNannySetupContext("_associate_tag_count_to_region", 0);
 
-  /* "sicer/associate_tags_with_control.pyx":80
+  /* "sicer/associate_tags_with_control.pyx":83
  * ):
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = islands.getChromosomes()             # <<<<<<<<<<<<<<
  *     cdef int ctrl_lib_size = control_reads.getReadCount()
  *     cdef int i
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromosomes(__pyx_v_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromosomes(__pyx_v_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/associate_tags_with_control.pyx":81
+  /* "sicer/associate_tags_with_control.pyx":84
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = islands.getChromosomes()
  *     cdef int ctrl_lib_size = control_reads.getReadCount()             # <<<<<<<<<<<<<<
@@ -2092,29 +2091,18 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
   __pyx_v_ctrl_lib_size = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_control_reads->__pyx_vtab)->getReadCount(__pyx_v_control_reads, 0);
 
-  /* "sicer/associate_tags_with_control.pyx":85
+  /* "sicer/associate_tags_with_control.pyx":88
  *     cdef vector[double] pvalues
  *     cdef vector[double] returned_vec
  *     pvalues.reserve(islands.getIslandCount())             # <<<<<<<<<<<<<<
- *     print("fuck you")
- *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
- */
-  __pyx_v_pvalues.reserve(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getIslandCount(__pyx_v_islands, 0));
-
-  /* "sicer/associate_tags_with_control.pyx":86
- *     cdef vector[double] returned_vec
- *     pvalues.reserve(islands.getIslandCount())
- *     print("fuck you")             # <<<<<<<<<<<<<<
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         returned_vec = _associate_tag_count_to_regions_by_chrom(
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_pvalues.reserve(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getIslandCount(__pyx_v_islands, 0));
 
-  /* "sicer/associate_tags_with_control.pyx":87
+  /* "sicer/associate_tags_with_control.pyx":89
+ *     cdef vector[double] returned_vec
  *     pvalues.reserve(islands.getIslandCount())
- *     print("fuck you")
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
  *         returned_vec = _associate_tag_count_to_regions_by_chrom(
  *                             deref(islands.getVectorPtr(chroms.at(i))),
@@ -2162,7 +2150,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/associate_tags_with_control.pyx":89
+                            /* "sicer/associate_tags_with_control.pyx":91
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         returned_vec = _associate_tag_count_to_regions_by_chrom(
  *                             deref(islands.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
@@ -2179,10 +2167,10 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 89, __pyx_L8_error)
+                              __PYX_ERR(0, 91, __pyx_L8_error)
                             }
 
-                            /* "sicer/associate_tags_with_control.pyx":90
+                            /* "sicer/associate_tags_with_control.pyx":92
  *         returned_vec = _associate_tag_count_to_regions_by_chrom(
  *                             deref(islands.getVectorPtr(chroms.at(i))),
  *                             deref(treatment_reads.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
@@ -2199,10 +2187,10 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 90, __pyx_L8_error)
+                              __PYX_ERR(0, 92, __pyx_L8_error)
                             }
 
-                            /* "sicer/associate_tags_with_control.pyx":91
+                            /* "sicer/associate_tags_with_control.pyx":93
  *                             deref(islands.getVectorPtr(chroms.at(i))),
  *                             deref(treatment_reads.getVectorPtr(chroms.at(i))),
  *                             deref(control_reads.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
@@ -2219,11 +2207,11 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 91, __pyx_L8_error)
+                              __PYX_ERR(0, 93, __pyx_L8_error)
                             }
 
-                            /* "sicer/associate_tags_with_control.pyx":88
- *     print("fuck you")
+                            /* "sicer/associate_tags_with_control.pyx":90
+ *     pvalues.reserve(islands.getIslandCount())
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         returned_vec = _associate_tag_count_to_regions_by_chrom(             # <<<<<<<<<<<<<<
  *                             deref(islands.getVectorPtr(chroms.at(i))),
@@ -2231,7 +2219,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
                             __pyx_v_returned_vec = __pyx_f_5sicer_27associate_tags_with_control__associate_tag_count_to_regions_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, __pyx_t_6)), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_treatment_reads->__pyx_vtab)->getVectorPtr(__pyx_v_treatment_reads, __pyx_t_7)), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_control_reads->__pyx_vtab)->getVectorPtr(__pyx_v_control_reads, __pyx_t_8)), __pyx_v_genome_size, __pyx_v_scaling_factor, __pyx_v_frag_size, __pyx_v_ctrl_lib_size);
 
-                            /* "sicer/associate_tags_with_control.pyx":98
+                            /* "sicer/associate_tags_with_control.pyx":100
  *                         )
  *         # Concatenate returned vectors
  *         pvalues.insert(pvalues.end(), returned_vec.begin(), returned_vec.end())             # <<<<<<<<<<<<<<
@@ -2248,7 +2236,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 98, __pyx_L8_error)
+                              __PYX_ERR(0, 100, __pyx_L8_error)
                             }
                             goto __pyx_L11;
                             __pyx_L8_error:;
@@ -2333,9 +2321,9 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
         #endif
       }
 
-      /* "sicer/associate_tags_with_control.pyx":87
+      /* "sicer/associate_tags_with_control.pyx":89
+ *     cdef vector[double] returned_vec
  *     pvalues.reserve(islands.getIslandCount())
- *     print("fuck you")
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
  *         returned_vec = _associate_tag_count_to_regions_by_chrom(
  *                             deref(islands.getVectorPtr(chroms.at(i))),
@@ -2359,27 +2347,27 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
       }
   }
 
-  /* "sicer/associate_tags_with_control.pyx":100
+  /* "sicer/associate_tags_with_control.pyx":102
  *         pvalues.insert(pvalues.end(), returned_vec.begin(), returned_vec.end())
  * 
  *     cdef list pvalues_list = pvalues             # <<<<<<<<<<<<<<
  *     cdef vector[double] pvalue_rank = rankdata(pvalues_list)
  *     cdef vector[Island]* vptr
  */
-  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 102, __pyx_L1_error)
   __pyx_v_pvalues_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "sicer/associate_tags_with_control.pyx":101
+  /* "sicer/associate_tags_with_control.pyx":103
  * 
  *     cdef list pvalues_list = pvalues
  *     cdef vector[double] pvalue_rank = rankdata(pvalues_list)             # <<<<<<<<<<<<<<
  *     cdef vector[Island]* vptr
  *     cdef int k = 0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_10 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
@@ -2393,14 +2381,14 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   }
   __pyx_t_1 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_10, __pyx_v_pvalues_list) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_v_pvalues_list);
   __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_11 = __pyx_convert_vector_from_py_double(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_11 = __pyx_convert_vector_from_py_double(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_pvalue_rank = __pyx_t_11;
 
-  /* "sicer/associate_tags_with_control.pyx":103
+  /* "sicer/associate_tags_with_control.pyx":105
  *     cdef vector[double] pvalue_rank = rankdata(pvalues_list)
  *     cdef vector[Island]* vptr
  *     cdef int k = 0             # <<<<<<<<<<<<<<
@@ -2409,7 +2397,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
   __pyx_v_k = 0;
 
-  /* "sicer/associate_tags_with_control.pyx":106
+  /* "sicer/associate_tags_with_control.pyx":108
  *     cdef double alpha_stat
  * 
  *     for i in range(chroms.size()):             # <<<<<<<<<<<<<<
@@ -2421,7 +2409,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_4; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "sicer/associate_tags_with_control.pyx":107
+    /* "sicer/associate_tags_with_control.pyx":109
  * 
  *     for i in range(chroms.size()):
  *         vptr = islands.getVectorPtr(chroms[i])             # <<<<<<<<<<<<<<
@@ -2430,7 +2418,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
     __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, (__pyx_v_chroms[__pyx_v_i]));
 
-    /* "sicer/associate_tags_with_control.pyx":108
+    /* "sicer/associate_tags_with_control.pyx":110
  *     for i in range(chroms.size()):
  *         vptr = islands.getVectorPtr(chroms[i])
  *         for j in range(deref(vptr).size()):             # <<<<<<<<<<<<<<
@@ -2442,7 +2430,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
     for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
       __pyx_v_j = __pyx_t_15;
 
-      /* "sicer/associate_tags_with_control.pyx":109
+      /* "sicer/associate_tags_with_control.pyx":111
  *         vptr = islands.getVectorPtr(chroms[i])
  *         for j in range(deref(vptr).size()):
  *             alpha_stat = pvalues[k] * pvalues.size() / pvalue_rank[k]             # <<<<<<<<<<<<<<
@@ -2453,11 +2441,11 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
       __pyx_t_17 = (__pyx_v_pvalue_rank[__pyx_v_k]);
       if (unlikely(__pyx_t_17 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 109, __pyx_L1_error)
+        __PYX_ERR(0, 111, __pyx_L1_error)
       }
       __pyx_v_alpha_stat = (__pyx_t_16 / __pyx_t_17);
 
-      /* "sicer/associate_tags_with_control.pyx":110
+      /* "sicer/associate_tags_with_control.pyx":112
  *         for j in range(deref(vptr).size()):
  *             alpha_stat = pvalues[k] * pvalues.size() / pvalue_rank[k]
  *             if alpha_stat > 1:             # <<<<<<<<<<<<<<
@@ -2467,7 +2455,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
       __pyx_t_18 = ((__pyx_v_alpha_stat > 1.0) != 0);
       if (__pyx_t_18) {
 
-        /* "sicer/associate_tags_with_control.pyx":111
+        /* "sicer/associate_tags_with_control.pyx":113
  *             alpha_stat = pvalues[k] * pvalues.size() / pvalue_rank[k]
  *             if alpha_stat > 1:
  *                 alpha_stat = 1             # <<<<<<<<<<<<<<
@@ -2476,7 +2464,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
         __pyx_v_alpha_stat = 1.0;
 
-        /* "sicer/associate_tags_with_control.pyx":110
+        /* "sicer/associate_tags_with_control.pyx":112
  *         for j in range(deref(vptr).size()):
  *             alpha_stat = pvalues[k] * pvalues.size() / pvalue_rank[k]
  *             if alpha_stat > 1:             # <<<<<<<<<<<<<<
@@ -2485,7 +2473,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
       }
 
-      /* "sicer/associate_tags_with_control.pyx":112
+      /* "sicer/associate_tags_with_control.pyx":114
  *             if alpha_stat > 1:
  *                 alpha_stat = 1
  *             deref(vptr)[j].alpha_stat = alpha_stat             # <<<<<<<<<<<<<<
@@ -2494,7 +2482,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
       ((*__pyx_v_vptr)[__pyx_v_j]).alpha_stat = __pyx_v_alpha_stat;
 
-      /* "sicer/associate_tags_with_control.pyx":113
+      /* "sicer/associate_tags_with_control.pyx":115
  *                 alpha_stat = 1
  *             deref(vptr)[j].alpha_stat = alpha_stat
  *             preinc(k)             # <<<<<<<<<<<<<<
@@ -2505,7 +2493,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
     }
   }
 
-  /* "sicer/associate_tags_with_control.pyx":115
+  /* "sicer/associate_tags_with_control.pyx":117
  *             preinc(k)
  * 
  *     islands.updateIslandCount()             # <<<<<<<<<<<<<<
@@ -2514,7 +2502,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
   ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->updateIslandCount(__pyx_v_islands, 0);
 
-  /* "sicer/associate_tags_with_control.pyx":117
+  /* "sicer/associate_tags_with_control.pyx":119
  *     islands.updateIslandCount()
  * 
  *     return islands             # <<<<<<<<<<<<<<
@@ -2526,7 +2514,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   __pyx_r = __pyx_v_islands;
   goto __pyx_L0;
 
-  /* "sicer/associate_tags_with_control.pyx":70
+  /* "sicer/associate_tags_with_control.pyx":73
  *     return pvalue_vec
  * 
  * cdef ChromIslandContainer _associate_tag_count_to_region(             # <<<<<<<<<<<<<<
@@ -2548,7 +2536,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   return __pyx_r;
 }
 
-/* "sicer/associate_tags_with_control.pyx":119
+/* "sicer/associate_tags_with_control.pyx":121
  *     return islands
  * 
  * cpdef ChromIslandContainer associate_tags_with_control(             # <<<<<<<<<<<<<<
@@ -2567,18 +2555,18 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("associate_tags_with_control", 0);
 
-  /* "sicer/associate_tags_with_control.pyx":128
+  /* "sicer/associate_tags_with_control.pyx":130
  *     num_cpu
  * ):
  *     print("Calculating significance of candidate islands using the control library...")             # <<<<<<<<<<<<<<
  *     return _associate_tag_count_to_region(
  *         islands,
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/associate_tags_with_control.pyx":129
+  /* "sicer/associate_tags_with_control.pyx":131
  * ):
  *     print("Calculating significance of candidate islands using the control library...")
  *     return _associate_tag_count_to_region(             # <<<<<<<<<<<<<<
@@ -2587,83 +2575,83 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
 
-  /* "sicer/associate_tags_with_control.pyx":130
+  /* "sicer/associate_tags_with_control.pyx":132
  *     print("Calculating significance of candidate islands using the control library...")
  *     return _associate_tag_count_to_region(
  *         islands,             # <<<<<<<<<<<<<<
  *         treatment_reads,
  *         control_reads,
  */
-  if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer))))) __PYX_ERR(0, 130, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer))))) __PYX_ERR(0, 132, __pyx_L1_error)
 
-  /* "sicer/associate_tags_with_control.pyx":131
+  /* "sicer/associate_tags_with_control.pyx":133
  *     return _associate_tag_count_to_region(
  *         islands,
  *         treatment_reads,             # <<<<<<<<<<<<<<
  *         control_reads,
  *         genome_size,
  */
-  if (!(likely(((__pyx_v_treatment_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_treatment_reads, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 131, __pyx_L1_error)
+  if (!(likely(((__pyx_v_treatment_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_treatment_reads, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 133, __pyx_L1_error)
 
-  /* "sicer/associate_tags_with_control.pyx":132
+  /* "sicer/associate_tags_with_control.pyx":134
  *         islands,
  *         treatment_reads,
  *         control_reads,             # <<<<<<<<<<<<<<
  *         genome_size,
  *         scaling_factor,
  */
-  if (!(likely(((__pyx_v_control_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_control_reads, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 132, __pyx_L1_error)
+  if (!(likely(((__pyx_v_control_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_control_reads, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 134, __pyx_L1_error)
 
-  /* "sicer/associate_tags_with_control.pyx":133
+  /* "sicer/associate_tags_with_control.pyx":135
  *         treatment_reads,
  *         control_reads,
  *         genome_size,             # <<<<<<<<<<<<<<
  *         scaling_factor,
  *         frag_size,
  */
-  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_v_genome_size); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_v_genome_size); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 135, __pyx_L1_error)
 
-  /* "sicer/associate_tags_with_control.pyx":134
+  /* "sicer/associate_tags_with_control.pyx":136
  *         control_reads,
  *         genome_size,
  *         scaling_factor,             # <<<<<<<<<<<<<<
  *         frag_size,
  *         num_cpu
  */
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_scaling_factor); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_scaling_factor); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L1_error)
 
-  /* "sicer/associate_tags_with_control.pyx":135
+  /* "sicer/associate_tags_with_control.pyx":137
  *         genome_size,
  *         scaling_factor,
  *         frag_size,             # <<<<<<<<<<<<<<
  *         num_cpu
  *     )
  */
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_frag_size); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_frag_size); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L1_error)
 
-  /* "sicer/associate_tags_with_control.pyx":136
+  /* "sicer/associate_tags_with_control.pyx":138
  *         scaling_factor,
  *         frag_size,
  *         num_cpu             # <<<<<<<<<<<<<<
  *     )
  * 
  */
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 138, __pyx_L1_error)
 
-  /* "sicer/associate_tags_with_control.pyx":129
+  /* "sicer/associate_tags_with_control.pyx":131
  * ):
  *     print("Calculating significance of candidate islands using the control library...")
  *     return _associate_tag_count_to_region(             # <<<<<<<<<<<<<<
  *         islands,
  *         treatment_reads,
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_27associate_tags_with_control__associate_tag_count_to_region(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands), ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_treatment_reads), ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_control_reads), __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_27associate_tags_with_control__associate_tag_count_to_region(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands), ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_treatment_reads), ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_control_reads), __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/associate_tags_with_control.pyx":119
+  /* "sicer/associate_tags_with_control.pyx":121
  *     return islands
  * 
  * cpdef ChromIslandContainer associate_tags_with_control(             # <<<<<<<<<<<<<<
@@ -2728,41 +2716,41 @@ static PyObject *__pyx_pw_5sicer_27associate_tags_with_control_1associate_tags_w
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_treatment_reads)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 1); __PYX_ERR(0, 119, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 1); __PYX_ERR(0, 121, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_control_reads)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 2); __PYX_ERR(0, 119, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 2); __PYX_ERR(0, 121, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 3); __PYX_ERR(0, 119, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 3); __PYX_ERR(0, 121, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_scaling_factor)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 4); __PYX_ERR(0, 119, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 4); __PYX_ERR(0, 121, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_frag_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 5); __PYX_ERR(0, 119, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 5); __PYX_ERR(0, 121, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 6); __PYX_ERR(0, 119, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, 6); __PYX_ERR(0, 121, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "associate_tags_with_control") < 0)) __PYX_ERR(0, 119, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "associate_tags_with_control") < 0)) __PYX_ERR(0, 121, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 7) {
       goto __pyx_L5_argtuple_error;
@@ -2785,7 +2773,7 @@ static PyObject *__pyx_pw_5sicer_27associate_tags_with_control_1associate_tags_w
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 119, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("associate_tags_with_control", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 121, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.associate_tags_with_control.associate_tags_with_control", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2804,7 +2792,7 @@ static PyObject *__pyx_pf_5sicer_27associate_tags_with_control_associate_tags_wi
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("associate_tags_with_control", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_27associate_tags_with_control_associate_tags_with_control(__pyx_v_islands, __pyx_v_treatment_reads, __pyx_v_control_reads, __pyx_v_genome_size, __pyx_v_scaling_factor, __pyx_v_frag_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_27associate_tags_with_control_associate_tags_with_control(__pyx_v_islands, __pyx_v_treatment_reads, __pyx_v_control_reads, __pyx_v_genome_size, __pyx_v_scaling_factor, __pyx_v_frag_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3234,7 +3222,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_control_reads, __pyx_k_control_reads, sizeof(__pyx_k_control_reads), 0, 0, 1, 1},
   {&__pyx_n_s_frag_size, __pyx_k_frag_size, sizeof(__pyx_k_frag_size), 0, 0, 1, 1},
-  {&__pyx_kp_u_fuck_you, __pyx_k_fuck_you, sizeof(__pyx_k_fuck_you), 0, 1, 0, 0},
   {&__pyx_n_s_genome_size, __pyx_k_genome_size, sizeof(__pyx_k_genome_size), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_islands, __pyx_k_islands, sizeof(__pyx_k_islands), 0, 0, 1, 1},
@@ -3252,8 +3239,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 33, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 130, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3263,27 +3250,16 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/associate_tags_with_control.pyx":86
- *     cdef vector[double] returned_vec
- *     pvalues.reserve(islands.getIslandCount())
- *     print("fuck you")             # <<<<<<<<<<<<<<
- *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
- *         returned_vec = _associate_tag_count_to_regions_by_chrom(
- */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_fuck_you); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 86, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-
-  /* "sicer/associate_tags_with_control.pyx":128
+  /* "sicer/associate_tags_with_control.pyx":130
  *     num_cpu
  * ):
  *     print("Calculating significance of candidate islands using the control library...")             # <<<<<<<<<<<<<<
  *     return _associate_tag_count_to_region(
  *         islands,
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_Calculating_significance_of_cand); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 128, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__2);
-  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Calculating_significance_of_cand); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple_);
+  __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3386,7 +3362,7 @@ static int __Pyx_modinit_function_import_code(void) {
   /*--- Function import code ---*/
   __pyx_t_1 = PyImport_ImportModule("sicer.utility.utils"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "get_tag_pos", (void (**)(void))&__pyx_f_5sicer_7utility_5utils_get_tag_pos, "int (BEDRead, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "bin_tag_in_island", (void (**)(void))&__pyx_f_5sicer_7utility_5utils_bin_tag_in_island, "int (std::vector<int>  &, std::vector<int>  &, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "bin_tag_in_island", (void (**)(void))&__pyx_f_5sicer_7utility_5utils_bin_tag_in_island, "int (std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   Py_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_2 = PyImport_ImportModule("scipy.special.cython_special"); if (!__pyx_t_2) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_2, "pdtrc", (void (**)(void))&__pyx_f_5scipy_7special_14cython_special_pdtrc, "double (double, double, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -3598,24 +3574,24 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/associate_tags_with_control.pyx":16
+  /* "sicer/associate_tags_with_control.pyx":17
  * 
  * from scipy.special.cython_special cimport pdtrc as poisson_sf
  * from scipy.stats import rankdata             # <<<<<<<<<<<<<<
  * 
  * cdef vector[double] _associate_tag_count_to_regions_by_chrom (
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_rankdata);
   __Pyx_GIVEREF(__pyx_n_s_rankdata);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_rankdata);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_stats, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_stats, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rankdata, __pyx_t_1) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rankdata, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -3773,26 +3749,6 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
         PyGILState_Release(state);
 #endif
 }
-
-/* PyObjectCall */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    PyObject *result;
-    ternaryfunc call = func->ob_type->tp_call;
-    if (unlikely(!call))
-        return PyObject_Call(func, arg, kw);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = (*call)(func, arg, kw);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
 
 /* PyDictVersioning */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -3995,6 +3951,26 @@ done:
     return result;
 }
 #endif
+#endif
+
+/* PyObjectCall */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = func->ob_type->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
 #endif
 
 /* PyObjectCall2Args */

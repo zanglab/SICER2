@@ -6,6 +6,7 @@ from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowCon
 # Cython Imports
 from libc.math cimport log
 from libcpp cimport bool
+from libc.stdint cimport uint32_t
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as preinc
 from libcpp.map cimport map as mapcpp
@@ -26,13 +27,14 @@ cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) 
         islands.swap(filtered_islands)
 
 cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:
-    cdef int proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
+    cdef uint32_t proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
     # Create new vector of islands b/c we generally throw away majority of islands
     cdef vector[Island] final_islands
     cdef string chrom
-    cdef int curr_start
-    cdef int curr_end
+    cdef uint32_t curr_start
+    cdef uint32_t curr_end
     cdef double curr_score
+    cdef uint32_t dist
 
     if islands.size() > 0:
         if islands.size() == 1:

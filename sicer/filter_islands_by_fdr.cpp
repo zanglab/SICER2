@@ -13,19 +13,19 @@
             "-stdlib=libc++"
         ],
         "include_dirs": [
+            "./sicer/utility",
             "sicer/shared",
             "./sicer/shared",
-            "./sicer/utility",
             "sicer/utility",
             "."
         ],
         "language": "c++",
-        "name": "sicer.find_islands",
+        "name": "sicer.filter_islands_by_fdr",
         "sources": [
-            "sicer/find_islands.pyx"
+            "sicer/filter_islands_by_fdr.pyx"
         ]
     },
-    "module_name": "sicer.find_islands"
+    "module_name": "sicer.filter_islands_by_fdr"
 }
 END: Cython Metadata */
 
@@ -633,8 +633,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__sicer__find_islands
-#define __PYX_HAVE_API__sicer__find_islands
+#define __PYX_HAVE__sicer__filter_islands_by_fdr
+#define __PYX_HAVE_API__sicer__filter_islands_by_fdr
 /* Early includes */
 #include <string.h>
 #include "ios"
@@ -649,7 +649,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <utility>
 #include <map>
 #include <math.h>
-#include <algorithm>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -856,9 +855,31 @@ static int __pyx_clineno = 0;
 static const char * __pyx_cfilenm= __FILE__;
 static const char *__pyx_filename;
 
+/* Header.proto */
+#if !defined(CYTHON_CCOMPLEX)
+  #if defined(__cplusplus)
+    #define CYTHON_CCOMPLEX 1
+  #elif defined(_Complex_I)
+    #define CYTHON_CCOMPLEX 1
+  #else
+    #define CYTHON_CCOMPLEX 0
+  #endif
+#endif
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    #include <complex>
+  #else
+    #include <complex.h>
+  #endif
+#endif
+#if CYTHON_CCOMPLEX && !defined(__cplusplus) && defined(__sun__) && defined(__GNUC__)
+  #undef _Complex_I
+  #define _Complex_I 1.0fj
+#endif
+
 
 static const char *__pyx_f[] = {
-  "sicer/find_islands.pyx",
+  "sicer/filter_islands_by_fdr.pyx",
   "stringsource",
   "sicer/shared/chrom_containers.pxd",
 };
@@ -873,6 +894,18 @@ static const char *__pyx_f[] = {
 #define __Pyx_FastGIL_Remember()
 #define __Pyx_FastGIL_Forget()
 #define __Pyx_FastGilFuncInit()
+
+/* Declarations.proto */
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    typedef ::std::complex< double > __pyx_t_double_complex;
+  #else
+    typedef double _Complex __pyx_t_double_complex;
+  #endif
+#else
+    typedef struct { double real, imag; } __pyx_t_double_complex;
+#endif
+static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double, double);
 
 
 /*--- Type declarations ---*/
@@ -1126,50 +1159,12 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
-/* PyCFunctionFastCall.proto */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
-#else
-#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
-#endif
-
-/* PyFunctionFastCall.proto */
-#if CYTHON_FAST_PYCALL
-#define __Pyx_PyFunction_FastCall(func, args, nargs)\
-    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
-#if 1 || PY_VERSION_HEX < 0x030600B1
-static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs);
-#else
-#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
-#endif
-#define __Pyx_BUILD_ASSERT_EXPR(cond)\
-    (sizeof(char [1 - 2*!(cond)]) - 1)
-#ifndef Py_MEMBER_SIZE
-#define Py_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
-#endif
-  static size_t __pyx_pyframe_localsplus_offset = 0;
-  #include "frameobject.h"
-  #define __Pxy_PyFrame_Initialize_Offsets()\
-    ((void)__Pyx_BUILD_ASSERT_EXPR(sizeof(PyFrameObject) == offsetof(PyFrameObject, f_localsplus) + Py_MEMBER_SIZE(PyFrameObject, f_localsplus)),\
-     (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
-  #define __Pyx_PyFrame_GetLocalsplus(frame)\
-    (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
-#endif
-
 /* PyObjectCall.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
 #else
 #define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
-
-/* PyObjectCallMethO.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
-#endif
-
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
 /* ExtTypeTest.proto */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
@@ -1199,6 +1194,12 @@ static PyTypeObject *__Pyx_ImportType(PyObject* module, const char *module_name,
 
 /* GetVTable.proto */
 static void* __Pyx_GetVtable(PyObject *dict);
+
+/* Import.proto */
+static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
+
+/* ImportFrom.proto */
+static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
 
 /* PyDictVersioning.proto */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -1294,11 +1295,68 @@ static void __Pyx_CppExn2PyErr() {
 }
 #endif
 
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
 /* None.proto */
 #include <new>
+
+/* RealImag.proto */
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    #define __Pyx_CREAL(z) ((z).real())
+    #define __Pyx_CIMAG(z) ((z).imag())
+  #else
+    #define __Pyx_CREAL(z) (__real__(z))
+    #define __Pyx_CIMAG(z) (__imag__(z))
+  #endif
+#else
+    #define __Pyx_CREAL(z) ((z).real)
+    #define __Pyx_CIMAG(z) ((z).imag)
+#endif
+#if defined(__cplusplus) && CYTHON_CCOMPLEX\
+        && (defined(_WIN32) || defined(__clang__) || (defined(__GNUC__) && (__GNUC__ >= 5 || __GNUC__ == 4 && __GNUC_MINOR__ >= 4 )) || __cplusplus >= 201103)
+    #define __Pyx_SET_CREAL(z,x) ((z).real(x))
+    #define __Pyx_SET_CIMAG(z,y) ((z).imag(y))
+#else
+    #define __Pyx_SET_CREAL(z,x) __Pyx_CREAL(z) = (x)
+    #define __Pyx_SET_CIMAG(z,y) __Pyx_CIMAG(z) = (y)
+#endif
+
+/* Arithmetic.proto */
+#if CYTHON_CCOMPLEX
+    #define __Pyx_c_eq_double(a, b)   ((a)==(b))
+    #define __Pyx_c_sum_double(a, b)  ((a)+(b))
+    #define __Pyx_c_diff_double(a, b) ((a)-(b))
+    #define __Pyx_c_prod_double(a, b) ((a)*(b))
+    #define __Pyx_c_quot_double(a, b) ((a)/(b))
+    #define __Pyx_c_neg_double(a)     (-(a))
+  #ifdef __cplusplus
+    #define __Pyx_c_is_zero_double(z) ((z)==(double)0)
+    #define __Pyx_c_conj_double(z)    (::std::conj(z))
+    #if 1
+        #define __Pyx_c_abs_double(z)     (::std::abs(z))
+        #define __Pyx_c_pow_double(a, b)  (::std::pow(a, b))
+    #endif
+  #else
+    #define __Pyx_c_is_zero_double(z) ((z)==0)
+    #define __Pyx_c_conj_double(z)    (conj(z))
+    #if 1
+        #define __Pyx_c_abs_double(z)     (cabs(z))
+        #define __Pyx_c_pow_double(a, b)  (cpow(a, b))
+    #endif
+ #endif
+#else
+    static CYTHON_INLINE int __Pyx_c_eq_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_sum_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_diff_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_prod_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_quot_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_neg_double(__pyx_t_double_complex);
+    static CYTHON_INLINE int __Pyx_c_is_zero_double(__pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_conj_double(__pyx_t_double_complex);
+    #if 1
+        static CYTHON_INLINE double __Pyx_c_abs_double(__pyx_t_double_complex);
+        static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_pow_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    #endif
+#endif
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
@@ -1346,7 +1404,6 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 /* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'sicer.utility.utils' */
-static double (*__pyx_f_5sicer_7utility_5utils_poisson)(int, double, int __pyx_skip_dispatch); /*proto*/
 
 /* Module declarations from 'libcpp.utility' */
 
@@ -1359,120 +1416,111 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandCo
 
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from 'libcpp' */
+/* Module declarations from 'scipy.special.cython_special' */
+static double (*__pyx_f_5scipy_7special_14cython_special_pdtrc)(double, double, int __pyx_skip_dispatch); /*proto*/
 
-/* Module declarations from 'libcpp.algorithm' */
-
-/* Module declarations from 'sicer.find_islands' */
-static int __pyx_v_5sicer_12find_islands_WINDOW_SIZE_BUFFER;
-static void __pyx_f_5sicer_12find_islands__filter_by_threshold(std::vector<Island>  &, double); /*proto*/
-static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(std::vector<Island>  &, int); /*proto*/
-static void __pyx_f_5sicer_12find_islands__generate_islands(std::vector<Window>  &, std::vector<Island>  &, int, double); /*proto*/
-static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(std::vector<Window>  &, std::vector<Island>  &, int, double, int, double); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_12find_islands__find_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, PyObject *, int, double, int, double, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_12find_islands_find_islands(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+/* Module declarations from 'sicer.filter_islands_by_fdr' */
+static void __pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr_by_chrom(std::vector<Island>  &, double); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, double, int); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
-#define __Pyx_MODULE_NAME "sicer.find_islands"
-extern int __pyx_module_is_main_sicer__find_islands;
-int __pyx_module_is_main_sicer__find_islands = 0;
+#define __Pyx_MODULE_NAME "sicer.filter_islands_by_fdr"
+extern int __pyx_module_is_main_sicer__filter_islands_by_fdr;
+int __pyx_module_is_main_sicer__filter_islands_by_fdr = 0;
 
-/* Implementation of 'sicer.find_islands' */
+/* Implementation of 'sicer.filter_islands_by_fdr' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_print;
+static const char __pyx_k_fdr[] = "fdr";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_import[] = "__import__";
+static const char __pyx_k_islands[] = "islands";
 static const char __pyx_k_num_cpu[] = "num_cpu";
-static const char __pyx_k_windows[] = "windows";
-static const char __pyx_k_gap_size[] = "gap_size";
+static const char __pyx_k_rankdata[] = "rankdata";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
-static const char __pyx_k_genome_data[] = "genome_data";
-static const char __pyx_k_Island_count[] = "Island count: ";
-static const char __pyx_k_avg_tag_count[] = "avg_tag_count";
-static const char __pyx_k_score_threshold[] = "score_threshold";
-static const char __pyx_k_min_tag_threshold[] = "min_tag_threshold";
+static const char __pyx_k_scipy_stats[] = "scipy.stats";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_Finding_candidate_islands_exhibi[] = "Finding candidate islands exhibiting clustering...";
-static PyObject *__pyx_kp_u_Finding_candidate_islands_exhibi;
-static PyObject *__pyx_kp_u_Island_count;
-static PyObject *__pyx_n_s_avg_tag_count;
+static const char __pyx_k_Identifying_significant_islands[] = "Identifying significant islands using FDR criterion...";
+static PyObject *__pyx_kp_u_Identifying_significant_islands;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_gap_size;
-static PyObject *__pyx_n_s_genome_data;
+static PyObject *__pyx_n_s_fdr;
+static PyObject *__pyx_n_s_import;
+static PyObject *__pyx_n_s_islands;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_min_tag_threshold;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_num_cpu;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_score_threshold;
+static PyObject *__pyx_n_s_rankdata;
+static PyObject *__pyx_n_s_scipy_stats;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_windows;
-static PyObject *__pyx_pf_5sicer_12find_islands_find_islands(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_windows, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_min_tag_threshold, PyObject *__pyx_v_score_threshold, PyObject *__pyx_v_gap_size, PyObject *__pyx_v_avg_tag_count, PyObject *__pyx_v_num_cpu); /* proto */
+static PyObject *__pyx_pf_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_islands, PyObject *__pyx_v_fdr, PyObject *__pyx_v_num_cpu); /* proto */
 static PyObject *__pyx_tuple_;
 /* Late includes */
 
-/* "sicer/find_islands.pyx":20
- * cdef int WINDOW_SIZE_BUFFER = 2
+/* "sicer/filter_islands_by_fdr.pyx":19
+ * from scipy.stats import rankdata
  * 
- * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[Island] filtered_islands
- *     if islands.size() > 0:
+ * cdef void _filter_islands_by_fdr_by_chrom(vector[Island]& islands, double fdr) nogil:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef vector[int] remove
  */
 
-static void __pyx_f_5sicer_12find_islands__filter_by_threshold(std::vector<Island>  &__pyx_v_islands, double __pyx_v_score_threshold) {
-  std::vector<Island>  __pyx_v_filtered_islands;
+static void __pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr_by_chrom(std::vector<Island>  &__pyx_v_islands, double __pyx_v_fdr) {
+  std::vector<int>  __pyx_v_remove;
   std::vector<Island> ::size_type __pyx_v_i;
   int __pyx_t_1;
   std::vector<Island> ::size_type __pyx_t_2;
   std::vector<Island> ::size_type __pyx_t_3;
   std::vector<Island> ::size_type __pyx_t_4;
 
-  /* "sicer/find_islands.pyx":22
- * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
- *     cdef vector[Island] filtered_islands
+  /* "sicer/filter_islands_by_fdr.pyx":22
+ * 
+ *     cdef vector[int] remove
  *     if islands.size() > 0:             # <<<<<<<<<<<<<<
- *         for i in range(0, islands.size()):
- *             if islands[i].score >= (score_threshold - .0000000001):
+ *         for i in range(islands.size()):
+ *             if islands[i].alpha_stat > fdr:
  */
   __pyx_t_1 = ((__pyx_v_islands.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/find_islands.pyx":23
- *     cdef vector[Island] filtered_islands
+    /* "sicer/filter_islands_by_fdr.pyx":23
+ *     cdef vector[int] remove
  *     if islands.size() > 0:
- *         for i in range(0, islands.size()):             # <<<<<<<<<<<<<<
- *             if islands[i].score >= (score_threshold - .0000000001):
- *                 filtered_islands.push_back(islands[i])
+ *         for i in range(islands.size()):             # <<<<<<<<<<<<<<
+ *             if islands[i].alpha_stat > fdr:
+ *                 remove.push_back(i)
  */
     __pyx_t_2 = __pyx_v_islands.size();
     __pyx_t_3 = __pyx_t_2;
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_i = __pyx_t_4;
 
-      /* "sicer/find_islands.pyx":24
+      /* "sicer/filter_islands_by_fdr.pyx":24
  *     if islands.size() > 0:
- *         for i in range(0, islands.size()):
- *             if islands[i].score >= (score_threshold - .0000000001):             # <<<<<<<<<<<<<<
- *                 filtered_islands.push_back(islands[i])
+ *         for i in range(islands.size()):
+ *             if islands[i].alpha_stat > fdr:             # <<<<<<<<<<<<<<
+ *                 remove.push_back(i)
  * 
  */
-      __pyx_t_1 = (((__pyx_v_islands[__pyx_v_i]).score >= (__pyx_v_score_threshold - .0000000001)) != 0);
+      __pyx_t_1 = (((__pyx_v_islands[__pyx_v_i]).alpha_stat > __pyx_v_fdr) != 0);
       if (__pyx_t_1) {
 
-        /* "sicer/find_islands.pyx":25
- *         for i in range(0, islands.size()):
- *             if islands[i].score >= (score_threshold - .0000000001):
- *                 filtered_islands.push_back(islands[i])             # <<<<<<<<<<<<<<
+        /* "sicer/filter_islands_by_fdr.pyx":25
+ *         for i in range(islands.size()):
+ *             if islands[i].alpha_stat > fdr:
+ *                 remove.push_back(i)             # <<<<<<<<<<<<<<
  * 
- *         islands.swap(filtered_islands)
+ *         islands.erase(
  */
         try {
-          __pyx_v_filtered_islands.push_back((__pyx_v_islands[__pyx_v_i]));
+          __pyx_v_remove.push_back(__pyx_v_i);
         } catch(...) {
           #ifdef WITH_THREAD
           PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1484,569 +1532,59 @@ static void __pyx_f_5sicer_12find_islands__filter_by_threshold(std::vector<Islan
           __PYX_ERR(0, 25, __pyx_L1_error)
         }
 
-        /* "sicer/find_islands.pyx":24
+        /* "sicer/filter_islands_by_fdr.pyx":24
  *     if islands.size() > 0:
- *         for i in range(0, islands.size()):
- *             if islands[i].score >= (score_threshold - .0000000001):             # <<<<<<<<<<<<<<
- *                 filtered_islands.push_back(islands[i])
+ *         for i in range(islands.size()):
+ *             if islands[i].alpha_stat > fdr:             # <<<<<<<<<<<<<<
+ *                 remove.push_back(i)
  * 
  */
       }
     }
 
-    /* "sicer/find_islands.pyx":27
- *                 filtered_islands.push_back(islands[i])
+    /* "sicer/filter_islands_by_fdr.pyx":27
+ *                 remove.push_back(i)
  * 
- *         islands.swap(filtered_islands)             # <<<<<<<<<<<<<<
- * 
- * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:
+ *         islands.erase(             # <<<<<<<<<<<<<<
+ *             remove_at(islands.begin(), islands.end(), remove.begin(), remove.end()),
+ *             islands.end()
  */
-    __pyx_v_islands.swap(__pyx_v_filtered_islands);
+    (void)(__pyx_v_islands.erase(remove_at<std::vector<Island> ::iterator,std::vector<int> ::iterator>(__pyx_v_islands.begin(), __pyx_v_islands.end(), __pyx_v_remove.begin(), __pyx_v_remove.end()), __pyx_v_islands.end()));
 
-    /* "sicer/find_islands.pyx":22
- * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
- *     cdef vector[Island] filtered_islands
+    /* "sicer/filter_islands_by_fdr.pyx":22
+ * 
+ *     cdef vector[int] remove
  *     if islands.size() > 0:             # <<<<<<<<<<<<<<
- *         for i in range(0, islands.size()):
- *             if islands[i].score >= (score_threshold - .0000000001):
+ *         for i in range(islands.size()):
+ *             if islands[i].alpha_stat > fdr:
  */
   }
 
-  /* "sicer/find_islands.pyx":20
- * cdef int WINDOW_SIZE_BUFFER = 2
+  /* "sicer/filter_islands_by_fdr.pyx":19
+ * from scipy.stats import rankdata
  * 
- * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[Island] filtered_islands
- *     if islands.size() > 0:
+ * cdef void _filter_islands_by_fdr_by_chrom(vector[Island]& islands, double fdr) nogil:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef vector[int] remove
  */
 
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.find_islands._filter_by_threshold", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_WriteUnraisable("sicer.filter_islands_by_fdr._filter_islands_by_fdr_by_chrom", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_L0:;
 }
 
-/* "sicer/find_islands.pyx":29
- *         islands.swap(filtered_islands)
+/* "sicer/filter_islands_by_fdr.pyx":32
+ *         )
  * 
- * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:             # <<<<<<<<<<<<<<
- *     cdef uint32_t proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
- *     # Create new vector of islands b/c we generally throw away majority of islands
+ * cdef ChromIslandContainer _filter_islands_by_fdr(             # <<<<<<<<<<<<<<
+ *     ChromIslandContainer islands,
+ *     double fdr,
  */
 
-static void __pyx_f_5sicer_12find_islands__combine_proximal_islands(std::vector<Island>  &__pyx_v_islands, int __pyx_v_gap_size) {
-  uint32_t __pyx_v_proximal_island_dist;
-  std::vector<Island>  __pyx_v_final_islands;
-  std::string __pyx_v_chrom;
-  uint32_t __pyx_v_curr_start;
-  uint32_t __pyx_v_curr_end;
-  double __pyx_v_curr_score;
-  uint32_t __pyx_v_dist;
-  std::vector<Island> ::size_type __pyx_v_i;
-  int __pyx_t_1;
-  std::string __pyx_t_2;
-  uint32_t __pyx_t_3;
-  double __pyx_t_4;
-  std::vector<Island> ::size_type __pyx_t_5;
-  std::vector<Island> ::size_type __pyx_t_6;
-  std::vector<Island> ::size_type __pyx_t_7;
-
-  /* "sicer/find_islands.pyx":30
- * 
- * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:
- *     cdef uint32_t proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER             # <<<<<<<<<<<<<<
- *     # Create new vector of islands b/c we generally throw away majority of islands
- *     cdef vector[Island] final_islands
- */
-  __pyx_v_proximal_island_dist = (__pyx_v_gap_size + __pyx_v_5sicer_12find_islands_WINDOW_SIZE_BUFFER);
-
-  /* "sicer/find_islands.pyx":39
- *     cdef uint32_t dist
- * 
- *     if islands.size() > 0:             # <<<<<<<<<<<<<<
- *         if islands.size() == 1:
- *             return
- */
-  __pyx_t_1 = ((__pyx_v_islands.size() > 0) != 0);
-  if (__pyx_t_1) {
-
-    /* "sicer/find_islands.pyx":40
- * 
- *     if islands.size() > 0:
- *         if islands.size() == 1:             # <<<<<<<<<<<<<<
- *             return
- * 
- */
-    __pyx_t_1 = ((__pyx_v_islands.size() == 1) != 0);
-    if (__pyx_t_1) {
-
-      /* "sicer/find_islands.pyx":41
- *     if islands.size() > 0:
- *         if islands.size() == 1:
- *             return             # <<<<<<<<<<<<<<
- * 
- *         chrom = islands[0].chrom
- */
-      goto __pyx_L0;
-
-      /* "sicer/find_islands.pyx":40
- * 
- *     if islands.size() > 0:
- *         if islands.size() == 1:             # <<<<<<<<<<<<<<
- *             return
- * 
- */
-    }
-
-    /* "sicer/find_islands.pyx":43
- *             return
- * 
- *         chrom = islands[0].chrom             # <<<<<<<<<<<<<<
- *         curr_start = islands[0].start
- *         curr_end = islands[0].end
- */
-    __pyx_t_2 = (__pyx_v_islands[0]).chrom;
-    __pyx_v_chrom = __pyx_t_2;
-
-    /* "sicer/find_islands.pyx":44
- * 
- *         chrom = islands[0].chrom
- *         curr_start = islands[0].start             # <<<<<<<<<<<<<<
- *         curr_end = islands[0].end
- *         curr_score = islands[0].score
- */
-    __pyx_t_3 = (__pyx_v_islands[0]).start;
-    __pyx_v_curr_start = __pyx_t_3;
-
-    /* "sicer/find_islands.pyx":45
- *         chrom = islands[0].chrom
- *         curr_start = islands[0].start
- *         curr_end = islands[0].end             # <<<<<<<<<<<<<<
- *         curr_score = islands[0].score
- *         for i in range(1, islands.size()):
- */
-    __pyx_t_3 = (__pyx_v_islands[0]).end;
-    __pyx_v_curr_end = __pyx_t_3;
-
-    /* "sicer/find_islands.pyx":46
- *         curr_start = islands[0].start
- *         curr_end = islands[0].end
- *         curr_score = islands[0].score             # <<<<<<<<<<<<<<
- *         for i in range(1, islands.size()):
- *             dist = islands[i].start - curr_end
- */
-    __pyx_t_4 = (__pyx_v_islands[0]).score;
-    __pyx_v_curr_score = __pyx_t_4;
-
-    /* "sicer/find_islands.pyx":47
- *         curr_end = islands[0].end
- *         curr_score = islands[0].score
- *         for i in range(1, islands.size()):             # <<<<<<<<<<<<<<
- *             dist = islands[i].start - curr_end
- *             if dist <= proximal_island_dist:
- */
-    __pyx_t_5 = __pyx_v_islands.size();
-    __pyx_t_6 = __pyx_t_5;
-    for (__pyx_t_7 = 1; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
-      __pyx_v_i = __pyx_t_7;
-
-      /* "sicer/find_islands.pyx":48
- *         curr_score = islands[0].score
- *         for i in range(1, islands.size()):
- *             dist = islands[i].start - curr_end             # <<<<<<<<<<<<<<
- *             if dist <= proximal_island_dist:
- *                 curr_end = islands[i].end
- */
-      __pyx_v_dist = ((__pyx_v_islands[__pyx_v_i]).start - __pyx_v_curr_end);
-
-      /* "sicer/find_islands.pyx":49
- *         for i in range(1, islands.size()):
- *             dist = islands[i].start - curr_end
- *             if dist <= proximal_island_dist:             # <<<<<<<<<<<<<<
- *                 curr_end = islands[i].end
- *                 curr_score += islands[i].score
- */
-      __pyx_t_1 = ((__pyx_v_dist <= __pyx_v_proximal_island_dist) != 0);
-      if (__pyx_t_1) {
-
-        /* "sicer/find_islands.pyx":50
- *             dist = islands[i].start - curr_end
- *             if dist <= proximal_island_dist:
- *                 curr_end = islands[i].end             # <<<<<<<<<<<<<<
- *                 curr_score += islands[i].score
- *             else:
- */
-        __pyx_t_3 = (__pyx_v_islands[__pyx_v_i]).end;
-        __pyx_v_curr_end = __pyx_t_3;
-
-        /* "sicer/find_islands.pyx":51
- *             if dist <= proximal_island_dist:
- *                 curr_end = islands[i].end
- *                 curr_score += islands[i].score             # <<<<<<<<<<<<<<
- *             else:
- *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
- */
-        __pyx_v_curr_score = (__pyx_v_curr_score + (__pyx_v_islands[__pyx_v_i]).score);
-
-        /* "sicer/find_islands.pyx":49
- *         for i in range(1, islands.size()):
- *             dist = islands[i].start - curr_end
- *             if dist <= proximal_island_dist:             # <<<<<<<<<<<<<<
- *                 curr_end = islands[i].end
- *                 curr_score += islands[i].score
- */
-        goto __pyx_L7;
-      }
-
-      /* "sicer/find_islands.pyx":53
- *                 curr_score += islands[i].score
- *             else:
- *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))             # <<<<<<<<<<<<<<
- *                 curr_start = islands[i].start
- *                 curr_end = islands[i].end
- */
-      /*else*/ {
-        try {
-          __pyx_v_final_islands.push_back(Island(__pyx_v_chrom, __pyx_v_curr_start, __pyx_v_curr_end, __pyx_v_curr_score));
-        } catch(...) {
-          #ifdef WITH_THREAD
-          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-          #endif
-          __Pyx_CppExn2PyErr();
-          #ifdef WITH_THREAD
-          __Pyx_PyGILState_Release(__pyx_gilstate_save);
-          #endif
-          __PYX_ERR(0, 53, __pyx_L1_error)
-        }
-
-        /* "sicer/find_islands.pyx":54
- *             else:
- *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
- *                 curr_start = islands[i].start             # <<<<<<<<<<<<<<
- *                 curr_end = islands[i].end
- *                 curr_score = islands[i].score
- */
-        __pyx_t_3 = (__pyx_v_islands[__pyx_v_i]).start;
-        __pyx_v_curr_start = __pyx_t_3;
-
-        /* "sicer/find_islands.pyx":55
- *                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
- *                 curr_start = islands[i].start
- *                 curr_end = islands[i].end             # <<<<<<<<<<<<<<
- *                 curr_score = islands[i].score
- * 
- */
-        __pyx_t_3 = (__pyx_v_islands[__pyx_v_i]).end;
-        __pyx_v_curr_end = __pyx_t_3;
-
-        /* "sicer/find_islands.pyx":56
- *                 curr_start = islands[i].start
- *                 curr_end = islands[i].end
- *                 curr_score = islands[i].score             # <<<<<<<<<<<<<<
- * 
- *         final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
- */
-        __pyx_t_4 = (__pyx_v_islands[__pyx_v_i]).score;
-        __pyx_v_curr_score = __pyx_t_4;
-      }
-      __pyx_L7:;
-    }
-
-    /* "sicer/find_islands.pyx":58
- *                 curr_score = islands[i].score
- * 
- *         final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))             # <<<<<<<<<<<<<<
- * 
- *         # Swap with our final islands
- */
-    try {
-      __pyx_v_final_islands.push_back(Island(__pyx_v_chrom, __pyx_v_curr_start, __pyx_v_curr_end, __pyx_v_curr_score));
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 58, __pyx_L1_error)
-    }
-
-    /* "sicer/find_islands.pyx":61
- * 
- *         # Swap with our final islands
- *         islands.swap(final_islands)             # <<<<<<<<<<<<<<
- * 
- * cdef void _generate_islands(
- */
-    __pyx_v_islands.swap(__pyx_v_final_islands);
-
-    /* "sicer/find_islands.pyx":39
- *     cdef uint32_t dist
- * 
- *     if islands.size() > 0:             # <<<<<<<<<<<<<<
- *         if islands.size() == 1:
- *             return
- */
-  }
-
-  /* "sicer/find_islands.pyx":29
- *         islands.swap(filtered_islands)
- * 
- * cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:             # <<<<<<<<<<<<<<
- *     cdef uint32_t proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
- *     # Create new vector of islands b/c we generally throw away majority of islands
- */
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.find_islands._combine_proximal_islands", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __pyx_L0:;
-}
-
-/* "sicer/find_islands.pyx":63
- *         islands.swap(final_islands)
- * 
- * cdef void _generate_islands(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[Island]& islands,
- */
-
-static void __pyx_f_5sicer_12find_islands__generate_islands(std::vector<Window>  &__pyx_v_windows, std::vector<Island>  &__pyx_v_islands, int __pyx_v_min_tag_threshold, double __pyx_v_avg_tag_count) {
-  double __pyx_v_score;
-  std::vector<Window> ::size_type __pyx_v_i;
-  double __pyx_v_prob;
-  std::vector<Window> ::size_type __pyx_t_1;
-  std::vector<Window> ::size_type __pyx_t_2;
-  std::vector<Window> ::size_type __pyx_t_3;
-  int __pyx_t_4;
-
-  /* "sicer/find_islands.pyx":70
- * ) nogil:
- *     cdef double score
- *     for i in range(windows.size()):             # <<<<<<<<<<<<<<
- *         score = -1
- *         if windows[i].count >= min_tag_threshold:
- */
-  __pyx_t_1 = __pyx_v_windows.size();
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
-
-    /* "sicer/find_islands.pyx":71
- *     cdef double score
- *     for i in range(windows.size()):
- *         score = -1             # <<<<<<<<<<<<<<
- *         if windows[i].count >= min_tag_threshold:
- *             prob = poisson(windows[i].count, avg_tag_count)
- */
-    __pyx_v_score = -1.0;
-
-    /* "sicer/find_islands.pyx":72
- *     for i in range(windows.size()):
- *         score = -1
- *         if windows[i].count >= min_tag_threshold:             # <<<<<<<<<<<<<<
- *             prob = poisson(windows[i].count, avg_tag_count)
- * 
- */
-    __pyx_t_4 = (((__pyx_v_windows[__pyx_v_i]).count >= __pyx_v_min_tag_threshold) != 0);
-    if (__pyx_t_4) {
-
-      /* "sicer/find_islands.pyx":73
- *         score = -1
- *         if windows[i].count >= min_tag_threshold:
- *             prob = poisson(windows[i].count, avg_tag_count)             # <<<<<<<<<<<<<<
- * 
- *             if prob < 1e-250:
- */
-      __pyx_v_prob = __pyx_f_5sicer_7utility_5utils_poisson((__pyx_v_windows[__pyx_v_i]).count, __pyx_v_avg_tag_count, 0);
-
-      /* "sicer/find_islands.pyx":75
- *             prob = poisson(windows[i].count, avg_tag_count)
- * 
- *             if prob < 1e-250:             # <<<<<<<<<<<<<<
- *                 # Outside of the scale, so take an arbitrary value
- *                 score = 1000
- */
-      __pyx_t_4 = ((__pyx_v_prob < 1e-250) != 0);
-      if (__pyx_t_4) {
-
-        /* "sicer/find_islands.pyx":77
- *             if prob < 1e-250:
- *                 # Outside of the scale, so take an arbitrary value
- *                 score = 1000             # <<<<<<<<<<<<<<
- *             else:
- *                 score = -log(prob)
- */
-        __pyx_v_score = 1000.0;
-
-        /* "sicer/find_islands.pyx":75
- *             prob = poisson(windows[i].count, avg_tag_count)
- * 
- *             if prob < 1e-250:             # <<<<<<<<<<<<<<
- *                 # Outside of the scale, so take an arbitrary value
- *                 score = 1000
- */
-        goto __pyx_L6;
-      }
-
-      /* "sicer/find_islands.pyx":79
- *                 score = 1000
- *             else:
- *                 score = -log(prob)             # <<<<<<<<<<<<<<
- *             if score > 0:
- *                 # Create Island
- */
-      /*else*/ {
-        __pyx_v_score = (-log(__pyx_v_prob));
-      }
-      __pyx_L6:;
-
-      /* "sicer/find_islands.pyx":80
- *             else:
- *                 score = -log(prob)
- *             if score > 0:             # <<<<<<<<<<<<<<
- *                 # Create Island
- *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
- */
-      __pyx_t_4 = ((__pyx_v_score > 0.0) != 0);
-      if (__pyx_t_4) {
-
-        /* "sicer/find_islands.pyx":82
- *             if score > 0:
- *                 # Create Island
- *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))             # <<<<<<<<<<<<<<
- * 
- * cdef void _find_islands_by_chrom(
- */
-        try {
-          __pyx_v_islands.push_back(Island((__pyx_v_windows[__pyx_v_i]).chrom, (__pyx_v_windows[__pyx_v_i]).start, (__pyx_v_windows[__pyx_v_i]).end, __pyx_v_score));
-        } catch(...) {
-          #ifdef WITH_THREAD
-          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-          #endif
-          __Pyx_CppExn2PyErr();
-          #ifdef WITH_THREAD
-          __Pyx_PyGILState_Release(__pyx_gilstate_save);
-          #endif
-          __PYX_ERR(0, 82, __pyx_L1_error)
-        }
-
-        /* "sicer/find_islands.pyx":80
- *             else:
- *                 score = -log(prob)
- *             if score > 0:             # <<<<<<<<<<<<<<
- *                 # Create Island
- *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
- */
-      }
-
-      /* "sicer/find_islands.pyx":72
- *     for i in range(windows.size()):
- *         score = -1
- *         if windows[i].count >= min_tag_threshold:             # <<<<<<<<<<<<<<
- *             prob = poisson(windows[i].count, avg_tag_count)
- * 
- */
-    }
-  }
-
-  /* "sicer/find_islands.pyx":63
- *         islands.swap(final_islands)
- * 
- * cdef void _generate_islands(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[Island]& islands,
- */
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.find_islands._generate_islands", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __pyx_L0:;
-}
-
-/* "sicer/find_islands.pyx":84
- *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
- * 
- * cdef void _find_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[Island]& islands,
- */
-
-static void __pyx_f_5sicer_12find_islands__find_islands_by_chrom(std::vector<Window>  &__pyx_v_windows, std::vector<Island>  &__pyx_v_islands, int __pyx_v_min_tag_threshold, double __pyx_v_score_threshold, int __pyx_v_gap_size, double __pyx_v_avg_tag_count) {
-  int __pyx_t_1;
-
-  /* "sicer/find_islands.pyx":93
- * ) nogil:
- * 
- *     if windows.size() > 0:             # <<<<<<<<<<<<<<
- *         # First create base islands from windows
- *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
- */
-  __pyx_t_1 = ((__pyx_v_windows.size() > 0) != 0);
-  if (__pyx_t_1) {
-
-    /* "sicer/find_islands.pyx":95
- *     if windows.size() > 0:
- *         # First create base islands from windows
- *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)             # <<<<<<<<<<<<<<
- *         _combine_proximal_islands(islands, gap_size)
- *         _filter_by_threshold(islands, score_threshold)
- */
-    __pyx_f_5sicer_12find_islands__generate_islands(__pyx_v_windows, __pyx_v_islands, __pyx_v_min_tag_threshold, __pyx_v_avg_tag_count);
-
-    /* "sicer/find_islands.pyx":96
- *         # First create base islands from windows
- *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
- *         _combine_proximal_islands(islands, gap_size)             # <<<<<<<<<<<<<<
- *         _filter_by_threshold(islands, score_threshold)
- * 
- */
-    __pyx_f_5sicer_12find_islands__combine_proximal_islands(__pyx_v_islands, __pyx_v_gap_size);
-
-    /* "sicer/find_islands.pyx":97
- *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
- *         _combine_proximal_islands(islands, gap_size)
- *         _filter_by_threshold(islands, score_threshold)             # <<<<<<<<<<<<<<
- * 
- * cdef ChromIslandContainer _find_islands(
- */
-    __pyx_f_5sicer_12find_islands__filter_by_threshold(__pyx_v_islands, __pyx_v_score_threshold);
-
-    /* "sicer/find_islands.pyx":93
- * ) nogil:
- * 
- *     if windows.size() > 0:             # <<<<<<<<<<<<<<
- *         # First create base islands from windows
- *         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
- */
-  }
-
-  /* "sicer/find_islands.pyx":84
- *                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
- * 
- * cdef void _find_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[Island]& islands,
- */
-
-  /* function exit code */
-}
-
-/* "sicer/find_islands.pyx":99
- *         _filter_by_threshold(islands, score_threshold)
- * 
- * cdef ChromIslandContainer _find_islands(             # <<<<<<<<<<<<<<
- *     ChromWindowContainer windows,
- *     object genome_data,
- */
-
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_12find_islands__find_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows, PyObject *__pyx_v_genome_data, int __pyx_v_min_tag_threshold, double __pyx_v_score_threshold, int __pyx_v_gap_size, double __pyx_v_avg_tag_count, CYTHON_UNUSED int __pyx_v_num_cpu) {
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands, double __pyx_v_fdr, CYTHON_UNUSED int __pyx_v_num_cpu) {
   std::vector<std::string>  __pyx_v_chroms;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands = 0;
   int __pyx_v_i;
   struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -2055,40 +1593,28 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   std::vector<std::string> ::size_type __pyx_t_3;
   std::vector<std::string> ::size_type __pyx_t_4;
   std::vector<std::string> ::size_type __pyx_t_5;
-  PyObject *__pyx_t_6 = NULL;
-  __Pyx_RefNannySetupContext("_find_islands", 0);
+  __Pyx_FakeReference<std::string> __pyx_t_6;
+  __Pyx_RefNannySetupContext("_filter_islands_by_fdr", 0);
 
-  /* "sicer/find_islands.pyx":109
+  /* "sicer/filter_islands_by_fdr.pyx":38
  * ):
  *     # Convert Python list to vector for no-GIL use
- *     cdef vector[string] chroms = windows.getChromosomes()             # <<<<<<<<<<<<<<
+ *     cdef vector[string] chroms = islands.getChromosomes()             # <<<<<<<<<<<<<<
+ *     cdef int i
  * 
- *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getChromosomes(__pyx_v_windows, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromosomes(__pyx_v_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/find_islands.pyx":111
- *     cdef vector[string] chroms = windows.getChromosomes()
- * 
- *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)             # <<<<<<<<<<<<<<
- * 
+  /* "sicer/filter_islands_by_fdr.pyx":41
  *     cdef int i
- */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "sicer/find_islands.pyx":114
  * 
- *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
- *         _find_islands_by_chrom(
- *             deref(windows.getVectorPtr(chroms[i])),
+ *         _filter_islands_by_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)
+ * 
  */
   {
       #ifdef WITH_THREAD
@@ -2100,6 +1626,11 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
         __pyx_t_3 = __pyx_v_chroms.size();
         if (1 == 0) abort();
         {
+            int __pyx_parallel_temp0 = ((int)0xbad0bad0);
+            const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+            PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+            int __pyx_parallel_why;
+            __pyx_parallel_why = 0;
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
                 #undef likely
                 #undef unlikely
@@ -2110,27 +1641,114 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
             if (__pyx_t_5 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel num_threads(__pyx_v_num_cpu)
+                #pragma omp parallel num_threads(__pyx_v_num_cpu) private(__pyx_t_6) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
                 #endif /* _OPENMP */
                 {
+                    #ifdef _OPENMP
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    Py_BEGIN_ALLOW_THREADS
+                    #endif /* _OPENMP */
                     #ifdef _OPENMP
                     #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) schedule(guided)
                     #endif /* _OPENMP */
                     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4++){
+                        if (__pyx_parallel_why < 2)
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/find_islands.pyx":115
- *     cdef int i
+                            /* "sicer/filter_islands_by_fdr.pyx":42
+ * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
- *         _find_islands_by_chrom(             # <<<<<<<<<<<<<<
- *             deref(windows.getVectorPtr(chroms[i])),
- *             deref(islands.getVectorPtr(chroms[i])),
+ *         _filter_islands_by_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)             # <<<<<<<<<<<<<<
+ * 
+ *     islands.updateIslandCount()
  */
-                            __pyx_f_5sicer_12find_islands__find_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getVectorPtr(__pyx_v_windows, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, (__pyx_v_chroms[__pyx_v_i]))), __pyx_v_min_tag_threshold, __pyx_v_score_threshold, __pyx_v_gap_size, __pyx_v_avg_tag_count);
+                            try {
+                              __pyx_t_6 = __pyx_v_chroms.at(__pyx_v_i);
+                            } catch(...) {
+                              #ifdef WITH_THREAD
+                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                              #endif
+                              __Pyx_CppExn2PyErr();
+                              #ifdef WITH_THREAD
+                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                              #endif
+                              __PYX_ERR(0, 42, __pyx_L8_error)
+                            }
+                            __pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, __pyx_t_6)), __pyx_v_fdr);
+                            goto __pyx_L11;
+                            __pyx_L8_error:;
+                            {
+                                #ifdef WITH_THREAD
+                                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                                #endif
+                                #ifdef _OPENMP
+                                #pragma omp flush(__pyx_parallel_exc_type)
+                                #endif /* _OPENMP */
+                                if (!__pyx_parallel_exc_type) {
+                                  __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                                  __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                                  __Pyx_GOTREF(__pyx_parallel_exc_type);
+                                }
+                                #ifdef WITH_THREAD
+                                __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                                #endif
+                            }
+                            __pyx_parallel_why = 4;
+                            goto __pyx_L10;
+                            __pyx_L10:;
+                            #ifdef _OPENMP
+                            #pragma omp critical(__pyx_parallel_lastprivates1)
+                            #endif /* _OPENMP */
+                            {
+                                __pyx_parallel_temp0 = __pyx_v_i;
+                            }
+                            __pyx_L11:;
+                            #ifdef _OPENMP
+                            #pragma omp flush(__pyx_parallel_why)
+                            #endif /* _OPENMP */
                         }
                     }
+                    #ifdef _OPENMP
+                    Py_END_ALLOW_THREADS
+                    #else
+{
+#ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    #endif /* _OPENMP */
+                    /* Clean up any temporaries */
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                    #ifndef _OPENMP
+}
+#endif /* _OPENMP */
                 }
+            }
+            if (__pyx_parallel_exc_type) {
+              /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+              __pyx_parallel_why = 4;
+            }
+            if (__pyx_parallel_why) {
+              __pyx_v_i = __pyx_parallel_temp0;
+              switch (__pyx_parallel_why) {
+                    case 4:
+                {
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                    __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                    __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                }
+                goto __pyx_L4_error;
+              }
             }
         }
         #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -2141,12 +1759,12 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
         #endif
       }
 
-      /* "sicer/find_islands.pyx":114
- * 
+      /* "sicer/filter_islands_by_fdr.pyx":41
  *     cdef int i
+ * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
- *         _find_islands_by_chrom(
- *             deref(windows.getVectorPtr(chroms[i])),
+ *         _filter_islands_by_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)
+ * 
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -2156,193 +1774,111 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
           #endif
           goto __pyx_L5;
         }
+        __pyx_L4_error: {
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L1_error;
+        }
         __pyx_L5:;
       }
   }
 
-  /* "sicer/find_islands.pyx":124
- *         )
+  /* "sicer/filter_islands_by_fdr.pyx":44
+ *         _filter_islands_by_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)
  * 
  *     islands.updateIslandCount()             # <<<<<<<<<<<<<<
- *     print("Island count: ", islands.getIslandCount())
- * 
- */
-  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->updateIslandCount(__pyx_v_islands, 0);
-
-  /* "sicer/find_islands.pyx":125
- * 
- *     islands.updateIslandCount()
- *     print("Island count: ", islands.getIslandCount())             # <<<<<<<<<<<<<<
  * 
  *     return islands
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getIslandCount(__pyx_v_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 125, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_INCREF(__pyx_kp_u_Island_count);
-  __Pyx_GIVEREF(__pyx_kp_u_Island_count);
-  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_kp_u_Island_count);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1);
-  __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->updateIslandCount(__pyx_v_islands, 0);
 
-  /* "sicer/find_islands.pyx":127
- *     print("Island count: ", islands.getIslandCount())
+  /* "sicer/filter_islands_by_fdr.pyx":46
+ *     islands.updateIslandCount()
  * 
  *     return islands             # <<<<<<<<<<<<<<
  * 
- * cpdef ChromIslandContainer find_islands(
+ * cpdef ChromIslandContainer filter_islands_by_fdr(islands, fdr, num_cpu):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __Pyx_INCREF(((PyObject *)__pyx_v_islands));
   __pyx_r = __pyx_v_islands;
   goto __pyx_L0;
 
-  /* "sicer/find_islands.pyx":99
- *         _filter_by_threshold(islands, score_threshold)
+  /* "sicer/filter_islands_by_fdr.pyx":32
+ *         )
  * 
- * cdef ChromIslandContainer _find_islands(             # <<<<<<<<<<<<<<
- *     ChromWindowContainer windows,
- *     object genome_data,
+ * cdef ChromIslandContainer _filter_islands_by_fdr(             # <<<<<<<<<<<<<<
+ *     ChromIslandContainer islands,
+ *     double fdr,
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("sicer.find_islands._find_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.filter_islands_by_fdr._filter_islands_by_fdr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_islands);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "sicer/find_islands.pyx":129
+/* "sicer/filter_islands_by_fdr.pyx":48
  *     return islands
  * 
- * cpdef ChromIslandContainer find_islands(             # <<<<<<<<<<<<<<
- *     windows,
- *     genome_data,
+ * cpdef ChromIslandContainer filter_islands_by_fdr(islands, fdr, num_cpu):             # <<<<<<<<<<<<<<
+ *     print("Identifying significant islands using FDR criterion...")
+ *     return _filter_islands_by_fdr(islands, fdr, num_cpu)
  */
 
-static PyObject *__pyx_pw_5sicer_12find_islands_1find_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_12find_islands_find_islands(PyObject *__pyx_v_windows, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_min_tag_threshold, PyObject *__pyx_v_score_threshold, PyObject *__pyx_v_gap_size, PyObject *__pyx_v_avg_tag_count, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_5sicer_21filter_islands_by_fdr_1filter_islands_by_fdr(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(PyObject *__pyx_v_islands, PyObject *__pyx_v_fdr, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
   struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  double __pyx_t_3;
-  int __pyx_t_4;
-  double __pyx_t_5;
-  int __pyx_t_6;
-  __Pyx_RefNannySetupContext("find_islands", 0);
+  double __pyx_t_2;
+  int __pyx_t_3;
+  __Pyx_RefNannySetupContext("filter_islands_by_fdr", 0);
 
-  /* "sicer/find_islands.pyx":138
- *     num_cpu
- * ):
- *     print("Finding candidate islands exhibiting clustering...")             # <<<<<<<<<<<<<<
- *     return _find_islands(
- *         windows,
+  /* "sicer/filter_islands_by_fdr.pyx":49
+ * 
+ * cpdef ChromIslandContainer filter_islands_by_fdr(islands, fdr, num_cpu):
+ *     print("Identifying significant islands using FDR criterion...")             # <<<<<<<<<<<<<<
+ *     return _filter_islands_by_fdr(islands, fdr, num_cpu)
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/find_islands.pyx":139
- * ):
- *     print("Finding candidate islands exhibiting clustering...")
- *     return _find_islands(             # <<<<<<<<<<<<<<
- *         windows,
- *         genome_data,
+  /* "sicer/filter_islands_by_fdr.pyx":50
+ * cpdef ChromIslandContainer filter_islands_by_fdr(islands, fdr, num_cpu):
+ *     print("Identifying significant islands using FDR criterion...")
+ *     return _filter_islands_by_fdr(islands, fdr, num_cpu)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-
-  /* "sicer/find_islands.pyx":140
- *     print("Finding candidate islands exhibiting clustering...")
- *     return _find_islands(
- *         windows,             # <<<<<<<<<<<<<<
- *         genome_data,
- *         min_tag_threshold,
- */
-  if (!(likely(((__pyx_v_windows) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_windows, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer))))) __PYX_ERR(0, 140, __pyx_L1_error)
-
-  /* "sicer/find_islands.pyx":142
- *         windows,
- *         genome_data,
- *         min_tag_threshold,             # <<<<<<<<<<<<<<
- *         score_threshold,
- *         gap_size,
- */
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_min_tag_threshold); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L1_error)
-
-  /* "sicer/find_islands.pyx":143
- *         genome_data,
- *         min_tag_threshold,
- *         score_threshold,             # <<<<<<<<<<<<<<
- *         gap_size,
- *         avg_tag_count,
- */
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_score_threshold); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 143, __pyx_L1_error)
-
-  /* "sicer/find_islands.pyx":144
- *         min_tag_threshold,
- *         score_threshold,
- *         gap_size,             # <<<<<<<<<<<<<<
- *         avg_tag_count,
- *         num_cpu
- */
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_gap_size); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
-
-  /* "sicer/find_islands.pyx":145
- *         score_threshold,
- *         gap_size,
- *         avg_tag_count,             # <<<<<<<<<<<<<<
- *         num_cpu
- *     )
- */
-  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_avg_tag_count); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L1_error)
-
-  /* "sicer/find_islands.pyx":146
- *         gap_size,
- *         avg_tag_count,
- *         num_cpu             # <<<<<<<<<<<<<<
- *     )
- * 
- */
-  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 146, __pyx_L1_error)
-
-  /* "sicer/find_islands.pyx":139
- * ):
- *     print("Finding candidate islands exhibiting clustering...")
- *     return _find_islands(             # <<<<<<<<<<<<<<
- *         windows,
- *         genome_data,
- */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_12find_islands__find_islands(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows), __pyx_v_genome_data, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer))))) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_v_fdr); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands), __pyx_t_2, __pyx_t_3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/find_islands.pyx":129
+  /* "sicer/filter_islands_by_fdr.pyx":48
  *     return islands
  * 
- * cpdef ChromIslandContainer find_islands(             # <<<<<<<<<<<<<<
- *     windows,
- *     genome_data,
+ * cpdef ChromIslandContainer filter_islands_by_fdr(islands, fdr, num_cpu):             # <<<<<<<<<<<<<<
+ *     print("Identifying significant islands using FDR criterion...")
+ *     return _filter_islands_by_fdr(islands, fdr, num_cpu)
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.find_islands.find_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.filter_islands_by_fdr.filter_islands_by_fdr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
@@ -2351,33 +1887,21 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5sicer_12find_islands_1find_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5sicer_12find_islands_1find_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_windows = 0;
-  PyObject *__pyx_v_genome_data = 0;
-  PyObject *__pyx_v_min_tag_threshold = 0;
-  PyObject *__pyx_v_score_threshold = 0;
-  PyObject *__pyx_v_gap_size = 0;
-  PyObject *__pyx_v_avg_tag_count = 0;
+static PyObject *__pyx_pw_5sicer_21filter_islands_by_fdr_1filter_islands_by_fdr(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_5sicer_21filter_islands_by_fdr_1filter_islands_by_fdr(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_islands = 0;
+  PyObject *__pyx_v_fdr = 0;
   PyObject *__pyx_v_num_cpu = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("find_islands (wrapper)", 0);
+  __Pyx_RefNannySetupContext("filter_islands_by_fdr (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_windows,&__pyx_n_s_genome_data,&__pyx_n_s_min_tag_threshold,&__pyx_n_s_score_threshold,&__pyx_n_s_gap_size,&__pyx_n_s_avg_tag_count,&__pyx_n_s_num_cpu,0};
-    PyObject* values[7] = {0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_islands,&__pyx_n_s_fdr,&__pyx_n_s_num_cpu,0};
+    PyObject* values[3] = {0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
-        CYTHON_FALLTHROUGH;
-        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
-        CYTHON_FALLTHROUGH;
-        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-        CYTHON_FALLTHROUGH;
-        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
@@ -2390,89 +1914,57 @@ static PyObject *__pyx_pw_5sicer_12find_islands_1find_islands(PyObject *__pyx_se
       kw_args = PyDict_Size(__pyx_kwds);
       switch (pos_args) {
         case  0:
-        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_windows)) != 0)) kw_args--;
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_fdr)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 1); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 1, 3, 3, 1); __PYX_ERR(0, 48, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_min_tag_threshold)) != 0)) kw_args--;
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 2); __PYX_ERR(0, 129, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  3:
-        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_score_threshold)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 3); __PYX_ERR(0, 129, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  4:
-        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_gap_size)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 4); __PYX_ERR(0, 129, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  5:
-        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_avg_tag_count)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 5); __PYX_ERR(0, 129, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  6:
-        if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, 6); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 1, 3, 3, 2); __PYX_ERR(0, 48, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_islands") < 0)) __PYX_ERR(0, 129, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "filter_islands_by_fdr") < 0)) __PYX_ERR(0, 48, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 7) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-      values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
-      values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
     }
-    __pyx_v_windows = values[0];
-    __pyx_v_genome_data = values[1];
-    __pyx_v_min_tag_threshold = values[2];
-    __pyx_v_score_threshold = values[3];
-    __pyx_v_gap_size = values[4];
-    __pyx_v_avg_tag_count = values[5];
-    __pyx_v_num_cpu = values[6];
+    __pyx_v_islands = values[0];
+    __pyx_v_fdr = values[1];
+    __pyx_v_num_cpu = values[2];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("find_islands", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 129, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 48, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("sicer.find_islands.find_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.filter_islands_by_fdr.filter_islands_by_fdr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5sicer_12find_islands_find_islands(__pyx_self, __pyx_v_windows, __pyx_v_genome_data, __pyx_v_min_tag_threshold, __pyx_v_score_threshold, __pyx_v_gap_size, __pyx_v_avg_tag_count, __pyx_v_num_cpu);
+  __pyx_r = __pyx_pf_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(__pyx_self, __pyx_v_islands, __pyx_v_fdr, __pyx_v_num_cpu);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_12find_islands_find_islands(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_windows, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_min_tag_threshold, PyObject *__pyx_v_score_threshold, PyObject *__pyx_v_gap_size, PyObject *__pyx_v_avg_tag_count, PyObject *__pyx_v_num_cpu) {
+static PyObject *__pyx_pf_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_islands, PyObject *__pyx_v_fdr, PyObject *__pyx_v_num_cpu) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("find_islands", 0);
+  __Pyx_RefNannySetupContext("filter_islands_by_fdr", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_12find_islands_find_islands(__pyx_v_windows, __pyx_v_genome_data, __pyx_v_min_tag_threshold, __pyx_v_score_threshold, __pyx_v_gap_size, __pyx_v_avg_tag_count, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(__pyx_v_islands, __pyx_v_fdr, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2481,7 +1973,7 @@ static PyObject *__pyx_pf_5sicer_12find_islands_find_islands(CYTHON_UNUSED PyObj
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.find_islands.find_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.filter_islands_by_fdr.filter_islands_by_fdr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2671,24 +2163,24 @@ static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"find_islands", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_12find_islands_1find_islands, METH_VARARGS|METH_KEYWORDS, 0},
+  {"filter_islands_by_fdr", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_21filter_islands_by_fdr_1filter_islands_by_fdr, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_find_islands(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_filter_islands_by_fdr(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_find_islands},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_filter_islands_by_fdr},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "find_islands",
+    "filter_islands_by_fdr",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -2717,27 +2209,25 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_u_Finding_candidate_islands_exhibi, __pyx_k_Finding_candidate_islands_exhibi, sizeof(__pyx_k_Finding_candidate_islands_exhibi), 0, 1, 0, 0},
-  {&__pyx_kp_u_Island_count, __pyx_k_Island_count, sizeof(__pyx_k_Island_count), 0, 1, 0, 0},
-  {&__pyx_n_s_avg_tag_count, __pyx_k_avg_tag_count, sizeof(__pyx_k_avg_tag_count), 0, 0, 1, 1},
+  {&__pyx_kp_u_Identifying_significant_islands, __pyx_k_Identifying_significant_islands, sizeof(__pyx_k_Identifying_significant_islands), 0, 1, 0, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_gap_size, __pyx_k_gap_size, sizeof(__pyx_k_gap_size), 0, 0, 1, 1},
-  {&__pyx_n_s_genome_data, __pyx_k_genome_data, sizeof(__pyx_k_genome_data), 0, 0, 1, 1},
+  {&__pyx_n_s_fdr, __pyx_k_fdr, sizeof(__pyx_k_fdr), 0, 0, 1, 1},
+  {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
+  {&__pyx_n_s_islands, __pyx_k_islands, sizeof(__pyx_k_islands), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_min_tag_threshold, __pyx_k_min_tag_threshold, sizeof(__pyx_k_min_tag_threshold), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_num_cpu, __pyx_k_num_cpu, sizeof(__pyx_k_num_cpu), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_score_threshold, __pyx_k_score_threshold, sizeof(__pyx_k_score_threshold), 0, 0, 1, 1},
+  {&__pyx_n_s_rankdata, __pyx_k_rankdata, sizeof(__pyx_k_rankdata), 0, 0, 1, 1},
+  {&__pyx_n_s_scipy_stats, __pyx_k_scipy_stats, sizeof(__pyx_k_scipy_stats), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_windows, __pyx_k_windows, sizeof(__pyx_k_windows), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 23, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 49, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2747,14 +2237,13 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/find_islands.pyx":138
- *     num_cpu
- * ):
- *     print("Finding candidate islands exhibiting clustering...")             # <<<<<<<<<<<<<<
- *     return _find_islands(
- *         windows,
+  /* "sicer/filter_islands_by_fdr.pyx":49
+ * 
+ * cpdef ChromIslandContainer filter_islands_by_fdr(islands, fdr, num_cpu):
+ *     print("Identifying significant islands using FDR criterion...")             # <<<<<<<<<<<<<<
+ *     return _filter_islands_by_fdr(islands, fdr, num_cpu)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_candidate_islands_exhibi); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Identifying_significant_islands); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -2856,8 +2345,8 @@ static int __Pyx_modinit_function_import_code(void) {
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("sicer.utility.utils"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "poisson", (void (**)(void))&__pyx_f_5sicer_7utility_5utils_poisson, "double (int, double, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("scipy.special.cython_special"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "pdtrc", (void (**)(void))&__pyx_f_5scipy_7special_14cython_special_pdtrc, "double (double, double, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   Py_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -2884,11 +2373,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initfind_islands(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initfind_islands(void)
+__Pyx_PyMODINIT_FUNC initfilter_islands_by_fdr(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initfilter_islands_by_fdr(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_find_islands(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_find_islands(void)
+__Pyx_PyMODINIT_FUNC PyInit_filter_islands_by_fdr(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_filter_islands_by_fdr(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -2955,16 +2444,17 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_find_islands(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_filter_islands_by_fdr(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannyDeclarations
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'find_islands' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'filter_islands_by_fdr' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -2979,7 +2469,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_find_islands(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_filter_islands_by_fdr(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -3018,7 +2508,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("find_islands", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("filter_islands_by_fdr", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -3036,14 +2526,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_sicer__find_islands) {
+  if (__pyx_module_is_main_sicer__filter_islands_by_fdr) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "sicer.find_islands")) {
-      if (unlikely(PyDict_SetItemString(modules, "sicer.find_islands", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "sicer.filter_islands_by_fdr")) {
+      if (unlikely(PyDict_SetItemString(modules, "sicer.filter_islands_by_fdr", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -3064,24 +2554,36 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/find_islands.pyx":18
- * from libcpp.algorithm cimport sort
+  /* "sicer/filter_islands_by_fdr.pyx":17
  * 
- * cdef int WINDOW_SIZE_BUFFER = 2             # <<<<<<<<<<<<<<
+ * from scipy.special.cython_special cimport pdtrc as poisson_sf
+ * from scipy.stats import rankdata             # <<<<<<<<<<<<<<
  * 
- * cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
+ * cdef void _filter_islands_by_fdr_by_chrom(vector[Island]& islands, double fdr) nogil:
  */
-  __pyx_v_5sicer_12find_islands_WINDOW_SIZE_BUFFER = 2;
-
-  /* "sicer/find_islands.pyx":1
- * # SICER Internal Imports             # <<<<<<<<<<<<<<
- * from sicer.utility.utils cimport poisson
- * from sicer.shared.data_classes cimport BEDRead, Window, Island
- */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_n_s_rankdata);
+  __Pyx_GIVEREF(__pyx_n_s_rankdata);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_rankdata);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_stats, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rankdata, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "sicer/filter_islands_by_fdr.pyx":1
+ * # SICER Internal Imports             # <<<<<<<<<<<<<<
+ * from sicer.shared.data_classes cimport BEDRead, Island
+ * from sicer.utility.utils cimport remove_at
+ */
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "vector.from_py":45
  * 
@@ -3096,13 +2598,14 @@ if (!__Pyx_RefNanny) {
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init sicer.find_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init sicer.filter_islands_by_fdr", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init sicer.find_islands");
+    PyErr_SetString(PyExc_ImportError, "init sicer.filter_islands_by_fdr");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -3227,148 +2730,6 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
 #endif
 }
 
-/* PyCFunctionFastCall */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
-    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
-    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
-    PyObject *self = PyCFunction_GET_SELF(func);
-    int flags = PyCFunction_GET_FLAGS(func);
-    assert(PyCFunction_Check(func));
-    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
-    assert(nargs >= 0);
-    assert(nargs == 0 || args != NULL);
-    /* _PyCFunction_FastCallDict() must not be called with an exception set,
-       because it may clear it (directly or indirectly) and so the
-       caller loses its exception */
-    assert(!PyErr_Occurred());
-    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
-        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
-    } else {
-        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
-    }
-}
-#endif
-
-/* PyFunctionFastCall */
-#if CYTHON_FAST_PYCALL
-static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
-                                               PyObject *globals) {
-    PyFrameObject *f;
-    PyThreadState *tstate = __Pyx_PyThreadState_Current;
-    PyObject **fastlocals;
-    Py_ssize_t i;
-    PyObject *result;
-    assert(globals != NULL);
-    /* XXX Perhaps we should create a specialized
-       PyFrame_New() that doesn't take locals, but does
-       take builtins without sanity checking them.
-       */
-    assert(tstate != NULL);
-    f = PyFrame_New(tstate, co, globals, NULL);
-    if (f == NULL) {
-        return NULL;
-    }
-    fastlocals = __Pyx_PyFrame_GetLocalsplus(f);
-    for (i = 0; i < na; i++) {
-        Py_INCREF(*args);
-        fastlocals[i] = *args++;
-    }
-    result = PyEval_EvalFrameEx(f,0);
-    ++tstate->recursion_depth;
-    Py_DECREF(f);
-    --tstate->recursion_depth;
-    return result;
-}
-#if 1 || PY_VERSION_HEX < 0x030600B1
-static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs) {
-    PyCodeObject *co = (PyCodeObject *)PyFunction_GET_CODE(func);
-    PyObject *globals = PyFunction_GET_GLOBALS(func);
-    PyObject *argdefs = PyFunction_GET_DEFAULTS(func);
-    PyObject *closure;
-#if PY_MAJOR_VERSION >= 3
-    PyObject *kwdefs;
-#endif
-    PyObject *kwtuple, **k;
-    PyObject **d;
-    Py_ssize_t nd;
-    Py_ssize_t nk;
-    PyObject *result;
-    assert(kwargs == NULL || PyDict_Check(kwargs));
-    nk = kwargs ? PyDict_Size(kwargs) : 0;
-    if (Py_EnterRecursiveCall((char*)" while calling a Python object")) {
-        return NULL;
-    }
-    if (
-#if PY_MAJOR_VERSION >= 3
-            co->co_kwonlyargcount == 0 &&
-#endif
-            likely(kwargs == NULL || nk == 0) &&
-            co->co_flags == (CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE)) {
-        if (argdefs == NULL && co->co_argcount == nargs) {
-            result = __Pyx_PyFunction_FastCallNoKw(co, args, nargs, globals);
-            goto done;
-        }
-        else if (nargs == 0 && argdefs != NULL
-                 && co->co_argcount == Py_SIZE(argdefs)) {
-            /* function called with no arguments, but all parameters have
-               a default value: use default values as arguments .*/
-            args = &PyTuple_GET_ITEM(argdefs, 0);
-            result =__Pyx_PyFunction_FastCallNoKw(co, args, Py_SIZE(argdefs), globals);
-            goto done;
-        }
-    }
-    if (kwargs != NULL) {
-        Py_ssize_t pos, i;
-        kwtuple = PyTuple_New(2 * nk);
-        if (kwtuple == NULL) {
-            result = NULL;
-            goto done;
-        }
-        k = &PyTuple_GET_ITEM(kwtuple, 0);
-        pos = i = 0;
-        while (PyDict_Next(kwargs, &pos, &k[i], &k[i+1])) {
-            Py_INCREF(k[i]);
-            Py_INCREF(k[i+1]);
-            i += 2;
-        }
-        nk = i / 2;
-    }
-    else {
-        kwtuple = NULL;
-        k = NULL;
-    }
-    closure = PyFunction_GET_CLOSURE(func);
-#if PY_MAJOR_VERSION >= 3
-    kwdefs = PyFunction_GET_KW_DEFAULTS(func);
-#endif
-    if (argdefs != NULL) {
-        d = &PyTuple_GET_ITEM(argdefs, 0);
-        nd = Py_SIZE(argdefs);
-    }
-    else {
-        d = NULL;
-        nd = 0;
-    }
-#if PY_MAJOR_VERSION >= 3
-    result = PyEval_EvalCodeEx((PyObject*)co, globals, (PyObject *)NULL,
-                               args, (int)nargs,
-                               k, (int)nk,
-                               d, (int)nd, kwdefs, closure);
-#else
-    result = PyEval_EvalCodeEx(co, globals, (PyObject *)NULL,
-                               args, (int)nargs,
-                               k, (int)nk,
-                               d, (int)nd, closure);
-#endif
-    Py_XDECREF(kwtuple);
-done:
-    Py_LeaveRecursiveCall();
-    return result;
-}
-#endif
-#endif
-
 /* PyObjectCall */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
@@ -3385,66 +2746,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
             PyExc_SystemError,
             "NULL result without error in PyObject_Call");
     }
-    return result;
-}
-#endif
-
-/* PyObjectCallMethO */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
-    PyObject *self, *result;
-    PyCFunction cfunc;
-    cfunc = PyCFunction_GET_FUNCTION(func);
-    self = PyCFunction_GET_SELF(func);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = cfunc(self, arg);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
-
-/* PyObjectCallOneArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_New(1);
-    if (unlikely(!args)) return NULL;
-    Py_INCREF(arg);
-    PyTuple_SET_ITEM(args, 0, arg);
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, &arg, 1);
-    }
-#endif
-    if (likely(PyCFunction_Check(func))) {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
-            return __Pyx_PyObject_CallMethO(func, arg);
-#if CYTHON_FAST_PYCCALL
-        } else if (PyCFunction_GET_FLAGS(func) & METH_FASTCALL) {
-            return __Pyx_PyCFunction_FastCall(func, &arg, 1);
-#endif
-        }
-    }
-    return __Pyx__PyObject_CallOneArg(func, arg);
-}
-#else
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_Pack(1, arg);
-    if (unlikely(!args)) return NULL;
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
     return result;
 }
 #endif
@@ -3683,6 +2984,85 @@ static void* __Pyx_GetVtable(PyObject *dict) {
 bad:
     Py_XDECREF(ob);
     return NULL;
+}
+
+/* Import */
+static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
+    PyObject *empty_list = 0;
+    PyObject *module = 0;
+    PyObject *global_dict = 0;
+    PyObject *empty_dict = 0;
+    PyObject *list;
+    #if PY_MAJOR_VERSION < 3
+    PyObject *py_import;
+    py_import = __Pyx_PyObject_GetAttrStr(__pyx_b, __pyx_n_s_import);
+    if (!py_import)
+        goto bad;
+    #endif
+    if (from_list)
+        list = from_list;
+    else {
+        empty_list = PyList_New(0);
+        if (!empty_list)
+            goto bad;
+        list = empty_list;
+    }
+    global_dict = PyModule_GetDict(__pyx_m);
+    if (!global_dict)
+        goto bad;
+    empty_dict = PyDict_New();
+    if (!empty_dict)
+        goto bad;
+    {
+        #if PY_MAJOR_VERSION >= 3
+        if (level == -1) {
+            if (strchr(__Pyx_MODULE_NAME, '.')) {
+                module = PyImport_ImportModuleLevelObject(
+                    name, global_dict, empty_dict, list, 1);
+                if (!module) {
+                    if (!PyErr_ExceptionMatches(PyExc_ImportError))
+                        goto bad;
+                    PyErr_Clear();
+                }
+            }
+            level = 0;
+        }
+        #endif
+        if (!module) {
+            #if PY_MAJOR_VERSION < 3
+            PyObject *py_level = PyInt_FromLong(level);
+            if (!py_level)
+                goto bad;
+            module = PyObject_CallFunctionObjArgs(py_import,
+                name, global_dict, empty_dict, list, py_level, (PyObject *)NULL);
+            Py_DECREF(py_level);
+            #else
+            module = PyImport_ImportModuleLevelObject(
+                name, global_dict, empty_dict, list, level);
+            #endif
+        }
+    }
+bad:
+    #if PY_MAJOR_VERSION < 3
+    Py_XDECREF(py_import);
+    #endif
+    Py_XDECREF(empty_list);
+    Py_XDECREF(empty_dict);
+    return module;
+}
+
+/* ImportFrom */
+static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
+    PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
+    if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
+        PyErr_Format(PyExc_ImportError,
+        #if PY_MAJOR_VERSION < 3
+            "cannot import name %.230s", PyString_AS_STRING(name));
+        #else
+            "cannot import name %S", name);
+        #endif
+    }
+    return value;
 }
 
 /* PyDictVersioning */
@@ -3940,36 +3320,159 @@ bad:
         return (target_type) value;\
     }
 
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+/* Declarations */
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double x, double y) {
+      return ::std::complex< double >(x, y);
+    }
+  #else
+    static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double x, double y) {
+      return x + y*(__pyx_t_double_complex)_Complex_I;
+    }
+  #endif
+#else
+    static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double x, double y) {
+      __pyx_t_double_complex z;
+      z.real = x;
+      z.imag = y;
+      return z;
+    }
 #endif
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
+
+/* Arithmetic */
+#if CYTHON_CCOMPLEX
+#else
+    static CYTHON_INLINE int __Pyx_c_eq_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+       return (a.real == b.real) && (a.imag == b.imag);
+    }
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_sum_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        __pyx_t_double_complex z;
+        z.real = a.real + b.real;
+        z.imag = a.imag + b.imag;
+        return z;
+    }
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_diff_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        __pyx_t_double_complex z;
+        z.real = a.real - b.real;
+        z.imag = a.imag - b.imag;
+        return z;
+    }
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_prod_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        __pyx_t_double_complex z;
+        z.real = a.real * b.real - a.imag * b.imag;
+        z.imag = a.real * b.imag + a.imag * b.real;
+        return z;
+    }
+    #if 1
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_quot_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        if (b.imag == 0) {
+            return __pyx_t_double_complex_from_parts(a.real / b.real, a.imag / b.real);
+        } else if (fabs(b.real) >= fabs(b.imag)) {
+            if (b.real == 0 && b.imag == 0) {
+                return __pyx_t_double_complex_from_parts(a.real / b.real, a.imag / b.imag);
+            } else {
+                double r = b.imag / b.real;
+                double s = (double)(1.0) / (b.real + b.imag * r);
+                return __pyx_t_double_complex_from_parts(
+                    (a.real + a.imag * r) * s, (a.imag - a.real * r) * s);
+            }
+        } else {
+            double r = b.real / b.imag;
+            double s = (double)(1.0) / (b.imag + b.real * r);
+            return __pyx_t_double_complex_from_parts(
+                (a.real * r + a.imag) * s, (a.imag * r - a.real) * s);
         }
     }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
+    #else
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_quot_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        if (b.imag == 0) {
+            return __pyx_t_double_complex_from_parts(a.real / b.real, a.imag / b.real);
+        } else {
+            double denom = b.real * b.real + b.imag * b.imag;
+            return __pyx_t_double_complex_from_parts(
+                (a.real * b.real + a.imag * b.imag) / denom,
+                (a.imag * b.real - a.real * b.imag) / denom);
+        }
     }
-}
+    #endif
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_neg_double(__pyx_t_double_complex a) {
+        __pyx_t_double_complex z;
+        z.real = -a.real;
+        z.imag = -a.imag;
+        return z;
+    }
+    static CYTHON_INLINE int __Pyx_c_is_zero_double(__pyx_t_double_complex a) {
+       return (a.real == 0) && (a.imag == 0);
+    }
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_conj_double(__pyx_t_double_complex a) {
+        __pyx_t_double_complex z;
+        z.real =  a.real;
+        z.imag = -a.imag;
+        return z;
+    }
+    #if 1
+        static CYTHON_INLINE double __Pyx_c_abs_double(__pyx_t_double_complex z) {
+          #if !defined(HAVE_HYPOT) || defined(_MSC_VER)
+            return sqrt(z.real*z.real + z.imag*z.imag);
+          #else
+            return hypot(z.real, z.imag);
+          #endif
+        }
+        static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_pow_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+            __pyx_t_double_complex z;
+            double r, lnr, theta, z_r, z_theta;
+            if (b.imag == 0 && b.real == (int)b.real) {
+                if (b.real < 0) {
+                    double denom = a.real * a.real + a.imag * a.imag;
+                    a.real = a.real / denom;
+                    a.imag = -a.imag / denom;
+                    b.real = -b.real;
+                }
+                switch ((int)b.real) {
+                    case 0:
+                        z.real = 1;
+                        z.imag = 0;
+                        return z;
+                    case 1:
+                        return a;
+                    case 2:
+                        return __Pyx_c_prod_double(a, a);
+                    case 3:
+                        z = __Pyx_c_prod_double(a, a);
+                        return __Pyx_c_prod_double(z, a);
+                    case 4:
+                        z = __Pyx_c_prod_double(a, a);
+                        return __Pyx_c_prod_double(z, z);
+                }
+            }
+            if (a.imag == 0) {
+                if (a.real == 0) {
+                    return a;
+                } else if (b.imag == 0) {
+                    z.real = pow(a.real, b.real);
+                    z.imag = 0;
+                    return z;
+                } else if (a.real > 0) {
+                    r = a.real;
+                    theta = 0;
+                } else {
+                    r = -a.real;
+                    theta = atan2(0.0, -1.0);
+                }
+            } else {
+                r = __Pyx_c_abs_double(a);
+                theta = atan2(a.imag, a.real);
+            }
+            lnr = log(r);
+            z_r = exp(lnr * b.real - theta * b.imag);
+            z_theta = theta * b.real + lnr * b.imag;
+            z.real = z_r * cos(z_theta);
+            z.imag = z_r * sin(z_theta);
+            return z;
+        }
+    #endif
+#endif
 
 /* CIntFromPy */
 static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {

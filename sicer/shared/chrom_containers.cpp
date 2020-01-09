@@ -641,6 +641,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include <stdint.h>
 #include "data_objects.h"
 #include <utility>
 #include <map>
@@ -877,8 +878,8 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
 struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
 struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
 
-/* "sicer/shared/data_classes.pxd":3
- * from libcpp.string cimport string
+/* "sicer/shared/data_classes.pxd":4
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
@@ -1427,6 +1428,8 @@ static int __pyx_f_5sicer_6shared_16chrom_containers_20ChromIslandContainer_getI
 /* Module declarations from 'libc.string' */
 
 /* Module declarations from 'libcpp.string' */
+
+/* Module declarations from 'libc.stdint' */
 
 /* Module declarations from 'sicer.shared.data_classes' */
 

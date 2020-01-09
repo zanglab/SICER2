@@ -639,6 +639,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <string>
+#include <stdint.h>
 #include "data_objects.h"
 #include <utility>
 #include <map>
@@ -875,8 +876,8 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
 struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
 struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
 
-/* "sicer/shared/data_classes.pxd":3
- * from libcpp.string cimport string
+/* "sicer/shared/data_classes.pxd":4
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
@@ -1121,13 +1122,6 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
-/* None.proto */
-static CYTHON_INLINE int __Pyx_div_int(int, int);
-
-/* UnaryNegOverflows.proto */
-#define UNARY_NEG_WOULD_OVERFLOW(x)\
-        (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
-
 /* GetItemInt.proto */
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
     (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
@@ -1335,6 +1329,9 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
 /* CIntFromPy.proto */
+static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *);
+
+/* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntToPy.proto */
@@ -1367,6 +1364,8 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.string' */
 
+/* Module declarations from 'libc.stdint' */
+
 /* Module declarations from 'sicer.shared.data_classes' */
 
 /* Module declarations from 'libcpp.utility' */
@@ -1387,9 +1386,9 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandCo
 /* Module declarations from 'libcpp.algorithm' */
 
 /* Module declarations from 'sicer.generate_windows' */
-static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::vector<BEDRead>  &, int, int); /*proto*/
-static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::vector<Window>  &, std::vector<int> , std::string, int, int); /*proto*/
-static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::vector<BEDRead>  &, std::vector<Window>  &, std::string, int, int, int); /*proto*/
+static std::vector<uint32_t>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::vector<BEDRead>  &, uint32_t, int); /*proto*/
+static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::vector<Window>  &, std::vector<uint32_t> , std::string, uint32_t, int); /*proto*/
+static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::vector<BEDRead>  &, std::vector<Window>  &, std::string, uint32_t, int, int); /*proto*/
 static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_f_5sicer_16generate_windows__generate_windows(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, PyObject *, int, int, int); /*proto*/
 static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_f_5sicer_16generate_windows_generate_windows(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
@@ -1437,38 +1436,38 @@ static PyObject *__pyx_pf_5sicer_16generate_windows_generate_windows(CYTHON_UNUS
 static PyObject *__pyx_tuple_;
 /* Late includes */
 
-/* "sicer/generate_windows.pyx":17
+/* "sicer/generate_windows.pyx":18
  * 
  * 
- * cdef vector[int] _get_tag_list(vector[BEDRead]& reads, int chrom_length, int frag_size) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[int] tag_list
+ * cdef vector[uint32_t] _get_tag_list(vector[BEDRead]& reads, uint32_t chrom_length, int frag_size) nogil:             # <<<<<<<<<<<<<<
+ *     cdef vector[uint32_t] tag_list
  *     cdef int shift = <int> round(frag_size / 2.0)
  */
 
-static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::vector<BEDRead>  &__pyx_v_reads, int __pyx_v_chrom_length, int __pyx_v_frag_size) {
-  std::vector<int>  __pyx_v_tag_list;
+static std::vector<uint32_t>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::vector<BEDRead>  &__pyx_v_reads, uint32_t __pyx_v_chrom_length, int __pyx_v_frag_size) {
+  std::vector<uint32_t>  __pyx_v_tag_list;
   int __pyx_v_shift;
-  int __pyx_v_pos;
+  uint32_t __pyx_v_pos;
   std::vector<BEDRead> ::size_type __pyx_v_i;
   BEDRead __pyx_v_read;
-  std::vector<int>  __pyx_r;
+  std::vector<uint32_t>  __pyx_r;
   std::vector<BEDRead> ::size_type __pyx_t_1;
   std::vector<BEDRead> ::size_type __pyx_t_2;
   std::vector<BEDRead> ::size_type __pyx_t_3;
   int __pyx_t_4;
   int __pyx_t_5;
 
-  /* "sicer/generate_windows.pyx":19
- * cdef vector[int] _get_tag_list(vector[BEDRead]& reads, int chrom_length, int frag_size) nogil:
- *     cdef vector[int] tag_list
+  /* "sicer/generate_windows.pyx":20
+ * cdef vector[uint32_t] _get_tag_list(vector[BEDRead]& reads, uint32_t chrom_length, int frag_size) nogil:
+ *     cdef vector[uint32_t] tag_list
  *     cdef int shift = <int> round(frag_size / 2.0)             # <<<<<<<<<<<<<<
- *     cdef int pos
+ *     cdef uint32_t pos
  * 
  */
   __pyx_v_shift = ((int)round((((double)__pyx_v_frag_size) / 2.0)));
 
-  /* "sicer/generate_windows.pyx":22
- *     cdef int pos
+  /* "sicer/generate_windows.pyx":23
+ *     cdef uint32_t pos
  * 
  *     for i in range(reads.size()):             # <<<<<<<<<<<<<<
  *         read = reads[i]
@@ -1479,7 +1478,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "sicer/generate_windows.pyx":23
+    /* "sicer/generate_windows.pyx":24
  * 
  *     for i in range(reads.size()):
  *         read = reads[i]             # <<<<<<<<<<<<<<
@@ -1488,7 +1487,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
  */
     __pyx_v_read = (__pyx_v_reads[__pyx_v_i]);
 
-    /* "sicer/generate_windows.pyx":24
+    /* "sicer/generate_windows.pyx":25
  *     for i in range(reads.size()):
  *         read = reads[i]
  *         if read.start >= 0 and read.end < chrom_length:             # <<<<<<<<<<<<<<
@@ -1506,7 +1505,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "sicer/generate_windows.pyx":25
+      /* "sicer/generate_windows.pyx":26
  *         read = reads[i]
  *         if read.start >= 0 and read.end < chrom_length:
  *             if read.strand == b'+':             # <<<<<<<<<<<<<<
@@ -1516,7 +1515,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
       __pyx_t_4 = ((__pyx_v_read.strand == '+') != 0);
       if (__pyx_t_4) {
 
-        /* "sicer/generate_windows.pyx":26
+        /* "sicer/generate_windows.pyx":27
  *         if read.start >= 0 and read.end < chrom_length:
  *             if read.strand == b'+':
  *                 pos = read.start + shift             # <<<<<<<<<<<<<<
@@ -1525,7 +1524,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
  */
         __pyx_v_pos = (__pyx_v_read.start + __pyx_v_shift);
 
-        /* "sicer/generate_windows.pyx":27
+        /* "sicer/generate_windows.pyx":28
  *             if read.strand == b'+':
  *                 pos = read.start + shift
  *                 if pos >= chrom_length:             # <<<<<<<<<<<<<<
@@ -1535,7 +1534,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
         __pyx_t_4 = ((__pyx_v_pos >= __pyx_v_chrom_length) != 0);
         if (__pyx_t_4) {
 
-          /* "sicer/generate_windows.pyx":28
+          /* "sicer/generate_windows.pyx":29
  *                 pos = read.start + shift
  *                 if pos >= chrom_length:
  *                     pos = chrom_length - 1             # <<<<<<<<<<<<<<
@@ -1544,7 +1543,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
  */
           __pyx_v_pos = (__pyx_v_chrom_length - 1);
 
-          /* "sicer/generate_windows.pyx":27
+          /* "sicer/generate_windows.pyx":28
  *             if read.strand == b'+':
  *                 pos = read.start + shift
  *                 if pos >= chrom_length:             # <<<<<<<<<<<<<<
@@ -1553,7 +1552,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
  */
         }
 
-        /* "sicer/generate_windows.pyx":25
+        /* "sicer/generate_windows.pyx":26
  *         read = reads[i]
  *         if read.start >= 0 and read.end < chrom_length:
  *             if read.strand == b'+':             # <<<<<<<<<<<<<<
@@ -1563,7 +1562,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
         goto __pyx_L8;
       }
 
-      /* "sicer/generate_windows.pyx":30
+      /* "sicer/generate_windows.pyx":31
  *                     pos = chrom_length - 1
  *             else:
  *                 pos = read.end - shift - 1             # <<<<<<<<<<<<<<
@@ -1573,7 +1572,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
       /*else*/ {
         __pyx_v_pos = ((__pyx_v_read.end - __pyx_v_shift) - 1);
 
-        /* "sicer/generate_windows.pyx":31
+        /* "sicer/generate_windows.pyx":32
  *             else:
  *                 pos = read.end - shift - 1
  *                 if pos < 0:             # <<<<<<<<<<<<<<
@@ -1583,7 +1582,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
         __pyx_t_4 = ((__pyx_v_pos < 0) != 0);
         if (__pyx_t_4) {
 
-          /* "sicer/generate_windows.pyx":32
+          /* "sicer/generate_windows.pyx":33
  *                 pos = read.end - shift - 1
  *                 if pos < 0:
  *                     pos = 0             # <<<<<<<<<<<<<<
@@ -1592,7 +1591,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
  */
           __pyx_v_pos = 0;
 
-          /* "sicer/generate_windows.pyx":31
+          /* "sicer/generate_windows.pyx":32
  *             else:
  *                 pos = read.end - shift - 1
  *                 if pos < 0:             # <<<<<<<<<<<<<<
@@ -1603,7 +1602,7 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
       }
       __pyx_L8:;
 
-      /* "sicer/generate_windows.pyx":34
+      /* "sicer/generate_windows.pyx":35
  *                     pos = 0
  * 
  *             tag_list.push_back(pos)             # <<<<<<<<<<<<<<
@@ -1620,10 +1619,10 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 34, __pyx_L1_error)
+        __PYX_ERR(0, 35, __pyx_L1_error)
       }
 
-      /* "sicer/generate_windows.pyx":24
+      /* "sicer/generate_windows.pyx":25
  *     for i in range(reads.size()):
  *         read = reads[i]
  *         if read.start >= 0 and read.end < chrom_length:             # <<<<<<<<<<<<<<
@@ -1633,16 +1632,16 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
     }
   }
 
-  /* "sicer/generate_windows.pyx":36
+  /* "sicer/generate_windows.pyx":37
  *             tag_list.push_back(pos)
  * 
  *     sort(tag_list.begin(), tag_list.end())             # <<<<<<<<<<<<<<
  * 
  *     return tag_list
  */
-  std::sort<std::vector<int> ::iterator>(__pyx_v_tag_list.begin(), __pyx_v_tag_list.end());
+  std::sort<std::vector<uint32_t> ::iterator>(__pyx_v_tag_list.begin(), __pyx_v_tag_list.end());
 
-  /* "sicer/generate_windows.pyx":38
+  /* "sicer/generate_windows.pyx":39
  *     sort(tag_list.begin(), tag_list.end())
  * 
  *     return tag_list             # <<<<<<<<<<<<<<
@@ -1652,11 +1651,11 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
   __pyx_r = __pyx_v_tag_list;
   goto __pyx_L0;
 
-  /* "sicer/generate_windows.pyx":17
+  /* "sicer/generate_windows.pyx":18
  * 
  * 
- * cdef vector[int] _get_tag_list(vector[BEDRead]& reads, int chrom_length, int frag_size) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[int] tag_list
+ * cdef vector[uint32_t] _get_tag_list(vector[BEDRead]& reads, uint32_t chrom_length, int frag_size) nogil:             # <<<<<<<<<<<<<<
+ *     cdef vector[uint32_t] tag_list
  *     cdef int shift = <int> round(frag_size / 2.0)
  */
 
@@ -1668,29 +1667,29 @@ static std::vector<int>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::ve
   return __pyx_r;
 }
 
-/* "sicer/generate_windows.pyx":40
+/* "sicer/generate_windows.pyx":41
  *     return tag_list
  * 
  * cdef void _generate_window_from_tags(             # <<<<<<<<<<<<<<
  *     vector[Window]& windows,
- *     vector[int] tag_list,
+ *     vector[uint32_t] tag_list,
  */
 
-static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::vector<Window>  &__pyx_v_windows, std::vector<int>  __pyx_v_tag_list, std::string __pyx_v_chrom, int __pyx_v_chrom_length, int __pyx_v_window_size) {
-  int __pyx_v_curr_win_start;
-  int __pyx_v_curr_win_end;
-  int __pyx_v_curr_tag_count;
-  int __pyx_v_adjusted_tag_pos;
-  std::vector<int> ::size_type __pyx_v_i;
+static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::vector<Window>  &__pyx_v_windows, std::vector<uint32_t>  __pyx_v_tag_list, std::string __pyx_v_chrom, uint32_t __pyx_v_chrom_length, int __pyx_v_window_size) {
+  uint32_t __pyx_v_curr_win_start;
+  uint32_t __pyx_v_curr_win_end;
+  uint32_t __pyx_v_curr_tag_count;
+  uint32_t __pyx_v_adjusted_tag_pos;
+  std::vector<uint32_t> ::size_type __pyx_v_i;
   int __pyx_t_1;
-  __Pyx_FakeReference<int> __pyx_t_2;
-  std::vector<int> ::size_type __pyx_t_3;
-  std::vector<int> ::size_type __pyx_t_4;
-  std::vector<int> ::size_type __pyx_t_5;
-  int __pyx_t_6;
+  __Pyx_FakeReference<uint32_t> __pyx_t_2;
+  std::vector<uint32_t> ::size_type __pyx_t_3;
+  std::vector<uint32_t> ::size_type __pyx_t_4;
+  std::vector<uint32_t> ::size_type __pyx_t_5;
+  uint32_t __pyx_t_6;
 
-  /* "sicer/generate_windows.pyx":53
- *     cdef int adjusted_tag_pos
+  /* "sicer/generate_windows.pyx":54
+ *     cdef uint32_t adjusted_tag_pos
  * 
  *     if tag_list.size() > 0:             # <<<<<<<<<<<<<<
  *         curr_win_start = (tag_list.at(0) // window_size) * window_size
@@ -1699,7 +1698,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
   __pyx_t_1 = ((__pyx_v_tag_list.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/generate_windows.pyx":54
+    /* "sicer/generate_windows.pyx":55
  * 
  *     if tag_list.size() > 0:
  *         curr_win_start = (tag_list.at(0) // window_size) * window_size             # <<<<<<<<<<<<<<
@@ -1716,7 +1715,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 54, __pyx_L1_error)
+      __PYX_ERR(0, 55, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_window_size == 0)) {
       #ifdef WITH_THREAD
@@ -1726,21 +1725,11 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 54, __pyx_L1_error)
+      __PYX_ERR(0, 55, __pyx_L1_error)
     }
-    else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_window_size == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_2))) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 54, __pyx_L1_error)
-    }
-    __pyx_v_curr_win_start = (__Pyx_div_int(__pyx_t_2, __pyx_v_window_size) * __pyx_v_window_size);
+    __pyx_v_curr_win_start = ((__pyx_t_2 / __pyx_v_window_size) * __pyx_v_window_size);
 
-    /* "sicer/generate_windows.pyx":55
+    /* "sicer/generate_windows.pyx":56
  *     if tag_list.size() > 0:
  *         curr_win_start = (tag_list.at(0) // window_size) * window_size
  *         curr_tag_count = 1             # <<<<<<<<<<<<<<
@@ -1749,7 +1738,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
     __pyx_v_curr_tag_count = 1;
 
-    /* "sicer/generate_windows.pyx":57
+    /* "sicer/generate_windows.pyx":58
  *         curr_tag_count = 1
  * 
  *         if tag_list.size() > 1:             # <<<<<<<<<<<<<<
@@ -1759,7 +1748,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
     __pyx_t_1 = ((__pyx_v_tag_list.size() > 1) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/generate_windows.pyx":58
+      /* "sicer/generate_windows.pyx":59
  * 
  *         if tag_list.size() > 1:
  *             for i in range(1, tag_list.size()):             # <<<<<<<<<<<<<<
@@ -1771,7 +1760,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
       for (__pyx_t_5 = 1; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
         __pyx_v_i = __pyx_t_5;
 
-        /* "sicer/generate_windows.pyx":59
+        /* "sicer/generate_windows.pyx":60
  *         if tag_list.size() > 1:
  *             for i in range(1, tag_list.size()):
  *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size             # <<<<<<<<<<<<<<
@@ -1787,21 +1776,11 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
           #ifdef WITH_THREAD
           __Pyx_PyGILState_Release(__pyx_gilstate_save);
           #endif
-          __PYX_ERR(0, 59, __pyx_L1_error)
+          __PYX_ERR(0, 60, __pyx_L1_error)
         }
-        else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_window_size == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_6))) {
-          #ifdef WITH_THREAD
-          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-          #endif
-          PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-          #ifdef WITH_THREAD
-          __Pyx_PyGILState_Release(__pyx_gilstate_save);
-          #endif
-          __PYX_ERR(0, 59, __pyx_L1_error)
-        }
-        __pyx_v_adjusted_tag_pos = (__Pyx_div_int(__pyx_t_6, __pyx_v_window_size) * __pyx_v_window_size);
+        __pyx_v_adjusted_tag_pos = ((__pyx_t_6 / __pyx_v_window_size) * __pyx_v_window_size);
 
-        /* "sicer/generate_windows.pyx":60
+        /* "sicer/generate_windows.pyx":61
  *             for i in range(1, tag_list.size()):
  *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
  *                 if adjusted_tag_pos == curr_win_start:             # <<<<<<<<<<<<<<
@@ -1811,7 +1790,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
         __pyx_t_1 = ((__pyx_v_adjusted_tag_pos == __pyx_v_curr_win_start) != 0);
         if (__pyx_t_1) {
 
-          /* "sicer/generate_windows.pyx":61
+          /* "sicer/generate_windows.pyx":62
  *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
  *                 if adjusted_tag_pos == curr_win_start:
  *                     preinc(curr_tag_count)             # <<<<<<<<<<<<<<
@@ -1820,7 +1799,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
           (void)((++__pyx_v_curr_tag_count));
 
-          /* "sicer/generate_windows.pyx":60
+          /* "sicer/generate_windows.pyx":61
  *             for i in range(1, tag_list.size()):
  *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
  *                 if adjusted_tag_pos == curr_win_start:             # <<<<<<<<<<<<<<
@@ -1830,7 +1809,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
           goto __pyx_L7;
         }
 
-        /* "sicer/generate_windows.pyx":62
+        /* "sicer/generate_windows.pyx":63
  *                 if adjusted_tag_pos == curr_win_start:
  *                     preinc(curr_tag_count)
  *                 elif adjusted_tag_pos > curr_win_start:             # <<<<<<<<<<<<<<
@@ -1840,7 +1819,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
         __pyx_t_1 = ((__pyx_v_adjusted_tag_pos > __pyx_v_curr_win_start) != 0);
         if (__pyx_t_1) {
 
-          /* "sicer/generate_windows.pyx":63
+          /* "sicer/generate_windows.pyx":64
  *                     preinc(curr_tag_count)
  *                 elif adjusted_tag_pos > curr_win_start:
  *                     curr_win_end = curr_win_start + window_size - 1             # <<<<<<<<<<<<<<
@@ -1849,7 +1828,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
           __pyx_v_curr_win_end = ((__pyx_v_curr_win_start + __pyx_v_window_size) - 1);
 
-          /* "sicer/generate_windows.pyx":65
+          /* "sicer/generate_windows.pyx":66
  *                     curr_win_end = curr_win_start + window_size - 1
  * 
  *                     if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
@@ -1859,7 +1838,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
           __pyx_t_1 = ((__pyx_v_curr_win_end < __pyx_v_chrom_length) != 0);
           if (__pyx_t_1) {
 
-            /* "sicer/generate_windows.pyx":67
+            /* "sicer/generate_windows.pyx":68
  *                     if curr_win_end < chrom_length:
  *                         # Create new window
  *                         windows.push_back(Window(             # <<<<<<<<<<<<<<
@@ -1876,10 +1855,10 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
               #ifdef WITH_THREAD
               __Pyx_PyGILState_Release(__pyx_gilstate_save);
               #endif
-              __PYX_ERR(0, 67, __pyx_L1_error)
+              __PYX_ERR(0, 68, __pyx_L1_error)
             }
 
-            /* "sicer/generate_windows.pyx":65
+            /* "sicer/generate_windows.pyx":66
  *                     curr_win_end = curr_win_start + window_size - 1
  * 
  *                     if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
@@ -1888,7 +1867,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
           }
 
-          /* "sicer/generate_windows.pyx":74
+          /* "sicer/generate_windows.pyx":75
  *                         ))
  * 
  *                     curr_win_start = adjusted_tag_pos             # <<<<<<<<<<<<<<
@@ -1897,7 +1876,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
           __pyx_v_curr_win_start = __pyx_v_adjusted_tag_pos;
 
-          /* "sicer/generate_windows.pyx":75
+          /* "sicer/generate_windows.pyx":76
  * 
  *                     curr_win_start = adjusted_tag_pos
  *                     curr_tag_count = 1             # <<<<<<<<<<<<<<
@@ -1906,7 +1885,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
           __pyx_v_curr_tag_count = 1;
 
-          /* "sicer/generate_windows.pyx":62
+          /* "sicer/generate_windows.pyx":63
  *                 if adjusted_tag_pos == curr_win_start:
  *                     preinc(curr_tag_count)
  *                 elif adjusted_tag_pos > curr_win_start:             # <<<<<<<<<<<<<<
@@ -1917,7 +1896,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
         __pyx_L7:;
       }
 
-      /* "sicer/generate_windows.pyx":57
+      /* "sicer/generate_windows.pyx":58
  *         curr_tag_count = 1
  * 
  *         if tag_list.size() > 1:             # <<<<<<<<<<<<<<
@@ -1926,7 +1905,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
     }
 
-    /* "sicer/generate_windows.pyx":77
+    /* "sicer/generate_windows.pyx":78
  *                     curr_tag_count = 1
  * 
  *         curr_win_end = curr_win_start + window_size - 1             # <<<<<<<<<<<<<<
@@ -1935,7 +1914,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
     __pyx_v_curr_win_end = ((__pyx_v_curr_win_start + __pyx_v_window_size) - 1);
 
-    /* "sicer/generate_windows.pyx":78
+    /* "sicer/generate_windows.pyx":79
  * 
  *         curr_win_end = curr_win_start + window_size - 1
  *         if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
@@ -1945,7 +1924,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
     __pyx_t_1 = ((__pyx_v_curr_win_end < __pyx_v_chrom_length) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/generate_windows.pyx":79
+      /* "sicer/generate_windows.pyx":80
  *         curr_win_end = curr_win_start + window_size - 1
  *         if curr_win_end < chrom_length:
  *             windows.push_back(Window(             # <<<<<<<<<<<<<<
@@ -1962,10 +1941,10 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 79, __pyx_L1_error)
+        __PYX_ERR(0, 80, __pyx_L1_error)
       }
 
-      /* "sicer/generate_windows.pyx":78
+      /* "sicer/generate_windows.pyx":79
  * 
  *         curr_win_end = curr_win_start + window_size - 1
  *         if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
@@ -1974,8 +1953,8 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
     }
 
-    /* "sicer/generate_windows.pyx":53
- *     cdef int adjusted_tag_pos
+    /* "sicer/generate_windows.pyx":54
+ *     cdef uint32_t adjusted_tag_pos
  * 
  *     if tag_list.size() > 0:             # <<<<<<<<<<<<<<
  *         curr_win_start = (tag_list.at(0) // window_size) * window_size
@@ -1983,12 +1962,12 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  */
   }
 
-  /* "sicer/generate_windows.pyx":40
+  /* "sicer/generate_windows.pyx":41
  *     return tag_list
  * 
  * cdef void _generate_window_from_tags(             # <<<<<<<<<<<<<<
  *     vector[Window]& windows,
- *     vector[int] tag_list,
+ *     vector[uint32_t] tag_list,
  */
 
   /* function exit code */
@@ -1998,7 +1977,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
   __pyx_L0:;
 }
 
-/* "sicer/generate_windows.pyx":86
+/* "sicer/generate_windows.pyx":87
  *             ))
  * 
  * cdef void _generate_windows_by_chrom(             # <<<<<<<<<<<<<<
@@ -2006,13 +1985,13 @@ static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::ve
  *     vector[Window]& windows,
  */
 
-static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::vector<BEDRead>  &__pyx_v_reads, std::vector<Window>  &__pyx_v_windows, std::string __pyx_v_chrom, int __pyx_v_chrom_length, int __pyx_v_frag_size, int __pyx_v_window_size) {
-  std::vector<int>  __pyx_v_tag_list;
+static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::vector<BEDRead>  &__pyx_v_reads, std::vector<Window>  &__pyx_v_windows, std::string __pyx_v_chrom, uint32_t __pyx_v_chrom_length, int __pyx_v_frag_size, int __pyx_v_window_size) {
+  std::vector<uint32_t>  __pyx_v_tag_list;
   int __pyx_t_1;
 
-  /* "sicer/generate_windows.pyx":95
+  /* "sicer/generate_windows.pyx":96
  * ) nogil:
- *     cdef vector[int] tag_list
+ *     cdef vector[uint32_t] tag_list
  *     if reads.size() > 0:             # <<<<<<<<<<<<<<
  *         tag_list = _get_tag_list(reads, chrom_length, frag_size)
  *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
@@ -2020,8 +1999,8 @@ static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::ve
   __pyx_t_1 = ((__pyx_v_reads.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/generate_windows.pyx":96
- *     cdef vector[int] tag_list
+    /* "sicer/generate_windows.pyx":97
+ *     cdef vector[uint32_t] tag_list
  *     if reads.size() > 0:
  *         tag_list = _get_tag_list(reads, chrom_length, frag_size)             # <<<<<<<<<<<<<<
  *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
@@ -2029,7 +2008,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::ve
  */
     __pyx_v_tag_list = __pyx_f_5sicer_16generate_windows__get_tag_list(__pyx_v_reads, __pyx_v_chrom_length, __pyx_v_frag_size);
 
-    /* "sicer/generate_windows.pyx":97
+    /* "sicer/generate_windows.pyx":98
  *     if reads.size() > 0:
  *         tag_list = _get_tag_list(reads, chrom_length, frag_size)
  *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)             # <<<<<<<<<<<<<<
@@ -2038,16 +2017,16 @@ static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::ve
  */
     __pyx_f_5sicer_16generate_windows__generate_window_from_tags(__pyx_v_windows, __pyx_v_tag_list, __pyx_v_chrom, __pyx_v_chrom_length, __pyx_v_window_size);
 
-    /* "sicer/generate_windows.pyx":95
+    /* "sicer/generate_windows.pyx":96
  * ) nogil:
- *     cdef vector[int] tag_list
+ *     cdef vector[uint32_t] tag_list
  *     if reads.size() > 0:             # <<<<<<<<<<<<<<
  *         tag_list = _get_tag_list(reads, chrom_length, frag_size)
  *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
  */
   }
 
-  /* "sicer/generate_windows.pyx":86
+  /* "sicer/generate_windows.pyx":87
  *             ))
  * 
  * cdef void _generate_windows_by_chrom(             # <<<<<<<<<<<<<<
@@ -2058,7 +2037,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::ve
   /* function exit code */
 }
 
-/* "sicer/generate_windows.pyx":99
+/* "sicer/generate_windows.pyx":100
  *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
  * 
  * cdef ChromWindowContainer _generate_windows(             # <<<<<<<<<<<<<<
@@ -2068,7 +2047,7 @@ static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::ve
 
 static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_f_5sicer_16generate_windows__generate_windows(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_v_reads, PyObject *__pyx_v_genome_data, int __pyx_v_frag_size, int __pyx_v_window_size, CYTHON_UNUSED int __pyx_v_num_cpu) {
   std::vector<std::string>  __pyx_v_chroms;
-  std::vector<int>  __pyx_v_chrom_lengths;
+  std::vector<uint32_t>  __pyx_v_chrom_lengths;
   PyObject *__pyx_v_c = NULL;
   struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows = 0;
   int __pyx_v_i;
@@ -2080,7 +2059,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
   Py_ssize_t __pyx_t_4;
   PyObject *(*__pyx_t_5)(PyObject *);
   PyObject *__pyx_t_6 = NULL;
-  int __pyx_t_7;
+  uint32_t __pyx_t_7;
   std::vector<std::string> ::size_type __pyx_t_8;
   std::vector<std::string> ::size_type __pyx_t_9;
   std::vector<std::string> ::size_type __pyx_t_10;
@@ -2088,35 +2067,35 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
   __Pyx_FakeReference<std::string> __pyx_t_12;
   __Pyx_RefNannySetupContext("_generate_windows", 0);
 
-  /* "sicer/generate_windows.pyx":107
+  /* "sicer/generate_windows.pyx":108
  * ):
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = reads.getChromosomes()             # <<<<<<<<<<<<<<
- *     cdef vector[int] chrom_lengths
+ *     cdef vector[uint32_t] chrom_lengths
  *     for c in genome_data.chrom:
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/generate_windows.pyx":109
+  /* "sicer/generate_windows.pyx":110
  *     cdef vector[string] chroms = reads.getChromosomes()
- *     cdef vector[int] chrom_lengths
+ *     cdef vector[uint32_t] chrom_lengths
  *     for c in genome_data.chrom:             # <<<<<<<<<<<<<<
  *         chrom_lengths.push_back(genome_data.chrom_length[c])
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -2124,17 +2103,17 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -2144,7 +2123,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 109, __pyx_L1_error)
+          else __PYX_ERR(0, 110, __pyx_L1_error)
         }
         break;
       }
@@ -2153,30 +2132,30 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
     __Pyx_XDECREF_SET(__pyx_v_c, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "sicer/generate_windows.pyx":110
- *     cdef vector[int] chrom_lengths
+    /* "sicer/generate_windows.pyx":111
+ *     cdef vector[uint32_t] chrom_lengths
  *     for c in genome_data.chrom:
  *         chrom_lengths.push_back(genome_data.chrom_length[c])             # <<<<<<<<<<<<<<
  * 
  *     cdef ChromWindowContainer windows = ChromWindowContainer(genome_data)
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_t_1, __pyx_v_c); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_t_1, __pyx_v_c); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_6); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_As_uint32_t(__pyx_t_6); if (unlikely((__pyx_t_7 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     try {
       __pyx_v_chrom_lengths.push_back(__pyx_t_7);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 110, __pyx_L1_error)
+      __PYX_ERR(0, 111, __pyx_L1_error)
     }
 
-    /* "sicer/generate_windows.pyx":109
+    /* "sicer/generate_windows.pyx":110
  *     cdef vector[string] chroms = reads.getChromosomes()
- *     cdef vector[int] chrom_lengths
+ *     cdef vector[uint32_t] chrom_lengths
  *     for c in genome_data.chrom:             # <<<<<<<<<<<<<<
  *         chrom_lengths.push_back(genome_data.chrom_length[c])
  * 
@@ -2184,19 +2163,19 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "sicer/generate_windows.pyx":112
+  /* "sicer/generate_windows.pyx":113
  *         chrom_lengths.push_back(genome_data.chrom_length[c])
  * 
  *     cdef ChromWindowContainer windows = ChromWindowContainer(genome_data)             # <<<<<<<<<<<<<<
  * 
  *     cdef int i
  */
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "sicer/generate_windows.pyx":115
+  /* "sicer/generate_windows.pyx":116
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -2245,7 +2224,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_9);
 
-                            /* "sicer/generate_windows.pyx":117
+                            /* "sicer/generate_windows.pyx":118
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         _generate_windows_by_chrom(
  *             deref(reads.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
@@ -2262,10 +2241,10 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 117, __pyx_L10_error)
+                              __PYX_ERR(0, 118, __pyx_L10_error)
                             }
 
-                            /* "sicer/generate_windows.pyx":118
+                            /* "sicer/generate_windows.pyx":119
  *         _generate_windows_by_chrom(
  *             deref(reads.getVectorPtr(chroms.at(i))),
  *             deref(windows.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
@@ -2282,10 +2261,10 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 118, __pyx_L10_error)
+                              __PYX_ERR(0, 119, __pyx_L10_error)
                             }
 
-                            /* "sicer/generate_windows.pyx":116
+                            /* "sicer/generate_windows.pyx":117
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         _generate_windows_by_chrom(             # <<<<<<<<<<<<<<
@@ -2374,7 +2353,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
         #endif
       }
 
-      /* "sicer/generate_windows.pyx":115
+      /* "sicer/generate_windows.pyx":116
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -2400,7 +2379,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
       }
   }
 
-  /* "sicer/generate_windows.pyx":125
+  /* "sicer/generate_windows.pyx":126
  *         )
  * 
  *     windows.updateCounts()             # <<<<<<<<<<<<<<
@@ -2409,16 +2388,16 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
  */
   ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->updateCounts(__pyx_v_windows, 0);
 
-  /* "sicer/generate_windows.pyx":126
+  /* "sicer/generate_windows.pyx":127
  * 
  *     windows.updateCounts()
  *     print("Window count: ", windows.getWindowCount())             # <<<<<<<<<<<<<<
  * 
  *     return windows
  */
-  __pyx_t_3 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getWindowCount(__pyx_v_windows, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getWindowCount(__pyx_v_windows, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_kp_u_Window_count);
   __Pyx_GIVEREF(__pyx_kp_u_Window_count);
@@ -2426,12 +2405,12 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "sicer/generate_windows.pyx":128
+  /* "sicer/generate_windows.pyx":129
  *     print("Window count: ", windows.getWindowCount())
  * 
  *     return windows             # <<<<<<<<<<<<<<
@@ -2443,7 +2422,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
   __pyx_r = __pyx_v_windows;
   goto __pyx_L0;
 
-  /* "sicer/generate_windows.pyx":99
+  /* "sicer/generate_windows.pyx":100
  *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
  * 
  * cdef ChromWindowContainer _generate_windows(             # <<<<<<<<<<<<<<
@@ -2466,7 +2445,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
   return __pyx_r;
 }
 
-/* "sicer/generate_windows.pyx":130
+/* "sicer/generate_windows.pyx":131
  *     return windows
  * 
  * cpdef ChromWindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):             # <<<<<<<<<<<<<<
@@ -2484,18 +2463,18 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
   int __pyx_t_4;
   __Pyx_RefNannySetupContext("generate_windows", 0);
 
-  /* "sicer/generate_windows.pyx":131
+  /* "sicer/generate_windows.pyx":132
  * 
  * cpdef ChromWindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
  *     print("Generating windows from treatement reads...")             # <<<<<<<<<<<<<<
  *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/generate_windows.pyx":132
+  /* "sicer/generate_windows.pyx":133
  * cpdef ChromWindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
  *     print("Generating windows from treatement reads...")
  *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)             # <<<<<<<<<<<<<<
@@ -2503,17 +2482,17 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *
  * 
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  if (!(likely(((__pyx_v_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_reads, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 132, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_frag_size); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_window_size); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L1_error)
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_16generate_windows__generate_windows(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads), __pyx_v_genome_data, __pyx_t_2, __pyx_t_3, __pyx_t_4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
+  if (!(likely(((__pyx_v_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_reads, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_frag_size); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_window_size); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_16generate_windows__generate_windows(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads), __pyx_v_genome_data, __pyx_t_2, __pyx_t_3, __pyx_t_4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/generate_windows.pyx":130
+  /* "sicer/generate_windows.pyx":131
  *     return windows
  * 
  * cpdef ChromWindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):             # <<<<<<<<<<<<<<
@@ -2572,29 +2551,29 @@ static PyObject *__pyx_pw_5sicer_16generate_windows_1generate_windows(PyObject *
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 1); __PYX_ERR(0, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 1); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_frag_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 2); __PYX_ERR(0, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 2); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 3); __PYX_ERR(0, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 3); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 4); __PYX_ERR(0, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 4); __PYX_ERR(0, 131, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "generate_windows") < 0)) __PYX_ERR(0, 130, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "generate_windows") < 0)) __PYX_ERR(0, 131, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -2613,7 +2592,7 @@ static PyObject *__pyx_pw_5sicer_16generate_windows_1generate_windows(PyObject *
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 130, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 131, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.generate_windows.generate_windows", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2632,7 +2611,7 @@ static PyObject *__pyx_pf_5sicer_16generate_windows_generate_windows(CYTHON_UNUS
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("generate_windows", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_16generate_windows_generate_windows(__pyx_v_reads, __pyx_v_genome_data, __pyx_v_frag_size, __pyx_v_window_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_16generate_windows_generate_windows(__pyx_v_reads, __pyx_v_genome_data, __pyx_v_frag_size, __pyx_v_window_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2896,8 +2875,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 22, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 127, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2907,14 +2886,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/generate_windows.pyx":131
+  /* "sicer/generate_windows.pyx":132
  * 
  * cpdef ChromWindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
  *     print("Generating windows from treatement reads...")             # <<<<<<<<<<<<<<
  *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)
  * 
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Generating_windows_from_treateme); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Generating_windows_from_treateme); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -3368,14 +3347,6 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
     if (nogil)
         PyGILState_Release(state);
 #endif
-}
-
-/* None */
-static CYTHON_INLINE int __Pyx_div_int(int a, int b) {
-    int q = a / b;
-    int r = a - q*b;
-    q -= ((r != 0) & ((r ^ b) < 0));
-    return q;
 }
 
 /* GetItemInt */
@@ -4425,6 +4396,195 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to size_t");
     return (size_t) -1;
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *x) {
+    const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(uint32_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(uint32_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (uint32_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (uint32_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(uint32_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(uint32_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) >= 2 * PyLong_SHIFT) {
+                            return (uint32_t) (((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(uint32_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) >= 3 * PyLong_SHIFT) {
+                            return (uint32_t) (((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(uint32_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) >= 4 * PyLong_SHIFT) {
+                            return (uint32_t) (((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (uint32_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(uint32_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (uint32_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(uint32_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(uint32_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(uint32_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (uint32_t) (((uint32_t)-1)*(((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(uint32_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (uint32_t) ((((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (uint32_t) (((uint32_t)-1)*(((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(uint32_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (uint32_t) ((((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (uint32_t) (((uint32_t)-1)*(((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(uint32_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint32_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (uint32_t) ((((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(uint32_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            uint32_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (uint32_t) -1;
+        }
+    } else {
+        uint32_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (uint32_t) -1;
+        val = __Pyx_PyInt_As_uint32_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to uint32_t");
+    return (uint32_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to uint32_t");
+    return (uint32_t) -1;
 }
 
 /* CIntFromPy */

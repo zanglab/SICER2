@@ -10,9 +10,10 @@ from sicer.utility.utils cimport to_string, remove_at
 from libcpp cimport bool
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as preinc
-from libc.stdlib cimport free, atoi, malloc
+from libc.stdlib cimport free, strtoul, malloc
 from libc.string cimport strtok
 from libc.stdio cimport fopen, fclose, getline, printf
+from libc.stdint cimport uint32_t
 from libcpp.map cimport map as mapcpp
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -38,7 +39,6 @@ cdef class BEDReader:
         object genome_data
         int num_cpu
         int redundancy_threshold
-        int line_count
 
     def __cinit__(
         self, 
@@ -51,7 +51,6 @@ cdef class BEDReader:
         self.genome_data = genome_data
         self.num_cpu = num_cpu
         self.redundancy_threshold = redundancy_threshold
-        self.line_count = 0
 
     cdef void _remove_redudant_reads(
         self, 
@@ -61,8 +60,8 @@ cdef class BEDReader:
         # Indices to delete
         cdef vector[int] shouldDelete
 
-        cdef int start = -1
-        cdef int end = -1
+        cdef uint32_t start = -1
+        cdef uint32_t end = -1
         cdef int redund_count = 0
 
         for i in range(reads.size()):
@@ -118,7 +117,8 @@ cdef class BEDReader:
         if count != 6:
             raise ValueError("Not a valid BED6 line: %s " % line.decode("UTF-8"))
 
-        return BEDRead(string(read[0]), atoi(read[1]), atoi(read[2]), string(read[3]), atoi(read[4]), read[5][0])
+        return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10), 
+                string(read[3]), strtoul(read[4],NULL,10), read[5][0])
 
     cdef ChromBEDReadContainer _read_file(self):
         print("Reading file \"" + self.file_name + "\" ...")
@@ -135,7 +135,6 @@ cdef class BEDReader:
         cdef BEDRead read
 
         while getline(&line, &len, fp) != -1:
-            self.line_count+=1
             read = self._parseBEDLine(line)
             if read.chrom.c_str() in chromosomes: 
                 reads.insertRead(read.chrom, read)

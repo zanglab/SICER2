@@ -65,6 +65,18 @@ extensions = [
                 extra_compile_args=extra_cpp_args,
                 language='c++'
                 ),
+            Extension('sicer.filter_islands_by_fdr',
+                sources=['sicer/filter_islands_by_fdr' + EXT],
+                include_dirs=['.'],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
+                ),
+            Extension('sicer.recover_significant_reads',
+                sources=['sicer/recover_significant_reads' + EXT],
+                include_dirs=['.'],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
+                )
             # Extension('sicer.coarsegraining',
             #     sources=['sicer/coarsegraining' + EXT],
             #     include_dirs=['.'],

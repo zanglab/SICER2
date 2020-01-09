@@ -10,9 +10,9 @@ cdef int get_tag_pos(BEDRead read, int frag_size) nogil:
         return read.end - shift - 1
 
 cdef int bin_tag_in_island(
-    vector[int] &island_starts,
-    vector[int] &island_ends,
-    int tag_pos
+    vector[uint32_t] &island_starts,
+    vector[uint32_t] &island_ends,
+    uint32_t tag_pos
 ) nogil:
     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
@@ -24,8 +24,8 @@ cdef int bin_tag_in_island(
     else:
         return -1;
 
-cdef int fact(int n) nogil:
-    cdef int val = 1
+cdef uint32_t fact(int n) nogil:
+    cdef uint32_t val = 1
     if n != 0:
         while n != 1:
             val = val * n;
