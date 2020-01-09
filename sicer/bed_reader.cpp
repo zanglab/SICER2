@@ -13,9 +13,9 @@
             "-stdlib=libc++"
         ],
         "include_dirs": [
-            "./sicer/utility",
             "sicer/shared",
             "./sicer/shared",
+            "./sicer/utility",
             "sicer/utility",
             "."
         ],

@@ -31,6 +31,11 @@ cdef extern from "data_objects.h" nogil:
         int start
         int end
         double score
+        int obs_count;
+        int control_count;
+        double pvalue;
+        double fc;
+        double alpha_stat;
 
         Island()
         Island(string chrom, int start, int end, double score)

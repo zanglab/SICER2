@@ -59,6 +59,12 @@ extensions = [
                 extra_compile_args=extra_cpp_args,
                 language='c++'
                 ),
+            Extension('sicer.associate_tags_with_control',
+                sources=['sicer/associate_tags_with_control' + EXT],
+                include_dirs=['.'],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
+                ),
             # Extension('sicer.coarsegraining',
             #     sources=['sicer/coarsegraining' + EXT],
             #     include_dirs=['.'],

@@ -13,6 +13,7 @@ from sicer.shared.genome_data import GenomeData
 from sicer.bed_reader import BEDReader
 from sicer.generate_windows import generate_windows
 from sicer.find_islands import find_islands
+from sicer.associate_tags_with_control import associate_tags_with_control
 from sicer.utility.file_writers import WigFileWriter
 
 WINDOW_PVALUE = 0.20
@@ -56,8 +57,16 @@ def run_sicer(args, df_run=False):
     islands = find_islands(windows, genome_data, min_tag_threshold, score_threshold, 
                             args.gap_size, avg_tag_count, args.cpu)
 
-    genome_size = args.effective_genome_fraction * genome_length
-    scaling_factor = treatment_reads.getReadCount() / control_reads.getReadCount()
+    if args.control_file is not None:
+        genome_size = args.effective_genome_fraction * genome_length
+        scaling_factor = treatment_reads.getReadCount() / control_reads.getReadCount()
+
+        islands = associate_tags_with_control(islands, treatment_reads, control_reads,
+                                                genome_size, scaling_factor,
+                                                args.fragment_size, args.cpu
+                                            )
+
+
 
 
 

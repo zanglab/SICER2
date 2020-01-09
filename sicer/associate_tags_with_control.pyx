@@ -1,69 +1,116 @@
 # SICER Internal Imports
-from sicer.utility.utils cimport poisson
-from sicer.shared.data_classes cimport BEDRead, Window, Island
+from sicer.utility.utils cimport get_tag_pos, bin_tag_in_island
+from sicer.shared.data_classes cimport BEDRead, Island
 from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowContainer, ChromIslandContainer
 
 # Cython Imports
-from libc.math cimport log
-from libcpp cimport bool
+from libc.math cimport log, fmin
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as preinc
 from libcpp.map cimport map as mapcpp
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from cython.parallel import parallel, prange
-from libcpp.algorithm cimport sort
 
-# Typedefs
-ctypedef char* cstr
-ctypedef vector[BEDRead]* bed_vec_ptr
-ctypedef vector[Window]* win_vec_ptr
-ctypedef vector[Island]* isl_vec_ptr
+from scipy.special.cython_special cimport pdtrc as poisson_sf
+from scipy.stats import rankdata
 
-cdef char PLUS = b'+'
-
-
-cdef void _associate_tag_count_to_regions_by_chrom()
-    isl_vec_ptr islands,
-    bed_vec_ptr treatment_reads,
-    bed_vec_ptr control_reads,
+cdef vector[double] _associate_tag_count_to_regions_by_chrom (
+    vector[Island]& islands,
+    vector[BEDRead]& treatment_reads,
+    vector[BEDRead]& control_reads,
     double genome_size,
     double scaling_factor,
-    int frag_size
+    int frag_size,
+    int ctrl_lib_size
 ) nogil:
-    
-    if deref(islands).size() > 0:
-        cdef vector[int] island_starts(deref(islands).size())
-        cdef vector[int] island_ends(deref(islands).size())
-        for i in range(deref(islands).size()):
-            islands_starts[i] = deref(islands)[i].start
-            islands_ends[i] = deref(islands)[i].end
+    if islands.size() == 0:
+        # Return empty vector
+        return vector[double]()
 
-        for i in range(deref(treatment_reads.size())):
+    cdef int pos, index
+    cdef vector[int] island_starts = vector[int](islands.size())
+    cdef vector[int] island_ends = vector[int](islands.size())
+    for i in range(islands.size()):
+        island_starts[i] = islands[i].start
+        island_ends[i] = islands[i].end
 
+    for i in range(treatment_reads.size()):
+        pos = get_tag_pos(treatment_reads[i], frag_size)
+        index = bin_tag_in_island(island_starts, island_ends, pos)
+        if index >= 0:
+            preinc(islands[index].obs_count)
+
+    for i in range(control_reads.size()):
+        pos = get_tag_pos(treatment_reads[i], frag_size)
+        index = bin_tag_in_island(island_starts, island_ends, pos)
+        if index >= 0:
+            preinc(islands[index].control_count)
+
+    cdef int length
+    cdef double avg, fc, pvalue
+    cdef vector[double] pvalue_vec = vector[double](islands.size())
+    for i in range(islands.size()):
+        if (islands[i].control_count > 0):
+            avg = islands[i].control_count * scaling_factor
+        else:
+            length = islands[i].end - islands[i].start + 1
+            avg = fmin(0.25, (length * ctrl_lib_size / genome_size)) * scaling_factor
+        fc = islands[i].obs_count / avg
+        if islands[i].obs_count > avg:
+            pvalue = poisson_sf(islands[i].obs_count, avg)
+        else:
+            pvalue = 1
+
+        pvalue_vec[i] = pvalue
+        islands[i].pvalue = pvalue
+        islands[i].fc = fc
+
+    return pvalue_vec
 
 cdef ChromIslandContainer _associate_tag_count_to_region(
     ChromIslandContainer islands,
     ChromBEDReadContainer treatment_reads,
     ChromBEDReadContainer control_reads,
-    double genome_size
+    double genome_size,
     double scaling_factor,
     int frag_size,
     int num_cpu
 ):
     # Convert Python list to vector for no-GIL use
-    cdef vector[string] chroms = windows.getChromosomes()
-
+    cdef vector[string] chroms = islands.getChromosomes()
+    cdef int ctrl_lib_size = control_reads.getReadCount()
     cdef int i
+    cdef vector[double] pvalues
+    cdef vector[double] returned_vec
+    pvalues.reserve(islands.getIslandCount())
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
-        _find_islands_by_chrom(
-            islands.getChromVector(chroms.at(i)),
-            treatment_reads.getChromVector(chroms.at(i)),
-            control_reads.getChromVector(chroms.at(i)),
-            genome_size,
-            scaling_factor
-            frag_size
-        )
+        returned_vec = _associate_tag_count_to_regions_by_chrom(
+                            deref(islands.getVectorPtr(chroms.at(i))),
+                            deref(treatment_reads.getVectorPtr(chroms.at(i))),
+                            deref(control_reads.getVectorPtr(chroms.at(i))),
+                            genome_size,
+                            scaling_factor,
+                            frag_size,
+                            ctrl_lib_size
+                        )
+        # Concatenate returned vectors
+        pvalues.insert(pvalues.end(), returned_vec.begin(), returned_vec.end())
+
+    cdef list pvalues_list = pvalues
+    cdef vector[double] pvalue_rank = rankdata(pvalues_list)
+    cdef vector[Island]* vptr
+    cdef int k = 0
+    cdef double alpha_stat
+
+    for i in range(chroms.size()):
+        vptr = islands.getVectorPtr(chroms[i])
+        for j in range(deref(vptr).size()):
+            alpha_stat = pvalues[k] * pvalues.size() / pvalue_rank[k]
+            if alpha_stat > 1:
+                alpha_stat = 1
+            deref(vptr)[j].alpha_stat = alpha_stat
+            preinc(k)
 
     islands.updateIslandCount()
 
@@ -80,12 +127,12 @@ cpdef ChromIslandContainer associate_tags_with_control(
 ):
     print("Calculating significance of candidate islands using the control library...")
     return _associate_tag_count_to_region(
-        windows,
-        genome_data,
-        min_tag_threshold, 
-        score_threshold,
-        gap_size,
-        avg_tag_count,
+        islands,
+        treatment_reads,
+        control_reads,
+        genome_size,
+        scaling_factor,
+        frag_size,
         num_cpu
     )
 

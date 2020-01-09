@@ -15,4 +15,4 @@ cdef int bin_tag_in_island(vector[int]& island_starts, vector[int]& island_ends,
 # Math functions
 cdef int fact(int n) nogil
 cdef double factln(int n) nogil
-cdef double poisson(int n, double avg) nogil
+cpdef double poisson(int n, double avg) nogil
