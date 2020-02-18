@@ -141,6 +141,8 @@ cdef class IslandFileWriter:
             func = self.format_bed_line
         elif self.file_type == "scoreisland":
             func = self.format_scoreisland_line
+        elif self.file_type == "cgisland":
+            func = self.format_bed_line
 
         for i in range(chroms.size()):
             vptr = self.islands.getVectorPtr(chroms[i])
@@ -159,6 +161,8 @@ cdef class IslandFileWriter:
             self.file_name += "-islands-summary"
         elif self.file_type == "fdr-filtered":
             self.file_name += "-FDR" + str(self.fdr) + "-island.bed"
+        elif self.file_type == "cgisland":
+            self.file_name += ".cgisland"
 
         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
 

@@ -224,7 +224,7 @@ def main():
         warnings.warn("The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
 
     print("Running RECOGNICER with given arguments \n")
-    run_RECOGNICER.main(args)
+    run_recognicer(args)
 
     print("Program Finished Running")
 

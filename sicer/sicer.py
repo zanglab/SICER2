@@ -3,6 +3,7 @@
 
 # Python Imports
 import os
+from copy import deepcopy
 
 # SICER Internal Imports
 from sicer.background_stat import BackgroundStatistics
@@ -88,4 +89,39 @@ def run_sicer(args, df_run=False):
     if df_run:
         return treatment_reads, sig_windows
 
-    
+def run_sicer_df(args):
+    # Create deep copy of the 'args' object for each treatment
+    args_1 = deepcopy(args)
+    args_2 = deepcopy(args)
+
+    # Format each args for SICER run
+    args_1.treatment_file = str(args.treatment_file[0])
+    args_2.treatment_file = str(args.treatment_file[1])
+
+    if args.control_file:
+        args_1.control_file = str(args.control_file[0])
+        args_2.control_file = str(args.control_file[1])
+
+    # Execute SICER for each treatment
+    treatment_reads_1, sig_windows_1 = run_sicer(args_1, True)
+    treatment_reads_2, sig_windows_2 = run_sicer(args_2, True)
+
+    file_name_1 = os.path.basename(args.treatment_file[0])
+    file_name_2 = os.path.basename(args.treatment_file[1])
+
+    print(f"Finding all the union islands of \"{file_name_1}\" and \"{file_name_2}\"...")
+    find_union_islands.main(args, temp_dir_1, temp_dir_2, pool)
+
+    print("Comparing two treatment libraries...")
+    compare_two_libraries_on_islands.main(args, temp_dir_1, temp_dir_2, library_size_file1, library_size_file2, pool)
+    print("\n")
+
+    print("Identifying significantly increased islands using BH corrected p-value cutoff...")
+    filter_islands_by_significance.main(args, 9, pool)
+    print("\n")
+
+    print("Identifying significantly decreased islands using BH-corrected p-value cutoff...")
+    filter_islands_by_significance.main(args, 12, pool)
+    print("\n")
+
+

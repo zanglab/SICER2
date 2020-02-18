@@ -22,3 +22,6 @@ cdef int bin_tag_in_island(
 cdef uint32_t fact(int n) nogil
 cdef double factln(int n) nogil
 cpdef double poisson(int n, double avg) nogil
+
+cdef extern from "<algorithm>" namespace "std" nogil:
+    O merge[I1, I2, O, C] (I1 first1, I1 last1, I2 first2, I2 last2, O result, C compare)
