@@ -210,6 +210,9 @@ def main():
         except:
             sys.exit("Output directory (%s) could not be created. Terminating program.\n" % args.output_directory)
 
+    if not(os.path.isabs(args.output_directory)):
+        args.output_directory = os.path.join(curr_path, args.output_directory)
+
     if (args.control_file is not None):
         if (len(args.control_file) > 2):
             sys.stderr.write("Error: Too many control file inputs. RECOGNICER accepts at max two files.\n")

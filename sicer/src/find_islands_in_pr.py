@@ -77,6 +77,9 @@ def combine_proximal_islands(islands, gap, window_size_buffer=3):
     """
 
     proximal_island_dist = gap + window_size_buffer;
+
+    if len(islands) == 0:
+        return []
     final_islands = []
     current_island = islands[0];
 

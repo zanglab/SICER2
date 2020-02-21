@@ -219,6 +219,9 @@ def main():
         except:
             sys.exit("Output directory (%s) could not be created. Terminating program." % args.output_directory)
 
+    if not(os.path.isabs(args.output_directory)):
+        args.output_directory = os.path.join(curr_path, args.output_directory)
+
     if args.cpu > cpu_available:
         args.cpu = cpu_available
         warnings.warn("The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
