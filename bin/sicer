@@ -218,6 +218,9 @@ def main():
             sys.stderr.write("Error: Gap size is not a multiple of window size.\n" % args.output_directory)
             sys.exit(1)
 
+    if not(os.path.isabs(args.output_directory)):
+        args.output_directory = os.path.join(curr_path, args.output_directory)
+
     if args.cpu > cpu_available:
         args.cpu = cpu_available
         warnings.warn("The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
