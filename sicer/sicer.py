@@ -14,6 +14,7 @@ from sicer.find_islands import find_islands
 from sicer.associate_tags_with_control import associate_tags_with_control
 from sicer.filter_islands_by_fdr import filter_islands_by_fdr
 from sicer.recover_significant_reads import recover_significant_reads
+from sicer.find_union_islands import find_union_islands
 from sicer.utility.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter
 
 WINDOW_PVALUE = 0.20
@@ -87,9 +88,11 @@ def run_sicer(args, df_run=False):
                         args.window_size, True, args.false_discovery_rate).write()
 
     if df_run:
-        return treatment_reads, sig_windows
+        return treatment_reads, islands
 
 def run_sicer_df(args):
+    genome_data = GenomeData(args.species)
+
     # Create deep copy of the 'args' object for each treatment
     args_1 = deepcopy(args)
     args_2 = deepcopy(args)
@@ -103,14 +106,13 @@ def run_sicer_df(args):
         args_2.control_file = str(args.control_file[1])
 
     # Execute SICER for each treatment
-    treatment_reads_1, sig_windows_1 = run_sicer(args_1, True)
-    treatment_reads_2, sig_windows_2 = run_sicer(args_2, True)
+    treatment_reads_1, islands_1 = run_sicer(args_1, True)
+    treatment_reads_2, islands_2 = run_sicer(args_2, True)
 
     file_name_1 = os.path.basename(args.treatment_file[0])
     file_name_2 = os.path.basename(args.treatment_file[1])
 
-    print(f"Finding all the union islands of \"{file_name_1}\" and \"{file_name_2}\"...")
-    find_union_islands.main(args, temp_dir_1, temp_dir_2, pool)
+    union_islands = find_union_islands(islands_1, islands_2, genome_data, args.cpu)
 
     print("Comparing two treatment libraries...")
     compare_two_libraries_on_islands.main(args, temp_dir_1, temp_dir_2, library_size_file1, library_size_file2, pool)

@@ -81,7 +81,7 @@ cdef vector[Island] _backstep(
     cdef uint32_t j = 1
     cdef Island next_island
     while j < merged_islands.size():
-        next_island = merged_islands[i]
+        next_island = merged_islands[j]
         if next_island.start > current_end + window_size + 1:
             kept_islands.push_back(Island(chrom, current_start, current_end, 1))
             current_start = next_island.start

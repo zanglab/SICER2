@@ -20,12 +20,12 @@
             "."
         ],
         "language": "c++",
-        "name": "sicer.coarsegraining",
+        "name": "sicer.find_union_islands",
         "sources": [
-            "sicer/coarsegraining.pyx"
+            "sicer/find_union_islands.pyx"
         ]
     },
-    "module_name": "sicer.coarsegraining"
+    "module_name": "sicer.find_union_islands"
 }
 END: Cython Metadata */
 
@@ -633,8 +633,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__sicer__coarsegraining
-#define __PYX_HAVE_API__sicer__coarsegraining
+#define __PYX_HAVE__sicer__find_union_islands
+#define __PYX_HAVE_API__sicer__find_union_islands
 /* Early includes */
 #include <string.h>
 #include "ios"
@@ -649,7 +649,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <vector>
 #include "removeAt.cpp"
 #include <algorithm>
-#include <math.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -858,7 +857,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "sicer/coarsegraining.pyx",
+  "sicer/find_union_islands.pyx",
   "stringsource",
   "sicer/shared/chrom_containers.pxd",
 };
@@ -898,41 +897,23 @@ typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
  */
 typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
 
-/* "sicer/coarsegraining.pyx":18
- * from libcpp.algorithm cimport binary_search, sort
+/* "sicer/find_union_islands.pyx":15
+ * from cython.parallel import parallel, prange
  * 
- * ctypedef pair[vector[uint32_t], vector[double]] corr_pair             # <<<<<<<<<<<<<<
- * ctypedef bool (*cmp_f)(Island, Island)
- * ctypedef vector[Island].iterator vi_itr
- */
-typedef std::pair<std::vector<uint32_t> ,std::vector<double> >  __pyx_t_5sicer_14coarsegraining_corr_pair;
-
-/* "sicer/coarsegraining.pyx":19
- * 
- * ctypedef pair[vector[uint32_t], vector[double]] corr_pair
  * ctypedef bool (*cmp_f)(Island, Island)             # <<<<<<<<<<<<<<
  * ctypedef vector[Island].iterator vi_itr
- * ctypedef vector[uint32_t]* v_uint_ptr
- */
-typedef bool (*__pyx_t_5sicer_14coarsegraining_cmp_f)(Island, Island);
-
-/* "sicer/coarsegraining.pyx":20
- * ctypedef pair[vector[uint32_t], vector[double]] corr_pair
- * ctypedef bool (*cmp_f)(Island, Island)
- * ctypedef vector[Island].iterator vi_itr             # <<<<<<<<<<<<<<
- * ctypedef vector[uint32_t]* v_uint_ptr
  * 
  */
-typedef std::vector<Island> ::iterator __pyx_t_5sicer_14coarsegraining_vi_itr;
+typedef bool (*__pyx_t_5sicer_18find_union_islands_cmp_f)(Island, Island);
 
-/* "sicer/coarsegraining.pyx":21
+/* "sicer/find_union_islands.pyx":16
+ * 
  * ctypedef bool (*cmp_f)(Island, Island)
- * ctypedef vector[Island].iterator vi_itr
- * ctypedef vector[uint32_t]* v_uint_ptr             # <<<<<<<<<<<<<<
+ * ctypedef vector[Island].iterator vi_itr             # <<<<<<<<<<<<<<
  * 
  * cdef bool compare_islands(Island i, Island j) nogil:
  */
-typedef std::vector<uint32_t>  *__pyx_t_5sicer_14coarsegraining_v_uint_ptr;
+typedef std::vector<Island> ::iterator __pyx_t_5sicer_18find_union_islands_vi_itr;
 
 /* "sicer/shared/chrom_containers.pxd":13
  * ctypedef char* cstr
@@ -1162,13 +1143,6 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
-/* None.proto */
-static CYTHON_INLINE int __Pyx_div_int(int, int);
-
-/* UnaryNegOverflows.proto */
-#define UNARY_NEG_WOULD_OVERFLOW(x)\
-        (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
-
 /* PyCFunctionFastCall.proto */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
@@ -1213,35 +1187,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* GetItemInt.proto */
-#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
-               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
-#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
-                                                     int is_list, int wraparound, int boundscheck);
-
-/* ObjectGetItem.proto */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
-#else
-#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
-#endif
 
 /* ExtTypeTest.proto */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
@@ -1373,13 +1318,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 #include <new>
 
 /* CIntFromPy.proto */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
-
-/* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
@@ -1428,100 +1367,72 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandCo
 
 /* Module declarations from 'sicer.utility.utils' */
 
-/* Module declarations from 'libc.math' */
-
 /* Module declarations from 'libcpp' */
 
-/* Module declarations from 'libcpp.pair' */
-
-/* Module declarations from 'libcpp.algorithm' */
-
-/* Module declarations from 'sicer.coarsegraining' */
-static bool __pyx_f_5sicer_14coarsegraining_compare_islands(Island, Island); /*proto*/
-static std::vector<Island>  __pyx_f_5sicer_14coarsegraining__generate_islands_from_start_pos(std::vector<uint32_t>  &, int, std::string); /*proto*/
-static std::vector<Island>  __pyx_f_5sicer_14coarsegraining__backstep(std::vector<Island>  &, std::vector<uint32_t> , int, std::string); /*proto*/
-static double __pyx_f_5sicer_14coarsegraining__linreg(std::vector<uint32_t>  &, std::vector<double>  &); /*proto*/
-static double __pyx_f_5sicer_14coarsegraining__start_list_correlation_r_rev(std::vector<uint32_t>  &, int, int, int); /*proto*/
-static __pyx_t_5sicer_14coarsegraining_corr_pair __pyx_f_5sicer_14coarsegraining__start_list_correlation_function(std::vector<uint32_t>  &, int, int); /*proto*/
-static double __pyx_f_5sicer_14coarsegraining__correlation_length_fit(__pyx_t_5sicer_14coarsegraining_corr_pair); /*proto*/
-static std::vector<Island>  __pyx_f_5sicer_14coarsegraining__traceback(std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr> , int, int, uint32_t, std::string); /*proto*/
-static __pyx_t_5sicer_14coarsegraining_v_uint_ptr __pyx_f_5sicer_14coarsegraining__graining(std::vector<uint32_t>  &, int, int, int); /*proto*/
-static std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr>  __pyx_f_5sicer_14coarsegraining__coarsegraining(__pyx_t_5sicer_14coarsegraining_v_uint_ptr, int, int, int); /*proto*/
-static void __pyx_f_5sicer_14coarsegraining__coarsegraining_islands_by_chrom(std::vector<Window>  &, std::vector<Island>  &, uint32_t, int, int, int, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_14coarsegraining__find_islands_by_coarsegraining(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, PyObject *, int, int, int, int, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_14coarsegraining_find_islands_by_coarsegraining(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+/* Module declarations from 'sicer.find_union_islands' */
+static bool __pyx_f_5sicer_18find_union_islands_compare_islands(Island, Island); /*proto*/
+static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std::vector<Island>  &, std::vector<Island>  &, std::vector<Island>  &); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, PyObject *, int); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
-#define __Pyx_MODULE_NAME "sicer.coarsegraining"
-extern int __pyx_module_is_main_sicer__coarsegraining;
-int __pyx_module_is_main_sicer__coarsegraining = 0;
+#define __Pyx_MODULE_NAME "sicer.find_union_islands"
+extern int __pyx_module_is_main_sicer__find_union_islands;
+int __pyx_module_is_main_sicer__find_union_islands = 0;
 
-/* Implementation of 'sicer.coarsegraining' */
-static PyObject *__pyx_builtin_range;
+/* Implementation of 'sicer.find_union_islands' */
 static PyObject *__pyx_builtin_print;
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_chrom[] = "chrom";
 static const char __pyx_k_print[] = "print";
-static const char __pyx_k_range[] = "range";
 static const char __pyx_k_num_cpu[] = "num_cpu";
-static const char __pyx_k_windows[] = "windows";
-static const char __pyx_k_step_size[] = "step_size";
+static const char __pyx_k_islands_1[] = "islands_1";
+static const char __pyx_k_islands_2[] = "islands_2";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
-static const char __pyx_k_step_score[] = "step_score";
 static const char __pyx_k_genome_data[] = "genome_data";
-static const char __pyx_k_window_size[] = "window_size";
-static const char __pyx_k_Island_count[] = "Island count: ";
-static const char __pyx_k_chrom_length[] = "chrom_length";
-static const char __pyx_k_min_tag_threshold[] = "min_tag_threshold";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_Finding_candidate_islands_exhibi[] = "Finding candidate islands exhibiting clustering by coarsegraining...";
-static PyObject *__pyx_kp_u_Finding_candidate_islands_exhibi;
-static PyObject *__pyx_kp_u_Island_count;
-static PyObject *__pyx_n_s_chrom;
-static PyObject *__pyx_n_s_chrom_length;
+static const char __pyx_k_Union_of_islands_count[] = "Union of islands count: ";
+static const char __pyx_k_Finding_the_union_islands_betwee[] = "Finding the union islands between two treatment libraries...";
+static PyObject *__pyx_kp_u_Finding_the_union_islands_betwee;
+static PyObject *__pyx_kp_u_Union_of_islands_count;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_genome_data;
+static PyObject *__pyx_n_s_islands_1;
+static PyObject *__pyx_n_s_islands_2;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_min_tag_threshold;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_num_cpu;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_vtable;
-static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_step_score;
-static PyObject *__pyx_n_s_step_size;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_window_size;
-static PyObject *__pyx_n_s_windows;
-static PyObject *__pyx_pf_5sicer_14coarsegraining_find_islands_by_coarsegraining(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_windows, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_min_tag_threshold, PyObject *__pyx_v_window_size, PyObject *__pyx_v_step_size, PyObject *__pyx_v_step_score, PyObject *__pyx_v_num_cpu); /* proto */
+static PyObject *__pyx_pf_5sicer_18find_union_islands_find_union_islands(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu); /* proto */
 static PyObject *__pyx_tuple_;
 /* Late includes */
 
-/* "sicer/coarsegraining.pyx":23
- * ctypedef vector[uint32_t]* v_uint_ptr
+/* "sicer/find_union_islands.pyx":18
+ * ctypedef vector[Island].iterator vi_itr
  * 
  * cdef bool compare_islands(Island i, Island j) nogil:             # <<<<<<<<<<<<<<
  *     return i.start < j.start
  * 
  */
 
-static bool __pyx_f_5sicer_14coarsegraining_compare_islands(Island __pyx_v_i, Island __pyx_v_j) {
+static bool __pyx_f_5sicer_18find_union_islands_compare_islands(Island __pyx_v_i, Island __pyx_v_j) {
   bool __pyx_r;
 
-  /* "sicer/coarsegraining.pyx":24
+  /* "sicer/find_union_islands.pyx":19
  * 
  * cdef bool compare_islands(Island i, Island j) nogil:
  *     return i.start < j.start             # <<<<<<<<<<<<<<
  * 
- * cdef vector[Island] _generate_islands_from_start_pos(
+ * cdef void _find_union_islands_by_chrom(
  */
   __pyx_r = (__pyx_v_i.start < __pyx_v_j.start);
   goto __pyx_L0;
 
-  /* "sicer/coarsegraining.pyx":23
- * ctypedef vector[uint32_t]* v_uint_ptr
+  /* "sicer/find_union_islands.pyx":18
+ * ctypedef vector[Island].iterator vi_itr
  * 
  * cdef bool compare_islands(Island i, Island j) nogil:             # <<<<<<<<<<<<<<
  *     return i.start < j.start
@@ -1533,445 +1444,162 @@ static bool __pyx_f_5sicer_14coarsegraining_compare_islands(Island __pyx_v_i, Is
   return __pyx_r;
 }
 
-/* "sicer/coarsegraining.pyx":26
+/* "sicer/find_union_islands.pyx":21
  *     return i.start < j.start
  * 
- * cdef vector[Island] _generate_islands_from_start_pos(             # <<<<<<<<<<<<<<
- *     vector[uint32_t]& start_list,
- *     int window_size,
+ * cdef void _find_union_islands_by_chrom(             # <<<<<<<<<<<<<<
+ *     vector[Island]& union_islands,
+ *     vector[Island]& islands_1,
  */
 
-static std::vector<Island>  __pyx_f_5sicer_14coarsegraining__generate_islands_from_start_pos(std::vector<uint32_t>  &__pyx_v_start_list, int __pyx_v_window_size, std::string __pyx_v_chrom) {
-  std::vector<Island>  __pyx_v_islands;
-  std::vector<uint32_t> ::size_type __pyx_v_i;
-  std::vector<Island>  __pyx_r;
-  std::vector<uint32_t> ::size_type __pyx_t_1;
-  std::vector<uint32_t> ::size_type __pyx_t_2;
-  std::vector<uint32_t> ::size_type __pyx_t_3;
-
-  /* "sicer/coarsegraining.pyx":33
- * 
- *     cdef vector[Island] islands
- *     for i in range(start_list.size()):             # <<<<<<<<<<<<<<
- *         islands.push_back(Island(chrom, start_list[i], start_list[i] + window_size - 1, 1))
- * 
- */
-  __pyx_t_1 = __pyx_v_start_list.size();
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
-
-    /* "sicer/coarsegraining.pyx":34
- *     cdef vector[Island] islands
- *     for i in range(start_list.size()):
- *         islands.push_back(Island(chrom, start_list[i], start_list[i] + window_size - 1, 1))             # <<<<<<<<<<<<<<
- * 
- *     return islands
- */
-    try {
-      __pyx_v_islands.push_back(Island(__pyx_v_chrom, (__pyx_v_start_list[__pyx_v_i]), (((__pyx_v_start_list[__pyx_v_i]) + __pyx_v_window_size) - 1), 1.0));
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 34, __pyx_L1_error)
-    }
-  }
-
-  /* "sicer/coarsegraining.pyx":36
- *         islands.push_back(Island(chrom, start_list[i], start_list[i] + window_size - 1, 1))
- * 
- *     return islands             # <<<<<<<<<<<<<<
- * 
- * cdef vector[Island] _backstep(
- */
-  __pyx_r = __pyx_v_islands;
-  goto __pyx_L0;
-
-  /* "sicer/coarsegraining.pyx":26
- *     return i.start < j.start
- * 
- * cdef vector[Island] _generate_islands_from_start_pos(             # <<<<<<<<<<<<<<
- *     vector[uint32_t]& start_list,
- *     int window_size,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._generate_islands_from_start_pos", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":38
- *     return islands
- * 
- * cdef vector[Island] _backstep(             # <<<<<<<<<<<<<<
- *     vector[Island]& islands,
- *     vector[uint32_t] start_list,
- */
-
-static std::vector<Island>  __pyx_f_5sicer_14coarsegraining__backstep(std::vector<Island>  &__pyx_v_islands, std::vector<uint32_t>  __pyx_v_start_list, int __pyx_v_window_size, std::string __pyx_v_chrom) {
-  bool __pyx_v_start_left;
-  bool __pyx_v_start_right;
-  bool __pyx_v_end_left;
-  bool __pyx_v_end_right;
+static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std::vector<Island>  &__pyx_v_union_islands, std::vector<Island>  &__pyx_v_islands_1, std::vector<Island>  &__pyx_v_islands_2) {
   std::vector<Island>  __pyx_v_merged_islands;
-  std::vector<Island>  __pyx_v_additional_islands;
-  std::vector<Island>  __pyx_v_kept_islands;
-  std::vector<Island> ::size_type __pyx_v_i;
-  uint32_t __pyx_v_current_start;
-  uint32_t __pyx_v_current_end;
-  uint32_t __pyx_v_j;
-  Island __pyx_v_next_island;
-  std::vector<Island>  __pyx_r;
-  std::vector<Island> ::size_type __pyx_t_1;
-  std::vector<Island> ::size_type __pyx_t_2;
-  std::vector<Island> ::size_type __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  std::vector<Island>  __pyx_t_6;
-  uint32_t __pyx_t_7;
+  Island __pyx_v_current;
+  Island __pyx_v_next;
+  uint32_t __pyx_v_i;
+  int __pyx_t_1;
+  uint32_t __pyx_t_2;
 
-  /* "sicer/coarsegraining.pyx":46
- *     cdef bool start_left, start_right, end_left, end_right
- *     cdef vector[Island] merged_islands, additional_islands, kept_islands
- *     additional_islands = _generate_islands_from_start_pos(start_list, window_size, chrom)             # <<<<<<<<<<<<<<
+  /* "sicer/find_union_islands.pyx":27
+ * ) nogil:
  * 
- *     for i in range(islands.size()):
+ *     if islands_1.size() == 0:             # <<<<<<<<<<<<<<
+ *         union_islands.swap(islands_2)
+ *         return
  */
-  __pyx_v_additional_islands = __pyx_f_5sicer_14coarsegraining__generate_islands_from_start_pos(__pyx_v_start_list, __pyx_v_window_size, __pyx_v_chrom);
+  __pyx_t_1 = ((__pyx_v_islands_1.size() == 0) != 0);
+  if (__pyx_t_1) {
 
-  /* "sicer/coarsegraining.pyx":48
- *     additional_islands = _generate_islands_from_start_pos(start_list, window_size, chrom)
+    /* "sicer/find_union_islands.pyx":28
  * 
- *     for i in range(islands.size()):             # <<<<<<<<<<<<<<
- *         start_left = binary_search(start_list.begin(), start_list.end(), (islands[i].start - window_size))
- *         start_right = binary_search(start_list.begin(), start_list.end(), islands[i].start)
+ *     if islands_1.size() == 0:
+ *         union_islands.swap(islands_2)             # <<<<<<<<<<<<<<
+ *         return
+ *     if islands_2.size() == 0:
  */
-  __pyx_t_1 = __pyx_v_islands.size();
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
+    __pyx_v_union_islands.swap(__pyx_v_islands_2);
 
-    /* "sicer/coarsegraining.pyx":49
- * 
- *     for i in range(islands.size()):
- *         start_left = binary_search(start_list.begin(), start_list.end(), (islands[i].start - window_size))             # <<<<<<<<<<<<<<
- *         start_right = binary_search(start_list.begin(), start_list.end(), islands[i].start)
- * 
+    /* "sicer/find_union_islands.pyx":29
+ *     if islands_1.size() == 0:
+ *         union_islands.swap(islands_2)
+ *         return             # <<<<<<<<<<<<<<
+ *     if islands_2.size() == 0:
+ *         union_islands.swap(islands_1)
  */
-    __pyx_v_start_left = std::binary_search<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_start_list.begin(), __pyx_v_start_list.end(), ((__pyx_v_islands[__pyx_v_i]).start - __pyx_v_window_size));
+    goto __pyx_L0;
 
-    /* "sicer/coarsegraining.pyx":50
- *     for i in range(islands.size()):
- *         start_left = binary_search(start_list.begin(), start_list.end(), (islands[i].start - window_size))
- *         start_right = binary_search(start_list.begin(), start_list.end(), islands[i].start)             # <<<<<<<<<<<<<<
+    /* "sicer/find_union_islands.pyx":27
+ * ) nogil:
  * 
- *         if start_left and start_right:
+ *     if islands_1.size() == 0:             # <<<<<<<<<<<<<<
+ *         union_islands.swap(islands_2)
+ *         return
  */
-    __pyx_v_start_right = std::binary_search<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_start_list.begin(), __pyx_v_start_list.end(), (__pyx_v_islands[__pyx_v_i]).start);
-
-    /* "sicer/coarsegraining.pyx":52
- *         start_right = binary_search(start_list.begin(), start_list.end(), islands[i].start)
- * 
- *         if start_left and start_right:             # <<<<<<<<<<<<<<
- *             islands[i].start = islands[i].start - window_size
- *         elif not start_left and not start_right:
- */
-    __pyx_t_5 = (__pyx_v_start_left != 0);
-    if (__pyx_t_5) {
-    } else {
-      __pyx_t_4 = __pyx_t_5;
-      goto __pyx_L6_bool_binop_done;
-    }
-    __pyx_t_5 = (__pyx_v_start_right != 0);
-    __pyx_t_4 = __pyx_t_5;
-    __pyx_L6_bool_binop_done:;
-    if (__pyx_t_4) {
-
-      /* "sicer/coarsegraining.pyx":53
- * 
- *         if start_left and start_right:
- *             islands[i].start = islands[i].start - window_size             # <<<<<<<<<<<<<<
- *         elif not start_left and not start_right:
- *             islands[i].start = islands[i].start + window_size
- */
-      (__pyx_v_islands[__pyx_v_i]).start = ((__pyx_v_islands[__pyx_v_i]).start - __pyx_v_window_size);
-
-      /* "sicer/coarsegraining.pyx":52
- *         start_right = binary_search(start_list.begin(), start_list.end(), islands[i].start)
- * 
- *         if start_left and start_right:             # <<<<<<<<<<<<<<
- *             islands[i].start = islands[i].start - window_size
- *         elif not start_left and not start_right:
- */
-      goto __pyx_L5;
-    }
-
-    /* "sicer/coarsegraining.pyx":54
- *         if start_left and start_right:
- *             islands[i].start = islands[i].start - window_size
- *         elif not start_left and not start_right:             # <<<<<<<<<<<<<<
- *             islands[i].start = islands[i].start + window_size
- * 
- */
-    __pyx_t_5 = ((!(__pyx_v_start_left != 0)) != 0);
-    if (__pyx_t_5) {
-    } else {
-      __pyx_t_4 = __pyx_t_5;
-      goto __pyx_L8_bool_binop_done;
-    }
-    __pyx_t_5 = ((!(__pyx_v_start_right != 0)) != 0);
-    __pyx_t_4 = __pyx_t_5;
-    __pyx_L8_bool_binop_done:;
-    if (__pyx_t_4) {
-
-      /* "sicer/coarsegraining.pyx":55
- *             islands[i].start = islands[i].start - window_size
- *         elif not start_left and not start_right:
- *             islands[i].start = islands[i].start + window_size             # <<<<<<<<<<<<<<
- * 
- *         end_left = binary_search(start_list.begin(), start_list.end(), islands[i].end + 1 - window_size)
- */
-      (__pyx_v_islands[__pyx_v_i]).start = ((__pyx_v_islands[__pyx_v_i]).start + __pyx_v_window_size);
-
-      /* "sicer/coarsegraining.pyx":54
- *         if start_left and start_right:
- *             islands[i].start = islands[i].start - window_size
- *         elif not start_left and not start_right:             # <<<<<<<<<<<<<<
- *             islands[i].start = islands[i].start + window_size
- * 
- */
-    }
-    __pyx_L5:;
-
-    /* "sicer/coarsegraining.pyx":57
- *             islands[i].start = islands[i].start + window_size
- * 
- *         end_left = binary_search(start_list.begin(), start_list.end(), islands[i].end + 1 - window_size)             # <<<<<<<<<<<<<<
- *         end_right = binary_search(start_list.begin(), start_list.end(), islands[i].end + 1)
- * 
- */
-    __pyx_v_end_left = std::binary_search<std::vector<uint32_t> ::iterator,long>(__pyx_v_start_list.begin(), __pyx_v_start_list.end(), (((__pyx_v_islands[__pyx_v_i]).end + 1) - __pyx_v_window_size));
-
-    /* "sicer/coarsegraining.pyx":58
- * 
- *         end_left = binary_search(start_list.begin(), start_list.end(), islands[i].end + 1 - window_size)
- *         end_right = binary_search(start_list.begin(), start_list.end(), islands[i].end + 1)             # <<<<<<<<<<<<<<
- * 
- *         if end_left and end_right:
- */
-    __pyx_v_end_right = std::binary_search<std::vector<uint32_t> ::iterator,long>(__pyx_v_start_list.begin(), __pyx_v_start_list.end(), ((__pyx_v_islands[__pyx_v_i]).end + 1));
-
-    /* "sicer/coarsegraining.pyx":60
- *         end_right = binary_search(start_list.begin(), start_list.end(), islands[i].end + 1)
- * 
- *         if end_left and end_right:             # <<<<<<<<<<<<<<
- *             islands[i].end = islands[i].end + window_size
- *         elif not end_left and not end_right:
- */
-    __pyx_t_5 = (__pyx_v_end_left != 0);
-    if (__pyx_t_5) {
-    } else {
-      __pyx_t_4 = __pyx_t_5;
-      goto __pyx_L11_bool_binop_done;
-    }
-    __pyx_t_5 = (__pyx_v_end_right != 0);
-    __pyx_t_4 = __pyx_t_5;
-    __pyx_L11_bool_binop_done:;
-    if (__pyx_t_4) {
-
-      /* "sicer/coarsegraining.pyx":61
- * 
- *         if end_left and end_right:
- *             islands[i].end = islands[i].end + window_size             # <<<<<<<<<<<<<<
- *         elif not end_left and not end_right:
- *             islands[i].end = islands[i].end - window_size
- */
-      (__pyx_v_islands[__pyx_v_i]).end = ((__pyx_v_islands[__pyx_v_i]).end + __pyx_v_window_size);
-
-      /* "sicer/coarsegraining.pyx":60
- *         end_right = binary_search(start_list.begin(), start_list.end(), islands[i].end + 1)
- * 
- *         if end_left and end_right:             # <<<<<<<<<<<<<<
- *             islands[i].end = islands[i].end + window_size
- *         elif not end_left and not end_right:
- */
-      goto __pyx_L10;
-    }
-
-    /* "sicer/coarsegraining.pyx":62
- *         if end_left and end_right:
- *             islands[i].end = islands[i].end + window_size
- *         elif not end_left and not end_right:             # <<<<<<<<<<<<<<
- *             islands[i].end = islands[i].end - window_size
- * 
- */
-    __pyx_t_5 = ((!(__pyx_v_end_left != 0)) != 0);
-    if (__pyx_t_5) {
-    } else {
-      __pyx_t_4 = __pyx_t_5;
-      goto __pyx_L13_bool_binop_done;
-    }
-    __pyx_t_5 = ((!(__pyx_v_end_right != 0)) != 0);
-    __pyx_t_4 = __pyx_t_5;
-    __pyx_L13_bool_binop_done:;
-    if (__pyx_t_4) {
-
-      /* "sicer/coarsegraining.pyx":63
- *             islands[i].end = islands[i].end + window_size
- *         elif not end_left and not end_right:
- *             islands[i].end = islands[i].end - window_size             # <<<<<<<<<<<<<<
- * 
- *     sort[vi_itr, cmp_f](islands.begin(), islands.end(), compare_islands)
- */
-      (__pyx_v_islands[__pyx_v_i]).end = ((__pyx_v_islands[__pyx_v_i]).end - __pyx_v_window_size);
-
-      /* "sicer/coarsegraining.pyx":62
- *         if end_left and end_right:
- *             islands[i].end = islands[i].end + window_size
- *         elif not end_left and not end_right:             # <<<<<<<<<<<<<<
- *             islands[i].end = islands[i].end - window_size
- * 
- */
-    }
-    __pyx_L10:;
   }
 
-  /* "sicer/coarsegraining.pyx":65
- *             islands[i].end = islands[i].end - window_size
- * 
- *     sort[vi_itr, cmp_f](islands.begin(), islands.end(), compare_islands)             # <<<<<<<<<<<<<<
- * 
- *     merged_islands = vector[Island](islands.size() + additional_islands.size())
+  /* "sicer/find_union_islands.pyx":30
+ *         union_islands.swap(islands_2)
+ *         return
+ *     if islands_2.size() == 0:             # <<<<<<<<<<<<<<
+ *         union_islands.swap(islands_1)
+ *         return
  */
-  std::sort<__pyx_t_5sicer_14coarsegraining_vi_itr,__pyx_t_5sicer_14coarsegraining_cmp_f>(__pyx_v_islands.begin(), __pyx_v_islands.end(), __pyx_f_5sicer_14coarsegraining_compare_islands);
+  __pyx_t_1 = ((__pyx_v_islands_2.size() == 0) != 0);
+  if (__pyx_t_1) {
 
-  /* "sicer/coarsegraining.pyx":67
- *     sort[vi_itr, cmp_f](islands.begin(), islands.end(), compare_islands)
+    /* "sicer/find_union_islands.pyx":31
+ *         return
+ *     if islands_2.size() == 0:
+ *         union_islands.swap(islands_1)             # <<<<<<<<<<<<<<
+ *         return
  * 
- *     merged_islands = vector[Island](islands.size() + additional_islands.size())             # <<<<<<<<<<<<<<
- *     merge[vi_itr, vi_itr, vi_itr, cmp_f](
- *         islands.begin(),
  */
-  try {
-    __pyx_t_6 = std::vector<Island> ((__pyx_v_islands.size() + __pyx_v_additional_islands.size()));
-  } catch(...) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    __Pyx_CppExn2PyErr();
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_v_union_islands.swap(__pyx_v_islands_1);
+
+    /* "sicer/find_union_islands.pyx":32
+ *     if islands_2.size() == 0:
+ *         union_islands.swap(islands_1)
+ *         return             # <<<<<<<<<<<<<<
+ * 
+ *     cdef vector[Island] merged_islands
+ */
+    goto __pyx_L0;
+
+    /* "sicer/find_union_islands.pyx":30
+ *         union_islands.swap(islands_2)
+ *         return
+ *     if islands_2.size() == 0:             # <<<<<<<<<<<<<<
+ *         union_islands.swap(islands_1)
+ *         return
+ */
   }
-  __pyx_v_merged_islands = __pyx_t_6;
 
-  /* "sicer/coarsegraining.pyx":68
+  /* "sicer/find_union_islands.pyx":35
  * 
- *     merged_islands = vector[Island](islands.size() + additional_islands.size())
+ *     cdef vector[Island] merged_islands
  *     merge[vi_itr, vi_itr, vi_itr, cmp_f](             # <<<<<<<<<<<<<<
- *         islands.begin(),
- *         islands.end(),
+ *         islands_1.begin(),
+ *         islands_1.end(),
  */
-  (void)(std::merge<__pyx_t_5sicer_14coarsegraining_vi_itr,__pyx_t_5sicer_14coarsegraining_vi_itr,__pyx_t_5sicer_14coarsegraining_vi_itr,__pyx_t_5sicer_14coarsegraining_cmp_f>(__pyx_v_islands.begin(), __pyx_v_islands.end(), __pyx_v_additional_islands.begin(), __pyx_v_additional_islands.end(), __pyx_v_merged_islands.begin(), __pyx_f_5sicer_14coarsegraining_compare_islands));
+  (void)(std::merge<__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_cmp_f>(__pyx_v_islands_1.begin(), __pyx_v_islands_1.end(), __pyx_v_islands_2.begin(), __pyx_v_islands_2.end(), __pyx_v_merged_islands.begin(), __pyx_f_5sicer_18find_union_islands_compare_islands));
 
-  /* "sicer/coarsegraining.pyx":77
+  /* "sicer/find_union_islands.pyx":44
  *     )
  * 
- *     kept_islands = vector[Island]()             # <<<<<<<<<<<<<<
+ *     cdef Island current = merged_islands[0]             # <<<<<<<<<<<<<<
+ *     cdef Island next;
+ *     cdef uint32_t i = 1
+ */
+  __pyx_v_current = (__pyx_v_merged_islands[0]);
+
+  /* "sicer/find_union_islands.pyx":46
+ *     cdef Island current = merged_islands[0]
+ *     cdef Island next;
+ *     cdef uint32_t i = 1             # <<<<<<<<<<<<<<
  * 
- *     cdef uint32_t current_start = merged_islands[0].start
+ *     while i < merged_islands.size():
  */
-  try {
-    __pyx_t_6 = std::vector<Island> ();
-  } catch(...) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    __Pyx_CppExn2PyErr();
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 77, __pyx_L1_error)
-  }
-  __pyx_v_kept_islands = __pyx_t_6;
+  __pyx_v_i = 1;
 
-  /* "sicer/coarsegraining.pyx":79
- *     kept_islands = vector[Island]()
+  /* "sicer/find_union_islands.pyx":48
+ *     cdef uint32_t i = 1
  * 
- *     cdef uint32_t current_start = merged_islands[0].start             # <<<<<<<<<<<<<<
- *     cdef uint32_t current_end = merged_islands[0].end
- *     cdef uint32_t j = 1
- */
-  __pyx_t_7 = (__pyx_v_merged_islands[0]).start;
-  __pyx_v_current_start = __pyx_t_7;
-
-  /* "sicer/coarsegraining.pyx":80
- * 
- *     cdef uint32_t current_start = merged_islands[0].start
- *     cdef uint32_t current_end = merged_islands[0].end             # <<<<<<<<<<<<<<
- *     cdef uint32_t j = 1
- *     cdef Island next_island
- */
-  __pyx_t_7 = (__pyx_v_merged_islands[0]).end;
-  __pyx_v_current_end = __pyx_t_7;
-
-  /* "sicer/coarsegraining.pyx":81
- *     cdef uint32_t current_start = merged_islands[0].start
- *     cdef uint32_t current_end = merged_islands[0].end
- *     cdef uint32_t j = 1             # <<<<<<<<<<<<<<
- *     cdef Island next_island
- *     while j < merged_islands.size():
- */
-  __pyx_v_j = 1;
-
-  /* "sicer/coarsegraining.pyx":83
- *     cdef uint32_t j = 1
- *     cdef Island next_island
- *     while j < merged_islands.size():             # <<<<<<<<<<<<<<
- *         next_island = merged_islands[j]
- *         if next_island.start > current_end + window_size + 1:
+ *     while i < merged_islands.size():             # <<<<<<<<<<<<<<
+ *         next = merged_islands[i]
+ *         if next.start > current.end:
  */
   while (1) {
-    __pyx_t_4 = ((__pyx_v_j < __pyx_v_merged_islands.size()) != 0);
-    if (!__pyx_t_4) break;
+    __pyx_t_1 = ((__pyx_v_i < __pyx_v_merged_islands.size()) != 0);
+    if (!__pyx_t_1) break;
 
-    /* "sicer/coarsegraining.pyx":84
- *     cdef Island next_island
- *     while j < merged_islands.size():
- *         next_island = merged_islands[j]             # <<<<<<<<<<<<<<
- *         if next_island.start > current_end + window_size + 1:
- *             kept_islands.push_back(Island(chrom, current_start, current_end, 1))
+    /* "sicer/find_union_islands.pyx":49
+ * 
+ *     while i < merged_islands.size():
+ *         next = merged_islands[i]             # <<<<<<<<<<<<<<
+ *         if next.start > current.end:
+ *             union_islands.push_back(current)
  */
-    __pyx_v_next_island = (__pyx_v_merged_islands[__pyx_v_j]);
+    __pyx_v_next = (__pyx_v_merged_islands[__pyx_v_i]);
 
-    /* "sicer/coarsegraining.pyx":85
- *     while j < merged_islands.size():
- *         next_island = merged_islands[j]
- *         if next_island.start > current_end + window_size + 1:             # <<<<<<<<<<<<<<
- *             kept_islands.push_back(Island(chrom, current_start, current_end, 1))
- *             current_start = next_island.start
+    /* "sicer/find_union_islands.pyx":50
+ *     while i < merged_islands.size():
+ *         next = merged_islands[i]
+ *         if next.start > current.end:             # <<<<<<<<<<<<<<
+ *             union_islands.push_back(current)
+ *             current = next
  */
-    __pyx_t_4 = ((__pyx_v_next_island.start > ((__pyx_v_current_end + __pyx_v_window_size) + 1)) != 0);
-    if (__pyx_t_4) {
+    __pyx_t_1 = ((__pyx_v_next.start > __pyx_v_current.end) != 0);
+    if (__pyx_t_1) {
 
-      /* "sicer/coarsegraining.pyx":86
- *         next_island = merged_islands[j]
- *         if next_island.start > current_end + window_size + 1:
- *             kept_islands.push_back(Island(chrom, current_start, current_end, 1))             # <<<<<<<<<<<<<<
- *             current_start = next_island.start
- *             current_end = next_island.end
+      /* "sicer/find_union_islands.pyx":51
+ *         next = merged_islands[i]
+ *         if next.start > current.end:
+ *             union_islands.push_back(current)             # <<<<<<<<<<<<<<
+ *             current = next
+ *         else:
  */
       try {
-        __pyx_v_kept_islands.push_back(Island(__pyx_v_chrom, __pyx_v_current_start, __pyx_v_current_end, 1.0));
+        __pyx_v_union_islands.push_back(__pyx_v_current);
       } catch(...) {
         #ifdef WITH_THREAD
         PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1980,2034 +1608,158 @@ static std::vector<Island>  __pyx_f_5sicer_14coarsegraining__backstep(std::vecto
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 86, __pyx_L1_error)
+        __PYX_ERR(0, 51, __pyx_L1_error)
       }
 
-      /* "sicer/coarsegraining.pyx":87
- *         if next_island.start > current_end + window_size + 1:
- *             kept_islands.push_back(Island(chrom, current_start, current_end, 1))
- *             current_start = next_island.start             # <<<<<<<<<<<<<<
- *             current_end = next_island.end
+      /* "sicer/find_union_islands.pyx":52
+ *         if next.start > current.end:
+ *             union_islands.push_back(current)
+ *             current = next             # <<<<<<<<<<<<<<
  *         else:
+ *             if next.end > current.end:
  */
-      __pyx_t_7 = __pyx_v_next_island.start;
-      __pyx_v_current_start = __pyx_t_7;
+      __pyx_v_current = __pyx_v_next;
 
-      /* "sicer/coarsegraining.pyx":88
- *             kept_islands.push_back(Island(chrom, current_start, current_end, 1))
- *             current_start = next_island.start
- *             current_end = next_island.end             # <<<<<<<<<<<<<<
+      /* "sicer/find_union_islands.pyx":50
+ *     while i < merged_islands.size():
+ *         next = merged_islands[i]
+ *         if next.start > current.end:             # <<<<<<<<<<<<<<
+ *             union_islands.push_back(current)
+ *             current = next
+ */
+      goto __pyx_L7;
+    }
+
+    /* "sicer/find_union_islands.pyx":54
+ *             current = next
  *         else:
- *             if current_end < next_island.end:
- */
-      __pyx_t_7 = __pyx_v_next_island.end;
-      __pyx_v_current_end = __pyx_t_7;
-
-      /* "sicer/coarsegraining.pyx":85
- *     while j < merged_islands.size():
- *         next_island = merged_islands[j]
- *         if next_island.start > current_end + window_size + 1:             # <<<<<<<<<<<<<<
- *             kept_islands.push_back(Island(chrom, current_start, current_end, 1))
- *             current_start = next_island.start
- */
-      goto __pyx_L17;
-    }
-
-    /* "sicer/coarsegraining.pyx":90
- *             current_end = next_island.end
- *         else:
- *             if current_end < next_island.end:             # <<<<<<<<<<<<<<
- *                 current_end = next_island.end
- * 
- */
-    /*else*/ {
-      __pyx_t_4 = ((__pyx_v_current_end < __pyx_v_next_island.end) != 0);
-      if (__pyx_t_4) {
-
-        /* "sicer/coarsegraining.pyx":91
- *         else:
- *             if current_end < next_island.end:
- *                 current_end = next_island.end             # <<<<<<<<<<<<<<
- * 
- *         preinc(j)
- */
-        __pyx_t_7 = __pyx_v_next_island.end;
-        __pyx_v_current_end = __pyx_t_7;
-
-        /* "sicer/coarsegraining.pyx":90
- *             current_end = next_island.end
- *         else:
- *             if current_end < next_island.end:             # <<<<<<<<<<<<<<
- *                 current_end = next_island.end
- * 
- */
-      }
-    }
-    __pyx_L17:;
-
-    /* "sicer/coarsegraining.pyx":93
- *                 current_end = next_island.end
- * 
- *         preinc(j)             # <<<<<<<<<<<<<<
- *     kept_islands.push_back(Island(chrom, current_start, current_end, 1))
- * 
- */
-    (void)((++__pyx_v_j));
-  }
-
-  /* "sicer/coarsegraining.pyx":94
- * 
- *         preinc(j)
- *     kept_islands.push_back(Island(chrom, current_start, current_end, 1))             # <<<<<<<<<<<<<<
- * 
- *     return kept_islands
- */
-  try {
-    __pyx_v_kept_islands.push_back(Island(__pyx_v_chrom, __pyx_v_current_start, __pyx_v_current_end, 1.0));
-  } catch(...) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    __Pyx_CppExn2PyErr();
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 94, __pyx_L1_error)
-  }
-
-  /* "sicer/coarsegraining.pyx":96
- *     kept_islands.push_back(Island(chrom, current_start, current_end, 1))
- * 
- *     return kept_islands             # <<<<<<<<<<<<<<
- * 
- * cdef double _linreg(vector[uint32_t]& x, vector[double]& y) nogil:
- */
-  __pyx_r = __pyx_v_kept_islands;
-  goto __pyx_L0;
-
-  /* "sicer/coarsegraining.pyx":38
- *     return islands
- * 
- * cdef vector[Island] _backstep(             # <<<<<<<<<<<<<<
- *     vector[Island]& islands,
- *     vector[uint32_t] start_list,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._backstep", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":98
- *     return kept_islands
- * 
- * cdef double _linreg(vector[uint32_t]& x, vector[double]& y) nogil:             # <<<<<<<<<<<<<<
- * 
- *     cdef int N = x.size()
- */
-
-static double __pyx_f_5sicer_14coarsegraining__linreg(std::vector<uint32_t>  &__pyx_v_x, std::vector<double>  &__pyx_v_y) {
-  int __pyx_v_N;
-  double __pyx_v_Sx;
-  double __pyx_v_Sy;
-  double __pyx_v_Sxx;
-  double __pyx_v_Syy;
-  double __pyx_v_Sxy;
-  int __pyx_v_i;
-  double __pyx_v_det;
-  double __pyx_r;
-  int __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  double __pyx_t_5;
-
-  /* "sicer/coarsegraining.pyx":100
- * cdef double _linreg(vector[uint32_t]& x, vector[double]& y) nogil:
- * 
- *     cdef int N = x.size()             # <<<<<<<<<<<<<<
- *     cdef double Sx, Sy, Sxx, Syy, Sxy
- *     Sx = Sy = Sxx = Syy = Sxy = 0.0
- */
-  __pyx_v_N = __pyx_v_x.size();
-
-  /* "sicer/coarsegraining.pyx":102
- *     cdef int N = x.size()
- *     cdef double Sx, Sy, Sxx, Syy, Sxy
- *     Sx = Sy = Sxx = Syy = Sxy = 0.0             # <<<<<<<<<<<<<<
- * 
- *     for i in range(N):
- */
-  __pyx_v_Sx = 0.0;
-  __pyx_v_Sy = 0.0;
-  __pyx_v_Sxx = 0.0;
-  __pyx_v_Syy = 0.0;
-  __pyx_v_Sxy = 0.0;
-
-  /* "sicer/coarsegraining.pyx":104
- *     Sx = Sy = Sxx = Syy = Sxy = 0.0
- * 
- *     for i in range(N):             # <<<<<<<<<<<<<<
- *         Sx += x[i]
- *         Sy += y[i]
- */
-  __pyx_t_1 = __pyx_v_N;
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
-
-    /* "sicer/coarsegraining.pyx":105
- * 
- *     for i in range(N):
- *         Sx += x[i]             # <<<<<<<<<<<<<<
- *         Sy += y[i]
- *         Sxx += x[i] * x[i]
- */
-    __pyx_v_Sx = (__pyx_v_Sx + (__pyx_v_x[__pyx_v_i]));
-
-    /* "sicer/coarsegraining.pyx":106
- *     for i in range(N):
- *         Sx += x[i]
- *         Sy += y[i]             # <<<<<<<<<<<<<<
- *         Sxx += x[i] * x[i]
- *         Syy += y[i] * y[i]
- */
-    __pyx_v_Sy = (__pyx_v_Sy + (__pyx_v_y[__pyx_v_i]));
-
-    /* "sicer/coarsegraining.pyx":107
- *         Sx += x[i]
- *         Sy += y[i]
- *         Sxx += x[i] * x[i]             # <<<<<<<<<<<<<<
- *         Syy += y[i] * y[i]
- *         Sxy += x[i] * y[i]
- */
-    __pyx_v_Sxx = (__pyx_v_Sxx + ((__pyx_v_x[__pyx_v_i]) * (__pyx_v_x[__pyx_v_i])));
-
-    /* "sicer/coarsegraining.pyx":108
- *         Sy += y[i]
- *         Sxx += x[i] * x[i]
- *         Syy += y[i] * y[i]             # <<<<<<<<<<<<<<
- *         Sxy += x[i] * y[i]
- *     det = Sxx * N - Sx * Sx
- */
-    __pyx_v_Syy = (__pyx_v_Syy + ((__pyx_v_y[__pyx_v_i]) * (__pyx_v_y[__pyx_v_i])));
-
-    /* "sicer/coarsegraining.pyx":109
- *         Sxx += x[i] * x[i]
- *         Syy += y[i] * y[i]
- *         Sxy += x[i] * y[i]             # <<<<<<<<<<<<<<
- *     det = Sxx * N - Sx * Sx
- *     if det != 0:
- */
-    __pyx_v_Sxy = (__pyx_v_Sxy + ((__pyx_v_x[__pyx_v_i]) * (__pyx_v_y[__pyx_v_i])));
-  }
-
-  /* "sicer/coarsegraining.pyx":110
- *         Syy += y[i] * y[i]
- *         Sxy += x[i] * y[i]
- *     det = Sxx * N - Sx * Sx             # <<<<<<<<<<<<<<
- *     if det != 0:
- *         return (Sxy * N - Sy * Sx)/det
- */
-  __pyx_v_det = ((__pyx_v_Sxx * __pyx_v_N) - (__pyx_v_Sx * __pyx_v_Sx));
-
-  /* "sicer/coarsegraining.pyx":111
- *         Sxy += x[i] * y[i]
- *     det = Sxx * N - Sx * Sx
- *     if det != 0:             # <<<<<<<<<<<<<<
- *         return (Sxy * N - Sy * Sx)/det
- *     else:
- */
-  __pyx_t_4 = ((__pyx_v_det != 0.0) != 0);
-  if (__pyx_t_4) {
-
-    /* "sicer/coarsegraining.pyx":112
- *     det = Sxx * N - Sx * Sx
- *     if det != 0:
- *         return (Sxy * N - Sy * Sx)/det             # <<<<<<<<<<<<<<
- *     else:
- *         return 0.0
- */
-    __pyx_t_5 = ((__pyx_v_Sxy * __pyx_v_N) - (__pyx_v_Sy * __pyx_v_Sx));
-    if (unlikely(__pyx_v_det == 0)) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 112, __pyx_L1_error)
-    }
-    __pyx_r = (__pyx_t_5 / __pyx_v_det);
-    goto __pyx_L0;
-
-    /* "sicer/coarsegraining.pyx":111
- *         Sxy += x[i] * y[i]
- *     det = Sxx * N - Sx * Sx
- *     if det != 0:             # <<<<<<<<<<<<<<
- *         return (Sxy * N - Sy * Sx)/det
- *     else:
- */
-  }
-
-  /* "sicer/coarsegraining.pyx":114
- *         return (Sxy * N - Sy * Sx)/det
- *     else:
- *         return 0.0             # <<<<<<<<<<<<<<
- * 
- * cdef double _start_list_correlation_r_rev(
- */
-  /*else*/ {
-    __pyx_r = 0.0;
-    goto __pyx_L0;
-  }
-
-  /* "sicer/coarsegraining.pyx":98
- *     return kept_islands
- * 
- * cdef double _linreg(vector[uint32_t]& x, vector[double]& y) nogil:             # <<<<<<<<<<<<<<
- * 
- *     cdef int N = x.size()
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._linreg", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __pyx_r = 0;
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":116
- *         return 0.0
- * 
- * cdef double _start_list_correlation_r_rev(             # <<<<<<<<<<<<<<
- *     vector[uint32_t]& start_list,
- *     int win,
- */
-
-static double __pyx_f_5sicer_14coarsegraining__start_list_correlation_r_rev(std::vector<uint32_t>  &__pyx_v_start_list, int __pyx_v_win, int __pyx_v_r, int __pyx_v_chrom_length) {
-  int __pyx_v_x;
-  int __pyx_v_d;
-  int __pyx_v_n;
-  int __pyx_v_i;
-  int __pyx_v_SUMM;
-  double __pyx_v_s;
-  std::vector<uint32_t>  __pyx_v_a;
-  std::vector<uint32_t> ::size_type __pyx_v_j;
-  double __pyx_r;
-  uint32_t __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  std::vector<uint32_t>  __pyx_t_4;
-  std::vector<uint32_t> ::size_type __pyx_t_5;
-  std::vector<uint32_t> ::size_type __pyx_t_6;
-  std::vector<uint32_t> ::size_type __pyx_t_7;
-  int __pyx_t_8;
-  int __pyx_t_9;
-  int __pyx_t_10;
-
-  /* "sicer/coarsegraining.pyx":125
- *     cdef double s
- *     cdef vector[uint32_t] a
- *     x = start_list[0] % win             # <<<<<<<<<<<<<<
- *     d = r // win
- *     SUMM = 0
- */
-  __pyx_t_1 = (__pyx_v_start_list[0]);
-  if (unlikely(__pyx_v_win == 0)) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 125, __pyx_L1_error)
-  }
-  __pyx_v_x = (__pyx_t_1 % __pyx_v_win);
-
-  /* "sicer/coarsegraining.pyx":126
- *     cdef vector[uint32_t] a
- *     x = start_list[0] % win
- *     d = r // win             # <<<<<<<<<<<<<<
- *     SUMM = 0
- *     n = (chrom_length - x) // win
- */
-  if (unlikely(__pyx_v_win == 0)) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 126, __pyx_L1_error)
-  }
-  else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_win == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_v_r))) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 126, __pyx_L1_error)
-  }
-  __pyx_v_d = __Pyx_div_int(__pyx_v_r, __pyx_v_win);
-
-  /* "sicer/coarsegraining.pyx":127
- *     x = start_list[0] % win
- *     d = r // win
- *     SUMM = 0             # <<<<<<<<<<<<<<
- *     n = (chrom_length - x) // win
- *     if n - d > 0:
- */
-  __pyx_v_SUMM = 0;
-
-  /* "sicer/coarsegraining.pyx":128
- *     d = r // win
- *     SUMM = 0
- *     n = (chrom_length - x) // win             # <<<<<<<<<<<<<<
- *     if n - d > 0:
- *         a = vector[uint32_t](n)
- */
-  __pyx_t_2 = (__pyx_v_chrom_length - __pyx_v_x);
-  if (unlikely(__pyx_v_win == 0)) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 128, __pyx_L1_error)
-  }
-  else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_win == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_2))) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 128, __pyx_L1_error)
-  }
-  __pyx_v_n = __Pyx_div_int(__pyx_t_2, __pyx_v_win);
-
-  /* "sicer/coarsegraining.pyx":129
- *     SUMM = 0
- *     n = (chrom_length - x) // win
- *     if n - d > 0:             # <<<<<<<<<<<<<<
- *         a = vector[uint32_t](n)
- *         for j in range(start_list.size()):
- */
-  __pyx_t_3 = (((__pyx_v_n - __pyx_v_d) > 0) != 0);
-  if (__pyx_t_3) {
-
-    /* "sicer/coarsegraining.pyx":130
- *     n = (chrom_length - x) // win
- *     if n - d > 0:
- *         a = vector[uint32_t](n)             # <<<<<<<<<<<<<<
- *         for j in range(start_list.size()):
- *             i = (start_list[j] - x) // win
- */
-    try {
-      __pyx_t_4 = std::vector<uint32_t> (__pyx_v_n);
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 130, __pyx_L1_error)
-    }
-    __pyx_v_a = __pyx_t_4;
-
-    /* "sicer/coarsegraining.pyx":131
- *     if n - d > 0:
- *         a = vector[uint32_t](n)
- *         for j in range(start_list.size()):             # <<<<<<<<<<<<<<
- *             i = (start_list[j] - x) // win
- *             if i >= 0 and i < n:
- */
-    __pyx_t_5 = __pyx_v_start_list.size();
-    __pyx_t_6 = __pyx_t_5;
-    for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
-      __pyx_v_j = __pyx_t_7;
-
-      /* "sicer/coarsegraining.pyx":132
- *         a = vector[uint32_t](n)
- *         for j in range(start_list.size()):
- *             i = (start_list[j] - x) // win             # <<<<<<<<<<<<<<
- *             if i >= 0 and i < n:
- *                 a[i] = 1
- */
-      __pyx_t_1 = ((__pyx_v_start_list[__pyx_v_j]) - __pyx_v_x);
-      if (unlikely(__pyx_v_win == 0)) {
-        #ifdef WITH_THREAD
-        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-        #endif
-        PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-        #ifdef WITH_THREAD
-        __Pyx_PyGILState_Release(__pyx_gilstate_save);
-        #endif
-        __PYX_ERR(0, 132, __pyx_L1_error)
-      }
-      __pyx_v_i = (__pyx_t_1 / __pyx_v_win);
-
-      /* "sicer/coarsegraining.pyx":133
- *         for j in range(start_list.size()):
- *             i = (start_list[j] - x) // win
- *             if i >= 0 and i < n:             # <<<<<<<<<<<<<<
- *                 a[i] = 1
- *         for i in range(0, n - d):
- */
-      __pyx_t_8 = ((__pyx_v_i >= 0) != 0);
-      if (__pyx_t_8) {
-      } else {
-        __pyx_t_3 = __pyx_t_8;
-        goto __pyx_L7_bool_binop_done;
-      }
-      __pyx_t_8 = ((__pyx_v_i < __pyx_v_n) != 0);
-      __pyx_t_3 = __pyx_t_8;
-      __pyx_L7_bool_binop_done:;
-      if (__pyx_t_3) {
-
-        /* "sicer/coarsegraining.pyx":134
- *             i = (start_list[j] - x) // win
- *             if i >= 0 and i < n:
- *                 a[i] = 1             # <<<<<<<<<<<<<<
- *         for i in range(0, n - d):
- *             SUMM += a[i] * a[i + d]
- */
-        (__pyx_v_a[__pyx_v_i]) = 1;
-
-        /* "sicer/coarsegraining.pyx":133
- *         for j in range(start_list.size()):
- *             i = (start_list[j] - x) // win
- *             if i >= 0 and i < n:             # <<<<<<<<<<<<<<
- *                 a[i] = 1
- *         for i in range(0, n - d):
- */
-      }
-    }
-
-    /* "sicer/coarsegraining.pyx":135
- *             if i >= 0 and i < n:
- *                 a[i] = 1
- *         for i in range(0, n - d):             # <<<<<<<<<<<<<<
- *             SUMM += a[i] * a[i + d]
- *         s = 0.0
- */
-    __pyx_t_2 = (__pyx_v_n - __pyx_v_d);
-    __pyx_t_9 = __pyx_t_2;
-    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-      __pyx_v_i = __pyx_t_10;
-
-      /* "sicer/coarsegraining.pyx":136
- *                 a[i] = 1
- *         for i in range(0, n - d):
- *             SUMM += a[i] * a[i + d]             # <<<<<<<<<<<<<<
- *         s = 0.0
- *         for i in range(a.size()):
- */
-      __pyx_v_SUMM = (__pyx_v_SUMM + ((__pyx_v_a[__pyx_v_i]) * (__pyx_v_a[(__pyx_v_i + __pyx_v_d)])));
-    }
-
-    /* "sicer/coarsegraining.pyx":137
- *         for i in range(0, n - d):
- *             SUMM += a[i] * a[i + d]
- *         s = 0.0             # <<<<<<<<<<<<<<
- *         for i in range(a.size()):
- *             s += a[i]
- */
-    __pyx_v_s = 0.0;
-
-    /* "sicer/coarsegraining.pyx":138
- *             SUMM += a[i] * a[i + d]
- *         s = 0.0
- *         for i in range(a.size()):             # <<<<<<<<<<<<<<
- *             s += a[i]
- *         s = s / a.size()
- */
-    __pyx_t_5 = __pyx_v_a.size();
-    __pyx_t_6 = __pyx_t_5;
-    for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_6; __pyx_t_2+=1) {
-      __pyx_v_i = __pyx_t_2;
-
-      /* "sicer/coarsegraining.pyx":139
- *         s = 0.0
- *         for i in range(a.size()):
- *             s += a[i]             # <<<<<<<<<<<<<<
- *         s = s / a.size()
- *         return SUMM / (n - d) - (s * s)
- */
-      __pyx_v_s = (__pyx_v_s + (__pyx_v_a[__pyx_v_i]));
-    }
-
-    /* "sicer/coarsegraining.pyx":140
- *         for i in range(a.size()):
- *             s += a[i]
- *         s = s / a.size()             # <<<<<<<<<<<<<<
- *         return SUMM / (n - d) - (s * s)
- *     else:
- */
-    __pyx_t_5 = __pyx_v_a.size();
-    if (unlikely(__pyx_t_5 == 0)) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 140, __pyx_L1_error)
-    }
-    __pyx_v_s = (__pyx_v_s / ((double)__pyx_t_5));
-
-    /* "sicer/coarsegraining.pyx":141
- *             s += a[i]
- *         s = s / a.size()
- *         return SUMM / (n - d) - (s * s)             # <<<<<<<<<<<<<<
- *     else:
- *         return 0.0
- */
-    __pyx_t_2 = (__pyx_v_n - __pyx_v_d);
-    if (unlikely(__pyx_t_2 == 0)) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 141, __pyx_L1_error)
-    }
-    __pyx_r = ((((double)__pyx_v_SUMM) / ((double)__pyx_t_2)) - (__pyx_v_s * __pyx_v_s));
-    goto __pyx_L0;
-
-    /* "sicer/coarsegraining.pyx":129
- *     SUMM = 0
- *     n = (chrom_length - x) // win
- *     if n - d > 0:             # <<<<<<<<<<<<<<
- *         a = vector[uint32_t](n)
- *         for j in range(start_list.size()):
- */
-  }
-
-  /* "sicer/coarsegraining.pyx":143
- *         return SUMM / (n - d) - (s * s)
- *     else:
- *         return 0.0             # <<<<<<<<<<<<<<
- * 
- * cdef corr_pair _start_list_correlation_function(
- */
-  /*else*/ {
-    __pyx_r = 0.0;
-    goto __pyx_L0;
-  }
-
-  /* "sicer/coarsegraining.pyx":116
- *         return 0.0
- * 
- * cdef double _start_list_correlation_r_rev(             # <<<<<<<<<<<<<<
- *     vector[uint32_t]& start_list,
- *     int win,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._start_list_correlation_r_rev", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __pyx_r = 0;
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":145
- *         return 0.0
- * 
- * cdef corr_pair _start_list_correlation_function(             # <<<<<<<<<<<<<<
- *     vector[uint32_t]& start_list,
- *     int win,
- */
-
-static __pyx_t_5sicer_14coarsegraining_corr_pair __pyx_f_5sicer_14coarsegraining__start_list_correlation_function(std::vector<uint32_t>  &__pyx_v_start_list, int __pyx_v_win, int __pyx_v_chrom_length) {
-  std::vector<uint32_t>  __pyx_v_xlist;
-  std::vector<double>  __pyx_v_ylist;
-  int __pyx_v_max_iter;
-  uint32_t __pyx_v_r;
-  double __pyx_v_c;
-  uint32_t __pyx_v_i;
-  __pyx_t_5sicer_14coarsegraining_corr_pair __pyx_r;
-  int __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  uint32_t __pyx_t_4;
-  __pyx_t_5sicer_14coarsegraining_corr_pair __pyx_t_5;
-
-  /* "sicer/coarsegraining.pyx":152
- *     cdef vector[uint32_t] xlist
- *     cdef vector[double] ylist
- *     cdef int max_iter = chrom_length // win             # <<<<<<<<<<<<<<
- *     cdef uint32_t r
- *     cdef double c
- */
-  if (unlikely(__pyx_v_win == 0)) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 152, __pyx_L1_error)
-  }
-  else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_win == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_v_chrom_length))) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 152, __pyx_L1_error)
-  }
-  __pyx_v_max_iter = __Pyx_div_int(__pyx_v_chrom_length, __pyx_v_win);
-
-  /* "sicer/coarsegraining.pyx":155
- *     cdef uint32_t r
- *     cdef double c
- *     if max_iter > 3:             # <<<<<<<<<<<<<<
- *         max_iter = 3
- * 
- */
-  __pyx_t_1 = ((__pyx_v_max_iter > 3) != 0);
-  if (__pyx_t_1) {
-
-    /* "sicer/coarsegraining.pyx":156
- *     cdef double c
- *     if max_iter > 3:
- *         max_iter = 3             # <<<<<<<<<<<<<<
- * 
- *     cdef uint32_t i = 0
- */
-    __pyx_v_max_iter = 3;
-
-    /* "sicer/coarsegraining.pyx":155
- *     cdef uint32_t r
- *     cdef double c
- *     if max_iter > 3:             # <<<<<<<<<<<<<<
- *         max_iter = 3
- * 
- */
-  }
-
-  /* "sicer/coarsegraining.pyx":158
- *         max_iter = 3
- * 
- *     cdef uint32_t i = 0             # <<<<<<<<<<<<<<
- *     for i in range(max_iter):
- *         r = i * win
- */
-  __pyx_v_i = 0;
-
-  /* "sicer/coarsegraining.pyx":159
- * 
- *     cdef uint32_t i = 0
- *     for i in range(max_iter):             # <<<<<<<<<<<<<<
- *         r = i * win
- *         c = _start_list_correlation_r_rev(start_list, win, r, chrom_length)
- */
-  __pyx_t_2 = __pyx_v_max_iter;
-  __pyx_t_3 = __pyx_t_2;
-  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
-    __pyx_v_i = __pyx_t_4;
-
-    /* "sicer/coarsegraining.pyx":160
- *     cdef uint32_t i = 0
- *     for i in range(max_iter):
- *         r = i * win             # <<<<<<<<<<<<<<
- *         c = _start_list_correlation_r_rev(start_list, win, r, chrom_length)
- *         xlist.push_back(i)
- */
-    __pyx_v_r = (__pyx_v_i * __pyx_v_win);
-
-    /* "sicer/coarsegraining.pyx":161
- *     for i in range(max_iter):
- *         r = i * win
- *         c = _start_list_correlation_r_rev(start_list, win, r, chrom_length)             # <<<<<<<<<<<<<<
- *         xlist.push_back(i)
- *         ylist.push_back(c)
- */
-    __pyx_v_c = __pyx_f_5sicer_14coarsegraining__start_list_correlation_r_rev(__pyx_v_start_list, __pyx_v_win, __pyx_v_r, __pyx_v_chrom_length);
-
-    /* "sicer/coarsegraining.pyx":162
- *         r = i * win
- *         c = _start_list_correlation_r_rev(start_list, win, r, chrom_length)
- *         xlist.push_back(i)             # <<<<<<<<<<<<<<
- *         ylist.push_back(c)
- * 
- */
-    try {
-      __pyx_v_xlist.push_back(__pyx_v_i);
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 162, __pyx_L1_error)
-    }
-
-    /* "sicer/coarsegraining.pyx":163
- *         c = _start_list_correlation_r_rev(start_list, win, r, chrom_length)
- *         xlist.push_back(i)
- *         ylist.push_back(c)             # <<<<<<<<<<<<<<
- * 
- *     return corr_pair(xlist, ylist)
- */
-    try {
-      __pyx_v_ylist.push_back(__pyx_v_c);
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 163, __pyx_L1_error)
-    }
-  }
-
-  /* "sicer/coarsegraining.pyx":165
- *         ylist.push_back(c)
- * 
- *     return corr_pair(xlist, ylist)             # <<<<<<<<<<<<<<
- * 
- * cdef double _correlation_length_fit(corr_pair pair) nogil:
- */
-  try {
-    __pyx_t_5 = __pyx_t_5sicer_14coarsegraining_corr_pair(__pyx_v_xlist, __pyx_v_ylist);
-  } catch(...) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    __Pyx_CppExn2PyErr();
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 165, __pyx_L1_error)
-  }
-  __pyx_r = __pyx_t_5;
-  goto __pyx_L0;
-
-  /* "sicer/coarsegraining.pyx":145
- *         return 0.0
- * 
- * cdef corr_pair _start_list_correlation_function(             # <<<<<<<<<<<<<<
- *     vector[uint32_t]& start_list,
- *     int win,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._start_list_correlation_function", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":167
- *     return corr_pair(xlist, ylist)
- * 
- * cdef double _correlation_length_fit(corr_pair pair) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[uint32_t] xlist = pair.first
- *     cdef vector[double] ylist = pair.second
- */
-
-static double __pyx_f_5sicer_14coarsegraining__correlation_length_fit(__pyx_t_5sicer_14coarsegraining_corr_pair __pyx_v_pair) {
-  std::vector<uint32_t>  __pyx_v_xlist;
-  std::vector<double>  __pyx_v_ylist;
-  std::vector<double>  __pyx_v_loglist;
-  std::vector<double> ::size_type __pyx_v_i;
-  double __pyx_v_a;
-  double __pyx_r;
-  std::vector<uint32_t>  __pyx_t_1;
-  std::vector<double>  __pyx_t_2;
-  std::vector<double> ::size_type __pyx_t_3;
-  std::vector<double> ::size_type __pyx_t_4;
-  std::vector<double> ::size_type __pyx_t_5;
-  int __pyx_t_6;
-
-  /* "sicer/coarsegraining.pyx":168
- * 
- * cdef double _correlation_length_fit(corr_pair pair) nogil:
- *     cdef vector[uint32_t] xlist = pair.first             # <<<<<<<<<<<<<<
- *     cdef vector[double] ylist = pair.second
- * 
- */
-  __pyx_t_1 = __pyx_v_pair.first;
-  __pyx_v_xlist = __pyx_t_1;
-
-  /* "sicer/coarsegraining.pyx":169
- * cdef double _correlation_length_fit(corr_pair pair) nogil:
- *     cdef vector[uint32_t] xlist = pair.first
- *     cdef vector[double] ylist = pair.second             # <<<<<<<<<<<<<<
- * 
- *     cdef vector[double] loglist
- */
-  __pyx_t_2 = __pyx_v_pair.second;
-  __pyx_v_ylist = __pyx_t_2;
-
-  /* "sicer/coarsegraining.pyx":172
- * 
- *     cdef vector[double] loglist
- *     for i in range(ylist.size()):             # <<<<<<<<<<<<<<
- *         loglist.push_back(log(fmax(ylist[i], 1e-12)))
- * 
- */
-  __pyx_t_3 = __pyx_v_ylist.size();
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_i = __pyx_t_5;
-
-    /* "sicer/coarsegraining.pyx":173
- *     cdef vector[double] loglist
- *     for i in range(ylist.size()):
- *         loglist.push_back(log(fmax(ylist[i], 1e-12)))             # <<<<<<<<<<<<<<
- * 
- *     if xlist.size() > 0:
- */
-    try {
-      __pyx_v_loglist.push_back(log(fmax((__pyx_v_ylist[__pyx_v_i]), 1e-12)));
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 173, __pyx_L1_error)
-    }
-  }
-
-  /* "sicer/coarsegraining.pyx":175
- *         loglist.push_back(log(fmax(ylist[i], 1e-12)))
- * 
- *     if xlist.size() > 0:             # <<<<<<<<<<<<<<
- *         xlist.erase(xlist.begin())
- *         loglist.erase(loglist.begin())
- */
-  __pyx_t_6 = ((__pyx_v_xlist.size() > 0) != 0);
-  if (__pyx_t_6) {
-
-    /* "sicer/coarsegraining.pyx":176
- * 
- *     if xlist.size() > 0:
- *         xlist.erase(xlist.begin())             # <<<<<<<<<<<<<<
- *         loglist.erase(loglist.begin())
- *     a = _linreg(xlist,loglist)
- */
-    (void)(__pyx_v_xlist.erase(__pyx_v_xlist.begin()));
-
-    /* "sicer/coarsegraining.pyx":177
- *     if xlist.size() > 0:
- *         xlist.erase(xlist.begin())
- *         loglist.erase(loglist.begin())             # <<<<<<<<<<<<<<
- *     a = _linreg(xlist,loglist)
- *     if fabs(a) > 1e-12:
- */
-    (void)(__pyx_v_loglist.erase(__pyx_v_loglist.begin()));
-
-    /* "sicer/coarsegraining.pyx":175
- *         loglist.push_back(log(fmax(ylist[i], 1e-12)))
- * 
- *     if xlist.size() > 0:             # <<<<<<<<<<<<<<
- *         xlist.erase(xlist.begin())
- *         loglist.erase(loglist.begin())
- */
-  }
-
-  /* "sicer/coarsegraining.pyx":178
- *         xlist.erase(xlist.begin())
- *         loglist.erase(loglist.begin())
- *     a = _linreg(xlist,loglist)             # <<<<<<<<<<<<<<
- *     if fabs(a) > 1e-12:
- *         return -1.0/a
- */
-  __pyx_v_a = __pyx_f_5sicer_14coarsegraining__linreg(__pyx_v_xlist, __pyx_v_loglist);
-
-  /* "sicer/coarsegraining.pyx":179
- *         loglist.erase(loglist.begin())
- *     a = _linreg(xlist,loglist)
- *     if fabs(a) > 1e-12:             # <<<<<<<<<<<<<<
- *         return -1.0/a
- *     else:
- */
-  __pyx_t_6 = ((fabs(__pyx_v_a) > 1e-12) != 0);
-  if (__pyx_t_6) {
-
-    /* "sicer/coarsegraining.pyx":180
- *     a = _linreg(xlist,loglist)
- *     if fabs(a) > 1e-12:
- *         return -1.0/a             # <<<<<<<<<<<<<<
- *     else:
- *         return 1e12
- */
-    if (unlikely(__pyx_v_a == 0)) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 180, __pyx_L1_error)
-    }
-    __pyx_r = (-1.0 / __pyx_v_a);
-    goto __pyx_L0;
-
-    /* "sicer/coarsegraining.pyx":179
- *         loglist.erase(loglist.begin())
- *     a = _linreg(xlist,loglist)
- *     if fabs(a) > 1e-12:             # <<<<<<<<<<<<<<
- *         return -1.0/a
- *     else:
- */
-  }
-
-  /* "sicer/coarsegraining.pyx":182
- *         return -1.0/a
- *     else:
- *         return 1e12             # <<<<<<<<<<<<<<
- * 
- * cdef vector[Island] _traceback(
- */
-  /*else*/ {
-    __pyx_r = 1e12;
-    goto __pyx_L0;
-  }
-
-  /* "sicer/coarsegraining.pyx":167
- *     return corr_pair(xlist, ylist)
- * 
- * cdef double _correlation_length_fit(corr_pair pair) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[uint32_t] xlist = pair.first
- *     cdef vector[double] ylist = pair.second
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._correlation_length_fit", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __pyx_r = 0;
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":184
- *         return 1e12
- * 
- * cdef vector[Island] _traceback(             # <<<<<<<<<<<<<<
- *     vector[v_uint_ptr] graining_results,
- *     int window_size,
- */
-
-static std::vector<Island>  __pyx_f_5sicer_14coarsegraining__traceback(std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr>  __pyx_v_graining_results, int __pyx_v_window_size, int __pyx_v_step_size, uint32_t __pyx_v_chrom_length, std::string __pyx_v_chrom) {
-  uint32_t __pyx_v_end;
-  std::vector<uint32_t>  __pyx_v_backlist;
-  __pyx_t_5sicer_14coarsegraining_corr_pair __pyx_v_correlation_pair;
-  double __pyx_v_correlation_length;
-  double __pyx_v_correlation_length_next;
-  int __pyx_v_i;
-  std::vector<Island>  __pyx_v_islands;
-  std::vector<Island>  __pyx_r;
-  int __pyx_t_1;
-  int __pyx_t_2;
-
-  /* "sicer/coarsegraining.pyx":191
- *     string chrom
- * ) nogil:
- *     window_size = window_size * <int> pow(step_size, (graining_results.size() - 1))             # <<<<<<<<<<<<<<
- *     cdef uint32_t end = graining_results.size() - 1
- *     cdef vector[uint32_t] backlist = deref(graining_results[end])
- */
-  __pyx_v_window_size = (__pyx_v_window_size * ((int)pow(__pyx_v_step_size, (__pyx_v_graining_results.size() - 1))));
-
-  /* "sicer/coarsegraining.pyx":192
- * ) nogil:
- *     window_size = window_size * <int> pow(step_size, (graining_results.size() - 1))
- *     cdef uint32_t end = graining_results.size() - 1             # <<<<<<<<<<<<<<
- *     cdef vector[uint32_t] backlist = deref(graining_results[end])
- *     cdef corr_pair correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
- */
-  __pyx_v_end = (__pyx_v_graining_results.size() - 1);
-
-  /* "sicer/coarsegraining.pyx":193
- *     window_size = window_size * <int> pow(step_size, (graining_results.size() - 1))
- *     cdef uint32_t end = graining_results.size() - 1
- *     cdef vector[uint32_t] backlist = deref(graining_results[end])             # <<<<<<<<<<<<<<
- *     cdef corr_pair correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
- *     cdef double correlation_length = _correlation_length_fit(correlation_pair)
- */
-  __pyx_v_backlist = (*(__pyx_v_graining_results[__pyx_v_end]));
-
-  /* "sicer/coarsegraining.pyx":194
- *     cdef uint32_t end = graining_results.size() - 1
- *     cdef vector[uint32_t] backlist = deref(graining_results[end])
- *     cdef corr_pair correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)             # <<<<<<<<<<<<<<
- *     cdef double correlation_length = _correlation_length_fit(correlation_pair)
- *     cdef double correlation_length_next
- */
-  __pyx_v_correlation_pair = __pyx_f_5sicer_14coarsegraining__start_list_correlation_function(__pyx_v_backlist, __pyx_v_window_size, __pyx_v_chrom_length);
-
-  /* "sicer/coarsegraining.pyx":195
- *     cdef vector[uint32_t] backlist = deref(graining_results[end])
- *     cdef corr_pair correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
- *     cdef double correlation_length = _correlation_length_fit(correlation_pair)             # <<<<<<<<<<<<<<
- *     cdef double correlation_length_next
- * 
- */
-  __pyx_v_correlation_length = __pyx_f_5sicer_14coarsegraining__correlation_length_fit(__pyx_v_correlation_pair);
-
-  /* "sicer/coarsegraining.pyx":198
- *     cdef double correlation_length_next
- * 
- *     cdef int i = 1             # <<<<<<<<<<<<<<
- *     while i < graining_results.size():
- *         backlist = deref(graining_results[end - i])
- */
-  __pyx_v_i = 1;
-
-  /* "sicer/coarsegraining.pyx":199
- * 
- *     cdef int i = 1
- *     while i < graining_results.size():             # <<<<<<<<<<<<<<
- *         backlist = deref(graining_results[end - i])
- *         window_size = window_size // step_size
- */
-  while (1) {
-    __pyx_t_1 = ((__pyx_v_i < __pyx_v_graining_results.size()) != 0);
-    if (!__pyx_t_1) break;
-
-    /* "sicer/coarsegraining.pyx":200
- *     cdef int i = 1
- *     while i < graining_results.size():
- *         backlist = deref(graining_results[end - i])             # <<<<<<<<<<<<<<
- *         window_size = window_size // step_size
- *         correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
- */
-    __pyx_v_backlist = (*(__pyx_v_graining_results[(__pyx_v_end - __pyx_v_i)]));
-
-    /* "sicer/coarsegraining.pyx":201
- *     while i < graining_results.size():
- *         backlist = deref(graining_results[end - i])
- *         window_size = window_size // step_size             # <<<<<<<<<<<<<<
- *         correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
- *         correlation_length_next = _correlation_length_fit(correlation_pair)
- */
-    if (unlikely(__pyx_v_step_size == 0)) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 201, __pyx_L1_error)
-    }
-    else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_step_size == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_v_window_size))) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 201, __pyx_L1_error)
-    }
-    __pyx_v_window_size = __Pyx_div_int(__pyx_v_window_size, __pyx_v_step_size);
-
-    /* "sicer/coarsegraining.pyx":202
- *         backlist = deref(graining_results[end - i])
- *         window_size = window_size // step_size
- *         correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)             # <<<<<<<<<<<<<<
- *         correlation_length_next = _correlation_length_fit(correlation_pair)
- * 
- */
-    __pyx_v_correlation_pair = __pyx_f_5sicer_14coarsegraining__start_list_correlation_function(__pyx_v_backlist, __pyx_v_window_size, __pyx_v_chrom_length);
-
-    /* "sicer/coarsegraining.pyx":203
- *         window_size = window_size // step_size
- *         correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
- *         correlation_length_next = _correlation_length_fit(correlation_pair)             # <<<<<<<<<<<<<<
- * 
- *         if correlation_length > 1.0 and correlation_length_next >= correlation_length:
- */
-    __pyx_v_correlation_length_next = __pyx_f_5sicer_14coarsegraining__correlation_length_fit(__pyx_v_correlation_pair);
-
-    /* "sicer/coarsegraining.pyx":205
- *         correlation_length_next = _correlation_length_fit(correlation_pair)
- * 
- *         if correlation_length > 1.0 and correlation_length_next >= correlation_length:             # <<<<<<<<<<<<<<
- *             break
- *         else:
- */
-    __pyx_t_2 = ((__pyx_v_correlation_length > 1.0) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L6_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_correlation_length_next >= __pyx_v_correlation_length) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L6_bool_binop_done:;
-    if (__pyx_t_1) {
-
-      /* "sicer/coarsegraining.pyx":206
- * 
- *         if correlation_length > 1.0 and correlation_length_next >= correlation_length:
- *             break             # <<<<<<<<<<<<<<
- *         else:
- *             correlation_length = correlation_length_next
- */
-      goto __pyx_L4_break;
-
-      /* "sicer/coarsegraining.pyx":205
- *         correlation_length_next = _correlation_length_fit(correlation_pair)
- * 
- *         if correlation_length > 1.0 and correlation_length_next >= correlation_length:             # <<<<<<<<<<<<<<
- *             break
- *         else:
- */
-    }
-
-    /* "sicer/coarsegraining.pyx":208
- *             break
- *         else:
- *             correlation_length = correlation_length_next             # <<<<<<<<<<<<<<
- * 
+ *             if next.end > current.end:             # <<<<<<<<<<<<<<
+ *                 current.end = next.end
  *         preinc(i)
  */
     /*else*/ {
-      __pyx_v_correlation_length = __pyx_v_correlation_length_next;
-    }
-
-    /* "sicer/coarsegraining.pyx":210
- *             correlation_length = correlation_length_next
- * 
- *         preinc(i)             # <<<<<<<<<<<<<<
- *     cdef vector[Island] islands = _generate_islands_from_start_pos(backlist, window_size, chrom)
- * 
- */
-    (void)((++__pyx_v_i));
-  }
-  __pyx_L4_break:;
-
-  /* "sicer/coarsegraining.pyx":211
- * 
- *         preinc(i)
- *     cdef vector[Island] islands = _generate_islands_from_start_pos(backlist, window_size, chrom)             # <<<<<<<<<<<<<<
- * 
- *     while i < graining_results.size():
- */
-  __pyx_v_islands = __pyx_f_5sicer_14coarsegraining__generate_islands_from_start_pos(__pyx_v_backlist, __pyx_v_window_size, __pyx_v_chrom);
-
-  /* "sicer/coarsegraining.pyx":213
- *     cdef vector[Island] islands = _generate_islands_from_start_pos(backlist, window_size, chrom)
- * 
- *     while i < graining_results.size():             # <<<<<<<<<<<<<<
- *         backlist = deref(graining_results[end - i])
- *         islands = _backstep(islands, backlist, window_size, chrom)
- */
-  while (1) {
-    __pyx_t_1 = ((__pyx_v_i < __pyx_v_graining_results.size()) != 0);
-    if (!__pyx_t_1) break;
-
-    /* "sicer/coarsegraining.pyx":214
- * 
- *     while i < graining_results.size():
- *         backlist = deref(graining_results[end - i])             # <<<<<<<<<<<<<<
- *         islands = _backstep(islands, backlist, window_size, chrom)
- *         window_size = window_size // step_size
- */
-    __pyx_v_backlist = (*(__pyx_v_graining_results[(__pyx_v_end - __pyx_v_i)]));
-
-    /* "sicer/coarsegraining.pyx":215
- *     while i < graining_results.size():
- *         backlist = deref(graining_results[end - i])
- *         islands = _backstep(islands, backlist, window_size, chrom)             # <<<<<<<<<<<<<<
- *         window_size = window_size // step_size
- *         preinc(i)
- */
-    __pyx_v_islands = __pyx_f_5sicer_14coarsegraining__backstep(__pyx_v_islands, __pyx_v_backlist, __pyx_v_window_size, __pyx_v_chrom);
-
-    /* "sicer/coarsegraining.pyx":216
- *         backlist = deref(graining_results[end - i])
- *         islands = _backstep(islands, backlist, window_size, chrom)
- *         window_size = window_size // step_size             # <<<<<<<<<<<<<<
- *         preinc(i)
- * 
- */
-    if (unlikely(__pyx_v_step_size == 0)) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 216, __pyx_L1_error)
-    }
-    else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_step_size == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_v_window_size))) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 216, __pyx_L1_error)
-    }
-    __pyx_v_window_size = __Pyx_div_int(__pyx_v_window_size, __pyx_v_step_size);
-
-    /* "sicer/coarsegraining.pyx":217
- *         islands = _backstep(islands, backlist, window_size, chrom)
- *         window_size = window_size // step_size
- *         preinc(i)             # <<<<<<<<<<<<<<
- * 
- *     return islands
- */
-    (void)((++__pyx_v_i));
-  }
-
-  /* "sicer/coarsegraining.pyx":219
- *         preinc(i)
- * 
- *     return islands             # <<<<<<<<<<<<<<
- * 
- * cdef v_uint_ptr _graining(vector[uint32_t]& starts, int window_size, int step_size, int step_score) nogil:
- */
-  __pyx_r = __pyx_v_islands;
-  goto __pyx_L0;
-
-  /* "sicer/coarsegraining.pyx":184
- *         return 1e12
- * 
- * cdef vector[Island] _traceback(             # <<<<<<<<<<<<<<
- *     vector[v_uint_ptr] graining_results,
- *     int window_size,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._traceback", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":221
- *     return islands
- * 
- * cdef v_uint_ptr _graining(vector[uint32_t]& starts, int window_size, int step_size, int step_score) nogil:             # <<<<<<<<<<<<<<
- * 
- *     cdef int i, j, h, k, n  # variables used by legacy code
- */
-
-static __pyx_t_5sicer_14coarsegraining_v_uint_ptr __pyx_f_5sicer_14coarsegraining__graining(std::vector<uint32_t>  &__pyx_v_starts, int __pyx_v_window_size, int __pyx_v_step_size, int __pyx_v_step_score) {
-  int __pyx_v_i;
-  int __pyx_v_j;
-  int __pyx_v_h;
-  int __pyx_v_k;
-  int __pyx_v_n;
-  uint32_t __pyx_v_end_limit;
-  __pyx_t_5sicer_14coarsegraining_v_uint_ptr __pyx_v_new_starts;
-  int __pyx_v_step;
-  __pyx_t_5sicer_14coarsegraining_v_uint_ptr __pyx_r;
-  std::vector<uint32_t>  *__pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-
-  /* "sicer/coarsegraining.pyx":224
- * 
- *     cdef int i, j, h, k, n  # variables used by legacy code
- *     cdef uint32_t end_limit = starts[starts.size()-1]             # <<<<<<<<<<<<<<
- *     cdef v_uint_ptr new_starts = new vector[uint32_t]()
- * 
- */
-  __pyx_v_end_limit = (__pyx_v_starts[(__pyx_v_starts.size() - 1)]);
-
-  /* "sicer/coarsegraining.pyx":225
- *     cdef int i, j, h, k, n  # variables used by legacy code
- *     cdef uint32_t end_limit = starts[starts.size()-1]
- *     cdef v_uint_ptr new_starts = new vector[uint32_t]()             # <<<<<<<<<<<<<<
- * 
- *     cdef int step
- */
-  try {
-    __pyx_t_1 = new std::vector<uint32_t> ();
-  } catch(...) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    __Pyx_CppExn2PyErr();
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 225, __pyx_L1_error)
-  }
-  __pyx_v_new_starts = __pyx_t_1;
-
-  /* "sicer/coarsegraining.pyx":228
- * 
- *     cdef int step
- *     for step in range(step_size):             # <<<<<<<<<<<<<<
- *         i = starts[0] - step * window_size
- *         k = 0
- */
-  __pyx_t_2 = __pyx_v_step_size;
-  __pyx_t_3 = __pyx_t_2;
-  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
-    __pyx_v_step = __pyx_t_4;
-
-    /* "sicer/coarsegraining.pyx":229
- *     cdef int step
- *     for step in range(step_size):
- *         i = starts[0] - step * window_size             # <<<<<<<<<<<<<<
- *         k = 0
- *         while i <= end_limit and k < starts.size():
- */
-    __pyx_v_i = ((__pyx_v_starts[0]) - (__pyx_v_step * __pyx_v_window_size));
-
-    /* "sicer/coarsegraining.pyx":230
- *     for step in range(step_size):
- *         i = starts[0] - step * window_size
- *         k = 0             # <<<<<<<<<<<<<<
- *         while i <= end_limit and k < starts.size():
- *             j = i + step_size * window_size
- */
-    __pyx_v_k = 0;
-
-    /* "sicer/coarsegraining.pyx":231
- *         i = starts[0] - step * window_size
- *         k = 0
- *         while i <= end_limit and k < starts.size():             # <<<<<<<<<<<<<<
- *             j = i + step_size * window_size
- *             h = k
- */
-    while (1) {
-      __pyx_t_6 = ((__pyx_v_i <= __pyx_v_end_limit) != 0);
-      if (__pyx_t_6) {
-      } else {
-        __pyx_t_5 = __pyx_t_6;
-        goto __pyx_L7_bool_binop_done;
-      }
-      __pyx_t_6 = ((__pyx_v_k < __pyx_v_starts.size()) != 0);
-      __pyx_t_5 = __pyx_t_6;
-      __pyx_L7_bool_binop_done:;
-      if (!__pyx_t_5) break;
-
-      /* "sicer/coarsegraining.pyx":232
- *         k = 0
- *         while i <= end_limit and k < starts.size():
- *             j = i + step_size * window_size             # <<<<<<<<<<<<<<
- *             h = k
- *             while h <= starts.size() - 1 and starts[h] < j:
- */
-      __pyx_v_j = (__pyx_v_i + (__pyx_v_step_size * __pyx_v_window_size));
-
-      /* "sicer/coarsegraining.pyx":233
- *         while i <= end_limit and k < starts.size():
- *             j = i + step_size * window_size
- *             h = k             # <<<<<<<<<<<<<<
- *             while h <= starts.size() - 1 and starts[h] < j:
- *                 preinc(h)
- */
-      __pyx_v_h = __pyx_v_k;
-
-      /* "sicer/coarsegraining.pyx":234
- *             j = i + step_size * window_size
- *             h = k
- *             while h <= starts.size() - 1 and starts[h] < j:             # <<<<<<<<<<<<<<
- *                 preinc(h)
- *             n = h - k
- */
-      while (1) {
-        __pyx_t_6 = ((__pyx_v_h <= (__pyx_v_starts.size() - 1)) != 0);
-        if (__pyx_t_6) {
-        } else {
-          __pyx_t_5 = __pyx_t_6;
-          goto __pyx_L11_bool_binop_done;
-        }
-        __pyx_t_6 = (((__pyx_v_starts[__pyx_v_h]) < __pyx_v_j) != 0);
-        __pyx_t_5 = __pyx_t_6;
-        __pyx_L11_bool_binop_done:;
-        if (!__pyx_t_5) break;
-
-        /* "sicer/coarsegraining.pyx":235
- *             h = k
- *             while h <= starts.size() - 1 and starts[h] < j:
- *                 preinc(h)             # <<<<<<<<<<<<<<
- *             n = h - k
- *             if n >= step_score:
- */
-        (void)((++__pyx_v_h));
-      }
-
-      /* "sicer/coarsegraining.pyx":236
- *             while h <= starts.size() - 1 and starts[h] < j:
- *                 preinc(h)
- *             n = h - k             # <<<<<<<<<<<<<<
- *             if n >= step_score:
- *                 deref(new_starts).push_back(i)
- */
-      __pyx_v_n = (__pyx_v_h - __pyx_v_k);
-
-      /* "sicer/coarsegraining.pyx":237
- *                 preinc(h)
- *             n = h - k
- *             if n >= step_score:             # <<<<<<<<<<<<<<
- *                 deref(new_starts).push_back(i)
- *             k = h
- */
-      __pyx_t_5 = ((__pyx_v_n >= __pyx_v_step_score) != 0);
-      if (__pyx_t_5) {
-
-        /* "sicer/coarsegraining.pyx":238
- *             n = h - k
- *             if n >= step_score:
- *                 deref(new_starts).push_back(i)             # <<<<<<<<<<<<<<
- *             k = h
- *             i = j
- */
-        try {
-          (*__pyx_v_new_starts).push_back(__pyx_v_i);
-        } catch(...) {
-          #ifdef WITH_THREAD
-          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-          #endif
-          __Pyx_CppExn2PyErr();
-          #ifdef WITH_THREAD
-          __Pyx_PyGILState_Release(__pyx_gilstate_save);
-          #endif
-          __PYX_ERR(0, 238, __pyx_L1_error)
-        }
-
-        /* "sicer/coarsegraining.pyx":237
- *                 preinc(h)
- *             n = h - k
- *             if n >= step_score:             # <<<<<<<<<<<<<<
- *                 deref(new_starts).push_back(i)
- *             k = h
- */
-      }
-
-      /* "sicer/coarsegraining.pyx":239
- *             if n >= step_score:
- *                 deref(new_starts).push_back(i)
- *             k = h             # <<<<<<<<<<<<<<
- *             i = j
- * 
- */
-      __pyx_v_k = __pyx_v_h;
-
-      /* "sicer/coarsegraining.pyx":240
- *                 deref(new_starts).push_back(i)
- *             k = h
- *             i = j             # <<<<<<<<<<<<<<
- * 
- *     return new_starts
- */
-      __pyx_v_i = __pyx_v_j;
-    }
-  }
-
-  /* "sicer/coarsegraining.pyx":242
- *             i = j
- * 
- *     return new_starts             # <<<<<<<<<<<<<<
- * 
- * cdef vector[v_uint_ptr] _coarsegraining(
- */
-  __pyx_r = __pyx_v_new_starts;
-  goto __pyx_L0;
-
-  /* "sicer/coarsegraining.pyx":221
- *     return islands
- * 
- * cdef v_uint_ptr _graining(vector[uint32_t]& starts, int window_size, int step_size, int step_score) nogil:             # <<<<<<<<<<<<<<
- * 
- *     cdef int i, j, h, k, n  # variables used by legacy code
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._graining", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __pyx_r = 0;
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":244
- *     return new_starts
- * 
- * cdef vector[v_uint_ptr] _coarsegraining(             # <<<<<<<<<<<<<<
- *     v_uint_ptr eligible_starts,
- *     int window_size,
- */
-
-static std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr>  __pyx_f_5sicer_14coarsegraining__coarsegraining(__pyx_t_5sicer_14coarsegraining_v_uint_ptr __pyx_v_eligible_starts, int __pyx_v_window_size, int __pyx_v_step_size, int __pyx_v_step_score) {
-  std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr>  __pyx_v_graining_results;
-  std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr>  __pyx_r;
-  int __pyx_t_1;
-
-  /* "sicer/coarsegraining.pyx":252
- * 
- *     cdef vector[v_uint_ptr] graining_results
- *     graining_results.push_back(eligible_starts)             # <<<<<<<<<<<<<<
- * 
- *     while deref(eligible_starts).size() > 0:
- */
-  try {
-    __pyx_v_graining_results.push_back(__pyx_v_eligible_starts);
-  } catch(...) {
-    #ifdef WITH_THREAD
-    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-    #endif
-    __Pyx_CppExn2PyErr();
-    #ifdef WITH_THREAD
-    __Pyx_PyGILState_Release(__pyx_gilstate_save);
-    #endif
-    __PYX_ERR(0, 252, __pyx_L1_error)
-  }
-
-  /* "sicer/coarsegraining.pyx":254
- *     graining_results.push_back(eligible_starts)
- * 
- *     while deref(eligible_starts).size() > 0:             # <<<<<<<<<<<<<<
- *         graining_results.push_back(eligible_starts)
- * 
- */
-  while (1) {
-    __pyx_t_1 = (((*__pyx_v_eligible_starts).size() > 0) != 0);
-    if (!__pyx_t_1) break;
-
-    /* "sicer/coarsegraining.pyx":255
- * 
- *     while deref(eligible_starts).size() > 0:
- *         graining_results.push_back(eligible_starts)             # <<<<<<<<<<<<<<
- * 
- *         # `graining` modifies `eligible_starts` inplace
- */
-    try {
-      __pyx_v_graining_results.push_back(__pyx_v_eligible_starts);
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 255, __pyx_L1_error)
-    }
-
-    /* "sicer/coarsegraining.pyx":258
- * 
- *         # `graining` modifies `eligible_starts` inplace
- *         eligible_starts = _graining(deref(eligible_starts), window_size, step_size, step_score)             # <<<<<<<<<<<<<<
- * 
- *         window_size = window_size * step_size
- */
-    __pyx_v_eligible_starts = __pyx_f_5sicer_14coarsegraining__graining((*__pyx_v_eligible_starts), __pyx_v_window_size, __pyx_v_step_size, __pyx_v_step_score);
-
-    /* "sicer/coarsegraining.pyx":260
- *         eligible_starts = _graining(deref(eligible_starts), window_size, step_size, step_score)
- * 
- *         window_size = window_size * step_size             # <<<<<<<<<<<<<<
- * 
- *     return graining_results
- */
-    __pyx_v_window_size = (__pyx_v_window_size * __pyx_v_step_size);
-  }
-
-  /* "sicer/coarsegraining.pyx":262
- *         window_size = window_size * step_size
- * 
- *     return graining_results             # <<<<<<<<<<<<<<
- * 
- * cdef void _coarsegraining_islands_by_chrom(
- */
-  __pyx_r = __pyx_v_graining_results;
-  goto __pyx_L0;
-
-  /* "sicer/coarsegraining.pyx":244
- *     return new_starts
- * 
- * cdef vector[v_uint_ptr] _coarsegraining(             # <<<<<<<<<<<<<<
- *     v_uint_ptr eligible_starts,
- *     int window_size,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._coarsegraining", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "sicer/coarsegraining.pyx":264
- *     return graining_results
- * 
- * cdef void _coarsegraining_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[Island]& islands,
- */
-
-static void __pyx_f_5sicer_14coarsegraining__coarsegraining_islands_by_chrom(std::vector<Window>  &__pyx_v_windows, std::vector<Island>  &__pyx_v_islands, uint32_t __pyx_v_chrom_length, int __pyx_v_min_tag_threshold, int __pyx_v_window_size, int __pyx_v_step_size, int __pyx_v_step_score) {
-  std::vector<uint32_t>  __pyx_v_eligible_starts;
-  std::vector<Island>  __pyx_v_tracebacked_islands;
-  std::string __pyx_v_chrom;
-  std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr>  __pyx_v_graining_results;
-  std::vector<Window> ::size_type __pyx_v_i;
-  int __pyx_t_1;
-  std::string __pyx_t_2;
-  std::vector<Window> ::size_type __pyx_t_3;
-  std::vector<Window> ::size_type __pyx_t_4;
-  std::vector<Window> ::size_type __pyx_t_5;
-  std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr> ::size_type __pyx_t_6;
-  std::vector<__pyx_t_5sicer_14coarsegraining_v_uint_ptr> ::size_type __pyx_t_7;
-
-  /* "sicer/coarsegraining.pyx":278
- *     cdef vector[v_uint_ptr] graining_results
- * 
- *     if windows.size() > 0:             # <<<<<<<<<<<<<<
- *         chrom = windows[0].chrom
- *         for i in range(windows.size()):
- */
-  __pyx_t_1 = ((__pyx_v_windows.size() > 0) != 0);
-  if (__pyx_t_1) {
-
-    /* "sicer/coarsegraining.pyx":279
- * 
- *     if windows.size() > 0:
- *         chrom = windows[0].chrom             # <<<<<<<<<<<<<<
- *         for i in range(windows.size()):
- *             if windows[i].count >= min_tag_threshold:
- */
-    __pyx_t_2 = (__pyx_v_windows[0]).chrom;
-    __pyx_v_chrom = __pyx_t_2;
-
-    /* "sicer/coarsegraining.pyx":280
- *     if windows.size() > 0:
- *         chrom = windows[0].chrom
- *         for i in range(windows.size()):             # <<<<<<<<<<<<<<
- *             if windows[i].count >= min_tag_threshold:
- *                 eligible_starts.push_back(windows[i].start)
- */
-    __pyx_t_3 = __pyx_v_windows.size();
-    __pyx_t_4 = __pyx_t_3;
-    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-      __pyx_v_i = __pyx_t_5;
-
-      /* "sicer/coarsegraining.pyx":281
- *         chrom = windows[0].chrom
- *         for i in range(windows.size()):
- *             if windows[i].count >= min_tag_threshold:             # <<<<<<<<<<<<<<
- *                 eligible_starts.push_back(windows[i].start)
- * 
- */
-      __pyx_t_1 = (((__pyx_v_windows[__pyx_v_i]).count >= __pyx_v_min_tag_threshold) != 0);
+      __pyx_t_1 = ((__pyx_v_next.end > __pyx_v_current.end) != 0);
       if (__pyx_t_1) {
 
-        /* "sicer/coarsegraining.pyx":282
- *         for i in range(windows.size()):
- *             if windows[i].count >= min_tag_threshold:
- *                 eligible_starts.push_back(windows[i].start)             # <<<<<<<<<<<<<<
+        /* "sicer/find_union_islands.pyx":55
+ *         else:
+ *             if next.end > current.end:
+ *                 current.end = next.end             # <<<<<<<<<<<<<<
+ *         preinc(i)
  * 
- *         # In-place modify islands vector
  */
-        try {
-          __pyx_v_eligible_starts.push_back((__pyx_v_windows[__pyx_v_i]).start);
-        } catch(...) {
-          #ifdef WITH_THREAD
-          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-          #endif
-          __Pyx_CppExn2PyErr();
-          #ifdef WITH_THREAD
-          __Pyx_PyGILState_Release(__pyx_gilstate_save);
-          #endif
-          __PYX_ERR(0, 282, __pyx_L1_error)
-        }
+        __pyx_t_2 = __pyx_v_next.end;
+        __pyx_v_current.end = __pyx_t_2;
 
-        /* "sicer/coarsegraining.pyx":281
- *         chrom = windows[0].chrom
- *         for i in range(windows.size()):
- *             if windows[i].count >= min_tag_threshold:             # <<<<<<<<<<<<<<
- *                 eligible_starts.push_back(windows[i].start)
- * 
+        /* "sicer/find_union_islands.pyx":54
+ *             current = next
+ *         else:
+ *             if next.end > current.end:             # <<<<<<<<<<<<<<
+ *                 current.end = next.end
+ *         preinc(i)
  */
       }
     }
+    __pyx_L7:;
 
-    /* "sicer/coarsegraining.pyx":285
+    /* "sicer/find_union_islands.pyx":56
+ *             if next.end > current.end:
+ *                 current.end = next.end
+ *         preinc(i)             # <<<<<<<<<<<<<<
  * 
- *         # In-place modify islands vector
- *         if eligible_starts.size() > 0:             # <<<<<<<<<<<<<<
- *             graining_results = _coarsegraining(&eligible_starts, window_size, step_size, step_score)
- *             tracebacked_islands = _traceback(graining_results, window_size, step_size, chrom_length, chrom)
+ *     union_islands.push_back(current)
  */
-    __pyx_t_1 = ((__pyx_v_eligible_starts.size() > 0) != 0);
-    if (__pyx_t_1) {
-
-      /* "sicer/coarsegraining.pyx":286
- *         # In-place modify islands vector
- *         if eligible_starts.size() > 0:
- *             graining_results = _coarsegraining(&eligible_starts, window_size, step_size, step_score)             # <<<<<<<<<<<<<<
- *             tracebacked_islands = _traceback(graining_results, window_size, step_size, chrom_length, chrom)
- *         # Clear vector[uint32_t] that are allocated in heap
- */
-      __pyx_v_graining_results = __pyx_f_5sicer_14coarsegraining__coarsegraining((&__pyx_v_eligible_starts), __pyx_v_window_size, __pyx_v_step_size, __pyx_v_step_score);
-
-      /* "sicer/coarsegraining.pyx":287
- *         if eligible_starts.size() > 0:
- *             graining_results = _coarsegraining(&eligible_starts, window_size, step_size, step_score)
- *             tracebacked_islands = _traceback(graining_results, window_size, step_size, chrom_length, chrom)             # <<<<<<<<<<<<<<
- *         # Clear vector[uint32_t] that are allocated in heap
- *         for i in range(graining_results.size()):
- */
-      __pyx_v_tracebacked_islands = __pyx_f_5sicer_14coarsegraining__traceback(__pyx_v_graining_results, __pyx_v_window_size, __pyx_v_step_size, __pyx_v_chrom_length, __pyx_v_chrom);
-
-      /* "sicer/coarsegraining.pyx":285
- * 
- *         # In-place modify islands vector
- *         if eligible_starts.size() > 0:             # <<<<<<<<<<<<<<
- *             graining_results = _coarsegraining(&eligible_starts, window_size, step_size, step_score)
- *             tracebacked_islands = _traceback(graining_results, window_size, step_size, chrom_length, chrom)
- */
-    }
-
-    /* "sicer/coarsegraining.pyx":289
- *             tracebacked_islands = _traceback(graining_results, window_size, step_size, chrom_length, chrom)
- *         # Clear vector[uint32_t] that are allocated in heap
- *         for i in range(graining_results.size()):             # <<<<<<<<<<<<<<
- *             graining_results[i].clear()
- *             graining_results[i].shrink_to_fit()
- */
-    __pyx_t_6 = __pyx_v_graining_results.size();
-    __pyx_t_7 = __pyx_t_6;
-    for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_7; __pyx_t_3+=1) {
-      __pyx_v_i = __pyx_t_3;
-
-      /* "sicer/coarsegraining.pyx":290
- *         # Clear vector[uint32_t] that are allocated in heap
- *         for i in range(graining_results.size()):
- *             graining_results[i].clear()             # <<<<<<<<<<<<<<
- *             graining_results[i].shrink_to_fit()
- * 
- */
-      (__pyx_v_graining_results[__pyx_v_i])->clear();
-
-      /* "sicer/coarsegraining.pyx":291
- *         for i in range(graining_results.size()):
- *             graining_results[i].clear()
- *             graining_results[i].shrink_to_fit()             # <<<<<<<<<<<<<<
- * 
- *     islands.swap(tracebacked_islands)
- */
-      (__pyx_v_graining_results[__pyx_v_i])->shrink_to_fit();
-    }
-
-    /* "sicer/coarsegraining.pyx":278
- *     cdef vector[v_uint_ptr] graining_results
- * 
- *     if windows.size() > 0:             # <<<<<<<<<<<<<<
- *         chrom = windows[0].chrom
- *         for i in range(windows.size()):
- */
+    (void)((++__pyx_v_i));
   }
 
-  /* "sicer/coarsegraining.pyx":293
- *             graining_results[i].shrink_to_fit()
+  /* "sicer/find_union_islands.pyx":58
+ *         preinc(i)
  * 
- *     islands.swap(tracebacked_islands)             # <<<<<<<<<<<<<<
+ *     union_islands.push_back(current)             # <<<<<<<<<<<<<<
  * 
- * cdef ChromIslandContainer _find_islands_by_coarsegraining(
+ * cdef ChromIslandContainer _find_union_islands(
  */
-  __pyx_v_islands.swap(__pyx_v_tracebacked_islands);
+  try {
+    __pyx_v_union_islands.push_back(__pyx_v_current);
+  } catch(...) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    __Pyx_CppExn2PyErr();
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 58, __pyx_L1_error)
+  }
 
-  /* "sicer/coarsegraining.pyx":264
- *     return graining_results
+  /* "sicer/find_union_islands.pyx":21
+ *     return i.start < j.start
  * 
- * cdef void _coarsegraining_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[Island]& islands,
+ * cdef void _find_union_islands_by_chrom(             # <<<<<<<<<<<<<<
+ *     vector[Island]& union_islands,
+ *     vector[Island]& islands_1,
  */
 
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.coarsegraining._coarsegraining_islands_by_chrom", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_WriteUnraisable("sicer.find_union_islands._find_union_islands_by_chrom", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_L0:;
 }
 
-/* "sicer/coarsegraining.pyx":295
- *     islands.swap(tracebacked_islands)
+/* "sicer/find_union_islands.pyx":60
+ *     union_islands.push_back(current)
  * 
- * cdef ChromIslandContainer _find_islands_by_coarsegraining(             # <<<<<<<<<<<<<<
- *     ChromWindowContainer windows,
- *     object genome_data,
+ * cdef ChromIslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
+ *     ChromIslandContainer islands_1,
+ *     ChromIslandContainer islands_2,
  */
 
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_14coarsegraining__find_islands_by_coarsegraining(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows, PyObject *__pyx_v_genome_data, int __pyx_v_min_tag_threshold, int __pyx_v_window_size, int __pyx_v_step_size, int __pyx_v_step_score, CYTHON_UNUSED int __pyx_v_num_cpu) {
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands_1, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, CYTHON_UNUSED int __pyx_v_num_cpu) {
   std::vector<std::string>  __pyx_v_chroms;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands = 0;
-  std::vector<uint32_t>  __pyx_v_chrom_lengths;
-  PyObject *__pyx_v_c = NULL;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_union_islands = 0;
   int __pyx_v_i;
   struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   std::vector<std::string>  __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  PyObject *(*__pyx_t_5)(PyObject *);
+  std::vector<std::string> ::size_type __pyx_t_3;
+  std::vector<std::string> ::size_type __pyx_t_4;
+  std::vector<std::string> ::size_type __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  uint32_t __pyx_t_7;
-  std::vector<std::string> ::size_type __pyx_t_8;
-  std::vector<std::string> ::size_type __pyx_t_9;
-  std::vector<std::string> ::size_type __pyx_t_10;
-  __Pyx_RefNannySetupContext("_find_islands_by_coarsegraining", 0);
+  __Pyx_RefNannySetupContext("_find_union_islands", 0);
 
-  /* "sicer/coarsegraining.pyx":305
+  /* "sicer/find_union_islands.pyx":67
  * ):
  *     # Convert Python list to vector for no-GIL use
- *     cdef vector[string] chroms = windows.getChromosomes()             # <<<<<<<<<<<<<<
+ *     cdef vector[string] chroms = islands_1.getChromosomes()             # <<<<<<<<<<<<<<
  * 
- *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)
+ *     cdef ChromIslandContainer union_islands = ChromIslandContainer(genome_data)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getChromosomes(__pyx_v_windows, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 305, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getChromosomes(__pyx_v_islands_1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 305, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/coarsegraining.pyx":307
- *     cdef vector[string] chroms = windows.getChromosomes()
+  /* "sicer/find_union_islands.pyx":69
+ *     cdef vector[string] chroms = islands_1.getChromosomes()
  * 
- *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)             # <<<<<<<<<<<<<<
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:
- */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "sicer/coarsegraining.pyx":309
- *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:             # <<<<<<<<<<<<<<
- *         chrom_lengths.push_back(genome_data.chrom_length[c])
- * 
- */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
-    __pyx_t_5 = NULL;
-  } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 309, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 309, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_5)) {
-      if (likely(PyList_CheckExact(__pyx_t_3))) {
-        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 309, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 309, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_5(__pyx_t_3);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 309, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_XDECREF_SET(__pyx_v_c, __pyx_t_1);
-    __pyx_t_1 = 0;
-
-    /* "sicer/coarsegraining.pyx":310
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:
- *         chrom_lengths.push_back(genome_data.chrom_length[c])             # <<<<<<<<<<<<<<
+ *     cdef ChromIslandContainer union_islands = ChromIslandContainer(genome_data)             # <<<<<<<<<<<<<<
  * 
  *     cdef int i
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 310, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_t_1, __pyx_v_c); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 310, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_7 = __Pyx_PyInt_As_uint32_t(__pyx_t_6); if (unlikely((__pyx_t_7 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 310, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    try {
-      __pyx_v_chrom_lengths.push_back(__pyx_t_7);
-    } catch(...) {
-      __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 310, __pyx_L1_error)
-    }
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
+  __pyx_t_1 = 0;
 
-    /* "sicer/coarsegraining.pyx":309
- *     cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:             # <<<<<<<<<<<<<<
- *         chrom_lengths.push_back(genome_data.chrom_length[c])
- * 
- */
-  }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "sicer/coarsegraining.pyx":313
+  /* "sicer/find_union_islands.pyx":72
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
- *         _coarsegraining_islands_by_chrom(
- *             deref(windows.getVectorPtr(chroms[i])),
+ *         _find_union_islands_by_chrom(
+ *             deref(union_islands.getVectorPtr(chroms[i])),
  */
   {
       #ifdef WITH_THREAD
@@ -4016,7 +1768,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
       __Pyx_FastGIL_Remember();
       #endif
       /*try:*/ {
-        __pyx_t_8 = __pyx_v_chroms.size();
+        __pyx_t_3 = __pyx_v_chroms.size();
         if (1 == 0) abort();
         {
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -4025,8 +1777,8 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_10 = (__pyx_t_8 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_10 > 0)
+            __pyx_t_5 = (__pyx_t_3 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_5 > 0)
             {
                 #ifdef _OPENMP
                 #pragma omp parallel num_threads(__pyx_v_num_cpu)
@@ -4035,18 +1787,18 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                     #ifdef _OPENMP
                     #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) schedule(guided)
                     #endif /* _OPENMP */
-                    for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_10; __pyx_t_9++){
+                    for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4++){
                         {
-                            __pyx_v_i = (int)(0 + 1 * __pyx_t_9);
+                            __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/coarsegraining.pyx":314
+                            /* "sicer/find_union_islands.pyx":73
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
- *         _coarsegraining_islands_by_chrom(             # <<<<<<<<<<<<<<
- *             deref(windows.getVectorPtr(chroms[i])),
- *             deref(islands.getVectorPtr(chroms[i])),
+ *         _find_union_islands_by_chrom(             # <<<<<<<<<<<<<<
+ *             deref(union_islands.getVectorPtr(chroms[i])),
+ *             deref(islands_1.getVectorPtr(chroms[i])),
  */
-                            __pyx_f_5sicer_14coarsegraining__coarsegraining_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows->__pyx_vtab)->getVectorPtr(__pyx_v_windows, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, (__pyx_v_chroms[__pyx_v_i]))), (__pyx_v_chrom_lengths[__pyx_v_i]), __pyx_v_min_tag_threshold, __pyx_v_window_size, __pyx_v_step_size, __pyx_v_step_score);
+                            __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getVectorPtr(__pyx_v_union_islands, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getVectorPtr(__pyx_v_islands_1, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_2->__pyx_vtab)->getVectorPtr(__pyx_v_islands_2, (__pyx_v_chroms[__pyx_v_i]))));
                         }
                     }
                 }
@@ -4060,12 +1812,12 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
         #endif
       }
 
-      /* "sicer/coarsegraining.pyx":313
+      /* "sicer/find_union_islands.pyx":72
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
- *         _coarsegraining_islands_by_chrom(
- *             deref(windows.getVectorPtr(chroms[i])),
+ *         _find_union_islands_by_chrom(
+ *             deref(union_islands.getVectorPtr(chroms[i])),
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -4073,196 +1825,164 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
           __Pyx_FastGIL_Forget();
           Py_BLOCK_THREADS
           #endif
-          goto __pyx_L7;
+          goto __pyx_L5;
         }
-        __pyx_L7:;
+        __pyx_L5:;
       }
   }
 
-  /* "sicer/coarsegraining.pyx":324
+  /* "sicer/find_union_islands.pyx":79
  *         )
  * 
- *     islands.updateIslandCount()             # <<<<<<<<<<<<<<
- *     print("Island count: ", islands.getIslandCount())
+ *     union_islands.updateIslandCount()             # <<<<<<<<<<<<<<
+ *     print("Union of islands count: ", union_islands.getIslandCount())
  * 
  */
-  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->updateIslandCount(__pyx_v_islands, 0);
+  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->updateIslandCount(__pyx_v_union_islands, 0);
 
-  /* "sicer/coarsegraining.pyx":325
+  /* "sicer/find_union_islands.pyx":80
  * 
- *     islands.updateIslandCount()
- *     print("Island count: ", islands.getIslandCount())             # <<<<<<<<<<<<<<
+ *     union_islands.updateIslandCount()
+ *     print("Union of islands count: ", union_islands.getIslandCount())             # <<<<<<<<<<<<<<
  * 
- *     return islands
+ *     return union_islands
  */
-  __pyx_t_3 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands->__pyx_vtab)->getIslandCount(__pyx_v_islands, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 325, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 325, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_INCREF(__pyx_kp_u_Island_count);
-  __Pyx_GIVEREF(__pyx_kp_u_Island_count);
-  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_kp_u_Island_count);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_3);
-  __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 325, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_INCREF(__pyx_kp_u_Union_of_islands_count);
+  __Pyx_GIVEREF(__pyx_kp_u_Union_of_islands_count);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_kp_u_Union_of_islands_count);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/coarsegraining.pyx":327
- *     print("Island count: ", islands.getIslandCount())
+  /* "sicer/find_union_islands.pyx":82
+ *     print("Union of islands count: ", union_islands.getIslandCount())
  * 
- *     return islands             # <<<<<<<<<<<<<<
+ *     return union_islands             # <<<<<<<<<<<<<<
  * 
- * cpdef ChromIslandContainer find_islands_by_coarsegraining(
+ * cpdef ChromIslandContainer find_union_islands(
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_islands));
-  __pyx_r = __pyx_v_islands;
+  __Pyx_INCREF(((PyObject *)__pyx_v_union_islands));
+  __pyx_r = __pyx_v_union_islands;
   goto __pyx_L0;
 
-  /* "sicer/coarsegraining.pyx":295
- *     islands.swap(tracebacked_islands)
+  /* "sicer/find_union_islands.pyx":60
+ *     union_islands.push_back(current)
  * 
- * cdef ChromIslandContainer _find_islands_by_coarsegraining(             # <<<<<<<<<<<<<<
- *     ChromWindowContainer windows,
- *     object genome_data,
+ * cdef ChromIslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
+ *     ChromIslandContainer islands_1,
+ *     ChromIslandContainer islands_2,
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("sicer.coarsegraining._find_islands_by_coarsegraining", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.find_union_islands._find_union_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_islands);
-  __Pyx_XDECREF(__pyx_v_c);
+  __Pyx_XDECREF((PyObject *)__pyx_v_union_islands);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "sicer/coarsegraining.pyx":329
- *     return islands
+/* "sicer/find_union_islands.pyx":84
+ *     return union_islands
  * 
- * cpdef ChromIslandContainer find_islands_by_coarsegraining(             # <<<<<<<<<<<<<<
- *     windows,
- *     genome_data,
+ * cpdef ChromIslandContainer find_union_islands(             # <<<<<<<<<<<<<<
+ *     islands_1,
+ *     islands_2,
  */
 
-static PyObject *__pyx_pw_5sicer_14coarsegraining_1find_islands_by_coarsegraining(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_14coarsegraining_find_islands_by_coarsegraining(PyObject *__pyx_v_windows, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_min_tag_threshold, PyObject *__pyx_v_window_size, PyObject *__pyx_v_step_size, PyObject *__pyx_v_step_score, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
   struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  __Pyx_RefNannySetupContext("find_islands_by_coarsegraining", 0);
+  __Pyx_RefNannySetupContext("find_union_islands", 0);
 
-  /* "sicer/coarsegraining.pyx":338
+  /* "sicer/find_union_islands.pyx":90
  *     num_cpu
  * ):
- *     print("Finding candidate islands exhibiting clustering by coarsegraining...")             # <<<<<<<<<<<<<<
- *     return _find_islands_by_coarsegraining(
- *         windows,
+ *     print("Finding the union islands between two treatment libraries...")             # <<<<<<<<<<<<<<
+ *     return _find_union_islands(
+ *         islands_1,
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 338, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/coarsegraining.pyx":339
+  /* "sicer/find_union_islands.pyx":91
  * ):
- *     print("Finding candidate islands exhibiting clustering by coarsegraining...")
- *     return _find_islands_by_coarsegraining(             # <<<<<<<<<<<<<<
- *         windows,
- *         genome_data,
+ *     print("Finding the union islands between two treatment libraries...")
+ *     return _find_union_islands(             # <<<<<<<<<<<<<<
+ *         islands_1,
+ *         islands_2,
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
 
-  /* "sicer/coarsegraining.pyx":340
- *     print("Finding candidate islands exhibiting clustering by coarsegraining...")
- *     return _find_islands_by_coarsegraining(
- *         windows,             # <<<<<<<<<<<<<<
+  /* "sicer/find_union_islands.pyx":92
+ *     print("Finding the union islands between two treatment libraries...")
+ *     return _find_union_islands(
+ *         islands_1,             # <<<<<<<<<<<<<<
+ *         islands_2,
  *         genome_data,
- *         min_tag_threshold,
  */
-  if (!(likely(((__pyx_v_windows) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_windows, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer))))) __PYX_ERR(0, 340, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_1, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer))))) __PYX_ERR(0, 92, __pyx_L1_error)
 
-  /* "sicer/coarsegraining.pyx":342
- *         windows,
+  /* "sicer/find_union_islands.pyx":93
+ *     return _find_union_islands(
+ *         islands_1,
+ *         islands_2,             # <<<<<<<<<<<<<<
  *         genome_data,
- *         min_tag_threshold,             # <<<<<<<<<<<<<<
- *         window_size,
- *         step_size,
- */
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_min_tag_threshold); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 342, __pyx_L1_error)
-
-  /* "sicer/coarsegraining.pyx":343
- *         genome_data,
- *         min_tag_threshold,
- *         window_size,             # <<<<<<<<<<<<<<
- *         step_size,
- *         step_score,
- */
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_window_size); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 343, __pyx_L1_error)
-
-  /* "sicer/coarsegraining.pyx":344
- *         min_tag_threshold,
- *         window_size,
- *         step_size,             # <<<<<<<<<<<<<<
- *         step_score,
  *         num_cpu
  */
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_step_size); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 344, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_2, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer))))) __PYX_ERR(0, 93, __pyx_L1_error)
 
-  /* "sicer/coarsegraining.pyx":345
- *         window_size,
- *         step_size,
- *         step_score,             # <<<<<<<<<<<<<<
- *         num_cpu
- *     )
- */
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_step_score); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 345, __pyx_L1_error)
-
-  /* "sicer/coarsegraining.pyx":346
- *         step_size,
- *         step_score,
+  /* "sicer/find_union_islands.pyx":95
+ *         islands_2,
+ *         genome_data,
  *         num_cpu             # <<<<<<<<<<<<<<
  *     )
+ * 
  */
-  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 346, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
 
-  /* "sicer/coarsegraining.pyx":339
+  /* "sicer/find_union_islands.pyx":91
  * ):
- *     print("Finding candidate islands exhibiting clustering by coarsegraining...")
- *     return _find_islands_by_coarsegraining(             # <<<<<<<<<<<<<<
- *         windows,
- *         genome_data,
+ *     print("Finding the union islands between two treatment libraries...")
+ *     return _find_union_islands(             # <<<<<<<<<<<<<<
+ *         islands_1,
+ *         islands_2,
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_14coarsegraining__find_islands_by_coarsegraining(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_windows), __pyx_v_genome_data, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 339, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands__find_union_islands(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_1), ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_2), __pyx_v_genome_data, __pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/coarsegraining.pyx":329
- *     return islands
+  /* "sicer/find_union_islands.pyx":84
+ *     return union_islands
  * 
- * cpdef ChromIslandContainer find_islands_by_coarsegraining(             # <<<<<<<<<<<<<<
- *     windows,
- *     genome_data,
+ * cpdef ChromIslandContainer find_union_islands(             # <<<<<<<<<<<<<<
+ *     islands_1,
+ *     islands_2,
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.coarsegraining.find_islands_by_coarsegraining", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.find_union_islands.find_union_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
@@ -4271,31 +1991,22 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5sicer_14coarsegraining_1find_islands_by_coarsegraining(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5sicer_14coarsegraining_1find_islands_by_coarsegraining(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_windows = 0;
+static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_islands_1 = 0;
+  PyObject *__pyx_v_islands_2 = 0;
   PyObject *__pyx_v_genome_data = 0;
-  PyObject *__pyx_v_min_tag_threshold = 0;
-  PyObject *__pyx_v_window_size = 0;
-  PyObject *__pyx_v_step_size = 0;
-  PyObject *__pyx_v_step_score = 0;
   PyObject *__pyx_v_num_cpu = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("find_islands_by_coarsegraining (wrapper)", 0);
+  __Pyx_RefNannySetupContext("find_union_islands (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_windows,&__pyx_n_s_genome_data,&__pyx_n_s_min_tag_threshold,&__pyx_n_s_window_size,&__pyx_n_s_step_size,&__pyx_n_s_step_score,&__pyx_n_s_num_cpu,0};
-    PyObject* values[7] = {0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_islands_1,&__pyx_n_s_islands_2,&__pyx_n_s_genome_data,&__pyx_n_s_num_cpu,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
-        CYTHON_FALLTHROUGH;
-        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
-        CYTHON_FALLTHROUGH;
-        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-        CYTHON_FALLTHROUGH;
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -4310,89 +2021,65 @@ static PyObject *__pyx_pw_5sicer_14coarsegraining_1find_islands_by_coarsegrainin
       kw_args = PyDict_Size(__pyx_kwds);
       switch (pos_args) {
         case  0:
-        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_windows)) != 0)) kw_args--;
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands_1)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands_2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands_by_coarsegraining", 1, 7, 7, 1); __PYX_ERR(0, 329, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 1); __PYX_ERR(0, 84, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_min_tag_threshold)) != 0)) kw_args--;
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands_by_coarsegraining", 1, 7, 7, 2); __PYX_ERR(0, 329, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 2); __PYX_ERR(0, 84, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
-        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_islands_by_coarsegraining", 1, 7, 7, 3); __PYX_ERR(0, 329, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  4:
-        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_step_size)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("find_islands_by_coarsegraining", 1, 7, 7, 4); __PYX_ERR(0, 329, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  5:
-        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_step_score)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("find_islands_by_coarsegraining", 1, 7, 7, 5); __PYX_ERR(0, 329, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  6:
-        if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("find_islands_by_coarsegraining", 1, 7, 7, 6); __PYX_ERR(0, 329, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 3); __PYX_ERR(0, 84, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_islands_by_coarsegraining") < 0)) __PYX_ERR(0, 329, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_union_islands") < 0)) __PYX_ERR(0, 84, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 7) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-      values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
-      values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
     }
-    __pyx_v_windows = values[0];
-    __pyx_v_genome_data = values[1];
-    __pyx_v_min_tag_threshold = values[2];
-    __pyx_v_window_size = values[3];
-    __pyx_v_step_size = values[4];
-    __pyx_v_step_score = values[5];
-    __pyx_v_num_cpu = values[6];
+    __pyx_v_islands_1 = values[0];
+    __pyx_v_islands_2 = values[1];
+    __pyx_v_genome_data = values[2];
+    __pyx_v_num_cpu = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("find_islands_by_coarsegraining", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 329, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 84, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("sicer.coarsegraining.find_islands_by_coarsegraining", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.find_union_islands.find_union_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5sicer_14coarsegraining_find_islands_by_coarsegraining(__pyx_self, __pyx_v_windows, __pyx_v_genome_data, __pyx_v_min_tag_threshold, __pyx_v_window_size, __pyx_v_step_size, __pyx_v_step_score, __pyx_v_num_cpu);
+  __pyx_r = __pyx_pf_5sicer_18find_union_islands_find_union_islands(__pyx_self, __pyx_v_islands_1, __pyx_v_islands_2, __pyx_v_genome_data, __pyx_v_num_cpu);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_14coarsegraining_find_islands_by_coarsegraining(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_windows, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_min_tag_threshold, PyObject *__pyx_v_window_size, PyObject *__pyx_v_step_size, PyObject *__pyx_v_step_score, PyObject *__pyx_v_num_cpu) {
+static PyObject *__pyx_pf_5sicer_18find_union_islands_find_union_islands(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("find_islands_by_coarsegraining", 0);
+  __Pyx_RefNannySetupContext("find_union_islands", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_14coarsegraining_find_islands_by_coarsegraining(__pyx_v_windows, __pyx_v_genome_data, __pyx_v_min_tag_threshold, __pyx_v_window_size, __pyx_v_step_size, __pyx_v_step_score, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 329, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands_find_union_islands(__pyx_v_islands_1, __pyx_v_islands_2, __pyx_v_genome_data, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4401,7 +2088,7 @@ static PyObject *__pyx_pf_5sicer_14coarsegraining_find_islands_by_coarsegraining
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.coarsegraining.find_islands_by_coarsegraining", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.find_union_islands.find_union_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4591,24 +2278,24 @@ static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"find_islands_by_coarsegraining", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_14coarsegraining_1find_islands_by_coarsegraining, METH_VARARGS|METH_KEYWORDS, 0},
+  {"find_union_islands", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_18find_union_islands_1find_union_islands, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_coarsegraining(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_find_union_islands(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_coarsegraining},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_find_union_islands},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "coarsegraining",
+    "find_union_islands",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -4637,29 +2324,22 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_u_Finding_candidate_islands_exhibi, __pyx_k_Finding_candidate_islands_exhibi, sizeof(__pyx_k_Finding_candidate_islands_exhibi), 0, 1, 0, 0},
-  {&__pyx_kp_u_Island_count, __pyx_k_Island_count, sizeof(__pyx_k_Island_count), 0, 1, 0, 0},
-  {&__pyx_n_s_chrom, __pyx_k_chrom, sizeof(__pyx_k_chrom), 0, 0, 1, 1},
-  {&__pyx_n_s_chrom_length, __pyx_k_chrom_length, sizeof(__pyx_k_chrom_length), 0, 0, 1, 1},
+  {&__pyx_kp_u_Finding_the_union_islands_betwee, __pyx_k_Finding_the_union_islands_betwee, sizeof(__pyx_k_Finding_the_union_islands_betwee), 0, 1, 0, 0},
+  {&__pyx_kp_u_Union_of_islands_count, __pyx_k_Union_of_islands_count, sizeof(__pyx_k_Union_of_islands_count), 0, 1, 0, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_genome_data, __pyx_k_genome_data, sizeof(__pyx_k_genome_data), 0, 0, 1, 1},
+  {&__pyx_n_s_islands_1, __pyx_k_islands_1, sizeof(__pyx_k_islands_1), 0, 0, 1, 1},
+  {&__pyx_n_s_islands_2, __pyx_k_islands_2, sizeof(__pyx_k_islands_2), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_min_tag_threshold, __pyx_k_min_tag_threshold, sizeof(__pyx_k_min_tag_threshold), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_num_cpu, __pyx_k_num_cpu, sizeof(__pyx_k_num_cpu), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
-  {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_step_score, __pyx_k_step_score, sizeof(__pyx_k_step_score), 0, 0, 1, 1},
-  {&__pyx_n_s_step_size, __pyx_k_step_size, sizeof(__pyx_k_step_size), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_window_size, __pyx_k_window_size, sizeof(__pyx_k_window_size), 0, 0, 1, 1},
-  {&__pyx_n_s_windows, __pyx_k_windows, sizeof(__pyx_k_windows), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 33, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 325, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 80, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4669,14 +2349,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/coarsegraining.pyx":338
+  /* "sicer/find_union_islands.pyx":90
  *     num_cpu
  * ):
- *     print("Finding candidate islands exhibiting clustering by coarsegraining...")             # <<<<<<<<<<<<<<
- *     return _find_islands_by_coarsegraining(
- *         windows,
+ *     print("Finding the union islands between two treatment libraries...")             # <<<<<<<<<<<<<<
+ *     return _find_union_islands(
+ *         islands_1,
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_candidate_islands_exhibi); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 338, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_the_union_islands_betwee); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -4798,11 +2478,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initcoarsegraining(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initcoarsegraining(void)
+__Pyx_PyMODINIT_FUNC initfind_union_islands(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initfind_union_islands(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_coarsegraining(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_coarsegraining(void)
+__Pyx_PyMODINIT_FUNC PyInit_find_union_islands(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_find_union_islands(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -4869,7 +2549,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_coarsegraining(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_find_union_islands(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -4878,7 +2558,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_coarsegraining(PyObject *__pyx_pyi
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'coarsegraining' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'find_union_islands' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -4893,7 +2573,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_coarsegraining(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_find_union_islands(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -4932,7 +2612,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("coarsegraining", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("find_union_islands", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -4950,14 +2630,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_sicer__coarsegraining) {
+  if (__pyx_module_is_main_sicer__find_union_islands) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "sicer.coarsegraining")) {
-      if (unlikely(PyDict_SetItemString(modules, "sicer.coarsegraining", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "sicer.find_union_islands")) {
+      if (unlikely(PyDict_SetItemString(modules, "sicer.find_union_islands", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -4978,10 +2658,10 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/coarsegraining.pyx":1
+  /* "sicer/find_union_islands.pyx":1
  * # SICER Internal Imports             # <<<<<<<<<<<<<<
- * from sicer.shared.data_classes cimport Window, Island
- * from sicer.shared.chrom_containers cimport ChromWindowContainer, ChromIslandContainer
+ * from sicer.shared.data_classes cimport Island
+ * from sicer.shared.chrom_containers cimport ChromIslandContainer
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -5003,11 +2683,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init sicer.coarsegraining", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init sicer.find_union_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init sicer.coarsegraining");
+    PyErr_SetString(PyExc_ImportError, "init sicer.find_union_islands");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -5130,14 +2810,6 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
     if (nogil)
         PyGILState_Release(state);
 #endif
-}
-
-/* None */
-static CYTHON_INLINE int __Pyx_div_int(int a, int b) {
-    int q = a / b;
-    int r = a - q*b;
-    q -= ((r != 0) & ((r ^ b) < 0));
-    return q;
 }
 
 /* PyCFunctionFastCall */
@@ -5359,122 +3031,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     result = __Pyx_PyObject_Call(func, args, NULL);
     Py_DECREF(args);
     return result;
-}
-#endif
-
-/* GetItemInt */
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
-    PyObject *r;
-    if (!j) return NULL;
-    r = PyObject_GetItem(o, j);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyList_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
-        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyTuple_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
-        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
-                                                     CYTHON_NCP_UNUSED int wraparound,
-                                                     CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
-        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
-            PyObject *r = PyList_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    }
-    else if (PyTuple_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
-            PyObject *r = PyTuple_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return NULL;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_item(o, i);
-        }
-    }
-#else
-    if (is_list || PySequence_Check(o)) {
-        return PySequence_GetItem(o, i);
-    }
-#endif
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-}
-
-/* ObjectGetItem */
-#if CYTHON_USE_TYPE_SLOTS
-static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
-    PyObject *runerr;
-    Py_ssize_t key_value;
-    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
-    if (unlikely(!(m && m->sq_item))) {
-        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
-        return NULL;
-    }
-    key_value = __Pyx_PyIndex_AsSsize_t(index);
-    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
-        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
-    }
-    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
-        PyErr_Clear();
-        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
-    }
-    return NULL;
-}
-static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
-    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(m && m->mp_subscript)) {
-        return m->mp_subscript(obj, key);
-    }
-    return __Pyx_PyObject_GetIndex(obj, key);
 }
 #endif
 
@@ -5947,28 +3503,6 @@ bad:
     Py_XDECREF(py_frame);
 }
 
-/* CIntFromPyVerify */
-#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
-    }
-
 /* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
@@ -6000,194 +3534,27 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     }
 }
 
-/* CIntFromPy */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
-    const size_t neg_one = (size_t) ((size_t) 0 - (size_t) 1), const_zero = (size_t) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(size_t) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (size_t) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
-                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
-                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
-                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (size_t) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            size_t val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (size_t) -1;
-        }
-    } else {
-        size_t val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (size_t) -1;
-        val = __Pyx_PyInt_As_size_t(tmp);
-        Py_DECREF(tmp);
-        return val;
+/* CIntFromPyVerify */
+#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
     }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to size_t");
-    return (size_t) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to size_t");
-    return (size_t) -1;
-}
 
 /* CIntFromPy */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
@@ -6376,195 +3743,6 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
-}
-
-/* CIntFromPy */
-static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *x) {
-    const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(uint32_t) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(uint32_t, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (uint32_t) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (uint32_t) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(uint32_t, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(uint32_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) >= 2 * PyLong_SHIFT) {
-                            return (uint32_t) (((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(uint32_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) >= 3 * PyLong_SHIFT) {
-                            return (uint32_t) (((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(uint32_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) >= 4 * PyLong_SHIFT) {
-                            return (uint32_t) (((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (uint32_t) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(uint32_t) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (uint32_t) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(uint32_t, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(uint32_t,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(uint32_t) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (uint32_t) (((uint32_t)-1)*(((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(uint32_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (uint32_t) ((((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (uint32_t) (((uint32_t)-1)*(((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(uint32_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (uint32_t) ((((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (uint32_t) (((uint32_t)-1)*(((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(uint32_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (uint32_t) ((((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(uint32_t) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            uint32_t val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (uint32_t) -1;
-        }
-    } else {
-        uint32_t val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (uint32_t) -1;
-        val = __Pyx_PyInt_As_uint32_t(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to uint32_t");
-    return (uint32_t) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to uint32_t");
-    return (uint32_t) -1;
 }
 
 /* CIntToPy */

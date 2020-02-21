@@ -82,6 +82,12 @@ extensions = [
                 include_dirs=['.'],
                 extra_compile_args=extra_cpp_args,
                 language='c++'
+                ),
+            Extension('sicer.find_union_islands',
+                sources=['sicer/find_union_islands' + EXT],
+                include_dirs=['.'],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
                 )
             ]
 
