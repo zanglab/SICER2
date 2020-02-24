@@ -5,8 +5,6 @@
 #include <vector>
 #include <map>
 
-using namespace std;
-
 typedef struct BEDRead {
     string chrom;
     unsigned int start;
@@ -20,8 +18,8 @@ public:
         chrom(chr), start(start), end(end), name(name), score(scr), strand(strd) {}
     string toString() 
     {
-        return chrom + "\t" + to_string(start) + "\t" + to_string(end) 
-                + "\t" + name + "\t" + to_string(score) + "\t" + strand;
+        return chrom + "\t" + std::to_string(start) + "\t" + std::to_string(end) 
+                + "\t" + name + "\t" + std::to_string(score) + "\t" + strand;
     }
 } BEDRead;
 
@@ -36,8 +34,8 @@ public:
         chrom(chr), start(start), end(end), count(count) {}
     string toString()
     {
-        return chrom + "\t" + to_string(start) + "\t" 
-                + to_string(end) + "\t" + to_string(count);
+        return chrom + "\t" + std::to_string(start) + "\t" 
+                + std::to_string(end) + "\t" + std::to_string(count);
     }
 } Window;
 
@@ -58,8 +56,8 @@ public:
         chrom(chr), start(start), end(end), score(score) {}
     string toString()
     {
-        return chrom + "\t" + to_string(start) + "\t" 
-                + to_string(end) + "\t" + to_string(score);
+        return chrom + "\t" + std::to_string(start) + "\t" 
+                + std::to_string(end) + "\t" + std::to_string(score);
     }
 } Island;
 
@@ -85,8 +83,8 @@ public:
     DiffExprIsland(Island island): chrom(island.chrom), start(island.start), end(island.end) {}
     string toString()
     {
-        return chrom + "\t" + to_string(start) + "\t" 
-                + to_string(end);
+        return chrom + "\t" + std::to_string(start) + "\t" 
+                + std::to_string(end);
     }
 } DiffExprIsland;
 
