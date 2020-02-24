@@ -1,7 +1,7 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport Window, Island
-from sicer.shared.chrom_containers cimport WindowContainer, IslandContainer
-from sicer.utility.utils cimport merge
+from sicer.shared.containers cimport WindowContainer, IslandContainer
+from sicer.shared.utils cimport merge
 
 # Cython Imports
 from libc.math cimport log, fmax, fabs, pow

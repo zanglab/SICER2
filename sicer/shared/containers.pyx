@@ -1,4 +1,4 @@
-from sicer.utility.utils cimport to_string
+from sicer.shared.utils cimport to_string
 
 from cython.operator cimport dereference as deref
 from cython.operator cimport postincrement

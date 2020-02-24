@@ -1,7 +1,7 @@
 # SICER Internal Imports
-from sicer.utility.utils cimport poisson
+from sicer.shared.utils cimport poisson
 from sicer.shared.data_classes cimport BEDRead, Window, Island
-from sicer.shared.chrom_containers cimport BEDReadContainer, WindowContainer, IslandContainer
+from sicer.shared.containers cimport BEDReadContainer, WindowContainer, IslandContainer
 
 # Cython Imports
 from libc.math cimport log

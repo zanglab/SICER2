@@ -1,7 +1,7 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport Island, DiffExprIsland
-from sicer.utility.utils cimport remove_at
-from sicer.shared.chrom_containers cimport IslandContainer, DiffExprIslandContainer
+from sicer.shared.utils cimport remove_at
+from sicer.shared.containers cimport IslandContainer, DiffExprIslandContainer
 
 # Cython Imports
 from libcpp cimport bool

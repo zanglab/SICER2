@@ -16,7 +16,7 @@ from sicer.filter_islands_by_fdr import filter_islands_by_fdr
 from sicer.recover_significant_reads import recover_significant_reads
 from sicer.find_union_islands import find_union_islands
 from sicer.compare_two_libraries import compare_two_libraries
-from sicer.utility.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter, DiffExprIslandWriter
+from sicer.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter, DiffExprIslandWriter
 
 def run_recognicer(args, df_run=False): 
 

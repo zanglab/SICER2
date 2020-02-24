@@ -1,7 +1,7 @@
 # SICER Internal Imports
-from sicer.utility.utils cimport get_tag_pos, bin_tag_in_island
+from sicer.shared.utils cimport get_tag_pos, bin_tag_in_island
 from sicer.shared.data_classes cimport BEDRead, Island
-from sicer.shared.chrom_containers cimport BEDReadContainer, IslandContainer
+from sicer.shared.containers cimport BEDReadContainer, IslandContainer
 
 # Cython Imports
 from libc.math cimport log, fmin

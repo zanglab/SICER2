@@ -1,6 +1,6 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport Island, BEDRead
-from sicer.shared.chrom_containers cimport BEDReadContainer, WindowContainer, IslandContainer, DiffExprIslandContainer
+from sicer.shared.containers cimport BEDReadContainer, WindowContainer, IslandContainer, DiffExprIslandContainer
 
 from libc.stdint cimport uint32_t
 

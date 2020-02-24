@@ -1,7 +1,7 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport Island
-from sicer.shared.chrom_containers cimport IslandContainer
-from sicer.utility.utils cimport merge
+from sicer.shared.containers cimport IslandContainer
+from sicer.shared.utils cimport merge
 
 # Cython Imports
 from libcpp cimport bool

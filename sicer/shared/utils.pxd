@@ -7,7 +7,7 @@ cdef extern from "<string>" namespace "std" nogil:
     string to_string(int val)
     string to_string(uint32_t val)
 
-cdef extern from "removeAt.cpp" nogil:
+cdef extern from "removeAt.h" nogil:
     V remove_at[V, I](V first, V last, I ii_first, I ii_last)
 
 # Read interval manipulation functions

@@ -5,7 +5,7 @@
     "distutils": {
         "depends": [
             "sicer/shared/data_objects.h",
-            "sicer/utility/removeAt.cpp"
+            "sicer/shared/removeAt.h"
         ],
         "extra_compile_args": [
             "-O3",
@@ -14,19 +14,17 @@
             "-w"
         ],
         "include_dirs": [
-            "./sicer/utility",
-            "sicer/shared",
             "./sicer/shared",
-            "sicer/utility",
+            "sicer/shared",
             "."
         ],
         "language": "c++",
-        "name": "sicer.utility.utils",
+        "name": "sicer.shared.utils",
         "sources": [
-            "sicer/utility/utils.pyx"
+            "sicer/shared/utils.pyx"
         ]
     },
-    "module_name": "sicer.utility.utils"
+    "module_name": "sicer.shared.utils"
 }
 END: Cython Metadata */
 
@@ -634,8 +632,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__sicer__utility__utils
-#define __PYX_HAVE_API__sicer__utility__utils
+#define __PYX_HAVE__sicer__shared__utils
+#define __PYX_HAVE_API__sicer__shared__utils
 /* Early includes */
 #include <string.h>
 #include "ios"
@@ -646,7 +644,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <stdint.h>
 #include "data_objects.h"
 #include <vector>
-#include "removeAt.cpp"
+#include "removeAt.h"
 #include <algorithm>
 #include <math.h>
 #ifdef _OPENMP
@@ -857,7 +855,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "sicer/utility/utils.pyx",
+  "sicer/shared/utils.pyx",
 };
 /* ForceInitThreads.proto */
 #ifndef __PYX_FORCE_INIT_THREADS
@@ -1107,15 +1105,15 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.algorithm' */
 
-/* Module declarations from 'sicer.utility.utils' */
-static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int); /*proto*/
-static double __pyx_f_5sicer_7utility_5utils_factln(int); /*proto*/
-static double __pyx_f_5sicer_7utility_5utils_poisson(int, double, int __pyx_skip_dispatch); /*proto*/
-#define __Pyx_MODULE_NAME "sicer.utility.utils"
-extern int __pyx_module_is_main_sicer__utility__utils;
-int __pyx_module_is_main_sicer__utility__utils = 0;
+/* Module declarations from 'sicer.shared.utils' */
+static uint32_t __pyx_f_5sicer_6shared_5utils_fact(int); /*proto*/
+static double __pyx_f_5sicer_6shared_5utils_factln(int); /*proto*/
+static double __pyx_f_5sicer_6shared_5utils_poisson(int, double, int __pyx_skip_dispatch); /*proto*/
+#define __Pyx_MODULE_NAME "sicer.shared.utils"
+extern int __pyx_module_is_main_sicer__shared__utils;
+int __pyx_module_is_main_sicer__shared__utils = 0;
 
-/* Implementation of 'sicer.utility.utils' */
+/* Implementation of 'sicer.shared.utils' */
 static const char __pyx_k_n[] = "n";
 static const char __pyx_k_avg[] = "avg";
 static const char __pyx_k_main[] = "__main__";
@@ -1128,10 +1126,10 @@ static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_n;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_pf_5sicer_7utility_5utils_poisson(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_n, double __pyx_v_avg); /* proto */
+static PyObject *__pyx_pf_5sicer_6shared_5utils_poisson(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_n, double __pyx_v_avg); /* proto */
 /* Late includes */
 
-/* "sicer/utility/utils.pyx":5
+/* "sicer/shared/utils.pyx":5
  * from libcpp.algorithm cimport upper_bound, lower_bound
  * 
  * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:             # <<<<<<<<<<<<<<
@@ -1139,12 +1137,12 @@ static PyObject *__pyx_pf_5sicer_7utility_5utils_poisson(CYTHON_UNUSED PyObject 
  *     if read.strand == b'+':
  */
 
-static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int __pyx_v_frag_size) {
+static int __pyx_f_5sicer_6shared_5utils_get_tag_pos(BEDRead &__pyx_v_read, int __pyx_v_frag_size) {
   int __pyx_v_shift;
   int __pyx_r;
   int __pyx_t_1;
 
-  /* "sicer/utility/utils.pyx":6
+  /* "sicer/shared/utils.pyx":6
  * 
  * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:
  *     cdef int shift = <int> round(frag_size / 2.0)             # <<<<<<<<<<<<<<
@@ -1153,7 +1151,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int
  */
   __pyx_v_shift = ((int)round((((double)__pyx_v_frag_size) / 2.0)));
 
-  /* "sicer/utility/utils.pyx":7
+  /* "sicer/shared/utils.pyx":7
  * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:
  *     cdef int shift = <int> round(frag_size / 2.0)
  *     if read.strand == b'+':             # <<<<<<<<<<<<<<
@@ -1163,7 +1161,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int
   __pyx_t_1 = ((__pyx_v_read.strand == '+') != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/utility/utils.pyx":8
+    /* "sicer/shared/utils.pyx":8
  *     cdef int shift = <int> round(frag_size / 2.0)
  *     if read.strand == b'+':
  *         return read.start + shift             # <<<<<<<<<<<<<<
@@ -1173,7 +1171,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int
     __pyx_r = (__pyx_v_read.start + __pyx_v_shift);
     goto __pyx_L0;
 
-    /* "sicer/utility/utils.pyx":7
+    /* "sicer/shared/utils.pyx":7
  * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:
  *     cdef int shift = <int> round(frag_size / 2.0)
  *     if read.strand == b'+':             # <<<<<<<<<<<<<<
@@ -1182,7 +1180,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int
  */
   }
 
-  /* "sicer/utility/utils.pyx":10
+  /* "sicer/shared/utils.pyx":10
  *         return read.start + shift
  *     else:
  *         return read.end - shift - 1             # <<<<<<<<<<<<<<
@@ -1194,7 +1192,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int
     goto __pyx_L0;
   }
 
-  /* "sicer/utility/utils.pyx":5
+  /* "sicer/shared/utils.pyx":5
  * from libcpp.algorithm cimport upper_bound, lower_bound
  * 
  * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:             # <<<<<<<<<<<<<<
@@ -1207,7 +1205,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int
   return __pyx_r;
 }
 
-/* "sicer/utility/utils.pyx":12
+/* "sicer/shared/utils.pyx":12
  *         return read.end - shift - 1
  * 
  * cdef int bin_tag_in_island(             # <<<<<<<<<<<<<<
@@ -1215,14 +1213,14 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int
  *     vector[uint32_t] &island_ends,
  */
 
-static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t>  &__pyx_v_island_starts, std::vector<uint32_t>  &__pyx_v_island_ends, uint32_t __pyx_v_tag_pos) {
+static int __pyx_f_5sicer_6shared_5utils_bin_tag_in_island(std::vector<uint32_t>  &__pyx_v_island_starts, std::vector<uint32_t>  &__pyx_v_island_ends, uint32_t __pyx_v_tag_pos) {
   uint32_t __pyx_v_start_index;
   uint32_t __pyx_v_end_index;
   int __pyx_r;
   int __pyx_t_1;
   int __pyx_t_2;
 
-  /* "sicer/utility/utils.pyx":17
+  /* "sicer/shared/utils.pyx":17
  *     uint32_t tag_pos
  * ) nogil:
  *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()             # <<<<<<<<<<<<<<
@@ -1231,7 +1229,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
  */
   __pyx_v_start_index = (std::upper_bound<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_island_starts.begin(), __pyx_v_island_starts.end(), __pyx_v_tag_pos) - __pyx_v_island_starts.begin());
 
-  /* "sicer/utility/utils.pyx":18
+  /* "sicer/shared/utils.pyx":18
  * ) nogil:
  *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
  *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()             # <<<<<<<<<<<<<<
@@ -1240,7 +1238,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
  */
   __pyx_v_end_index = (std::lower_bound<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_island_ends.begin(), __pyx_v_island_ends.end(), __pyx_v_tag_pos) - __pyx_v_island_ends.begin());
 
-  /* "sicer/utility/utils.pyx":19
+  /* "sicer/shared/utils.pyx":19
  *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
  *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()             # <<<<<<<<<<<<<<
@@ -1254,7 +1252,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "sicer/utility/utils.pyx":20
+  /* "sicer/shared/utils.pyx":20
  *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()
  *         and end_index < island_ends.size()             # <<<<<<<<<<<<<<
@@ -1268,7 +1266,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "sicer/utility/utils.pyx":21
+  /* "sicer/shared/utils.pyx":21
  *     if (start_index < island_starts.size()
  *         and end_index < island_ends.size()
  *         and start_index - end_index == 1             # <<<<<<<<<<<<<<
@@ -1279,7 +1277,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
   __pyx_t_1 = __pyx_t_2;
   __pyx_L4_bool_binop_done:;
 
-  /* "sicer/utility/utils.pyx":19
+  /* "sicer/shared/utils.pyx":19
  *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
  *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()             # <<<<<<<<<<<<<<
@@ -1288,7 +1286,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
  */
   if (__pyx_t_1) {
 
-    /* "sicer/utility/utils.pyx":23
+    /* "sicer/shared/utils.pyx":23
  *         and start_index - end_index == 1
  *     ):
  *         return start_index - 1;             # <<<<<<<<<<<<<<
@@ -1298,7 +1296,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
     __pyx_r = (__pyx_v_start_index - 1);
     goto __pyx_L0;
 
-    /* "sicer/utility/utils.pyx":19
+    /* "sicer/shared/utils.pyx":19
  *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
  *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()             # <<<<<<<<<<<<<<
@@ -1307,7 +1305,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
  */
   }
 
-  /* "sicer/utility/utils.pyx":25
+  /* "sicer/shared/utils.pyx":25
  *         return start_index - 1;
  *     else:
  *         return -1;             # <<<<<<<<<<<<<<
@@ -1319,7 +1317,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
     goto __pyx_L0;
   }
 
-  /* "sicer/utility/utils.pyx":12
+  /* "sicer/shared/utils.pyx":12
  *         return read.end - shift - 1
  * 
  * cdef int bin_tag_in_island(             # <<<<<<<<<<<<<<
@@ -1332,7 +1330,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
   return __pyx_r;
 }
 
-/* "sicer/utility/utils.pyx":27
+/* "sicer/shared/utils.pyx":27
  *         return -1;
  * 
  * cdef uint32_t fact(int n) nogil:             # <<<<<<<<<<<<<<
@@ -1340,12 +1338,12 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
  *     if n != 0:
  */
 
-static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
+static uint32_t __pyx_f_5sicer_6shared_5utils_fact(int __pyx_v_n) {
   uint32_t __pyx_v_val;
   uint32_t __pyx_r;
   int __pyx_t_1;
 
-  /* "sicer/utility/utils.pyx":28
+  /* "sicer/shared/utils.pyx":28
  * 
  * cdef uint32_t fact(int n) nogil:
  *     cdef uint32_t val = 1             # <<<<<<<<<<<<<<
@@ -1354,7 +1352,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
  */
   __pyx_v_val = 1;
 
-  /* "sicer/utility/utils.pyx":29
+  /* "sicer/shared/utils.pyx":29
  * cdef uint32_t fact(int n) nogil:
  *     cdef uint32_t val = 1
  *     if n != 0:             # <<<<<<<<<<<<<<
@@ -1364,7 +1362,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
   __pyx_t_1 = ((__pyx_v_n != 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/utility/utils.pyx":30
+    /* "sicer/shared/utils.pyx":30
  *     cdef uint32_t val = 1
  *     if n != 0:
  *         while n != 1:             # <<<<<<<<<<<<<<
@@ -1375,7 +1373,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
       __pyx_t_1 = ((__pyx_v_n != 1) != 0);
       if (!__pyx_t_1) break;
 
-      /* "sicer/utility/utils.pyx":31
+      /* "sicer/shared/utils.pyx":31
  *     if n != 0:
  *         while n != 1:
  *             val = val * n;             # <<<<<<<<<<<<<<
@@ -1384,7 +1382,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
  */
       __pyx_v_val = (__pyx_v_val * __pyx_v_n);
 
-      /* "sicer/utility/utils.pyx":32
+      /* "sicer/shared/utils.pyx":32
  *         while n != 1:
  *             val = val * n;
  *             predec(n)             # <<<<<<<<<<<<<<
@@ -1394,7 +1392,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
       (void)((--__pyx_v_n));
     }
 
-    /* "sicer/utility/utils.pyx":29
+    /* "sicer/shared/utils.pyx":29
  * cdef uint32_t fact(int n) nogil:
  *     cdef uint32_t val = 1
  *     if n != 0:             # <<<<<<<<<<<<<<
@@ -1403,7 +1401,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
  */
   }
 
-  /* "sicer/utility/utils.pyx":33
+  /* "sicer/shared/utils.pyx":33
  *             val = val * n;
  *             predec(n)
  *     return val             # <<<<<<<<<<<<<<
@@ -1413,7 +1411,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
   __pyx_r = __pyx_v_val;
   goto __pyx_L0;
 
-  /* "sicer/utility/utils.pyx":27
+  /* "sicer/shared/utils.pyx":27
  *         return -1;
  * 
  * cdef uint32_t fact(int n) nogil:             # <<<<<<<<<<<<<<
@@ -1426,7 +1424,7 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
   return __pyx_r;
 }
 
-/* "sicer/utility/utils.pyx":36
+/* "sicer/shared/utils.pyx":36
  * 
  * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
  * cdef double factln(int n) nogil:             # <<<<<<<<<<<<<<
@@ -1434,11 +1432,11 @@ static uint32_t __pyx_f_5sicer_7utility_5utils_fact(int __pyx_v_n) {
  *         return log(fact(n))
  */
 
-static double __pyx_f_5sicer_7utility_5utils_factln(int __pyx_v_n) {
+static double __pyx_f_5sicer_6shared_5utils_factln(int __pyx_v_n) {
   double __pyx_r;
   int __pyx_t_1;
 
-  /* "sicer/utility/utils.pyx":37
+  /* "sicer/shared/utils.pyx":37
  * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
  * cdef double factln(int n) nogil:
  *     if n < 20:             # <<<<<<<<<<<<<<
@@ -1448,17 +1446,17 @@ static double __pyx_f_5sicer_7utility_5utils_factln(int __pyx_v_n) {
   __pyx_t_1 = ((__pyx_v_n < 20) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/utility/utils.pyx":38
+    /* "sicer/shared/utils.pyx":38
  * cdef double factln(int n) nogil:
  *     if n < 20:
  *         return log(fact(n))             # <<<<<<<<<<<<<<
  *     else:
  *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2
  */
-    __pyx_r = log(__pyx_f_5sicer_7utility_5utils_fact(__pyx_v_n));
+    __pyx_r = log(__pyx_f_5sicer_6shared_5utils_fact(__pyx_v_n));
     goto __pyx_L0;
 
-    /* "sicer/utility/utils.pyx":37
+    /* "sicer/shared/utils.pyx":37
  * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
  * cdef double factln(int n) nogil:
  *     if n < 20:             # <<<<<<<<<<<<<<
@@ -1467,7 +1465,7 @@ static double __pyx_f_5sicer_7utility_5utils_factln(int __pyx_v_n) {
  */
   }
 
-  /* "sicer/utility/utils.pyx":40
+  /* "sicer/shared/utils.pyx":40
  *         return log(fact(n))
  *     else:
  *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2             # <<<<<<<<<<<<<<
@@ -1479,7 +1477,7 @@ static double __pyx_f_5sicer_7utility_5utils_factln(int __pyx_v_n) {
     goto __pyx_L0;
   }
 
-  /* "sicer/utility/utils.pyx":36
+  /* "sicer/shared/utils.pyx":36
  * 
  * # Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
  * cdef double factln(int n) nogil:             # <<<<<<<<<<<<<<
@@ -1492,7 +1490,7 @@ static double __pyx_f_5sicer_7utility_5utils_factln(int __pyx_v_n) {
   return __pyx_r;
 }
 
-/* "sicer/utility/utils.pyx":42
+/* "sicer/shared/utils.pyx":42
  *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2
  * 
  * cpdef double poisson(int n, double avg) nogil:             # <<<<<<<<<<<<<<
@@ -1500,14 +1498,14 @@ static double __pyx_f_5sicer_7utility_5utils_factln(int __pyx_v_n) {
  *         return exp(-avg) * pow(avg, n) / fact(n)
  */
 
-static PyObject *__pyx_pw_5sicer_7utility_5utils_1poisson(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx_v_avg, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_5sicer_6shared_5utils_1poisson(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static double __pyx_f_5sicer_6shared_5utils_poisson(int __pyx_v_n, double __pyx_v_avg, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_r;
   int __pyx_t_1;
   double __pyx_t_2;
   uint32_t __pyx_t_3;
 
-  /* "sicer/utility/utils.pyx":43
+  /* "sicer/shared/utils.pyx":43
  * 
  * cpdef double poisson(int n, double avg) nogil:
  *     if n < 20:             # <<<<<<<<<<<<<<
@@ -1517,7 +1515,7 @@ static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx
   __pyx_t_1 = ((__pyx_v_n < 20) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/utility/utils.pyx":44
+    /* "sicer/shared/utils.pyx":44
  * cpdef double poisson(int n, double avg) nogil:
  *     if n < 20:
  *         return exp(-avg) * pow(avg, n) / fact(n)             # <<<<<<<<<<<<<<
@@ -1525,7 +1523,7 @@ static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx
  *         return exp(-avg + n * log(avg) - factln(n))
  */
     __pyx_t_2 = (exp((-__pyx_v_avg)) * pow(__pyx_v_avg, __pyx_v_n));
-    __pyx_t_3 = __pyx_f_5sicer_7utility_5utils_fact(__pyx_v_n);
+    __pyx_t_3 = __pyx_f_5sicer_6shared_5utils_fact(__pyx_v_n);
     if (unlikely(__pyx_t_3 == 0)) {
       #ifdef WITH_THREAD
       PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1539,7 +1537,7 @@ static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx
     __pyx_r = (__pyx_t_2 / ((double)__pyx_t_3));
     goto __pyx_L0;
 
-    /* "sicer/utility/utils.pyx":43
+    /* "sicer/shared/utils.pyx":43
  * 
  * cpdef double poisson(int n, double avg) nogil:
  *     if n < 20:             # <<<<<<<<<<<<<<
@@ -1548,17 +1546,17 @@ static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx
  */
   }
 
-  /* "sicer/utility/utils.pyx":46
+  /* "sicer/shared/utils.pyx":46
  *         return exp(-avg) * pow(avg, n) / fact(n)
  *     else:
  *         return exp(-avg + n * log(avg) - factln(n))             # <<<<<<<<<<<<<<
  */
   /*else*/ {
-    __pyx_r = exp((((-__pyx_v_avg) + (__pyx_v_n * log(__pyx_v_avg))) - __pyx_f_5sicer_7utility_5utils_factln(__pyx_v_n)));
+    __pyx_r = exp((((-__pyx_v_avg) + (__pyx_v_n * log(__pyx_v_avg))) - __pyx_f_5sicer_6shared_5utils_factln(__pyx_v_n)));
     goto __pyx_L0;
   }
 
-  /* "sicer/utility/utils.pyx":42
+  /* "sicer/shared/utils.pyx":42
  *         return n * log(n) - n + log(n * (1 + 4 * n * (1 + 2 * n))) / 6.0 + log(M_PI) / 2
  * 
  * cpdef double poisson(int n, double avg) nogil:             # <<<<<<<<<<<<<<
@@ -1568,15 +1566,15 @@ static double __pyx_f_5sicer_7utility_5utils_poisson(int __pyx_v_n, double __pyx
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.utility.utils.poisson", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_WriteUnraisable("sicer.shared.utils.poisson", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_r = 0;
   __pyx_L0:;
   return __pyx_r;
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5sicer_7utility_5utils_1poisson(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5sicer_7utility_5utils_1poisson(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5sicer_6shared_5utils_1poisson(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_5sicer_6shared_5utils_1poisson(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_n;
   double __pyx_v_avg;
   PyObject *__pyx_r = 0;
@@ -1624,24 +1622,24 @@ static PyObject *__pyx_pw_5sicer_7utility_5utils_1poisson(PyObject *__pyx_self, 
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("poisson", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 42, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("sicer.utility.utils.poisson", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.shared.utils.poisson", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5sicer_7utility_5utils_poisson(__pyx_self, __pyx_v_n, __pyx_v_avg);
+  __pyx_r = __pyx_pf_5sicer_6shared_5utils_poisson(__pyx_self, __pyx_v_n, __pyx_v_avg);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_7utility_5utils_poisson(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_n, double __pyx_v_avg) {
+static PyObject *__pyx_pf_5sicer_6shared_5utils_poisson(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_n, double __pyx_v_avg) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("poisson", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_5sicer_7utility_5utils_poisson(__pyx_v_n, __pyx_v_avg, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_5sicer_6shared_5utils_poisson(__pyx_v_n, __pyx_v_avg, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1650,7 +1648,7 @@ static PyObject *__pyx_pf_5sicer_7utility_5utils_poisson(CYTHON_UNUSED PyObject 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.utility.utils.poisson", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.shared.utils.poisson", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1659,7 +1657,7 @@ static PyObject *__pyx_pf_5sicer_7utility_5utils_poisson(CYTHON_UNUSED PyObject 
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"poisson", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_7utility_5utils_1poisson, METH_VARARGS|METH_KEYWORDS, 0},
+  {"poisson", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_6shared_5utils_1poisson, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -1759,11 +1757,11 @@ static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("get_tag_pos", (void (*)(void))__pyx_f_5sicer_7utility_5utils_get_tag_pos, "int (BEDRead &, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("bin_tag_in_island", (void (*)(void))__pyx_f_5sicer_7utility_5utils_bin_tag_in_island, "int (std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("fact", (void (*)(void))__pyx_f_5sicer_7utility_5utils_fact, "uint32_t (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("factln", (void (*)(void))__pyx_f_5sicer_7utility_5utils_factln, "double (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("poisson", (void (*)(void))__pyx_f_5sicer_7utility_5utils_poisson, "double (int, double, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("get_tag_pos", (void (*)(void))__pyx_f_5sicer_6shared_5utils_get_tag_pos, "int (BEDRead &, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("bin_tag_in_island", (void (*)(void))__pyx_f_5sicer_6shared_5utils_bin_tag_in_island, "int (std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("fact", (void (*)(void))__pyx_f_5sicer_6shared_5utils_fact, "uint32_t (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("factln", (void (*)(void))__pyx_f_5sicer_6shared_5utils_factln, "double (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("poisson", (void (*)(void))__pyx_f_5sicer_6shared_5utils_poisson, "double (int, double, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1972,14 +1970,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_sicer__utility__utils) {
+  if (__pyx_module_is_main_sicer__shared__utils) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "sicer.utility.utils")) {
-      if (unlikely(PyDict_SetItemString(modules, "sicer.utility.utils", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "sicer.shared.utils")) {
+      if (unlikely(PyDict_SetItemString(modules, "sicer.shared.utils", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2000,7 +1998,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/utility/utils.pyx":1
+  /* "sicer/shared/utils.pyx":1
  * from cython.operator cimport predecrement as predec             # <<<<<<<<<<<<<<
  * from libc.math cimport M_PI, log, exp, pow, round
  * from libcpp.algorithm cimport upper_bound, lower_bound
@@ -2017,11 +2015,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init sicer.utility.utils", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init sicer.shared.utils", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init sicer.utility.utils");
+    PyErr_SetString(PyExc_ImportError, "init sicer.shared.utils");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

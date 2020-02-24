@@ -1,6 +1,6 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport BEDRead, Window
-from sicer.shared.chrom_containers cimport BEDReadContainer, WindowContainer
+from sicer.shared.containers cimport BEDReadContainer, WindowContainer
 
 # Cython Imports
 from libcpp cimport bool

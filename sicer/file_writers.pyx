@@ -1,6 +1,6 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport BEDRead, Window, DiffExprIsland
-from sicer.utility.utils cimport to_string
+from sicer.shared.utils cimport to_string
 
 #Cython Imports
 from libc.stdio cimport FILE, fopen, snprintf, fprintf, fclose, printf

@@ -3,8 +3,8 @@ import os, errno
 
 # SICER Internal Imports
 from sicer.shared.data_classes cimport BEDRead
-from sicer.shared.chrom_containers cimport BEDReadContainer
-from sicer.utility.utils cimport to_string, remove_at
+from sicer.shared.containers cimport BEDReadContainer
+from sicer.shared.utils cimport to_string, remove_at
 
 # Cython Imports
 from libcpp cimport bool

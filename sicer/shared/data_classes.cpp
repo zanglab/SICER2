@@ -9,7 +9,8 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++"
+            "-stdlib=libc++",
+            "-w"
         ],
         "include_dirs": [
             "sicer/shared",
