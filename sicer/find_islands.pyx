@@ -1,7 +1,7 @@
 # SICER Internal Imports
 from sicer.utility.utils cimport poisson
 from sicer.shared.data_classes cimport BEDRead, Window, Island
-from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowContainer, ChromIslandContainer
+from sicer.shared.chrom_containers cimport BEDReadContainer, WindowContainer, IslandContainer
 
 # Cython Imports
 from libc.math cimport log
@@ -96,8 +96,8 @@ cdef void _find_islands_by_chrom(
         _combine_proximal_islands(islands, gap_size)
         _filter_by_threshold(islands, score_threshold)
 
-cdef ChromIslandContainer _find_islands(
-    ChromWindowContainer windows,
+cdef IslandContainer _find_islands(
+    WindowContainer windows,
     object genome_data,
     int min_tag_threshold, 
     double score_threshold,
@@ -108,7 +108,7 @@ cdef ChromIslandContainer _find_islands(
     # Convert Python list to vector for no-GIL use
     cdef vector[string] chroms = windows.getChromosomes()
 
-    cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)
+    cdef IslandContainer islands = IslandContainer(genome_data)
 
     cdef int i
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
@@ -126,7 +126,7 @@ cdef ChromIslandContainer _find_islands(
 
     return islands
 
-cpdef ChromIslandContainer find_islands(
+cpdef IslandContainer find_islands(
     windows,
     genome_data,
     min_tag_threshold, 

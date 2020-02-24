@@ -1,6 +1,6 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport Window, Island
-from sicer.shared.chrom_containers cimport ChromWindowContainer, ChromIslandContainer
+from sicer.shared.chrom_containers cimport WindowContainer, IslandContainer
 from sicer.utility.utils cimport merge
 
 # Cython Imports
@@ -119,7 +119,7 @@ cdef double _start_list_correlation_r_rev(
     int r, 
     int chrom_length
 ) nogil:
-    cdef int x, d, n, i, SUMM
+    cdef int x, d, n, SUMM, i
     cdef double s
     cdef vector[uint32_t] a
     x = start_list[0] % win
@@ -292,8 +292,8 @@ cdef void _coarsegraining_islands_by_chrom(
 
     islands.swap(tracebacked_islands)
 
-cdef ChromIslandContainer _find_islands_by_coarsegraining(
-    ChromWindowContainer windows,
+cdef IslandContainer _find_islands_by_coarsegraining(
+    WindowContainer windows,
     object genome_data,
     int min_tag_threshold,
     int window_size,
@@ -304,7 +304,7 @@ cdef ChromIslandContainer _find_islands_by_coarsegraining(
     # Convert Python list to vector for no-GIL use
     cdef vector[string] chroms = windows.getChromosomes()
 
-    cdef ChromIslandContainer islands = ChromIslandContainer(genome_data)
+    cdef IslandContainer islands = IslandContainer(genome_data)
     cdef vector[uint32_t] chrom_lengths
     for c in genome_data.chrom:
         chrom_lengths.push_back(genome_data.chrom_length[c])
@@ -326,7 +326,7 @@ cdef ChromIslandContainer _find_islands_by_coarsegraining(
 
     return islands
 
-cpdef ChromIslandContainer find_islands_by_coarsegraining(
+cpdef IslandContainer find_islands_by_coarsegraining(
     windows,
     genome_data,
     min_tag_threshold,

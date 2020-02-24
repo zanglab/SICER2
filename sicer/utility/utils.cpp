@@ -10,7 +10,8 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++"
+            "-stdlib=libc++",
+            "-w"
         ],
         "include_dirs": [
             "./sicer/utility",
@@ -1133,19 +1134,19 @@ static PyObject *__pyx_pf_5sicer_7utility_5utils_poisson(CYTHON_UNUSED PyObject 
 /* "sicer/utility/utils.pyx":5
  * from libcpp.algorithm cimport upper_bound, lower_bound
  * 
- * cdef int get_tag_pos(BEDRead read, int frag_size) nogil:             # <<<<<<<<<<<<<<
+ * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:             # <<<<<<<<<<<<<<
  *     cdef int shift = <int> round(frag_size / 2.0)
  *     if read.strand == b'+':
  */
 
-static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead __pyx_v_read, int __pyx_v_frag_size) {
+static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead &__pyx_v_read, int __pyx_v_frag_size) {
   int __pyx_v_shift;
   int __pyx_r;
   int __pyx_t_1;
 
   /* "sicer/utility/utils.pyx":6
  * 
- * cdef int get_tag_pos(BEDRead read, int frag_size) nogil:
+ * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:
  *     cdef int shift = <int> round(frag_size / 2.0)             # <<<<<<<<<<<<<<
  *     if read.strand == b'+':
  *         return read.start + shift
@@ -1153,7 +1154,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead __pyx_v_read, int 
   __pyx_v_shift = ((int)round((((double)__pyx_v_frag_size) / 2.0)));
 
   /* "sicer/utility/utils.pyx":7
- * cdef int get_tag_pos(BEDRead read, int frag_size) nogil:
+ * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:
  *     cdef int shift = <int> round(frag_size / 2.0)
  *     if read.strand == b'+':             # <<<<<<<<<<<<<<
  *         return read.start + shift
@@ -1173,7 +1174,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead __pyx_v_read, int 
     goto __pyx_L0;
 
     /* "sicer/utility/utils.pyx":7
- * cdef int get_tag_pos(BEDRead read, int frag_size) nogil:
+ * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:
  *     cdef int shift = <int> round(frag_size / 2.0)
  *     if read.strand == b'+':             # <<<<<<<<<<<<<<
  *         return read.start + shift
@@ -1196,7 +1197,7 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead __pyx_v_read, int 
   /* "sicer/utility/utils.pyx":5
  * from libcpp.algorithm cimport upper_bound, lower_bound
  * 
- * cdef int get_tag_pos(BEDRead read, int frag_size) nogil:             # <<<<<<<<<<<<<<
+ * cdef int get_tag_pos(BEDRead& read, int frag_size) nogil:             # <<<<<<<<<<<<<<
  *     cdef int shift = <int> round(frag_size / 2.0)
  *     if read.strand == b'+':
  */
@@ -1215,8 +1216,8 @@ static int __pyx_f_5sicer_7utility_5utils_get_tag_pos(BEDRead __pyx_v_read, int 
  */
 
 static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t>  &__pyx_v_island_starts, std::vector<uint32_t>  &__pyx_v_island_ends, uint32_t __pyx_v_tag_pos) {
-  int __pyx_v_start_index;
-  int __pyx_v_end_index;
+  uint32_t __pyx_v_start_index;
+  uint32_t __pyx_v_end_index;
   int __pyx_r;
   int __pyx_t_1;
   int __pyx_t_2;
@@ -1224,24 +1225,24 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
   /* "sicer/utility/utils.pyx":17
  *     uint32_t tag_pos
  * ) nogil:
- *     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()             # <<<<<<<<<<<<<<
- *     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
+ *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()             # <<<<<<<<<<<<<<
+ *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()
  */
   __pyx_v_start_index = (std::upper_bound<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_island_starts.begin(), __pyx_v_island_starts.end(), __pyx_v_tag_pos) - __pyx_v_island_starts.begin());
 
   /* "sicer/utility/utils.pyx":18
  * ) nogil:
- *     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
- *     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()             # <<<<<<<<<<<<<<
+ *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
+ *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()             # <<<<<<<<<<<<<<
  *     if (start_index < island_starts.size()
  *         and end_index < island_ends.size()
  */
   __pyx_v_end_index = (std::lower_bound<std::vector<uint32_t> ::iterator,uint32_t>(__pyx_v_island_ends.begin(), __pyx_v_island_ends.end(), __pyx_v_tag_pos) - __pyx_v_island_ends.begin());
 
   /* "sicer/utility/utils.pyx":19
- *     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
- *     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
+ *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
+ *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()             # <<<<<<<<<<<<<<
  *         and end_index < island_ends.size()
  *         and start_index - end_index == 1
@@ -1254,7 +1255,7 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
   }
 
   /* "sicer/utility/utils.pyx":20
- *     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
+ *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()
  *         and end_index < island_ends.size()             # <<<<<<<<<<<<<<
  *         and start_index - end_index == 1
@@ -1279,8 +1280,8 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
   __pyx_L4_bool_binop_done:;
 
   /* "sicer/utility/utils.pyx":19
- *     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
- *     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
+ *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
+ *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()             # <<<<<<<<<<<<<<
  *         and end_index < island_ends.size()
  *         and start_index - end_index == 1
@@ -1298,8 +1299,8 @@ static int __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(std::vector<uint32_t
     goto __pyx_L0;
 
     /* "sicer/utility/utils.pyx":19
- *     cdef int start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
- *     cdef int end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
+ *     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
+ *     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
  *     if (start_index < island_starts.size()             # <<<<<<<<<<<<<<
  *         and end_index < island_ends.size()
  *         and start_index - end_index == 1
@@ -1758,7 +1759,7 @@ static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("get_tag_pos", (void (*)(void))__pyx_f_5sicer_7utility_5utils_get_tag_pos, "int (BEDRead, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("get_tag_pos", (void (*)(void))__pyx_f_5sicer_7utility_5utils_get_tag_pos, "int (BEDRead &, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("bin_tag_in_island", (void (*)(void))__pyx_f_5sicer_7utility_5utils_bin_tag_in_island, "int (std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("fact", (void (*)(void))__pyx_f_5sicer_7utility_5utils_fact, "uint32_t (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("factln", (void (*)(void))__pyx_f_5sicer_7utility_5utils_factln, "double (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)

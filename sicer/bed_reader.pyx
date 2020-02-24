@@ -3,7 +3,7 @@ import os, errno
 
 # SICER Internal Imports
 from sicer.shared.data_classes cimport BEDRead
-from sicer.shared.chrom_containers cimport ChromBEDReadContainer
+from sicer.shared.chrom_containers cimport BEDReadContainer
 from sicer.utility.utils cimport to_string, remove_at
 
 # Cython Imports
@@ -87,7 +87,7 @@ cdef class BEDReader:
 
         self._remove_redudant_reads(reads, self.redundancy_threshold)
 
-    cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):
+    cdef BEDReadContainer _preprocess_BED_reads(self, BEDReadContainer reads):
         print("Preprocessing reads...")
 
         # Convert Python list to vector for no-GIL use
@@ -120,14 +120,14 @@ cdef class BEDReader:
         return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10), 
                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])
 
-    cdef ChromBEDReadContainer _read_file(self):
+    cdef BEDReadContainer _read_file(self):
         print("Reading file \"" + self.file_name + "\" ...")
         fp = fopen(self.file_name.encode("UTF-8"), "r")
  
         if fp == NULL:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), self.file_name)
 
-        cdef ChromBEDReadContainer reads = ChromBEDReadContainer(self.genome_data)
+        cdef BEDReadContainer reads = BEDReadContainer(self.genome_data)
 
         cdef set chromosomes = set(map(lambda x: x.encode("UTF-8"), self.genome_data.chrom))
         cdef cstr line = NULL
@@ -144,5 +144,5 @@ cdef class BEDReader:
 
         return reads
    
-    cpdef ChromBEDReadContainer read_file(self):
+    cpdef BEDReadContainer read_file(self):
         return self._preprocess_BED_reads(self._read_file())

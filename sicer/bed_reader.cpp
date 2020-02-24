@@ -10,7 +10,8 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++"
+            "-stdlib=libc++",
+            "-w"
         ],
         "include_dirs": [
             "sicer/shared",
@@ -877,9 +878,10 @@ static const char *__pyx_f[] = {
 
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer;
 struct __pyx_obj_5sicer_10bed_reader_BEDReader;
 
 /* "sicer/shared/data_classes.pxd":4
@@ -891,12 +893,12 @@ struct __pyx_obj_5sicer_10bed_reader_BEDReader;
  */
 typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
 
-/* "sicer/shared/chrom_containers.pxd":11
- * from libcpp.string cimport string
+/* "sicer/shared/chrom_containers.pxd":12
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
- * cdef class ChromBEDReadContainer:
+ * cdef class BEDReadContainer:
  */
 typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
 
@@ -918,55 +920,73 @@ typedef char *__pyx_t_5sicer_10bed_reader_cstr;
  */
 typedef bool (*__pyx_t_5sicer_10bed_reader_cmp_f)(BEDRead, BEDRead);
 
-/* "sicer/shared/chrom_containers.pxd":13
+/* "sicer/shared/chrom_containers.pxd":14
  * ctypedef char* cstr
  * 
- * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
+ * cdef class BEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<BEDRead> >  data;
-  int read_count;
+  uint32_t read_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":30
+/* "sicer/shared/chrom_containers.pxd":29
  * 
  * 
- * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ * cdef class WindowContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<Window> >  data;
-  int window_count;
-  int total_tag_count;
+  uint32_t window_count;
+  uint32_t total_tag_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":49
+/* "sicer/shared/chrom_containers.pxd":45
  * 
  * 
- * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ * cdef class IslandContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<Island> >  data;
-  int island_count;
+  uint32_t island_count;
+};
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_vtab;
+  PyObject *species;
+  PyObject *chromosomes;
+  std::map<std::string,std::vector<DiffExprIsland> >  data;
+  uint32_t island_count;
+  std::vector<double>  pvalue_list;
 };
 
 
@@ -988,65 +1008,78 @@ struct __pyx_obj_5sicer_10bed_reader_BEDReader {
 
 
 
-/* "sicer/shared/chrom_containers.pxd":13
+/* "sicer/shared/chrom_containers.pxd":14
  * ctypedef char* cstr
  * 
- * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
+ * cdef class BEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
-  void (*insertRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, BEDRead);
-  void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  int (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *);
-  std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string);
-  BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer {
+  void (*insertRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, std::string, BEDRead);
+  void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *);
+  std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":30
+/* "sicer/shared/chrom_containers.pxd":29
  * 
  * 
- * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ * cdef class WindowContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer {
-  void (*insertWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, Window);
-  void (*updateCounts)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  int (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  int (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<Window> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *);
-  std::vector<Window>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string);
-  Window (*getWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer {
+  void (*updateCounts)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<Window> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *);
+  std::vector<Window>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":49
+/* "sicer/shared/chrom_containers.pxd":45
  * 
  * 
- * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ * cdef class IslandContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer {
-  void (*insertIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, Island);
-  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  int (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<Island> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *);
-  std::vector<Island>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string);
-  Island (*getIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer {
+  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<Island> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *);
+  std::vector<Island>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer;
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer {
+  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<DiffExprIsland> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *);
+  std::vector<DiffExprIsland>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, std::string);
+};
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer;
 
 
 /* "sicer/bed_reader.pyx":36
@@ -1060,10 +1093,10 @@ static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandCont
 struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader {
   void (*_remove_redudant_reads)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, std::vector<BEDRead>  &, int);
   void (*_preprocess_BED_reads_by_chrom)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, std::vector<BEDRead>  &);
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*_preprocess_BED_reads)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *);
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *(*_preprocess_BED_reads)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *);
   BEDRead (*_parseBEDLine)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_cstr);
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*_read_file)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *);
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*read_file)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, int __pyx_skip_dispatch);
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *(*_read_file)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *);
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *(*read_file)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *__pyx_vtabptr_5sicer_10bed_reader_BEDReader;
 
@@ -1500,7 +1533,7 @@ static void __Pyx_CppExn2PyErr() {
 #endif
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
 
 /* None.proto */
 #include <new>
@@ -1538,10 +1571,10 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 static void __pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, std::vector<BEDRead>  &__pyx_v_reads, int __pyx_v_threshold); /* proto*/
 static void __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chrom(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, std::vector<BEDRead>  &__pyx_v_reads); /* proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_v_reads); /* proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads); /* proto*/
 static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSED struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, __pyx_t_5sicer_10bed_reader_cstr __pyx_v_line); /* proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self); /* proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self); /* proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'libc.string' */
 
@@ -1558,9 +1591,10 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
 /* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'sicer.shared.chrom_containers' */
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = 0;
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = 0;
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = 0;
 
 /* Module declarations from 'sicer.utility.utils' */
 
@@ -2159,7 +2193,7 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chro
  * 
  *         self._remove_redudant_reads(reads, self.redundancy_threshold)             # <<<<<<<<<<<<<<
  * 
- *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):
+ *     cdef BEDReadContainer _preprocess_BED_reads(self, BEDReadContainer reads):
  */
   ((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_remove_redudant_reads(__pyx_v_self, __pyx_v_reads, __pyx_v_self->redundancy_threshold);
 
@@ -2177,15 +2211,15 @@ static void __pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chro
 /* "sicer/bed_reader.pyx":90
  *         self._remove_redudant_reads(reads, self.redundancy_threshold)
  * 
- *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):             # <<<<<<<<<<<<<<
+ *     cdef BEDReadContainer _preprocess_BED_reads(self, BEDReadContainer reads):             # <<<<<<<<<<<<<<
  *         print("Preprocessing reads...")
  * 
  */
 
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_v_reads) {
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads) {
   std::vector<std::string>  __pyx_v_chroms;
   int __pyx_v_i;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_r = NULL;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   std::vector<std::string>  __pyx_t_2;
@@ -2198,7 +2232,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
 
   /* "sicer/bed_reader.pyx":91
  * 
- *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):
+ *     cdef BEDReadContainer _preprocess_BED_reads(self, BEDReadContainer reads):
  *         print("Preprocessing reads...")             # <<<<<<<<<<<<<<
  * 
  *         # Convert Python list to vector for no-GIL use
@@ -2214,7 +2248,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  *         cdef vector[BEDRead]* read_vec
  *         cdef int i
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2288,7 +2322,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
                               #endif
                               __PYX_ERR(0, 98, __pyx_L8_error)
                             }
-                            ((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads_by_chrom(__pyx_v_self, (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getVectorPtr(__pyx_v_reads, __pyx_t_6)));
+                            ((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads_by_chrom(__pyx_v_self, (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getVectorPtr(__pyx_v_reads, __pyx_t_6)));
                             goto __pyx_L11;
                             __pyx_L8_error:;
                             {
@@ -2403,7 +2437,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  * 
  *         print("Retained read count: ", reads.getReadCount())
  */
-  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->updateReadCount(__pyx_v_reads, 0);
+  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads->__pyx_vtab)->updateReadCount(__pyx_v_reads, 0);
 
   /* "sicer/bed_reader.pyx":102
  *         reads.updateReadCount()
@@ -2412,7 +2446,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  * 
  *         return reads
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getReadCount(__pyx_v_reads, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getReadCount(__pyx_v_reads, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
@@ -2442,7 +2476,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   /* "sicer/bed_reader.pyx":90
  *         self._remove_redudant_reads(reads, self.redundancy_threshold)
  * 
- *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):             # <<<<<<<<<<<<<<
+ *     cdef BEDReadContainer _preprocess_BED_reads(self, BEDReadContainer reads):             # <<<<<<<<<<<<<<
  *         print("Preprocessing reads...")
  * 
  */
@@ -2594,7 +2628,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
  *         return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10),
  *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])             # <<<<<<<<<<<<<<
  * 
- *     cdef ChromBEDReadContainer _read_file(self):
+ *     cdef BEDReadContainer _read_file(self):
  */
   try {
     __pyx_t_5 = std::string((__pyx_v_read[3]));
@@ -2633,7 +2667,7 @@ static BEDRead __pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine(CYTHON_UNUSE
 }
 
 /* "sicer/bed_reader.pyx":132
- *         cdef ChromBEDReadContainer reads = ChromBEDReadContainer(self.genome_data)
+ *         cdef BEDReadContainer reads = BEDReadContainer(self.genome_data)
  * 
  *         cdef set chromosomes = set(map(lambda x: x.encode("UTF-8"), self.genome_data.chrom))             # <<<<<<<<<<<<<<
  *         cdef cstr line = NULL
@@ -2699,19 +2733,19 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
 /* "sicer/bed_reader.pyx":123
  *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])
  * 
- *     cdef ChromBEDReadContainer _read_file(self):             # <<<<<<<<<<<<<<
+ *     cdef BEDReadContainer _read_file(self):             # <<<<<<<<<<<<<<
  *         print("Reading file \"" + self.file_name + "\" ...")
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")
  */
 
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self) {
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader__read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self) {
   FILE *__pyx_v_fp;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_v_reads = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads = 0;
   PyObject *__pyx_v_chromosomes = 0;
   __pyx_t_5sicer_10bed_reader_cstr __pyx_v_line;
   size_t __pyx_v_len;
   BEDRead __pyx_v_read;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_r = NULL;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -2726,7 +2760,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
 
   /* "sicer/bed_reader.pyx":124
  * 
- *     cdef ChromBEDReadContainer _read_file(self):
+ *     cdef BEDReadContainer _read_file(self):
  *         print("Reading file \"" + self.file_name + "\" ...")             # <<<<<<<<<<<<<<
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")
  * 
@@ -2742,7 +2776,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "sicer/bed_reader.pyx":125
- *     cdef ChromBEDReadContainer _read_file(self):
+ *     cdef BEDReadContainer _read_file(self):
  *         print("Reading file \"" + self.file_name + "\" ...")
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")             # <<<<<<<<<<<<<<
  * 
@@ -2773,7 +2807,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  *         if fp == NULL:
  *             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), self.file_name)             # <<<<<<<<<<<<<<
  * 
- *         cdef ChromBEDReadContainer reads = ChromBEDReadContainer(self.genome_data)
+ *         cdef BEDReadContainer reads = BEDReadContainer(self.genome_data)
  */
     __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FileNotFoundError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -2839,17 +2873,17 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   /* "sicer/bed_reader.pyx":130
  *             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), self.file_name)
  * 
- *         cdef ChromBEDReadContainer reads = ChromBEDReadContainer(self.genome_data)             # <<<<<<<<<<<<<<
+ *         cdef BEDReadContainer reads = BEDReadContainer(self.genome_data)             # <<<<<<<<<<<<<<
  * 
  *         cdef set chromosomes = set(map(lambda x: x.encode("UTF-8"), self.genome_data.chrom))
  */
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer), __pyx_v_self->genome_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer), __pyx_v_self->genome_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_v_reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_2);
+  __pyx_v_reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_t_2);
   __pyx_t_2 = 0;
 
   /* "sicer/bed_reader.pyx":132
- *         cdef ChromBEDReadContainer reads = ChromBEDReadContainer(self.genome_data)
+ *         cdef BEDReadContainer reads = BEDReadContainer(self.genome_data)
  * 
  *         cdef set chromosomes = set(map(lambda x: x.encode("UTF-8"), self.genome_data.chrom))             # <<<<<<<<<<<<<<
  *         cdef cstr line = NULL
@@ -2935,7 +2969,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  * 
  *         fclose(fp)
  */
-      ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_reads->__pyx_vtab)->insertRead(__pyx_v_reads, __pyx_v_read.chrom, __pyx_v_read);
+      ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads->__pyx_vtab)->insertRead(__pyx_v_reads, __pyx_v_read.chrom, __pyx_v_read);
 
       /* "sicer/bed_reader.pyx":139
  *         while getline(&line, &len, fp) != -1:
@@ -2970,7 +3004,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
  * 
  *         return reads             # <<<<<<<<<<<<<<
  * 
- *     cpdef ChromBEDReadContainer read_file(self):
+ *     cpdef BEDReadContainer read_file(self):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __Pyx_INCREF(((PyObject *)__pyx_v_reads));
@@ -2980,7 +3014,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
   /* "sicer/bed_reader.pyx":123
  *                 string(read[3]), strtoul(read[4],NULL,10), read[5][0])
  * 
- *     cdef ChromBEDReadContainer _read_file(self):             # <<<<<<<<<<<<<<
+ *     cdef BEDReadContainer _read_file(self):             # <<<<<<<<<<<<<<
  *         print("Reading file \"" + self.file_name + "\" ...")
  *         fp = fopen(self.file_name.encode("UTF-8"), "r")
  */
@@ -3006,13 +3040,13 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
 /* "sicer/bed_reader.pyx":147
  *         return reads
  * 
- *     cpdef ChromBEDReadContainer read_file(self):             # <<<<<<<<<<<<<<
+ *     cpdef BEDReadContainer read_file(self):             # <<<<<<<<<<<<<<
  *         return self._preprocess_BED_reads(self._read_file())
  */
 
 static PyObject *__pyx_pw_5sicer_10bed_reader_9BEDReader_3read_file(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, int __pyx_skip_dispatch) {
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_r = NULL;
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_f_5sicer_10bed_reader_9BEDReader_read_file(struct __pyx_obj_5sicer_10bed_reader_BEDReader *__pyx_v_self, int __pyx_skip_dispatch) {
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -3048,8 +3082,8 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
         if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer))))) __PYX_ERR(0, 147, __pyx_L1_error)
-        __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_2);
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer))))) __PYX_ERR(0, 147, __pyx_L1_error)
+        __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L0;
@@ -3069,23 +3103,23 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer 
 
   /* "sicer/bed_reader.pyx":148
  * 
- *     cpdef ChromBEDReadContainer read_file(self):
+ *     cpdef BEDReadContainer read_file(self):
  *         return self._preprocess_BED_reads(self._read_file())             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_read_file(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads(__pyx_v_self, ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_5sicer_10bed_reader_BEDReader *)__pyx_v_self->__pyx_vtab)->_preprocess_BED_reads(__pyx_v_self, ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_t_2);
+  __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* "sicer/bed_reader.pyx":147
  *         return reads
  * 
- *     cpdef ChromBEDReadContainer read_file(self):             # <<<<<<<<<<<<<<
+ *     cpdef BEDReadContainer read_file(self):             # <<<<<<<<<<<<<<
  *         return self._preprocess_BED_reads(self._read_file())
  */
 
@@ -3659,7 +3693,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
   /* "sicer/bed_reader.pyx":91
  * 
- *     cdef ChromBEDReadContainer _preprocess_BED_reads(self, ChromBEDReadContainer reads):
+ *     cdef BEDReadContainer _preprocess_BED_reads(self, BEDReadContainer reads):
  *         print("Preprocessing reads...")             # <<<<<<<<<<<<<<
  * 
  *         # Convert Python list to vector for no-GIL use
@@ -3746,10 +3780,10 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtabptr_5sicer_10bed_reader_BEDReader = &__pyx_vtable_5sicer_10bed_reader_BEDReader;
   __pyx_vtable_5sicer_10bed_reader_BEDReader._remove_redudant_reads = (void (*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, std::vector<BEDRead>  &, int))__pyx_f_5sicer_10bed_reader_9BEDReader__remove_redudant_reads;
   __pyx_vtable_5sicer_10bed_reader_BEDReader._preprocess_BED_reads_by_chrom = (void (*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, std::vector<BEDRead>  &))__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads_by_chrom;
-  __pyx_vtable_5sicer_10bed_reader_BEDReader._preprocess_BED_reads = (struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *))__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads;
+  __pyx_vtable_5sicer_10bed_reader_BEDReader._preprocess_BED_reads = (struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *))__pyx_f_5sicer_10bed_reader_9BEDReader__preprocess_BED_reads;
   __pyx_vtable_5sicer_10bed_reader_BEDReader._parseBEDLine = (BEDRead (*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, __pyx_t_5sicer_10bed_reader_cstr))__pyx_f_5sicer_10bed_reader_9BEDReader__parseBEDLine;
-  __pyx_vtable_5sicer_10bed_reader_BEDReader._read_file = (struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *))__pyx_f_5sicer_10bed_reader_9BEDReader__read_file;
-  __pyx_vtable_5sicer_10bed_reader_BEDReader.read_file = (struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, int __pyx_skip_dispatch))__pyx_f_5sicer_10bed_reader_9BEDReader_read_file;
+  __pyx_vtable_5sicer_10bed_reader_BEDReader._read_file = (struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *))__pyx_f_5sicer_10bed_reader_9BEDReader__read_file;
+  __pyx_vtable_5sicer_10bed_reader_BEDReader.read_file = (struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *(*)(struct __pyx_obj_5sicer_10bed_reader_BEDReader *, int __pyx_skip_dispatch))__pyx_f_5sicer_10bed_reader_9BEDReader_read_file;
   if (PyType_Ready(&__pyx_type_5sicer_10bed_reader_BEDReader) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5sicer_10bed_reader_BEDReader.tp_print = 0;
@@ -3773,17 +3807,20 @@ static int __Pyx_modinit_type_import_code(void) {
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 13, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromBEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer) __PYX_ERR(2, 13, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer)) __PYX_ERR(2, 13, __pyx_L1_error)
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromWindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer) __PYX_ERR(2, 30, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer)) __PYX_ERR(2, 30, __pyx_L1_error)
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer) __PYX_ERR(2, 49, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer)) __PYX_ERR(2, 49, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "BEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer) __PYX_ERR(2, 14, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer)) __PYX_ERR(2, 14, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "WindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer) __PYX_ERR(2, 29, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer)) __PYX_ERR(2, 29, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "IslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer) __PYX_ERR(2, 45, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer)) __PYX_ERR(2, 45, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "DiffExprIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer) __PYX_ERR(2, 59, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer)) __PYX_ERR(2, 59, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -6092,24 +6129,24 @@ bad:
     }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
+    const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
+        if (sizeof(uint32_t) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
+        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
         }
     } else {
-        if (sizeof(int) <= sizeof(long)) {
+        if (sizeof(uint32_t) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
         }
@@ -6117,7 +6154,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
+        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
                                      little, !is_unsigned);
     }
 }

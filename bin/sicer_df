@@ -13,7 +13,7 @@ import subprocess
 import argparse
 
 # SICER Internal Imports
-from sicer.sicer_df import run_sicer_df
+from sicer.sicer import run_sicer_df
 from sicer.shared.genome_data import get_available_species
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
@@ -243,7 +243,7 @@ def main():
                 args.control_file[i] = bed_file_name
 
     print("Running SICER with given arguments \n")
-    run_SICER_df.main(args)
+    run_sicer_df(args)
     print("Program Finished Running")
 
 

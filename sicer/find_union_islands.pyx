@@ -1,6 +1,6 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport Island
-from sicer.shared.chrom_containers cimport ChromIslandContainer
+from sicer.shared.chrom_containers cimport IslandContainer
 from sicer.utility.utils cimport merge
 
 # Cython Imports
@@ -31,7 +31,8 @@ cdef void _find_union_islands_by_chrom(
         union_islands.swap(islands_1)
         return
 
-    cdef vector[Island] merged_islands
+    cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())
+
     merge[vi_itr, vi_itr, vi_itr, cmp_f](
         islands_1.begin(), 
         islands_1.end(),
@@ -57,16 +58,16 @@ cdef void _find_union_islands_by_chrom(
 
     union_islands.push_back(current)
 
-cdef ChromIslandContainer _find_union_islands(
-    ChromIslandContainer islands_1,
-    ChromIslandContainer islands_2,
+cdef IslandContainer _find_union_islands(
+    IslandContainer islands_1,
+    IslandContainer islands_2,
     object genome_data,
     int num_cpu
 ):
     # Convert Python list to vector for no-GIL use
     cdef vector[string] chroms = islands_1.getChromosomes()
 
-    cdef ChromIslandContainer union_islands = ChromIslandContainer(genome_data)
+    cdef IslandContainer union_islands = IslandContainer(genome_data)
 
     cdef int i
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
@@ -81,7 +82,7 @@ cdef ChromIslandContainer _find_union_islands(
 
     return union_islands
 
-cpdef ChromIslandContainer find_union_islands(
+cpdef IslandContainer find_union_islands(
     islands_1,
     islands_2,
     genome_data,

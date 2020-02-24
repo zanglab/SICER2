@@ -10,7 +10,8 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++"
+            "-stdlib=libc++",
+            "-w"
         ],
         "include_dirs": [
             "sicer/shared",
@@ -875,9 +876,10 @@ static const char *__pyx_f[] = {
 
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer;
 
 /* "sicer/shared/data_classes.pxd":4
  * from libc.stdint cimport uint32_t
@@ -888,12 +890,12 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
  */
 typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
 
-/* "sicer/shared/chrom_containers.pxd":11
- * from libcpp.string cimport string
+/* "sicer/shared/chrom_containers.pxd":12
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
- * cdef class ChromBEDReadContainer:
+ * cdef class BEDReadContainer:
  */
 typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
 
@@ -915,118 +917,149 @@ typedef bool (*__pyx_t_5sicer_18find_union_islands_cmp_f)(Island, Island);
  */
 typedef std::vector<Island> ::iterator __pyx_t_5sicer_18find_union_islands_vi_itr;
 
-/* "sicer/shared/chrom_containers.pxd":13
+/* "sicer/shared/chrom_containers.pxd":14
  * ctypedef char* cstr
  * 
- * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
+ * cdef class BEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<BEDRead> >  data;
-  int read_count;
+  uint32_t read_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":30
+/* "sicer/shared/chrom_containers.pxd":29
  * 
  * 
- * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ * cdef class WindowContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<Window> >  data;
-  int window_count;
-  int total_tag_count;
+  uint32_t window_count;
+  uint32_t total_tag_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":49
+/* "sicer/shared/chrom_containers.pxd":45
  * 
  * 
- * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ * cdef class IslandContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<Island> >  data;
-  int island_count;
+  uint32_t island_count;
+};
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_vtab;
+  PyObject *species;
+  PyObject *chromosomes;
+  std::map<std::string,std::vector<DiffExprIsland> >  data;
+  uint32_t island_count;
+  std::vector<double>  pvalue_list;
 };
 
 
 
-/* "sicer/shared/chrom_containers.pxd":13
+/* "sicer/shared/chrom_containers.pxd":14
  * ctypedef char* cstr
  * 
- * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
+ * cdef class BEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
-  void (*insertRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, BEDRead);
-  void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  int (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *);
-  std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string);
-  BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer {
+  void (*insertRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, std::string, BEDRead);
+  void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *);
+  std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":30
+/* "sicer/shared/chrom_containers.pxd":29
  * 
  * 
- * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ * cdef class WindowContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer {
-  void (*insertWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, Window);
-  void (*updateCounts)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  int (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  int (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<Window> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *);
-  std::vector<Window>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string);
-  Window (*getWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer {
+  void (*updateCounts)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<Window> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *);
+  std::vector<Window>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":49
+/* "sicer/shared/chrom_containers.pxd":45
  * 
  * 
- * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ * cdef class IslandContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer {
-  void (*insertIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, Island);
-  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  int (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<Island> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *);
-  std::vector<Island>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string);
-  Island (*getIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer {
+  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<Island> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *);
+  std::vector<Island>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer;
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer {
+  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<DiffExprIsland> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *);
+  std::vector<DiffExprIsland>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, std::string);
+};
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1312,7 +1345,7 @@ static void __Pyx_CppExn2PyErr() {
 #endif
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
 
 /* None.proto */
 #include <new>
@@ -1361,9 +1394,10 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 /* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'sicer.shared.chrom_containers' */
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = 0;
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = 0;
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = 0;
 
 /* Module declarations from 'sicer.utility.utils' */
 
@@ -1372,8 +1406,8 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandCo
 /* Module declarations from 'sicer.find_union_islands' */
 static bool __pyx_f_5sicer_18find_union_islands_compare_islands(Island, Island); /*proto*/
 static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std::vector<Island>  &, std::vector<Island>  &, std::vector<Island>  &); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, PyObject *, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, PyObject *, int); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
 #define __Pyx_MODULE_NAME "sicer.find_union_islands"
@@ -1458,7 +1492,8 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
   Island __pyx_v_next;
   uint32_t __pyx_v_i;
   int __pyx_t_1;
-  uint32_t __pyx_t_2;
+  std::vector<Island>  __pyx_t_2;
+  uint32_t __pyx_t_3;
 
   /* "sicer/find_union_islands.pyx":27
  * ) nogil:
@@ -1521,7 +1556,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  *         union_islands.swap(islands_1)
  *         return             # <<<<<<<<<<<<<<
  * 
- *     cdef vector[Island] merged_islands
+ *     cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())
  */
     goto __pyx_L0;
 
@@ -1534,16 +1569,37 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
   }
 
-  /* "sicer/find_union_islands.pyx":35
+  /* "sicer/find_union_islands.pyx":34
+ *         return
  * 
- *     cdef vector[Island] merged_islands
+ *     cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())             # <<<<<<<<<<<<<<
+ * 
+ *     merge[vi_itr, vi_itr, vi_itr, cmp_f](
+ */
+  try {
+    __pyx_t_2 = std::vector<Island> ((__pyx_v_islands_1.size() + __pyx_v_islands_2.size()));
+  } catch(...) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    __Pyx_CppExn2PyErr();
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 34, __pyx_L1_error)
+  }
+  __pyx_v_merged_islands = __pyx_t_2;
+
+  /* "sicer/find_union_islands.pyx":36
+ *     cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())
+ * 
  *     merge[vi_itr, vi_itr, vi_itr, cmp_f](             # <<<<<<<<<<<<<<
  *         islands_1.begin(),
  *         islands_1.end(),
  */
   (void)(std::merge<__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_cmp_f>(__pyx_v_islands_1.begin(), __pyx_v_islands_1.end(), __pyx_v_islands_2.begin(), __pyx_v_islands_2.end(), __pyx_v_merged_islands.begin(), __pyx_f_5sicer_18find_union_islands_compare_islands));
 
-  /* "sicer/find_union_islands.pyx":44
+  /* "sicer/find_union_islands.pyx":45
  *     )
  * 
  *     cdef Island current = merged_islands[0]             # <<<<<<<<<<<<<<
@@ -1552,7 +1608,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
   __pyx_v_current = (__pyx_v_merged_islands[0]);
 
-  /* "sicer/find_union_islands.pyx":46
+  /* "sicer/find_union_islands.pyx":47
  *     cdef Island current = merged_islands[0]
  *     cdef Island next;
  *     cdef uint32_t i = 1             # <<<<<<<<<<<<<<
@@ -1561,7 +1617,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
   __pyx_v_i = 1;
 
-  /* "sicer/find_union_islands.pyx":48
+  /* "sicer/find_union_islands.pyx":49
  *     cdef uint32_t i = 1
  * 
  *     while i < merged_islands.size():             # <<<<<<<<<<<<<<
@@ -1572,7 +1628,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     __pyx_t_1 = ((__pyx_v_i < __pyx_v_merged_islands.size()) != 0);
     if (!__pyx_t_1) break;
 
-    /* "sicer/find_union_islands.pyx":49
+    /* "sicer/find_union_islands.pyx":50
  * 
  *     while i < merged_islands.size():
  *         next = merged_islands[i]             # <<<<<<<<<<<<<<
@@ -1581,7 +1637,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
     __pyx_v_next = (__pyx_v_merged_islands[__pyx_v_i]);
 
-    /* "sicer/find_union_islands.pyx":50
+    /* "sicer/find_union_islands.pyx":51
  *     while i < merged_islands.size():
  *         next = merged_islands[i]
  *         if next.start > current.end:             # <<<<<<<<<<<<<<
@@ -1591,7 +1647,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     __pyx_t_1 = ((__pyx_v_next.start > __pyx_v_current.end) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/find_union_islands.pyx":51
+      /* "sicer/find_union_islands.pyx":52
  *         next = merged_islands[i]
  *         if next.start > current.end:
  *             union_islands.push_back(current)             # <<<<<<<<<<<<<<
@@ -1608,10 +1664,10 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 51, __pyx_L1_error)
+        __PYX_ERR(0, 52, __pyx_L1_error)
       }
 
-      /* "sicer/find_union_islands.pyx":52
+      /* "sicer/find_union_islands.pyx":53
  *         if next.start > current.end:
  *             union_islands.push_back(current)
  *             current = next             # <<<<<<<<<<<<<<
@@ -1620,7 +1676,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
       __pyx_v_current = __pyx_v_next;
 
-      /* "sicer/find_union_islands.pyx":50
+      /* "sicer/find_union_islands.pyx":51
  *     while i < merged_islands.size():
  *         next = merged_islands[i]
  *         if next.start > current.end:             # <<<<<<<<<<<<<<
@@ -1630,7 +1686,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
       goto __pyx_L7;
     }
 
-    /* "sicer/find_union_islands.pyx":54
+    /* "sicer/find_union_islands.pyx":55
  *             current = next
  *         else:
  *             if next.end > current.end:             # <<<<<<<<<<<<<<
@@ -1641,17 +1697,17 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
       __pyx_t_1 = ((__pyx_v_next.end > __pyx_v_current.end) != 0);
       if (__pyx_t_1) {
 
-        /* "sicer/find_union_islands.pyx":55
+        /* "sicer/find_union_islands.pyx":56
  *         else:
  *             if next.end > current.end:
  *                 current.end = next.end             # <<<<<<<<<<<<<<
  *         preinc(i)
  * 
  */
-        __pyx_t_2 = __pyx_v_next.end;
-        __pyx_v_current.end = __pyx_t_2;
+        __pyx_t_3 = __pyx_v_next.end;
+        __pyx_v_current.end = __pyx_t_3;
 
-        /* "sicer/find_union_islands.pyx":54
+        /* "sicer/find_union_islands.pyx":55
  *             current = next
  *         else:
  *             if next.end > current.end:             # <<<<<<<<<<<<<<
@@ -1662,7 +1718,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     }
     __pyx_L7:;
 
-    /* "sicer/find_union_islands.pyx":56
+    /* "sicer/find_union_islands.pyx":57
  *             if next.end > current.end:
  *                 current.end = next.end
  *         preinc(i)             # <<<<<<<<<<<<<<
@@ -1672,12 +1728,12 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     (void)((++__pyx_v_i));
   }
 
-  /* "sicer/find_union_islands.pyx":58
+  /* "sicer/find_union_islands.pyx":59
  *         preinc(i)
  * 
  *     union_islands.push_back(current)             # <<<<<<<<<<<<<<
  * 
- * cdef ChromIslandContainer _find_union_islands(
+ * cdef IslandContainer _find_union_islands(
  */
   try {
     __pyx_v_union_islands.push_back(__pyx_v_current);
@@ -1689,7 +1745,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 58, __pyx_L1_error)
+    __PYX_ERR(0, 59, __pyx_L1_error)
   }
 
   /* "sicer/find_union_islands.pyx":21
@@ -1707,19 +1763,19 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
   __pyx_L0:;
 }
 
-/* "sicer/find_union_islands.pyx":60
+/* "sicer/find_union_islands.pyx":61
  *     union_islands.push_back(current)
  * 
- * cdef ChromIslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
- *     ChromIslandContainer islands_1,
- *     ChromIslandContainer islands_2,
+ * cdef IslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
+ *     IslandContainer islands_1,
+ *     IslandContainer islands_2,
  */
 
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands_1, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, CYTHON_UNUSED int __pyx_v_num_cpu) {
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_islands_1, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, CYTHON_UNUSED int __pyx_v_num_cpu) {
   std::vector<std::string>  __pyx_v_chroms;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_union_islands = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_union_islands = 0;
   int __pyx_v_i;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_r = NULL;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   std::vector<std::string>  __pyx_t_2;
@@ -1729,32 +1785,32 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("_find_union_islands", 0);
 
-  /* "sicer/find_union_islands.pyx":67
+  /* "sicer/find_union_islands.pyx":68
  * ):
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = islands_1.getChromosomes()             # <<<<<<<<<<<<<<
  * 
- *     cdef ChromIslandContainer union_islands = ChromIslandContainer(genome_data)
+ *     cdef IslandContainer union_islands = IslandContainer(genome_data)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getChromosomes(__pyx_v_islands_1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getChromosomes(__pyx_v_islands_1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/find_union_islands.pyx":69
+  /* "sicer/find_union_islands.pyx":70
  *     cdef vector[string] chroms = islands_1.getChromosomes()
  * 
- *     cdef ChromIslandContainer union_islands = ChromIslandContainer(genome_data)             # <<<<<<<<<<<<<<
+ *     cdef IslandContainer union_islands = IslandContainer(genome_data)             # <<<<<<<<<<<<<<
  * 
  *     cdef int i
  */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
+  __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "sicer/find_union_islands.pyx":72
+  /* "sicer/find_union_islands.pyx":73
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -1791,14 +1847,14 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/find_union_islands.pyx":73
+                            /* "sicer/find_union_islands.pyx":74
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         _find_union_islands_by_chrom(             # <<<<<<<<<<<<<<
  *             deref(union_islands.getVectorPtr(chroms[i])),
  *             deref(islands_1.getVectorPtr(chroms[i])),
  */
-                            __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getVectorPtr(__pyx_v_union_islands, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getVectorPtr(__pyx_v_islands_1, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_2->__pyx_vtab)->getVectorPtr(__pyx_v_islands_2, (__pyx_v_chroms[__pyx_v_i]))));
+                            __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getVectorPtr(__pyx_v_union_islands, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getVectorPtr(__pyx_v_islands_1, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_islands_2->__pyx_vtab)->getVectorPtr(__pyx_v_islands_2, (__pyx_v_chroms[__pyx_v_i]))));
                         }
                     }
                 }
@@ -1812,7 +1868,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
         #endif
       }
 
-      /* "sicer/find_union_islands.pyx":72
+      /* "sicer/find_union_islands.pyx":73
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -1831,25 +1887,25 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
       }
   }
 
-  /* "sicer/find_union_islands.pyx":79
+  /* "sicer/find_union_islands.pyx":80
  *         )
  * 
  *     union_islands.updateIslandCount()             # <<<<<<<<<<<<<<
  *     print("Union of islands count: ", union_islands.getIslandCount())
  * 
  */
-  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->updateIslandCount(__pyx_v_union_islands, 0);
+  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->updateIslandCount(__pyx_v_union_islands, 0);
 
-  /* "sicer/find_union_islands.pyx":80
+  /* "sicer/find_union_islands.pyx":81
  * 
  *     union_islands.updateIslandCount()
  *     print("Union of islands count: ", union_islands.getIslandCount())             # <<<<<<<<<<<<<<
  * 
  *     return union_islands
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_kp_u_Union_of_islands_count);
   __Pyx_GIVEREF(__pyx_kp_u_Union_of_islands_count);
@@ -1857,29 +1913,29 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/find_union_islands.pyx":82
+  /* "sicer/find_union_islands.pyx":83
  *     print("Union of islands count: ", union_islands.getIslandCount())
  * 
  *     return union_islands             # <<<<<<<<<<<<<<
  * 
- * cpdef ChromIslandContainer find_union_islands(
+ * cpdef IslandContainer find_union_islands(
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __Pyx_INCREF(((PyObject *)__pyx_v_union_islands));
   __pyx_r = __pyx_v_union_islands;
   goto __pyx_L0;
 
-  /* "sicer/find_union_islands.pyx":60
+  /* "sicer/find_union_islands.pyx":61
  *     union_islands.push_back(current)
  * 
- * cdef ChromIslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
- *     ChromIslandContainer islands_1,
- *     ChromIslandContainer islands_2,
+ * cdef IslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
+ *     IslandContainer islands_1,
+ *     IslandContainer islands_2,
  */
 
   /* function exit code */
@@ -1895,34 +1951,34 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
   return __pyx_r;
 }
 
-/* "sicer/find_union_islands.pyx":84
+/* "sicer/find_union_islands.pyx":85
  *     return union_islands
  * 
- * cpdef ChromIslandContainer find_union_islands(             # <<<<<<<<<<<<<<
+ * cpdef IslandContainer find_union_islands(             # <<<<<<<<<<<<<<
  *     islands_1,
  *     islands_2,
  */
 
 static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_r = NULL;
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("find_union_islands", 0);
 
-  /* "sicer/find_union_islands.pyx":90
+  /* "sicer/find_union_islands.pyx":91
  *     num_cpu
  * ):
  *     print("Finding the union islands between two treatment libraries...")             # <<<<<<<<<<<<<<
  *     return _find_union_islands(
  *         islands_1,
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/find_union_islands.pyx":91
+  /* "sicer/find_union_islands.pyx":92
  * ):
  *     print("Finding the union islands between two treatment libraries...")
  *     return _find_union_islands(             # <<<<<<<<<<<<<<
@@ -1931,50 +1987,50 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
 
-  /* "sicer/find_union_islands.pyx":92
+  /* "sicer/find_union_islands.pyx":93
  *     print("Finding the union islands between two treatment libraries...")
  *     return _find_union_islands(
  *         islands_1,             # <<<<<<<<<<<<<<
  *         islands_2,
  *         genome_data,
  */
-  if (!(likely(((__pyx_v_islands_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_1, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer))))) __PYX_ERR(0, 92, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_1, __pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer))))) __PYX_ERR(0, 93, __pyx_L1_error)
 
-  /* "sicer/find_union_islands.pyx":93
+  /* "sicer/find_union_islands.pyx":94
  *     return _find_union_islands(
  *         islands_1,
  *         islands_2,             # <<<<<<<<<<<<<<
  *         genome_data,
  *         num_cpu
  */
-  if (!(likely(((__pyx_v_islands_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_2, __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer))))) __PYX_ERR(0, 93, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_2, __pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer))))) __PYX_ERR(0, 94, __pyx_L1_error)
 
-  /* "sicer/find_union_islands.pyx":95
+  /* "sicer/find_union_islands.pyx":96
  *         islands_2,
  *         genome_data,
  *         num_cpu             # <<<<<<<<<<<<<<
  *     )
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
 
-  /* "sicer/find_union_islands.pyx":91
+  /* "sicer/find_union_islands.pyx":92
  * ):
  *     print("Finding the union islands between two treatment libraries...")
  *     return _find_union_islands(             # <<<<<<<<<<<<<<
  *         islands_1,
  *         islands_2,
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands__find_union_islands(((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_1), ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_islands_2), __pyx_v_genome_data, __pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands__find_union_islands(((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_islands_1), ((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_islands_2), __pyx_v_genome_data, __pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_t_1);
+  __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/find_union_islands.pyx":84
+  /* "sicer/find_union_islands.pyx":85
  *     return union_islands
  * 
- * cpdef ChromIslandContainer find_union_islands(             # <<<<<<<<<<<<<<
+ * cpdef IslandContainer find_union_islands(             # <<<<<<<<<<<<<<
  *     islands_1,
  *     islands_2,
  */
@@ -2027,23 +2083,23 @@ static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands_2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 1); __PYX_ERR(0, 84, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 1); __PYX_ERR(0, 85, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 2); __PYX_ERR(0, 84, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 2); __PYX_ERR(0, 85, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 3); __PYX_ERR(0, 84, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 3); __PYX_ERR(0, 85, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_union_islands") < 0)) __PYX_ERR(0, 84, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_union_islands") < 0)) __PYX_ERR(0, 85, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -2060,7 +2116,7 @@ static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 84, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 85, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.find_union_islands.find_union_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2079,7 +2135,7 @@ static PyObject *__pyx_pf_5sicer_18find_union_islands_find_union_islands(CYTHON_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("find_union_islands", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands_find_union_islands(__pyx_v_islands_1, __pyx_v_islands_2, __pyx_v_genome_data, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands_find_union_islands(__pyx_v_islands_1, __pyx_v_islands_2, __pyx_v_genome_data, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2339,7 +2395,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 81, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2349,14 +2405,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/find_union_islands.pyx":90
+  /* "sicer/find_union_islands.pyx":91
  *     num_cpu
  * ):
  *     print("Finding the union islands between two treatment libraries...")             # <<<<<<<<<<<<<<
  *     return _find_union_islands(
  *         islands_1,
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_the_union_islands_betwee); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_the_union_islands_betwee); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -2425,17 +2481,20 @@ static int __Pyx_modinit_type_import_code(void) {
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 13, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromBEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer) __PYX_ERR(2, 13, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer)) __PYX_ERR(2, 13, __pyx_L1_error)
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromWindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer) __PYX_ERR(2, 30, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer)) __PYX_ERR(2, 30, __pyx_L1_error)
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer) __PYX_ERR(2, 49, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer)) __PYX_ERR(2, 49, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "BEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer) __PYX_ERR(2, 14, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer)) __PYX_ERR(2, 14, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "WindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer) __PYX_ERR(2, 29, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer)) __PYX_ERR(2, 29, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "IslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer) __PYX_ERR(2, 45, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer)) __PYX_ERR(2, 45, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "DiffExprIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer) __PYX_ERR(2, 59, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer)) __PYX_ERR(2, 59, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -2661,7 +2720,7 @@ if (!__Pyx_RefNanny) {
   /* "sicer/find_union_islands.pyx":1
  * # SICER Internal Imports             # <<<<<<<<<<<<<<
  * from sicer.shared.data_classes cimport Island
- * from sicer.shared.chrom_containers cimport ChromIslandContainer
+ * from sicer.shared.chrom_containers cimport IslandContainer
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3504,24 +3563,24 @@ bad:
 }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
+    const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
+        if (sizeof(uint32_t) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
+        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
         }
     } else {
-        if (sizeof(int) <= sizeof(long)) {
+        if (sizeof(uint32_t) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
         }
@@ -3529,7 +3588,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
+        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
                                      little, !is_unsigned);
     }
 }

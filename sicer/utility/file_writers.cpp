@@ -10,7 +10,8 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++"
+            "-stdlib=libc++",
+            "-w"
         ],
         "include_dirs": [
             "sicer/shared",
@@ -860,16 +861,19 @@ static const char *__pyx_filename;
 static const char *__pyx_f[] = {
   "sicer/utility/file_writers.pyx",
   "stringsource",
+  "sicer/utility/file_writers.pxd",
   "sicer/shared/chrom_containers.pxd",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer;
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer;
+struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer;
 struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter;
 struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter;
 struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter;
+struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter;
 
 /* "sicer/shared/data_classes.pxd":4
  * from libc.stdint cimport uint32_t
@@ -880,12 +884,12 @@ struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter;
  */
 typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
 
-/* "sicer/shared/chrom_containers.pxd":11
- * from libcpp.string cimport string
+/* "sicer/shared/chrom_containers.pxd":12
+ * from libc.stdint cimport uint32_t
  * 
  * ctypedef char* cstr             # <<<<<<<<<<<<<<
  * 
- * cdef class ChromBEDReadContainer:
+ * cdef class BEDReadContainer:
  */
 typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
 
@@ -916,55 +920,73 @@ typedef std::vector<Window>  *__pyx_t_5sicer_7utility_12file_writers_win_vec_ptr
  */
 typedef __pyx_t_5sicer_7utility_12file_writers_cstr (*__pyx_t_5sicer_7utility_12file_writers_format_f)(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *, Island);
 
-/* "sicer/shared/chrom_containers.pxd":13
+/* "sicer/shared/chrom_containers.pxd":14
  * ctypedef char* cstr
  * 
- * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
+ * cdef class BEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<BEDRead> >  data;
-  int read_count;
+  uint32_t read_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":30
+/* "sicer/shared/chrom_containers.pxd":29
  * 
  * 
- * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ * cdef class WindowContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<Window> >  data;
-  int window_count;
-  int total_tag_count;
+  uint32_t window_count;
+  uint32_t total_tag_count;
 };
 
 
-/* "sicer/shared/chrom_containers.pxd":49
+/* "sicer/shared/chrom_containers.pxd":45
  * 
  * 
- * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ * cdef class IslandContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
-struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer {
+struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtab;
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_vtab;
   PyObject *species;
   PyObject *chromosomes;
   std::map<std::string,std::vector<Island> >  data;
-  int island_count;
+  uint32_t island_count;
+};
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_vtab;
+  PyObject *species;
+  PyObject *chromosomes;
+  std::map<std::string,std::vector<DiffExprIsland> >  data;
+  uint32_t island_count;
+  std::vector<double>  pvalue_list;
 };
 
 
@@ -980,14 +1002,14 @@ struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter {
   struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *__pyx_vtab;
   PyObject *file_name;
   PyObject *output_dir;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *windows;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *windows;
   int window_size;
   int filtered;
   PyObject *fdr;
 };
 
 
-/* "sicer/utility/file_writers.pxd":31
+/* "sicer/utility/file_writers.pxd":29
  * 
  * 
  * cdef class IslandFileWriter:             # <<<<<<<<<<<<<<
@@ -1000,14 +1022,14 @@ struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter {
   PyObject *file_name;
   PyObject *output_dir;
   PyObject *file_type;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *islands;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *islands;
   int window_size;
   PyObject *gap_size;
   PyObject *fdr;
 };
 
 
-/* "sicer/utility/file_writers.pxd":50
+/* "sicer/utility/file_writers.pxd":48
  * 
  * 
  * cdef class BEDFileWriter:             # <<<<<<<<<<<<<<
@@ -1019,73 +1041,110 @@ struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter {
   struct __pyx_vtabstruct_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_vtab;
   PyObject *file_name;
   PyObject *output_dir;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *reads;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *reads;
   int window_size;
   PyObject *gap_size;
   PyObject *fdr;
 };
 
 
+/* "sicer/utility/file_writers.pxd":63
+ * 
+ * 
+ * cdef class DiffExprIslandWriter:             # <<<<<<<<<<<<<<
+ *     # Writes islands produced from differential expression analysis
+ *     cdef public:
+ */
+struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_vtab;
+  PyObject *file_name_1;
+  PyObject *file_name_2;
+  PyObject *output_dir;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *islands;
+  int window_size;
+  int fdr_filtered;
+  int increased;
+  PyObject *fdr;
+  PyObject *gap_size;
+  __pyx_t_5sicer_7utility_12file_writers_cstr header;
+  __pyx_t_5sicer_7utility_12file_writers_cstr format;
+};
 
-/* "sicer/shared/chrom_containers.pxd":13
+
+
+/* "sicer/shared/chrom_containers.pxd":14
  * ctypedef char* cstr
  * 
- * cdef class ChromBEDReadContainer:             # <<<<<<<<<<<<<<
+ * cdef class BEDReadContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer {
-  void (*insertRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, BEDRead);
-  void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  int (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *);
-  std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string);
-  BEDRead (*getRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer {
+  void (*insertRead)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, std::string, BEDRead);
+  void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getReadCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *);
+  std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":30
+/* "sicer/shared/chrom_containers.pxd":29
  * 
  * 
- * cdef class ChromWindowContainer:             # <<<<<<<<<<<<<<
+ * cdef class WindowContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer {
-  void (*insertWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, Window);
-  void (*updateCounts)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  int (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  int (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<Window> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *);
-  std::vector<Window>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string);
-  Window (*getWindow)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer {
+  void (*updateCounts)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getWindowCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getTotalTagCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<Window> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *);
+  std::vector<Window>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer;
 
 
-/* "sicer/shared/chrom_containers.pxd":49
+/* "sicer/shared/chrom_containers.pxd":45
  * 
  * 
- * cdef class ChromIslandContainer:             # <<<<<<<<<<<<<<
+ * cdef class IslandContainer:             # <<<<<<<<<<<<<<
  *     cdef:
  *         str species
  */
 
-struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer {
-  void (*insertIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, Island);
-  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  int (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, int __pyx_skip_dispatch);
-  std::map<std::string,std::vector<Island> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *);
-  std::vector<Island>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string);
-  Island (*getIsland)(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *, std::string, int);
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer {
+  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<Island> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *);
+  std::vector<Island>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, std::string);
 };
-static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer;
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer;
+
+
+/* "sicer/shared/chrom_containers.pxd":59
+ * 
+ * 
+ * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         str species
+ */
+
+struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer {
+  void (*updateIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getIslandCount)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, int __pyx_skip_dispatch);
+  std::map<std::string,std::vector<DiffExprIsland> >  (*getData)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *);
+  std::vector<DiffExprIsland>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *, std::string);
+};
+static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer;
 
 
 /* "sicer/utility/file_writers.pyx":16
@@ -1097,14 +1156,13 @@ static struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandCont
  */
 
 struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter {
-  __pyx_t_5sicer_7utility_12file_writers_cstr (*format_line)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, uint32_t, double);
   void (*c_write)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr, __pyx_t_5sicer_7utility_12file_writers_cstr, int, double);
   void (*write)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *__pyx_vtabptr_5sicer_7utility_12file_writers_WigFileWriter;
 
 
-/* "sicer/utility/file_writers.pyx":85
+/* "sicer/utility/file_writers.pyx":78
  * 
  * 
  * cdef class IslandFileWriter:             # <<<<<<<<<<<<<<
@@ -1122,7 +1180,7 @@ struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter {
 static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_vtabptr_5sicer_7utility_12file_writers_IslandFileWriter;
 
 
-/* "sicer/utility/file_writers.pyx":172
+/* "sicer/utility/file_writers.pyx":165
  * 
  * 
  * cdef class BEDFileWriter:             # <<<<<<<<<<<<<<
@@ -1131,11 +1189,25 @@ static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter *
  */
 
 struct __pyx_vtabstruct_5sicer_7utility_12file_writers_BEDFileWriter {
-  __pyx_t_5sicer_7utility_12file_writers_cstr (*format_read)(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *, BEDRead);
   void (*c_write)(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr);
   void (*write)(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_vtabptr_5sicer_7utility_12file_writers_BEDFileWriter;
+
+
+/* "sicer/utility/file_writers.pyx":208
+ * 
+ * 
+ * cdef class DiffExprIslandWriter:             # <<<<<<<<<<<<<<
+ *     def __cinit__(self,
+ *         str file_name_1,
+ */
+
+struct __pyx_vtabstruct_5sicer_7utility_12file_writers_DiffExprIslandWriter {
+  void (*c_write)(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr);
+  void (*write)(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *, int __pyx_skip_dispatch);
+};
+static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_vtabptr_5sicer_7utility_12file_writers_DiffExprIslandWriter;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1360,6 +1432,12 @@ static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int eq
 /* UnicodeEquals.proto */
 static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int equals);
 
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
+/* ExtTypeTest.proto */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
+
 /* PyObject_GenericGetAttrNoDict.proto */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj, PyObject* attr_name);
@@ -1457,7 +1535,6 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_format_line(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, uint32_t __pyx_v_pos, double __pyx_v_count); /* proto*/
 static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_outfile_path, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_header, int __pyx_v_window_size, double __pyx_v_scaling_factor); /* proto*/
 static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_format_summary_line(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, Island __pyx_v_island); /* proto*/
@@ -1465,9 +1542,10 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
 static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_format_scoreisland_line(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, Island __pyx_v_island); /* proto*/
 static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_outfile_path); /* proto*/
 static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_format_read(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, BEDRead __pyx_v_read); /* proto*/
 static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_c_write(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_outfile_path); /* proto*/
 static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+void __pyx_f_5sicer_7utility_12file_writers_20DiffExprIslandWriter_c_write(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_outfile_path); /* proto*/
+static void __pyx_f_5sicer_7utility_12file_writers_20DiffExprIslandWriter_write(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'libc.string' */
 
@@ -1484,9 +1562,10 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
 /* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'sicer.shared.chrom_containers' */
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = 0;
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = 0;
-static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer = 0;
+static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = 0;
 
 /* Module declarations from 'sicer.utility.utils' */
 
@@ -1496,6 +1575,7 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandCo
 static PyTypeObject *__pyx_ptype_5sicer_7utility_12file_writers_WigFileWriter = 0;
 static PyTypeObject *__pyx_ptype_5sicer_7utility_12file_writers_IslandFileWriter = 0;
 static PyTypeObject *__pyx_ptype_5sicer_7utility_12file_writers_BEDFileWriter = 0;
+static PyTypeObject *__pyx_ptype_5sicer_7utility_12file_writers_DiffExprIslandWriter = 0;
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
@@ -1517,15 +1597,18 @@ static const char __pyx_k_W[] = "-W";
 static const char __pyx_k__2[] = "\n";
 static const char __pyx_k__4[] = "/";
 static const char __pyx_k_FDR[] = "-FDR";
+static const char __pyx_k_and[] = "-and-";
 static const char __pyx_k_fdr[] = "fdr";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_span[] = " span=";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_UTF_8[] = "UTF-8";
 static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_reads[] = "reads";
 static const char __pyx_k_write[] = "write";
+static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_islands[] = "islands";
 static const char __pyx_k_summary[] = "summary";
@@ -1538,12 +1621,16 @@ static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_file_name[] = "file_name";
 static const char __pyx_k_file_type[] = "file_type";
+static const char __pyx_k_increased[] = "increased";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
+static const char __pyx_k_summary_2[] = "-summary";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_cgisland_2[] = ".cgisland";
 static const char __pyx_k_island_bed[] = "-island.bed";
 static const char __pyx_k_output_dir[] = "output_dir";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
+static const char __pyx_k_file_name_1[] = "file_name_1";
+static const char __pyx_k_file_name_2[] = "file_name_2";
 static const char __pyx_k_scoreisland[] = "scoreisland";
 static const char __pyx_k_window_size[] = "window_size";
 static const char __pyx_k_fdr_filtered[] = "fdr-filtered";
@@ -1551,6 +1638,7 @@ static const char __pyx_k_BEDFileWriter[] = "BEDFileWriter";
 static const char __pyx_k_WigFileWriter[] = "WigFileWriter";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_scoreisland_2[] = ".scoreisland";
+static const char __pyx_k_fdr_filtered_2[] = "fdr_filtered";
 static const char __pyx_k_normalized_wig[] = "-normalized.wig";
 static const char __pyx_k_islands_summary[] = "-islands-summary";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
@@ -1560,32 +1648,45 @@ static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_islandfiltered_FDR[] = "-islandfiltered-FDR";
 static const char __pyx_k_islandfiltered_bed[] = "-islandfiltered.bed";
 static const char __pyx_k_variableStep_chrom[] = "variableStep chrom=";
+static const char __pyx_k_DiffExprIslandWriter[] = "DiffExprIslandWriter";
 static const char __pyx_k_track_type_wiggle_0_name[] = "track type=wiggle_0 name=";
+static const char __pyx_k_decreased_islands_summary_FDR[] = "-decreased-islands-summary-FDR";
+static const char __pyx_k_increased_islands_summary_FDR[] = "-increased-islands-summary-FDR";
 static const char __pyx_k_Normalizing_graphs_by_total_isla[] = "Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_n_s_BEDFileWriter;
+static PyObject *__pyx_n_s_DiffExprIslandWriter;
 static PyObject *__pyx_kp_u_FDR;
 static PyObject *__pyx_kp_u_G;
 static PyObject *__pyx_n_s_IslandFileWriter;
 static PyObject *__pyx_kp_u_Missing_FDR_value;
 static PyObject *__pyx_kp_u_Normalizing_graphs_by_total_isla;
 static PyObject *__pyx_n_s_TypeError;
+static PyObject *__pyx_kp_u_UTF_8;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_kp_u_W;
 static PyObject *__pyx_n_s_WigFileWriter;
 static PyObject *__pyx_kp_b__2;
 static PyObject *__pyx_kp_u__2;
 static PyObject *__pyx_kp_u__4;
+static PyObject *__pyx_kp_u_and;
 static PyObject *__pyx_n_u_cgisland;
 static PyObject *__pyx_kp_u_cgisland_2;
 static PyObject *__pyx_n_s_cline_in_traceback;
+static PyObject *__pyx_kp_u_decreased_islands_summary_FDR;
+static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_fdr;
 static PyObject *__pyx_kp_u_fdr_filtered;
+static PyObject *__pyx_n_s_fdr_filtered_2;
 static PyObject *__pyx_n_s_file_name;
+static PyObject *__pyx_n_s_file_name_1;
+static PyObject *__pyx_n_s_file_name_2;
 static PyObject *__pyx_n_s_file_type;
 static PyObject *__pyx_n_s_filtered;
 static PyObject *__pyx_n_s_gap_size;
 static PyObject *__pyx_n_s_getstate;
+static PyObject *__pyx_n_s_increased;
+static PyObject *__pyx_kp_u_increased_islands_summary_FDR;
 static PyObject *__pyx_kp_u_island_bed;
 static PyObject *__pyx_kp_u_islandfiltered_FDR;
 static PyObject *__pyx_kp_u_islandfiltered_bed;
@@ -1609,27 +1710,61 @@ static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_kp_b_span;
 static PyObject *__pyx_n_u_summary;
+static PyObject *__pyx_kp_u_summary_2;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_u_track_type_wiggle_0_name;
 static PyObject *__pyx_kp_b_variableStep_chrom;
 static PyObject *__pyx_n_s_window_size;
 static PyObject *__pyx_n_s_windows;
 static PyObject *__pyx_n_s_write;
-static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows, int __pyx_v_window_size, int __pyx_v_filtered, PyObject *__pyx_v_fdr); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_v_windows, int __pyx_v_window_size, int __pyx_v_filtered, PyObject *__pyx_v_fdr); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_2write(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, PyObject *__pyx_v_file_type, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands, int __pyx_v_window_size, PyObject *__pyx_v_gap_size, PyObject *__pyx_v_fdr); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, PyObject *__pyx_v_file_type, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_islands, int __pyx_v_window_size, PyObject *__pyx_v_gap_size, PyObject *__pyx_v_fdr); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter_2write(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_v_reads, int __pyx_v_window_size, PyObject *__pyx_v_fdr, PyObject *__pyx_v_gap_size); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads, int __pyx_v_window_size, PyObject *__pyx_v_fdr, PyObject *__pyx_v_gap_size); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter_2write(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_file_name_1, PyObject *__pyx_v_file_name_2, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_v_islands, int __pyx_v_window_size, int __pyx_v_fdr_filtered, int __pyx_v_increased, PyObject *__pyx_v_fdr, PyObject *__pyx_v_gap_size); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_2write(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_WigFileWriter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_IslandFileWriter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_BEDFileWriter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_DiffExprIslandWriter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__5;
@@ -1638,6 +1773,8 @@ static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__9;
 static PyObject *__pyx_tuple__10;
+static PyObject *__pyx_tuple__11;
+static PyObject *__pyx_tuple__12;
 /* Late includes */
 
 /* "sicer/utility/file_writers.pyx":19
@@ -1653,7 +1790,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(Py
 static int __pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_file_name = 0;
   PyObject *__pyx_v_output_dir = 0;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_v_windows = 0;
   int __pyx_v_window_size;
   int __pyx_v_filtered;
   PyObject *__pyx_v_fdr = 0;
@@ -1745,7 +1882,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(Py
     }
     __pyx_v_file_name = ((PyObject*)values[0]);
     __pyx_v_output_dir = ((PyObject*)values[1]);
-    __pyx_v_windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)values[2]);
+    __pyx_v_windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *)values[2]);
     __pyx_v_window_size = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_window_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L3_error)
     __pyx_v_filtered = __Pyx_PyObject_IsTrue(values[4]); if (unlikely((__pyx_v_filtered == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L3_error)
     __pyx_v_fdr = values[5];
@@ -1760,7 +1897,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(Py
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 20, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_dir), (&PyUnicode_Type), 1, "output_dir", 1))) __PYX_ERR(0, 21, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_windows), __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer, 1, "windows", 0))) __PYX_ERR(0, 22, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_windows), __pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer, 1, "windows", 0))) __PYX_ERR(0, 22, __pyx_L1_error)
   __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(((struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self), __pyx_v_file_name, __pyx_v_output_dir, __pyx_v_windows, __pyx_v_window_size, __pyx_v_filtered, __pyx_v_fdr);
 
   /* "sicer/utility/file_writers.pyx":19
@@ -1780,7 +1917,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(Py
   return __pyx_r;
 }
 
-static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *__pyx_v_windows, int __pyx_v_window_size, int __pyx_v_filtered, PyObject *__pyx_v_fdr) {
+static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_v_windows, int __pyx_v_window_size, int __pyx_v_filtered, PyObject *__pyx_v_fdr) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -1870,7 +2007,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(str
  *         if filtered and fdr is None:
  *             raise ValueError("Missing FDR value")             # <<<<<<<<<<<<<<
  * 
- *     cdef cstr format_line(self, uint32_t pos, double count):
+ *     cdef void c_write(self,
  */
     __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -1910,53 +2047,6 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter___cinit__(str
 /* "sicer/utility/file_writers.pyx":36
  *             raise ValueError("Missing FDR value")
  * 
- *     cdef cstr format_line(self, uint32_t pos, double count):             # <<<<<<<<<<<<<<
- *         cdef char buffer[50]
- *         snprintf (buffer, 50, "%d\t%.2f\n", pos, count)
- */
-
-static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_format_line(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *__pyx_v_self, uint32_t __pyx_v_pos, double __pyx_v_count) {
-  char __pyx_v_buffer[50];
-  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("format_line", 0);
-
-  /* "sicer/utility/file_writers.pyx":38
- *     cdef cstr format_line(self, uint32_t pos, double count):
- *         cdef char buffer[50]
- *         snprintf (buffer, 50, "%d\t%.2f\n", pos, count)             # <<<<<<<<<<<<<<
- *         return buffer
- * 
- */
-  (void)(snprintf(__pyx_v_buffer, 50, ((char const *)"%d\t%.2f\n"), __pyx_v_pos, __pyx_v_count));
-
-  /* "sicer/utility/file_writers.pyx":39
- *         cdef char buffer[50]
- *         snprintf (buffer, 50, "%d\t%.2f\n", pos, count)
- *         return buffer             # <<<<<<<<<<<<<<
- * 
- *     cdef void c_write(self,
- */
-  __pyx_r = __pyx_v_buffer;
-  goto __pyx_L0;
-
-  /* "sicer/utility/file_writers.pyx":36
- *             raise ValueError("Missing FDR value")
- * 
- *     cdef cstr format_line(self, uint32_t pos, double count):             # <<<<<<<<<<<<<<
- *         cdef char buffer[50]
- *         snprintf (buffer, 50, "%d\t%.2f\n", pos, count)
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/utility/file_writers.pyx":41
- *         return buffer
- * 
  *     cdef void c_write(self,             # <<<<<<<<<<<<<<
  *         cstr outfile_path,
  *         cstr header,
@@ -1966,7 +2056,6 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
   FILE *__pyx_v_fp;
   std::vector<std::string>  __pyx_v_chroms;
   std::string __pyx_v_chrom_header;
-  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_line;
   __pyx_t_5sicer_7utility_12file_writers_win_vec_ptr __pyx_v_vptr;
   std::vector<std::string> ::size_type __pyx_v_i;
   std::vector<Window> ::size_type __pyx_v_j;
@@ -1986,7 +2075,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
   uint32_t __pyx_t_13;
   __Pyx_RefNannySetupContext("c_write", 0);
 
-  /* "sicer/utility/file_writers.pyx":47
+  /* "sicer/utility/file_writers.pyx":42
  *         double scaling_factor
  *     ):
  *         cdef FILE *fp = fopen(outfile_path, "w")             # <<<<<<<<<<<<<<
@@ -1995,7 +2084,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
  */
   __pyx_v_fp = fopen(__pyx_v_outfile_path, ((char const *)"w"));
 
-  /* "sicer/utility/file_writers.pyx":48
+  /* "sicer/utility/file_writers.pyx":43
  *     ):
  *         cdef FILE *fp = fopen(outfile_path, "w")
  *         fprintf(fp, header)             # <<<<<<<<<<<<<<
@@ -2004,20 +2093,20 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
  */
   (void)(fprintf(__pyx_v_fp, __pyx_v_header));
 
-  /* "sicer/utility/file_writers.pyx":50
+  /* "sicer/utility/file_writers.pyx":45
  *         fprintf(fp, header)
  * 
  *         cdef vector[string] chroms = self.windows.getChromosomes()             # <<<<<<<<<<<<<<
  *         cdef string chrom_header
  *         cdef uint32_t pos
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getChromosomes(__pyx_v_self->windows, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getChromosomes(__pyx_v_self->windows, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/utility/file_writers.pyx":57
+  /* "sicer/utility/file_writers.pyx":51
  *         cdef win_vec_ptr vptr
  * 
  *         for i in range(chroms.size()):             # <<<<<<<<<<<<<<
@@ -2029,16 +2118,16 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "sicer/utility/file_writers.pyx":58
+    /* "sicer/utility/file_writers.pyx":52
  * 
  *         for i in range(chroms.size()):
  *             vptr = self.windows.getVectorPtr(chroms[i])             # <<<<<<<<<<<<<<
  *             if deref(vptr).size() > 0:
  *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
  */
-    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getVectorPtr(__pyx_v_self->windows, (__pyx_v_chroms[__pyx_v_i]));
+    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getVectorPtr(__pyx_v_self->windows, (__pyx_v_chroms[__pyx_v_i]));
 
-    /* "sicer/utility/file_writers.pyx":59
+    /* "sicer/utility/file_writers.pyx":53
  *         for i in range(chroms.size()):
  *             vptr = self.windows.getVectorPtr(chroms[i])
  *             if deref(vptr).size() > 0:             # <<<<<<<<<<<<<<
@@ -2048,80 +2137,71 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
     __pyx_t_6 = (((*__pyx_v_vptr).size() > 0) != 0);
     if (__pyx_t_6) {
 
-      /* "sicer/utility/file_writers.pyx":60
+      /* "sicer/utility/file_writers.pyx":54
  *             vptr = self.windows.getVectorPtr(chroms[i])
  *             if deref(vptr).size() > 0:
  *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"             # <<<<<<<<<<<<<<
  *                 fprintf(fp, chrom_header.c_str())
  *                 for j in range(deref(vptr).size()):
  */
-      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string((__pyx_v_chroms[__pyx_v_i])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string((__pyx_v_chroms[__pyx_v_i])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_7 = PyNumber_Add(__pyx_kp_b_variableStep_chrom, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_7 = PyNumber_Add(__pyx_kp_b_variableStep_chrom, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = PyNumber_Add(__pyx_t_7, __pyx_kp_b_span); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_1 = PyNumber_Add(__pyx_t_7, __pyx_kp_b_span); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = __pyx_convert_PyBytes_string_to_py_std__in_string(std::to_string(__pyx_v_window_size)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_7 = __pyx_convert_PyBytes_string_to_py_std__in_string(std::to_string(__pyx_v_window_size)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_8 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_8 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = PyNumber_Add(__pyx_t_8, __pyx_kp_b__2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_7 = PyNumber_Add(__pyx_t_8, __pyx_kp_b__2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_7); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_7); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_v_chrom_header = __pyx_t_9;
 
-      /* "sicer/utility/file_writers.pyx":61
+      /* "sicer/utility/file_writers.pyx":55
  *             if deref(vptr).size() > 0:
  *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
  *                 fprintf(fp, chrom_header.c_str())             # <<<<<<<<<<<<<<
  *                 for j in range(deref(vptr).size()):
- *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
+ *                     fprintf(fp, "%d\t%.2f\n", deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
  */
       (void)(fprintf(__pyx_v_fp, __pyx_v_chrom_header.c_str()));
 
-      /* "sicer/utility/file_writers.pyx":62
+      /* "sicer/utility/file_writers.pyx":56
  *                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
  *                 fprintf(fp, chrom_header.c_str())
  *                 for j in range(deref(vptr).size()):             # <<<<<<<<<<<<<<
- *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
- *                     fprintf(fp, line)
+ *                     fprintf(fp, "%d\t%.2f\n", deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
+ * 
  */
       __pyx_t_10 = (*__pyx_v_vptr).size();
       __pyx_t_11 = __pyx_t_10;
       for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
         __pyx_v_j = __pyx_t_12;
 
-        /* "sicer/utility/file_writers.pyx":63
+        /* "sicer/utility/file_writers.pyx":57
  *                 fprintf(fp, chrom_header.c_str())
  *                 for j in range(deref(vptr).size()):
- *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)             # <<<<<<<<<<<<<<
- *                     fprintf(fp, line)
+ *                     fprintf(fp, "%d\t%.2f\n", deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)             # <<<<<<<<<<<<<<
  * 
+ *     cpdef void write(self):
  */
         __pyx_t_13 = ((*__pyx_v_vptr)[__pyx_v_j]).count;
         if (unlikely(__pyx_v_scaling_factor == 0)) {
           PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-          __PYX_ERR(0, 63, __pyx_L1_error)
+          __PYX_ERR(0, 57, __pyx_L1_error)
         }
-        __pyx_v_line = ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self->__pyx_vtab)->format_line(__pyx_v_self, (((*__pyx_v_vptr)[__pyx_v_j]).start + 1), (((double)__pyx_t_13) / __pyx_v_scaling_factor));
-
-        /* "sicer/utility/file_writers.pyx":64
- *                 for j in range(deref(vptr).size()):
- *                     line = self.format_line(deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
- *                     fprintf(fp, line)             # <<<<<<<<<<<<<<
- * 
- *     cpdef void write(self):
- */
-        (void)(fprintf(__pyx_v_fp, __pyx_v_line));
+        (void)(fprintf(__pyx_v_fp, ((char const *)"%d\t%.2f\n"), (((*__pyx_v_vptr)[__pyx_v_j]).start + 1), (((double)__pyx_t_13) / __pyx_v_scaling_factor)));
       }
 
-      /* "sicer/utility/file_writers.pyx":59
+      /* "sicer/utility/file_writers.pyx":53
  *         for i in range(chroms.size()):
  *             vptr = self.windows.getVectorPtr(chroms[i])
  *             if deref(vptr).size() > 0:             # <<<<<<<<<<<<<<
@@ -2131,8 +2211,8 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
     }
   }
 
-  /* "sicer/utility/file_writers.pyx":41
- *         return buffer
+  /* "sicer/utility/file_writers.pyx":36
+ *             raise ValueError("Missing FDR value")
  * 
  *     cdef void c_write(self,             # <<<<<<<<<<<<<<
  *         cstr outfile_path,
@@ -2150,8 +2230,8 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write(struc
   __Pyx_RefNannyFinishContext();
 }
 
-/* "sicer/utility/file_writers.pyx":66
- *                     fprintf(fp, line)
+/* "sicer/utility/file_writers.pyx":59
+ *                     fprintf(fp, "%d\t%.2f\n", deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
  * 
  *     cpdef void write(self):             # <<<<<<<<<<<<<<
  *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
@@ -2182,7 +2262,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_3write)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -2198,7 +2278,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2218,27 +2298,27 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
     #endif
   }
 
-  /* "sicer/utility/file_writers.pyx":67
+  /* "sicer/utility/file_writers.pyx":60
  * 
  *     cpdef void write(self):
  *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")             # <<<<<<<<<<<<<<
  *         # We first need to normalize
  *         cdef int count = self.windows.getTotalTagCount()
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/utility/file_writers.pyx":69
+  /* "sicer/utility/file_writers.pyx":62
  *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
  *         # We first need to normalize
  *         cdef int count = self.windows.getTotalTagCount()             # <<<<<<<<<<<<<<
  *         cdef double scaling_factor =  count / 1000000.0 * (self.window_size / 1000.0)
  * 
  */
-  __pyx_v_count = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getTotalTagCount(__pyx_v_self->windows, 0);
+  __pyx_v_count = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_v_self->windows->__pyx_vtab)->getTotalTagCount(__pyx_v_self->windows, 0);
 
-  /* "sicer/utility/file_writers.pyx":70
+  /* "sicer/utility/file_writers.pyx":63
  *         # We first need to normalize
  *         cdef int count = self.windows.getTotalTagCount()
  *         cdef double scaling_factor =  count / 1000000.0 * (self.window_size / 1000.0)             # <<<<<<<<<<<<<<
@@ -2247,22 +2327,22 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
  */
   __pyx_v_scaling_factor = ((((double)__pyx_v_count) / 1000000.0) * (((double)__pyx_v_self->window_size) / 1000.0));
 
-  /* "sicer/utility/file_writers.pyx":73
+  /* "sicer/utility/file_writers.pyx":66
  * 
  *         # Format final file_name
  *         self.file_name += "-W" + str(self.window_size)             # <<<<<<<<<<<<<<
  *         if self.filtered:
  *             self.file_name += "-islandfiltered" + "-FDR" + str(self.fdr)
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_GIVEREF(__pyx_t_2);
@@ -2271,7 +2351,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
   __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "sicer/utility/file_writers.pyx":74
+  /* "sicer/utility/file_writers.pyx":67
  *         # Format final file_name
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.filtered:             # <<<<<<<<<<<<<<
@@ -2281,19 +2361,19 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
   __pyx_t_5 = (__pyx_v_self->filtered != 0);
   if (__pyx_t_5) {
 
-    /* "sicer/utility/file_writers.pyx":75
+    /* "sicer/utility/file_writers.pyx":68
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.filtered:
  *             self.file_name += "-islandfiltered" + "-FDR" + str(self.fdr)             # <<<<<<<<<<<<<<
  * 
  *         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")
  */
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_islandfiltered_FDR, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_islandfiltered_FDR, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GIVEREF(__pyx_t_2);
@@ -2302,7 +2382,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
     __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "sicer/utility/file_writers.pyx":74
+    /* "sicer/utility/file_writers.pyx":67
  *         # Format final file_name
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.filtered:             # <<<<<<<<<<<<<<
@@ -2311,32 +2391,32 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
  */
   }
 
-  /* "sicer/utility/file_writers.pyx":77
+  /* "sicer/utility/file_writers.pyx":70
  *             self.file_name += "-islandfiltered" + "-FDR" + str(self.fdr)
  * 
  *         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")             # <<<<<<<<<<<<<<
  *         self.file_name += "-normalized.wig"
  * 
  */
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_track_type_wiggle_0_name, __pyx_v_self->file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_track_type_wiggle_0_name, __pyx_v_self->file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_t_2, __pyx_kp_u__2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_t_2, __pyx_kp_u__2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_2 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_wig_header = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "sicer/utility/file_writers.pyx":78
+  /* "sicer/utility/file_writers.pyx":71
  * 
  *         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")
  *         self.file_name += "-normalized.wig"             # <<<<<<<<<<<<<<
  * 
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
  */
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_normalized_wig); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_normalized_wig); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->file_name);
@@ -2344,25 +2424,25 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
   __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "sicer/utility/file_writers.pyx":80
+  /* "sicer/utility/file_writers.pyx":73
  *         self.file_name += "-normalized.wig"
  * 
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")             # <<<<<<<<<<<<<<
  * 
  *         self.c_write(outfile_path, wig_header, self.window_size, scaling_factor)
  */
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_2, __pyx_v_self->file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_2, __pyx_v_self->file_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_2 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_outfile_path = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "sicer/utility/file_writers.pyx":82
+  /* "sicer/utility/file_writers.pyx":75
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
  * 
  *         self.c_write(outfile_path, wig_header, self.window_size, scaling_factor)             # <<<<<<<<<<<<<<
@@ -2371,18 +2451,18 @@ static void __pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(struct 
  */
   if (unlikely(__pyx_v_outfile_path == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 82, __pyx_L1_error)
+    __PYX_ERR(0, 75, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_6) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_6) && PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
   if (unlikely(__pyx_v_wig_header == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 82, __pyx_L1_error)
+    __PYX_ERR(0, 75, __pyx_L1_error)
   }
-  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_wig_header); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_wig_header); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
   ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_WigFileWriter *)__pyx_v_self->__pyx_vtab)->c_write(__pyx_v_self, __pyx_t_6, __pyx_t_7, __pyx_v_self->window_size, __pyx_v_scaling_factor);
 
-  /* "sicer/utility/file_writers.pyx":66
- *                     fprintf(fp, line)
+  /* "sicer/utility/file_writers.pyx":59
+ *                     fprintf(fp, "%d\t%.2f\n", deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
  * 
  *     cpdef void write(self):             # <<<<<<<<<<<<<<
  *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
@@ -2422,7 +2502,7 @@ static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_2write(
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("write", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2546,7 +2626,7 @@ static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13WigFileWriter_6__sets
   return __pyx_r;
 }
 
-/* "sicer/utility/file_writers.pyx":88
+/* "sicer/utility/file_writers.pyx":81
  *     # Writes island files
  * 
  *     def __cinit__(self,             # <<<<<<<<<<<<<<
@@ -2560,7 +2640,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__
   PyObject *__pyx_v_file_name = 0;
   PyObject *__pyx_v_output_dir = 0;
   PyObject *__pyx_v_file_type = 0;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_islands = 0;
   int __pyx_v_window_size;
   PyObject *__pyx_v_gap_size = 0;
   PyObject *__pyx_v_fdr = 0;
@@ -2571,8 +2651,8 @@ static int __pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_file_name,&__pyx_n_s_output_dir,&__pyx_n_s_file_type,&__pyx_n_s_islands,&__pyx_n_s_window_size,&__pyx_n_s_gap_size,&__pyx_n_s_fdr,0};
     PyObject* values[7] = {0,0,0,0,0,0,0};
 
-    /* "sicer/utility/file_writers.pyx":94
- *         ChromIslandContainer islands,
+    /* "sicer/utility/file_writers.pyx":87
+ *         IslandContainer islands,
  *         int window_size,
  *         object gap_size = None,             # <<<<<<<<<<<<<<
  *         object fdr = None
@@ -2580,7 +2660,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__
  */
     values[5] = ((PyObject *)Py_None);
 
-    /* "sicer/utility/file_writers.pyx":95
+    /* "sicer/utility/file_writers.pyx":88
  *         int window_size,
  *         object gap_size = None,
  *         object fdr = None             # <<<<<<<<<<<<<<
@@ -2618,25 +2698,25 @@ static int __pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_dir)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 1); __PYX_ERR(0, 88, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 1); __PYX_ERR(0, 81, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_file_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 2); __PYX_ERR(0, 88, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 2); __PYX_ERR(0, 81, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 3); __PYX_ERR(0, 88, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 3); __PYX_ERR(0, 81, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 4); __PYX_ERR(0, 88, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, 4); __PYX_ERR(0, 81, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -2652,7 +2732,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 88, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 81, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2672,25 +2752,25 @@ static int __pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__
     __pyx_v_file_name = ((PyObject*)values[0]);
     __pyx_v_output_dir = ((PyObject*)values[1]);
     __pyx_v_file_type = values[2];
-    __pyx_v_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)values[3]);
-    __pyx_v_window_size = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_window_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L3_error)
+    __pyx_v_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)values[3]);
+    __pyx_v_window_size = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_window_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L3_error)
     __pyx_v_gap_size = values[5];
     __pyx_v_fdr = values[6];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 88, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 81, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.utility.file_writers.IslandFileWriter.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 89, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_dir), (&PyUnicode_Type), 1, "output_dir", 1))) __PYX_ERR(0, 90, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_islands), __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer, 1, "islands", 0))) __PYX_ERR(0, 92, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 82, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_dir), (&PyUnicode_Type), 1, "output_dir", 1))) __PYX_ERR(0, 83, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_islands), __pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer, 1, "islands", 0))) __PYX_ERR(0, 85, __pyx_L1_error)
   __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(((struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *)__pyx_v_self), __pyx_v_file_name, __pyx_v_output_dir, __pyx_v_file_type, __pyx_v_islands, __pyx_v_window_size, __pyx_v_gap_size, __pyx_v_fdr);
 
-  /* "sicer/utility/file_writers.pyx":88
+  /* "sicer/utility/file_writers.pyx":81
  *     # Writes island files
  * 
  *     def __cinit__(self,             # <<<<<<<<<<<<<<
@@ -2707,7 +2787,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__
   return __pyx_r;
 }
 
-static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, PyObject *__pyx_v_file_type, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *__pyx_v_islands, int __pyx_v_window_size, PyObject *__pyx_v_gap_size, PyObject *__pyx_v_fdr) {
+static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, PyObject *__pyx_v_file_type, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_islands, int __pyx_v_window_size, PyObject *__pyx_v_gap_size, PyObject *__pyx_v_fdr) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -2716,7 +2796,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "sicer/utility/file_writers.pyx":97
+  /* "sicer/utility/file_writers.pyx":90
  *         object fdr = None
  *     ):
  *         self.file_name = file_name             # <<<<<<<<<<<<<<
@@ -2729,7 +2809,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   __Pyx_DECREF(__pyx_v_self->file_name);
   __pyx_v_self->file_name = __pyx_v_file_name;
 
-  /* "sicer/utility/file_writers.pyx":98
+  /* "sicer/utility/file_writers.pyx":91
  *     ):
  *         self.file_name = file_name
  *         self.output_dir = output_dir             # <<<<<<<<<<<<<<
@@ -2742,7 +2822,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   __Pyx_DECREF(__pyx_v_self->output_dir);
   __pyx_v_self->output_dir = __pyx_v_output_dir;
 
-  /* "sicer/utility/file_writers.pyx":99
+  /* "sicer/utility/file_writers.pyx":92
  *         self.file_name = file_name
  *         self.output_dir = output_dir
  *         self.file_type = file_type             # <<<<<<<<<<<<<<
@@ -2755,7 +2835,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   __Pyx_DECREF(__pyx_v_self->file_type);
   __pyx_v_self->file_type = __pyx_v_file_type;
 
-  /* "sicer/utility/file_writers.pyx":100
+  /* "sicer/utility/file_writers.pyx":93
  *         self.output_dir = output_dir
  *         self.file_type = file_type
  *         self.islands = islands             # <<<<<<<<<<<<<<
@@ -2768,7 +2848,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   __Pyx_DECREF(((PyObject *)__pyx_v_self->islands));
   __pyx_v_self->islands = __pyx_v_islands;
 
-  /* "sicer/utility/file_writers.pyx":101
+  /* "sicer/utility/file_writers.pyx":94
  *         self.file_type = file_type
  *         self.islands = islands
  *         self.window_size = window_size             # <<<<<<<<<<<<<<
@@ -2777,7 +2857,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
  */
   __pyx_v_self->window_size = __pyx_v_window_size;
 
-  /* "sicer/utility/file_writers.pyx":102
+  /* "sicer/utility/file_writers.pyx":95
  *         self.islands = islands
  *         self.window_size = window_size
  *         self.gap_size = gap_size             # <<<<<<<<<<<<<<
@@ -2790,7 +2870,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   __Pyx_DECREF(__pyx_v_self->gap_size);
   __pyx_v_self->gap_size = __pyx_v_gap_size;
 
-  /* "sicer/utility/file_writers.pyx":103
+  /* "sicer/utility/file_writers.pyx":96
  *         self.window_size = window_size
  *         self.gap_size = gap_size
  *         self.fdr = fdr             # <<<<<<<<<<<<<<
@@ -2803,14 +2883,14 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   __Pyx_DECREF(__pyx_v_self->fdr);
   __pyx_v_self->fdr = __pyx_v_fdr;
 
-  /* "sicer/utility/file_writers.pyx":105
+  /* "sicer/utility/file_writers.pyx":98
  *         self.fdr = fdr
  * 
  *         if file_type == "fdr-filtered" and fdr is None:             # <<<<<<<<<<<<<<
  *             raise ValueError("Missing FDR value")
  * 
  */
-  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_file_type, __pyx_kp_u_fdr_filtered, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_file_type, __pyx_kp_u_fdr_filtered, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
   if (__pyx_t_2) {
   } else {
     __pyx_t_1 = __pyx_t_2;
@@ -2822,20 +2902,20 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "sicer/utility/file_writers.pyx":106
+    /* "sicer/utility/file_writers.pyx":99
  * 
  *         if file_type == "fdr-filtered" and fdr is None:
  *             raise ValueError("Missing FDR value")             # <<<<<<<<<<<<<<
  * 
  *     cdef cstr format_summary_line(self, Island island):
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 99, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 106, __pyx_L1_error)
+    __PYX_ERR(0, 99, __pyx_L1_error)
 
-    /* "sicer/utility/file_writers.pyx":105
+    /* "sicer/utility/file_writers.pyx":98
  *         self.fdr = fdr
  * 
  *         if file_type == "fdr-filtered" and fdr is None:             # <<<<<<<<<<<<<<
@@ -2844,7 +2924,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
  */
   }
 
-  /* "sicer/utility/file_writers.pyx":88
+  /* "sicer/utility/file_writers.pyx":81
  *     # Writes island files
  * 
  *     def __cinit__(self,             # <<<<<<<<<<<<<<
@@ -2864,7 +2944,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter___cinit__(
   return __pyx_r;
 }
 
-/* "sicer/utility/file_writers.pyx":108
+/* "sicer/utility/file_writers.pyx":101
  *             raise ValueError("Missing FDR value")
  * 
  *     cdef cstr format_summary_line(self, Island island):             # <<<<<<<<<<<<<<
@@ -2878,7 +2958,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("format_summary_line", 0);
 
-  /* "sicer/utility/file_writers.pyx":110
+  /* "sicer/utility/file_writers.pyx":103
  *     cdef cstr format_summary_line(self, Island island):
  *         cdef char buffer[128]
  *         snprintf(buffer, 128, "%s\t%d\t%d\t%d\t%d\t%.10e\t%.10f\t%.10e\n",             # <<<<<<<<<<<<<<
@@ -2887,7 +2967,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
  */
   (void)(snprintf(__pyx_v_buffer, 0x80, ((char const *)"%s\t%d\t%d\t%d\t%d\t%.10e\t%.10f\t%.10e\n"), __pyx_v_island.chrom.c_str(), __pyx_v_island.start, __pyx_v_island.end, __pyx_v_island.obs_count, __pyx_v_island.control_count, __pyx_v_island.pvalue, __pyx_v_island.fc, __pyx_v_island.alpha_stat));
 
-  /* "sicer/utility/file_writers.pyx":114
+  /* "sicer/utility/file_writers.pyx":107
  *                 island.control_count, island.pvalue, island.fc, island.alpha_stat
  *                 )
  *         return buffer             # <<<<<<<<<<<<<<
@@ -2897,7 +2977,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   __pyx_r = __pyx_v_buffer;
   goto __pyx_L0;
 
-  /* "sicer/utility/file_writers.pyx":108
+  /* "sicer/utility/file_writers.pyx":101
  *             raise ValueError("Missing FDR value")
  * 
  *     cdef cstr format_summary_line(self, Island island):             # <<<<<<<<<<<<<<
@@ -2911,7 +2991,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   return __pyx_r;
 }
 
-/* "sicer/utility/file_writers.pyx":116
+/* "sicer/utility/file_writers.pyx":109
  *         return buffer
  * 
  *     cdef cstr format_bed_line(self, Island island):             # <<<<<<<<<<<<<<
@@ -2925,7 +3005,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("format_bed_line", 0);
 
-  /* "sicer/utility/file_writers.pyx":118
+  /* "sicer/utility/file_writers.pyx":111
  *     cdef cstr format_bed_line(self, Island island):
  *         cdef char buffer[64]
  *         snprintf(buffer, 64, "%s\t%d\t%d\t%d\n",             # <<<<<<<<<<<<<<
@@ -2934,7 +3014,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
  */
   (void)(snprintf(__pyx_v_buffer, 64, ((char const *)"%s\t%d\t%d\t%d\n"), __pyx_v_island.chrom.c_str(), __pyx_v_island.start, __pyx_v_island.end, __pyx_v_island.obs_count));
 
-  /* "sicer/utility/file_writers.pyx":121
+  /* "sicer/utility/file_writers.pyx":114
  *                 island.chrom.c_str(), island.start, island.end, island.obs_count
  *                 )
  *         return buffer             # <<<<<<<<<<<<<<
@@ -2944,7 +3024,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   __pyx_r = __pyx_v_buffer;
   goto __pyx_L0;
 
-  /* "sicer/utility/file_writers.pyx":116
+  /* "sicer/utility/file_writers.pyx":109
  *         return buffer
  * 
  *     cdef cstr format_bed_line(self, Island island):             # <<<<<<<<<<<<<<
@@ -2958,7 +3038,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   return __pyx_r;
 }
 
-/* "sicer/utility/file_writers.pyx":123
+/* "sicer/utility/file_writers.pyx":116
  *         return buffer
  * 
  *     cdef cstr format_scoreisland_line(self, Island island):             # <<<<<<<<<<<<<<
@@ -2972,7 +3052,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("format_scoreisland_line", 0);
 
-  /* "sicer/utility/file_writers.pyx":125
+  /* "sicer/utility/file_writers.pyx":118
  *     cdef cstr format_scoreisland_line(self, Island island):
  *         cdef char buffer[64]
  *         snprintf(buffer, 64, "%s\t%d\t%d\t%.10f\n",             # <<<<<<<<<<<<<<
@@ -2981,7 +3061,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
  */
   (void)(snprintf(__pyx_v_buffer, 64, ((char const *)"%s\t%d\t%d\t%.10f\n"), __pyx_v_island.chrom.c_str(), __pyx_v_island.start, __pyx_v_island.end, __pyx_v_island.score));
 
-  /* "sicer/utility/file_writers.pyx":128
+  /* "sicer/utility/file_writers.pyx":121
  *                 island.chrom.c_str(), island.start, island.end, island.score
  *                 )
  *         return buffer             # <<<<<<<<<<<<<<
@@ -2991,7 +3071,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   __pyx_r = __pyx_v_buffer;
   goto __pyx_L0;
 
-  /* "sicer/utility/file_writers.pyx":123
+  /* "sicer/utility/file_writers.pyx":116
  *         return buffer
  * 
  *     cdef cstr format_scoreisland_line(self, Island island):             # <<<<<<<<<<<<<<
@@ -3005,7 +3085,7 @@ static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12fil
   return __pyx_r;
 }
 
-/* "sicer/utility/file_writers.pyx":130
+/* "sicer/utility/file_writers.pyx":123
  *         return buffer
  * 
  *     cdef void c_write(self, cstr outfile_path):             # <<<<<<<<<<<<<<
@@ -3036,7 +3116,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
   std::vector<Island> ::size_type __pyx_t_12;
   __Pyx_RefNannySetupContext("c_write", 0);
 
-  /* "sicer/utility/file_writers.pyx":131
+  /* "sicer/utility/file_writers.pyx":124
  * 
  *     cdef void c_write(self, cstr outfile_path):
  *         cdef FILE *fp = fopen(outfile_path, "w")             # <<<<<<<<<<<<<<
@@ -3045,30 +3125,30 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
  */
   __pyx_v_fp = fopen(__pyx_v_outfile_path, ((char const *)"w"));
 
-  /* "sicer/utility/file_writers.pyx":133
+  /* "sicer/utility/file_writers.pyx":126
  *         cdef FILE *fp = fopen(outfile_path, "w")
  * 
  *         cdef vector[string] chroms = self.islands.getChromosomes()             # <<<<<<<<<<<<<<
  *         cdef cstr line
  *         cdef vector[Island]* vptr
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_self->islands->__pyx_vtab)->getChromosomes(__pyx_v_self->islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_self->islands->__pyx_vtab)->getChromosomes(__pyx_v_self->islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/utility/file_writers.pyx":138
+  /* "sicer/utility/file_writers.pyx":131
  * 
  *         cdef format_f func
  *         if self.file_type == "summary":             # <<<<<<<<<<<<<<
  *             func = self.format_summary_line
  *         elif self.file_type == "fdr-filtered":
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_summary, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_summary, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "sicer/utility/file_writers.pyx":139
+    /* "sicer/utility/file_writers.pyx":132
  *         cdef format_f func
  *         if self.file_type == "summary":
  *             func = self.format_summary_line             # <<<<<<<<<<<<<<
@@ -3078,7 +3158,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     __pyx_t_4 = ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter *)__pyx_v_self->__pyx_vtab)->format_summary_line;
     __pyx_v_func = __pyx_t_4;
 
-    /* "sicer/utility/file_writers.pyx":138
+    /* "sicer/utility/file_writers.pyx":131
  * 
  *         cdef format_f func
  *         if self.file_type == "summary":             # <<<<<<<<<<<<<<
@@ -3088,17 +3168,17 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     goto __pyx_L3;
   }
 
-  /* "sicer/utility/file_writers.pyx":140
+  /* "sicer/utility/file_writers.pyx":133
  *         if self.file_type == "summary":
  *             func = self.format_summary_line
  *         elif self.file_type == "fdr-filtered":             # <<<<<<<<<<<<<<
  *             func = self.format_bed_line
  *         elif self.file_type == "scoreisland":
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_kp_u_fdr_filtered, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_kp_u_fdr_filtered, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 133, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "sicer/utility/file_writers.pyx":141
+    /* "sicer/utility/file_writers.pyx":134
  *             func = self.format_summary_line
  *         elif self.file_type == "fdr-filtered":
  *             func = self.format_bed_line             # <<<<<<<<<<<<<<
@@ -3108,7 +3188,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     __pyx_t_5 = ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter *)__pyx_v_self->__pyx_vtab)->format_bed_line;
     __pyx_v_func = __pyx_t_5;
 
-    /* "sicer/utility/file_writers.pyx":140
+    /* "sicer/utility/file_writers.pyx":133
  *         if self.file_type == "summary":
  *             func = self.format_summary_line
  *         elif self.file_type == "fdr-filtered":             # <<<<<<<<<<<<<<
@@ -3118,17 +3198,17 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     goto __pyx_L3;
   }
 
-  /* "sicer/utility/file_writers.pyx":142
+  /* "sicer/utility/file_writers.pyx":135
  *         elif self.file_type == "fdr-filtered":
  *             func = self.format_bed_line
  *         elif self.file_type == "scoreisland":             # <<<<<<<<<<<<<<
  *             func = self.format_scoreisland_line
  *         elif self.file_type == "cgisland":
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_scoreisland, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_scoreisland, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 135, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "sicer/utility/file_writers.pyx":143
+    /* "sicer/utility/file_writers.pyx":136
  *             func = self.format_bed_line
  *         elif self.file_type == "scoreisland":
  *             func = self.format_scoreisland_line             # <<<<<<<<<<<<<<
@@ -3138,7 +3218,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     __pyx_t_6 = ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter *)__pyx_v_self->__pyx_vtab)->format_scoreisland_line;
     __pyx_v_func = __pyx_t_6;
 
-    /* "sicer/utility/file_writers.pyx":142
+    /* "sicer/utility/file_writers.pyx":135
  *         elif self.file_type == "fdr-filtered":
  *             func = self.format_bed_line
  *         elif self.file_type == "scoreisland":             # <<<<<<<<<<<<<<
@@ -3148,17 +3228,17 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     goto __pyx_L3;
   }
 
-  /* "sicer/utility/file_writers.pyx":144
+  /* "sicer/utility/file_writers.pyx":137
  *         elif self.file_type == "scoreisland":
  *             func = self.format_scoreisland_line
  *         elif self.file_type == "cgisland":             # <<<<<<<<<<<<<<
  *             func = self.format_bed_line
  * 
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_cgisland, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_cgisland, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 137, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "sicer/utility/file_writers.pyx":145
+    /* "sicer/utility/file_writers.pyx":138
  *             func = self.format_scoreisland_line
  *         elif self.file_type == "cgisland":
  *             func = self.format_bed_line             # <<<<<<<<<<<<<<
@@ -3168,7 +3248,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     __pyx_t_5 = ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter *)__pyx_v_self->__pyx_vtab)->format_bed_line;
     __pyx_v_func = __pyx_t_5;
 
-    /* "sicer/utility/file_writers.pyx":144
+    /* "sicer/utility/file_writers.pyx":137
  *         elif self.file_type == "scoreisland":
  *             func = self.format_scoreisland_line
  *         elif self.file_type == "cgisland":             # <<<<<<<<<<<<<<
@@ -3178,7 +3258,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
   }
   __pyx_L3:;
 
-  /* "sicer/utility/file_writers.pyx":147
+  /* "sicer/utility/file_writers.pyx":140
  *             func = self.format_bed_line
  * 
  *         for i in range(chroms.size()):             # <<<<<<<<<<<<<<
@@ -3190,16 +3270,16 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "sicer/utility/file_writers.pyx":148
+    /* "sicer/utility/file_writers.pyx":141
  * 
  *         for i in range(chroms.size()):
  *             vptr = self.islands.getVectorPtr(chroms[i])             # <<<<<<<<<<<<<<
  *             for j in range(deref(vptr).size()):
  *                 line = func(self, deref(vptr)[j])
  */
-    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer *)__pyx_v_self->islands->__pyx_vtab)->getVectorPtr(__pyx_v_self->islands, (__pyx_v_chroms[__pyx_v_i]));
+    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_self->islands->__pyx_vtab)->getVectorPtr(__pyx_v_self->islands, (__pyx_v_chroms[__pyx_v_i]));
 
-    /* "sicer/utility/file_writers.pyx":149
+    /* "sicer/utility/file_writers.pyx":142
  *         for i in range(chroms.size()):
  *             vptr = self.islands.getVectorPtr(chroms[i])
  *             for j in range(deref(vptr).size()):             # <<<<<<<<<<<<<<
@@ -3211,7 +3291,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
       __pyx_v_j = __pyx_t_12;
 
-      /* "sicer/utility/file_writers.pyx":150
+      /* "sicer/utility/file_writers.pyx":143
  *             vptr = self.islands.getVectorPtr(chroms[i])
  *             for j in range(deref(vptr).size()):
  *                 line = func(self, deref(vptr)[j])             # <<<<<<<<<<<<<<
@@ -3220,7 +3300,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
  */
       __pyx_v_line = __pyx_v_func(__pyx_v_self, ((*__pyx_v_vptr)[__pyx_v_j]));
 
-      /* "sicer/utility/file_writers.pyx":151
+      /* "sicer/utility/file_writers.pyx":144
  *             for j in range(deref(vptr).size()):
  *                 line = func(self, deref(vptr)[j])
  *                 fprintf(fp, line)             # <<<<<<<<<<<<<<
@@ -3231,7 +3311,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
     }
   }
 
-  /* "sicer/utility/file_writers.pyx":130
+  /* "sicer/utility/file_writers.pyx":123
  *         return buffer
  * 
  *     cdef void c_write(self, cstr outfile_path):             # <<<<<<<<<<<<<<
@@ -3248,7 +3328,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write(st
   __Pyx_RefNannyFinishContext();
 }
 
-/* "sicer/utility/file_writers.pyx":153
+/* "sicer/utility/file_writers.pyx":146
  *                 fprintf(fp, line)
  * 
  *     cpdef void write(self):             # <<<<<<<<<<<<<<
@@ -3277,7 +3357,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_3write)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -3293,7 +3373,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3313,22 +3393,22 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     #endif
   }
 
-  /* "sicer/utility/file_writers.pyx":154
+  /* "sicer/utility/file_writers.pyx":147
  * 
  *     cpdef void write(self):
  *         self.file_name += "-W" + str(self.window_size)             # <<<<<<<<<<<<<<
  *         if self.gap_size is not None:
  *             self.file_name += "-G" + str(self.gap_size)
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_GIVEREF(__pyx_t_2);
@@ -3337,7 +3417,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
   __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "sicer/utility/file_writers.pyx":155
+  /* "sicer/utility/file_writers.pyx":148
  *     cpdef void write(self):
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.gap_size is not None:             # <<<<<<<<<<<<<<
@@ -3348,19 +3428,19 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "sicer/utility/file_writers.pyx":156
+    /* "sicer/utility/file_writers.pyx":149
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.gap_size is not None:
  *             self.file_name += "-G" + str(self.gap_size)             # <<<<<<<<<<<<<<
  * 
  *         if self.file_type == "scoreisland":
  */
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->gap_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->gap_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_G, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_G, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GIVEREF(__pyx_t_2);
@@ -3369,7 +3449,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "sicer/utility/file_writers.pyx":155
+    /* "sicer/utility/file_writers.pyx":148
  *     cpdef void write(self):
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.gap_size is not None:             # <<<<<<<<<<<<<<
@@ -3378,24 +3458,24 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
  */
   }
 
-  /* "sicer/utility/file_writers.pyx":158
+  /* "sicer/utility/file_writers.pyx":151
  *             self.file_name += "-G" + str(self.gap_size)
  * 
  *         if self.file_type == "scoreisland":             # <<<<<<<<<<<<<<
  *             self.file_name += ".scoreisland"
  *         elif self.file_type == "summary":
  */
-  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_scoreisland, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_scoreisland, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 151, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "sicer/utility/file_writers.pyx":159
+    /* "sicer/utility/file_writers.pyx":152
  * 
  *         if self.file_type == "scoreisland":
  *             self.file_name += ".scoreisland"             # <<<<<<<<<<<<<<
  *         elif self.file_type == "summary":
  *             self.file_name += "-islands-summary"
  */
-    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_scoreisland_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_scoreisland_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 152, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     __Pyx_GOTREF(__pyx_v_self->file_name);
@@ -3403,7 +3483,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "sicer/utility/file_writers.pyx":158
+    /* "sicer/utility/file_writers.pyx":151
  *             self.file_name += "-G" + str(self.gap_size)
  * 
  *         if self.file_type == "scoreisland":             # <<<<<<<<<<<<<<
@@ -3413,24 +3493,24 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     goto __pyx_L4;
   }
 
-  /* "sicer/utility/file_writers.pyx":160
+  /* "sicer/utility/file_writers.pyx":153
  *         if self.file_type == "scoreisland":
  *             self.file_name += ".scoreisland"
  *         elif self.file_type == "summary":             # <<<<<<<<<<<<<<
  *             self.file_name += "-islands-summary"
  *         elif self.file_type == "fdr-filtered":
  */
-  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_summary, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_summary, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 153, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "sicer/utility/file_writers.pyx":161
+    /* "sicer/utility/file_writers.pyx":154
  *             self.file_name += ".scoreisland"
  *         elif self.file_type == "summary":
  *             self.file_name += "-islands-summary"             # <<<<<<<<<<<<<<
  *         elif self.file_type == "fdr-filtered":
  *             self.file_name += "-FDR" + str(self.fdr) + "-island.bed"
  */
-    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_islands_summary); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_islands_summary); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     __Pyx_GOTREF(__pyx_v_self->file_name);
@@ -3438,7 +3518,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "sicer/utility/file_writers.pyx":160
+    /* "sicer/utility/file_writers.pyx":153
  *         if self.file_type == "scoreisland":
  *             self.file_name += ".scoreisland"
  *         elif self.file_type == "summary":             # <<<<<<<<<<<<<<
@@ -3448,32 +3528,32 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     goto __pyx_L4;
   }
 
-  /* "sicer/utility/file_writers.pyx":162
+  /* "sicer/utility/file_writers.pyx":155
  *         elif self.file_type == "summary":
  *             self.file_name += "-islands-summary"
  *         elif self.file_type == "fdr-filtered":             # <<<<<<<<<<<<<<
  *             self.file_name += "-FDR" + str(self.fdr) + "-island.bed"
  *         elif self.file_type == "cgisland":
  */
-  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_kp_u_fdr_filtered, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_kp_u_fdr_filtered, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 155, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "sicer/utility/file_writers.pyx":163
+    /* "sicer/utility/file_writers.pyx":156
  *             self.file_name += "-islands-summary"
  *         elif self.file_type == "fdr-filtered":
  *             self.file_name += "-FDR" + str(self.fdr) + "-island.bed"             # <<<<<<<<<<<<<<
  *         elif self.file_type == "cgisland":
  *             self.file_name += ".cgisland"
  */
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_FDR, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_FDR, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_t_1, __pyx_kp_u_island_bed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_t_1, __pyx_kp_u_island_bed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GIVEREF(__pyx_t_1);
@@ -3482,7 +3562,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     __pyx_v_self->file_name = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "sicer/utility/file_writers.pyx":162
+    /* "sicer/utility/file_writers.pyx":155
  *         elif self.file_type == "summary":
  *             self.file_name += "-islands-summary"
  *         elif self.file_type == "fdr-filtered":             # <<<<<<<<<<<<<<
@@ -3492,24 +3572,24 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     goto __pyx_L4;
   }
 
-  /* "sicer/utility/file_writers.pyx":164
+  /* "sicer/utility/file_writers.pyx":157
  *         elif self.file_type == "fdr-filtered":
  *             self.file_name += "-FDR" + str(self.fdr) + "-island.bed"
  *         elif self.file_type == "cgisland":             # <<<<<<<<<<<<<<
  *             self.file_name += ".cgisland"
  * 
  */
-  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_cgisland, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_self->file_type, __pyx_n_u_cgisland, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 157, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "sicer/utility/file_writers.pyx":165
+    /* "sicer/utility/file_writers.pyx":158
  *             self.file_name += "-FDR" + str(self.fdr) + "-island.bed"
  *         elif self.file_type == "cgisland":
  *             self.file_name += ".cgisland"             # <<<<<<<<<<<<<<
  * 
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
  */
-    __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_cgisland_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_kp_u_cgisland_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     __Pyx_GOTREF(__pyx_v_self->file_name);
@@ -3517,7 +3597,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
     __pyx_v_self->file_name = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "sicer/utility/file_writers.pyx":164
+    /* "sicer/utility/file_writers.pyx":157
  *         elif self.file_type == "fdr-filtered":
  *             self.file_name += "-FDR" + str(self.fdr) + "-island.bed"
  *         elif self.file_type == "cgisland":             # <<<<<<<<<<<<<<
@@ -3527,25 +3607,25 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
   }
   __pyx_L4:;
 
-  /* "sicer/utility/file_writers.pyx":167
+  /* "sicer/utility/file_writers.pyx":160
  *             self.file_name += ".cgisland"
  * 
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")             # <<<<<<<<<<<<<<
  * 
  *         self.c_write(outfile_path)
  */
-  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_1, __pyx_v_self->file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_1, __pyx_v_self->file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_outfile_path = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "sicer/utility/file_writers.pyx":169
+  /* "sicer/utility/file_writers.pyx":162
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
  * 
  *         self.c_write(outfile_path)             # <<<<<<<<<<<<<<
@@ -3554,12 +3634,12 @@ static void __pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(stru
  */
   if (unlikely(__pyx_v_outfile_path == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 169, __pyx_L1_error)
+    __PYX_ERR(0, 162, __pyx_L1_error)
   }
-  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
   ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_IslandFileWriter *)__pyx_v_self->__pyx_vtab)->c_write(__pyx_v_self, __pyx_t_7);
 
-  /* "sicer/utility/file_writers.pyx":153
+  /* "sicer/utility/file_writers.pyx":146
  *                 fprintf(fp, line)
  * 
  *     cpdef void write(self):             # <<<<<<<<<<<<<<
@@ -3599,7 +3679,7 @@ static PyObject *__pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter_2wri
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("write", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3723,7 +3803,7 @@ static PyObject *__pyx_pf_5sicer_7utility_12file_writers_16IslandFileWriter_6__s
   return __pyx_r;
 }
 
-/* "sicer/utility/file_writers.pyx":173
+/* "sicer/utility/file_writers.pyx":166
  * 
  * cdef class BEDFileWriter:
  *     def __cinit__(self,             # <<<<<<<<<<<<<<
@@ -3736,7 +3816,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(Py
 static int __pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_file_name = 0;
   PyObject *__pyx_v_output_dir = 0;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_v_reads = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads = 0;
   int __pyx_v_window_size;
   PyObject *__pyx_v_fdr = 0;
   PyObject *__pyx_v_gap_size = 0;
@@ -3747,7 +3827,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(Py
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_file_name,&__pyx_n_s_output_dir,&__pyx_n_s_reads,&__pyx_n_s_window_size,&__pyx_n_s_fdr,&__pyx_n_s_gap_size,0};
     PyObject* values[6] = {0,0,0,0,0,0};
 
-    /* "sicer/utility/file_writers.pyx":179
+    /* "sicer/utility/file_writers.pyx":172
  *         int window_size,
  *         object fdr,
  *         object gap_size = None             # <<<<<<<<<<<<<<
@@ -3783,25 +3863,25 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(Py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_dir)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 1); __PYX_ERR(0, 173, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 1); __PYX_ERR(0, 166, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_reads)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 2); __PYX_ERR(0, 173, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 2); __PYX_ERR(0, 166, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 3); __PYX_ERR(0, 173, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 3); __PYX_ERR(0, 166, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_fdr)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 4); __PYX_ERR(0, 173, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, 4); __PYX_ERR(0, 166, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -3811,7 +3891,7 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(Py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 173, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 166, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3828,25 +3908,25 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(Py
     }
     __pyx_v_file_name = ((PyObject*)values[0]);
     __pyx_v_output_dir = ((PyObject*)values[1]);
-    __pyx_v_reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)values[2]);
-    __pyx_v_window_size = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_window_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L3_error)
+    __pyx_v_reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)values[2]);
+    __pyx_v_window_size = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_window_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 170, __pyx_L3_error)
     __pyx_v_fdr = values[4];
     __pyx_v_gap_size = values[5];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 173, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 166, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.utility.file_writers.BEDFileWriter.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 174, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_dir), (&PyUnicode_Type), 1, "output_dir", 1))) __PYX_ERR(0, 175, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_reads), __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer, 1, "reads", 0))) __PYX_ERR(0, 176, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name), (&PyUnicode_Type), 1, "file_name", 1))) __PYX_ERR(0, 167, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_dir), (&PyUnicode_Type), 1, "output_dir", 1))) __PYX_ERR(0, 168, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_reads), __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer, 1, "reads", 0))) __PYX_ERR(0, 169, __pyx_L1_error)
   __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(((struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *)__pyx_v_self), __pyx_v_file_name, __pyx_v_output_dir, __pyx_v_reads, __pyx_v_window_size, __pyx_v_fdr, __pyx_v_gap_size);
 
-  /* "sicer/utility/file_writers.pyx":173
+  /* "sicer/utility/file_writers.pyx":166
  * 
  * cdef class BEDFileWriter:
  *     def __cinit__(self,             # <<<<<<<<<<<<<<
@@ -3863,12 +3943,12 @@ static int __pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(Py
   return __pyx_r;
 }
 
-static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *__pyx_v_reads, int __pyx_v_window_size, PyObject *__pyx_v_fdr, PyObject *__pyx_v_gap_size) {
+static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, PyObject *__pyx_v_file_name, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads, int __pyx_v_window_size, PyObject *__pyx_v_fdr, PyObject *__pyx_v_gap_size) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "sicer/utility/file_writers.pyx":181
+  /* "sicer/utility/file_writers.pyx":174
  *         object gap_size = None
  *     ):
  *         self.file_name = file_name             # <<<<<<<<<<<<<<
@@ -3881,7 +3961,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(str
   __Pyx_DECREF(__pyx_v_self->file_name);
   __pyx_v_self->file_name = __pyx_v_file_name;
 
-  /* "sicer/utility/file_writers.pyx":182
+  /* "sicer/utility/file_writers.pyx":175
  *     ):
  *         self.file_name = file_name
  *         self.output_dir = output_dir             # <<<<<<<<<<<<<<
@@ -3894,7 +3974,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(str
   __Pyx_DECREF(__pyx_v_self->output_dir);
   __pyx_v_self->output_dir = __pyx_v_output_dir;
 
-  /* "sicer/utility/file_writers.pyx":183
+  /* "sicer/utility/file_writers.pyx":176
  *         self.file_name = file_name
  *         self.output_dir = output_dir
  *         self.reads = reads             # <<<<<<<<<<<<<<
@@ -3907,7 +3987,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(str
   __Pyx_DECREF(((PyObject *)__pyx_v_self->reads));
   __pyx_v_self->reads = __pyx_v_reads;
 
-  /* "sicer/utility/file_writers.pyx":184
+  /* "sicer/utility/file_writers.pyx":177
  *         self.output_dir = output_dir
  *         self.reads = reads
  *         self.window_size = window_size             # <<<<<<<<<<<<<<
@@ -3916,7 +3996,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(str
  */
   __pyx_v_self->window_size = __pyx_v_window_size;
 
-  /* "sicer/utility/file_writers.pyx":185
+  /* "sicer/utility/file_writers.pyx":178
  *         self.reads = reads
  *         self.window_size = window_size
  *         self.fdr = fdr             # <<<<<<<<<<<<<<
@@ -3929,12 +4009,12 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(str
   __Pyx_DECREF(__pyx_v_self->fdr);
   __pyx_v_self->fdr = __pyx_v_fdr;
 
-  /* "sicer/utility/file_writers.pyx":186
+  /* "sicer/utility/file_writers.pyx":179
  *         self.window_size = window_size
  *         self.fdr = fdr
  *         self.gap_size = gap_size             # <<<<<<<<<<<<<<
  * 
- *     cdef cstr format_read(self, BEDRead read):
+ *     cdef void c_write(self, cstr outfile_path):
  */
   __Pyx_INCREF(__pyx_v_gap_size);
   __Pyx_GIVEREF(__pyx_v_gap_size);
@@ -3942,7 +4022,7 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(str
   __Pyx_DECREF(__pyx_v_self->gap_size);
   __pyx_v_self->gap_size = __pyx_v_gap_size;
 
-  /* "sicer/utility/file_writers.pyx":173
+  /* "sicer/utility/file_writers.pyx":166
  * 
  * cdef class BEDFileWriter:
  *     def __cinit__(self,             # <<<<<<<<<<<<<<
@@ -3956,55 +4036,8 @@ static int __pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter___cinit__(str
   return __pyx_r;
 }
 
-/* "sicer/utility/file_writers.pyx":188
+/* "sicer/utility/file_writers.pyx":181
  *         self.gap_size = gap_size
- * 
- *     cdef cstr format_read(self, BEDRead read):             # <<<<<<<<<<<<<<
- *         cdef char buffer[128]
- *         snprintf(buffer, 128, "%s\t%d\t%d\t%s\t%d\t%c\n",
- */
-
-static __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_format_read(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *__pyx_v_self, BEDRead __pyx_v_read) {
-  char __pyx_v_buffer[0x80];
-  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("format_read", 0);
-
-  /* "sicer/utility/file_writers.pyx":190
- *     cdef cstr format_read(self, BEDRead read):
- *         cdef char buffer[128]
- *         snprintf(buffer, 128, "%s\t%d\t%d\t%s\t%d\t%c\n",             # <<<<<<<<<<<<<<
- *                     read.chrom.c_str(), read.start, read.end,
- *                     read.name.c_str(), read.score, read.strand
- */
-  (void)(snprintf(__pyx_v_buffer, 0x80, ((char const *)"%s\t%d\t%d\t%s\t%d\t%c\n"), __pyx_v_read.chrom.c_str(), __pyx_v_read.start, __pyx_v_read.end, __pyx_v_read.name.c_str(), __pyx_v_read.score, __pyx_v_read.strand));
-
-  /* "sicer/utility/file_writers.pyx":194
- *                     read.name.c_str(), read.score, read.strand
- *                 )
- *         return buffer             # <<<<<<<<<<<<<<
- * 
- *     cdef void c_write(self, cstr outfile_path):
- */
-  __pyx_r = __pyx_v_buffer;
-  goto __pyx_L0;
-
-  /* "sicer/utility/file_writers.pyx":188
- *         self.gap_size = gap_size
- * 
- *     cdef cstr format_read(self, BEDRead read):             # <<<<<<<<<<<<<<
- *         cdef char buffer[128]
- *         snprintf(buffer, 128, "%s\t%d\t%d\t%s\t%d\t%c\n",
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/utility/file_writers.pyx":196
- *         return buffer
  * 
  *     cdef void c_write(self, cstr outfile_path):             # <<<<<<<<<<<<<<
  *         cdef FILE *fp = fopen(outfile_path, "w")
@@ -4015,7 +4048,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_c_write(struc
   FILE *__pyx_v_fp;
   std::vector<std::string>  __pyx_v_chroms;
   std::vector<BEDRead>  *__pyx_v_vptr;
-  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_line;
+  BEDRead __pyx_v_read;
   std::vector<std::string> ::size_type __pyx_v_i;
   std::vector<BEDRead> ::size_type __pyx_v_j;
   __Pyx_RefNannyDeclarations
@@ -4029,7 +4062,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_c_write(struc
   std::vector<BEDRead> ::size_type __pyx_t_8;
   __Pyx_RefNannySetupContext("c_write", 0);
 
-  /* "sicer/utility/file_writers.pyx":197
+  /* "sicer/utility/file_writers.pyx":182
  * 
  *     cdef void c_write(self, cstr outfile_path):
  *         cdef FILE *fp = fopen(outfile_path, "w")             # <<<<<<<<<<<<<<
@@ -4038,21 +4071,21 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_c_write(struc
  */
   __pyx_v_fp = fopen(__pyx_v_outfile_path, ((char const *)"w"));
 
-  /* "sicer/utility/file_writers.pyx":199
+  /* "sicer/utility/file_writers.pyx":184
  *         cdef FILE *fp = fopen(outfile_path, "w")
  * 
  *         cdef vector[string] chroms = self.reads.getChromosomes()             # <<<<<<<<<<<<<<
  *         cdef vector[BEDRead]* vptr
- *         cdef cstr line
+ *         cdef BEDRead read
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_self->reads->__pyx_vtab)->getChromosomes(__pyx_v_self->reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_self->reads->__pyx_vtab)->getChromosomes(__pyx_v_self->reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/utility/file_writers.pyx":203
- *         cdef cstr line
+  /* "sicer/utility/file_writers.pyx":188
+ *         cdef BEDRead read
  * 
  *         for i in range(chroms.size()):             # <<<<<<<<<<<<<<
  *             vptr = self.reads.getVectorPtr(chroms[i])
@@ -4063,49 +4096,49 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_c_write(struc
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "sicer/utility/file_writers.pyx":204
+    /* "sicer/utility/file_writers.pyx":189
  * 
  *         for i in range(chroms.size()):
  *             vptr = self.reads.getVectorPtr(chroms[i])             # <<<<<<<<<<<<<<
  *             for j in range(deref(vptr).size()):
- *                 line = self.format_read(deref(vptr)[j])
+ *                 read = deref(vptr)[j]
  */
-    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)__pyx_v_self->reads->__pyx_vtab)->getVectorPtr(__pyx_v_self->reads, (__pyx_v_chroms[__pyx_v_i]));
+    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_self->reads->__pyx_vtab)->getVectorPtr(__pyx_v_self->reads, (__pyx_v_chroms[__pyx_v_i]));
 
-    /* "sicer/utility/file_writers.pyx":205
+    /* "sicer/utility/file_writers.pyx":190
  *         for i in range(chroms.size()):
  *             vptr = self.reads.getVectorPtr(chroms[i])
  *             for j in range(deref(vptr).size()):             # <<<<<<<<<<<<<<
- *                 line = self.format_read(deref(vptr)[j])
- *                 fprintf(fp, line)
+ *                 read = deref(vptr)[j]
+ *                 fprintf(fp, "%s\t%d\t%d\t%s\t%d\t%c\n",
  */
     __pyx_t_6 = (*__pyx_v_vptr).size();
     __pyx_t_7 = __pyx_t_6;
     for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_j = __pyx_t_8;
 
-      /* "sicer/utility/file_writers.pyx":206
+      /* "sicer/utility/file_writers.pyx":191
  *             vptr = self.reads.getVectorPtr(chroms[i])
  *             for j in range(deref(vptr).size()):
- *                 line = self.format_read(deref(vptr)[j])             # <<<<<<<<<<<<<<
- *                 fprintf(fp, line)
- * 
+ *                 read = deref(vptr)[j]             # <<<<<<<<<<<<<<
+ *                 fprintf(fp, "%s\t%d\t%d\t%s\t%d\t%c\n",
+ *                     read.chrom.c_str(), read.start, read.end,
  */
-      __pyx_v_line = ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_BEDFileWriter *)__pyx_v_self->__pyx_vtab)->format_read(__pyx_v_self, ((*__pyx_v_vptr)[__pyx_v_j]));
+      __pyx_v_read = ((*__pyx_v_vptr)[__pyx_v_j]);
 
-      /* "sicer/utility/file_writers.pyx":207
+      /* "sicer/utility/file_writers.pyx":192
  *             for j in range(deref(vptr).size()):
- *                 line = self.format_read(deref(vptr)[j])
- *                 fprintf(fp, line)             # <<<<<<<<<<<<<<
- * 
- *     cpdef void write(self):
+ *                 read = deref(vptr)[j]
+ *                 fprintf(fp, "%s\t%d\t%d\t%s\t%d\t%c\n",             # <<<<<<<<<<<<<<
+ *                     read.chrom.c_str(), read.start, read.end,
+ *                     read.name.c_str(), read.score, read.strand
  */
-      (void)(fprintf(__pyx_v_fp, __pyx_v_line));
+      (void)(fprintf(__pyx_v_fp, ((char const *)"%s\t%d\t%d\t%s\t%d\t%c\n"), __pyx_v_read.chrom.c_str(), __pyx_v_read.start, __pyx_v_read.end, __pyx_v_read.name.c_str(), __pyx_v_read.score, __pyx_v_read.strand));
     }
   }
 
-  /* "sicer/utility/file_writers.pyx":196
- *         return buffer
+  /* "sicer/utility/file_writers.pyx":181
+ *         self.gap_size = gap_size
  * 
  *     cdef void c_write(self, cstr outfile_path):             # <<<<<<<<<<<<<<
  *         cdef FILE *fp = fopen(outfile_path, "w")
@@ -4121,8 +4154,8 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_c_write(struc
   __Pyx_RefNannyFinishContext();
 }
 
-/* "sicer/utility/file_writers.pyx":209
- *                 fprintf(fp, line)
+/* "sicer/utility/file_writers.pyx":197
+ *                 )
  * 
  *     cpdef void write(self):             # <<<<<<<<<<<<<<
  *         self.file_name += "-W" + str(self.window_size)
@@ -4150,7 +4183,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_3write)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -4166,7 +4199,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4186,22 +4219,22 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
     #endif
   }
 
-  /* "sicer/utility/file_writers.pyx":210
+  /* "sicer/utility/file_writers.pyx":198
  * 
  *     cpdef void write(self):
  *         self.file_name += "-W" + str(self.window_size)             # <<<<<<<<<<<<<<
  *         if self.gap_size is not None:
  *             self.file_name += "-G" + str(self.gap_size)
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_GIVEREF(__pyx_t_2);
@@ -4210,7 +4243,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
   __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "sicer/utility/file_writers.pyx":211
+  /* "sicer/utility/file_writers.pyx":199
  *     cpdef void write(self):
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.gap_size is not None:             # <<<<<<<<<<<<<<
@@ -4221,19 +4254,19 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "sicer/utility/file_writers.pyx":212
+    /* "sicer/utility/file_writers.pyx":200
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.gap_size is not None:
  *             self.file_name += "-G" + str(self.gap_size)             # <<<<<<<<<<<<<<
  *         self.file_name += "-FDR" + str(self.fdr) + "-islandfiltered.bed"
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->gap_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->gap_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_G, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_G, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GIVEREF(__pyx_t_2);
@@ -4242,7 +4275,7 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
     __pyx_v_self->file_name = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "sicer/utility/file_writers.pyx":211
+    /* "sicer/utility/file_writers.pyx":199
  *     cpdef void write(self):
  *         self.file_name += "-W" + str(self.window_size)
  *         if self.gap_size is not None:             # <<<<<<<<<<<<<<
@@ -4251,22 +4284,22 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
  */
   }
 
-  /* "sicer/utility/file_writers.pyx":213
+  /* "sicer/utility/file_writers.pyx":201
  *         if self.gap_size is not None:
  *             self.file_name += "-G" + str(self.gap_size)
  *         self.file_name += "-FDR" + str(self.fdr) + "-islandfiltered.bed"             # <<<<<<<<<<<<<<
  * 
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
  */
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_FDR, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_FDR, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_t_1, __pyx_kp_u_islandfiltered_bed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_t_1, __pyx_kp_u_islandfiltered_bed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_GIVEREF(__pyx_t_1);
@@ -4275,38 +4308,40 @@ static void __pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(struct 
   __pyx_v_self->file_name = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "sicer/utility/file_writers.pyx":215
+  /* "sicer/utility/file_writers.pyx":203
  *         self.file_name += "-FDR" + str(self.fdr) + "-islandfiltered.bed"
  * 
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")             # <<<<<<<<<<<<<<
  * 
  *         self.c_write(outfile_path)
  */
-  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_1, __pyx_v_self->file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_1, __pyx_v_self->file_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsUTF8String(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_outfile_path = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "sicer/utility/file_writers.pyx":217
+  /* "sicer/utility/file_writers.pyx":205
  *         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
  * 
  *         self.c_write(outfile_path)             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   if (unlikely(__pyx_v_outfile_path == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 217, __pyx_L1_error)
+    __PYX_ERR(0, 205, __pyx_L1_error)
   }
-  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L1_error)
   ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_BEDFileWriter *)__pyx_v_self->__pyx_vtab)->c_write(__pyx_v_self, __pyx_t_7);
 
-  /* "sicer/utility/file_writers.pyx":209
- *                 fprintf(fp, line)
+  /* "sicer/utility/file_writers.pyx":197
+ *                 )
  * 
  *     cpdef void write(self):             # <<<<<<<<<<<<<<
  *         self.file_name += "-W" + str(self.window_size)
@@ -4345,7 +4380,7 @@ static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter_2write(
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("write", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4463,6 +4498,1965 @@ static PyObject *__pyx_pf_5sicer_7utility_12file_writers_13BEDFileWriter_6__sets
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("sicer.utility.file_writers.BEDFileWriter.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pyx":209
+ * 
+ * cdef class DiffExprIslandWriter:
+ *     def __cinit__(self,             # <<<<<<<<<<<<<<
+ *         str file_name_1,
+ *         str file_name_2,
+ */
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_file_name_1 = 0;
+  PyObject *__pyx_v_file_name_2 = 0;
+  PyObject *__pyx_v_output_dir = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_v_islands = 0;
+  int __pyx_v_window_size;
+  int __pyx_v_fdr_filtered;
+  int __pyx_v_increased;
+  PyObject *__pyx_v_fdr = 0;
+  PyObject *__pyx_v_gap_size = 0;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_file_name_1,&__pyx_n_s_file_name_2,&__pyx_n_s_output_dir,&__pyx_n_s_islands,&__pyx_n_s_window_size,&__pyx_n_s_fdr_filtered_2,&__pyx_n_s_increased,&__pyx_n_s_fdr,&__pyx_n_s_gap_size,0};
+    PyObject* values[9] = {0,0,0,0,0,0,0,0,0};
+
+    /* "sicer/utility/file_writers.pyx":217
+ *         bint fdr_filtered,
+ *         bint increased,
+ *         object fdr = None,             # <<<<<<<<<<<<<<
+ *         object gap_size = None
+ *     ):
+ */
+    values[7] = ((PyObject *)Py_None);
+
+    /* "sicer/utility/file_writers.pyx":218
+ *         bint increased,
+ *         object fdr = None,
+ *         object gap_size = None             # <<<<<<<<<<<<<<
+ *     ):
+ *         self.file_name_1 = file_name_1
+ */
+    values[8] = ((PyObject *)Py_None);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  9: values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
+        CYTHON_FALLTHROUGH;
+        case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
+        CYTHON_FALLTHROUGH;
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        CYTHON_FALLTHROUGH;
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_file_name_1)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_file_name_2)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 7, 9, 1); __PYX_ERR(0, 209, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_dir)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 7, 9, 2); __PYX_ERR(0, 209, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 7, 9, 3); __PYX_ERR(0, 209, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 7, 9, 4); __PYX_ERR(0, 209, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  5:
+        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_fdr_filtered_2)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 7, 9, 5); __PYX_ERR(0, 209, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  6:
+        if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_increased)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 7, 9, 6); __PYX_ERR(0, 209, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  7:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_fdr);
+          if (value) { values[7] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  8:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_gap_size);
+          if (value) { values[8] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 209, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  9: values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
+        CYTHON_FALLTHROUGH;
+        case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
+        CYTHON_FALLTHROUGH;
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_file_name_1 = ((PyObject*)values[0]);
+    __pyx_v_file_name_2 = ((PyObject*)values[1]);
+    __pyx_v_output_dir = ((PyObject*)values[2]);
+    __pyx_v_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)values[3]);
+    __pyx_v_window_size = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_window_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L3_error)
+    __pyx_v_fdr_filtered = __Pyx_PyObject_IsTrue(values[5]); if (unlikely((__pyx_v_fdr_filtered == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 215, __pyx_L3_error)
+    __pyx_v_increased = __Pyx_PyObject_IsTrue(values[6]); if (unlikely((__pyx_v_increased == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 216, __pyx_L3_error)
+    __pyx_v_fdr = values[7];
+    __pyx_v_gap_size = values[8];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 7, 9, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 209, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return -1;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name_1), (&PyUnicode_Type), 1, "file_name_1", 1))) __PYX_ERR(0, 210, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_file_name_2), (&PyUnicode_Type), 1, "file_name_2", 1))) __PYX_ERR(0, 211, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_dir), (&PyUnicode_Type), 1, "output_dir", 1))) __PYX_ERR(0, 212, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_islands), __pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer, 1, "islands", 0))) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter___cinit__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), __pyx_v_file_name_1, __pyx_v_file_name_2, __pyx_v_output_dir, __pyx_v_islands, __pyx_v_window_size, __pyx_v_fdr_filtered, __pyx_v_increased, __pyx_v_fdr, __pyx_v_gap_size);
+
+  /* "sicer/utility/file_writers.pyx":209
+ * 
+ * cdef class DiffExprIslandWriter:
+ *     def __cinit__(self,             # <<<<<<<<<<<<<<
+ *         str file_name_1,
+ *         str file_name_2,
+ */
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter___cinit__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_file_name_1, PyObject *__pyx_v_file_name_2, PyObject *__pyx_v_output_dir, struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_v_islands, int __pyx_v_window_size, int __pyx_v_fdr_filtered, int __pyx_v_increased, PyObject *__pyx_v_fdr, PyObject *__pyx_v_gap_size) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  __Pyx_RefNannySetupContext("__cinit__", 0);
+
+  /* "sicer/utility/file_writers.pyx":220
+ *         object gap_size = None
+ *     ):
+ *         self.file_name_1 = file_name_1             # <<<<<<<<<<<<<<
+ *         self.file_name_2 = file_name_2
+ *         self.output_dir = output_dir
+ */
+  __Pyx_INCREF(__pyx_v_file_name_1);
+  __Pyx_GIVEREF(__pyx_v_file_name_1);
+  __Pyx_GOTREF(__pyx_v_self->file_name_1);
+  __Pyx_DECREF(__pyx_v_self->file_name_1);
+  __pyx_v_self->file_name_1 = __pyx_v_file_name_1;
+
+  /* "sicer/utility/file_writers.pyx":221
+ *     ):
+ *         self.file_name_1 = file_name_1
+ *         self.file_name_2 = file_name_2             # <<<<<<<<<<<<<<
+ *         self.output_dir = output_dir
+ *         self.islands = islands
+ */
+  __Pyx_INCREF(__pyx_v_file_name_2);
+  __Pyx_GIVEREF(__pyx_v_file_name_2);
+  __Pyx_GOTREF(__pyx_v_self->file_name_2);
+  __Pyx_DECREF(__pyx_v_self->file_name_2);
+  __pyx_v_self->file_name_2 = __pyx_v_file_name_2;
+
+  /* "sicer/utility/file_writers.pyx":222
+ *         self.file_name_1 = file_name_1
+ *         self.file_name_2 = file_name_2
+ *         self.output_dir = output_dir             # <<<<<<<<<<<<<<
+ *         self.islands = islands
+ *         self.window_size = window_size
+ */
+  __Pyx_INCREF(__pyx_v_output_dir);
+  __Pyx_GIVEREF(__pyx_v_output_dir);
+  __Pyx_GOTREF(__pyx_v_self->output_dir);
+  __Pyx_DECREF(__pyx_v_self->output_dir);
+  __pyx_v_self->output_dir = __pyx_v_output_dir;
+
+  /* "sicer/utility/file_writers.pyx":223
+ *         self.file_name_2 = file_name_2
+ *         self.output_dir = output_dir
+ *         self.islands = islands             # <<<<<<<<<<<<<<
+ *         self.window_size = window_size
+ *         self.fdr_filtered = fdr_filtered
+ */
+  __Pyx_INCREF(((PyObject *)__pyx_v_islands));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_islands));
+  __Pyx_GOTREF(__pyx_v_self->islands);
+  __Pyx_DECREF(((PyObject *)__pyx_v_self->islands));
+  __pyx_v_self->islands = __pyx_v_islands;
+
+  /* "sicer/utility/file_writers.pyx":224
+ *         self.output_dir = output_dir
+ *         self.islands = islands
+ *         self.window_size = window_size             # <<<<<<<<<<<<<<
+ *         self.fdr_filtered = fdr_filtered
+ *         self.increased = increased
+ */
+  __pyx_v_self->window_size = __pyx_v_window_size;
+
+  /* "sicer/utility/file_writers.pyx":225
+ *         self.islands = islands
+ *         self.window_size = window_size
+ *         self.fdr_filtered = fdr_filtered             # <<<<<<<<<<<<<<
+ *         self.increased = increased
+ *         self.fdr = fdr
+ */
+  __pyx_v_self->fdr_filtered = __pyx_v_fdr_filtered;
+
+  /* "sicer/utility/file_writers.pyx":226
+ *         self.window_size = window_size
+ *         self.fdr_filtered = fdr_filtered
+ *         self.increased = increased             # <<<<<<<<<<<<<<
+ *         self.fdr = fdr
+ *         self.gap_size = gap_size
+ */
+  __pyx_v_self->increased = __pyx_v_increased;
+
+  /* "sicer/utility/file_writers.pyx":227
+ *         self.fdr_filtered = fdr_filtered
+ *         self.increased = increased
+ *         self.fdr = fdr             # <<<<<<<<<<<<<<
+ *         self.gap_size = gap_size
+ *         self.header = b"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A"
+ */
+  __Pyx_INCREF(__pyx_v_fdr);
+  __Pyx_GIVEREF(__pyx_v_fdr);
+  __Pyx_GOTREF(__pyx_v_self->fdr);
+  __Pyx_DECREF(__pyx_v_self->fdr);
+  __pyx_v_self->fdr = __pyx_v_fdr;
+
+  /* "sicer/utility/file_writers.pyx":228
+ *         self.increased = increased
+ *         self.fdr = fdr
+ *         self.gap_size = gap_size             # <<<<<<<<<<<<<<
+ *         self.header = b"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A"
+ *         self.format = b"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"
+ */
+  __Pyx_INCREF(__pyx_v_gap_size);
+  __Pyx_GIVEREF(__pyx_v_gap_size);
+  __Pyx_GOTREF(__pyx_v_self->gap_size);
+  __Pyx_DECREF(__pyx_v_self->gap_size);
+  __pyx_v_self->gap_size = __pyx_v_gap_size;
+
+  /* "sicer/utility/file_writers.pyx":229
+ *         self.fdr = fdr
+ *         self.gap_size = gap_size
+ *         self.header = b"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A"             # <<<<<<<<<<<<<<
+ *         self.format = b"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"
+ * 
+ */
+  __pyx_v_self->header = ((__pyx_t_5sicer_7utility_12file_writers_cstr)"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A");
+
+  /* "sicer/utility/file_writers.pyx":230
+ *         self.gap_size = gap_size
+ *         self.header = b"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A"
+ *         self.format = b"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"             # <<<<<<<<<<<<<<
+ * 
+ *         if fdr_filtered and fdr is None:
+ */
+  __pyx_v_self->format = ((__pyx_t_5sicer_7utility_12file_writers_cstr)"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n");
+
+  /* "sicer/utility/file_writers.pyx":232
+ *         self.format = b"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"
+ * 
+ *         if fdr_filtered and fdr is None:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Missing FDR value")
+ * 
+ */
+  __pyx_t_2 = (__pyx_v_fdr_filtered != 0);
+  if (__pyx_t_2) {
+  } else {
+    __pyx_t_1 = __pyx_t_2;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_2 = (__pyx_v_fdr == Py_None);
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  __pyx_t_1 = __pyx_t_3;
+  __pyx_L4_bool_binop_done:;
+  if (unlikely(__pyx_t_1)) {
+
+    /* "sicer/utility/file_writers.pyx":233
+ * 
+ *         if fdr_filtered and fdr is None:
+ *             raise ValueError("Missing FDR value")             # <<<<<<<<<<<<<<
+ * 
+ *     cdef void c_write(self, cstr outfile_path):
+ */
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 233, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 233, __pyx_L1_error)
+
+    /* "sicer/utility/file_writers.pyx":232
+ *         self.format = b"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"
+ * 
+ *         if fdr_filtered and fdr is None:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Missing FDR value")
+ * 
+ */
+  }
+
+  /* "sicer/utility/file_writers.pyx":209
+ * 
+ * cdef class DiffExprIslandWriter:
+ *     def __cinit__(self,             # <<<<<<<<<<<<<<
+ *         str file_name_1,
+ *         str file_name_2,
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pyx":235
+ *             raise ValueError("Missing FDR value")
+ * 
+ *     cdef void c_write(self, cstr outfile_path):             # <<<<<<<<<<<<<<
+ *         cdef FILE *fp = fopen(outfile_path, "w")
+ * 
+ */
+
+void __pyx_f_5sicer_7utility_12file_writers_20DiffExprIslandWriter_c_write(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_v_outfile_path) {
+  FILE *__pyx_v_fp;
+  std::vector<std::string>  __pyx_v_chroms;
+  std::vector<DiffExprIsland>  *__pyx_v_vptr;
+  DiffExprIsland __pyx_v_island;
+  std::vector<std::string> ::size_type __pyx_v_i;
+  std::vector<DiffExprIsland> ::size_type __pyx_v_j;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  std::vector<std::string>  __pyx_t_3;
+  std::vector<std::string> ::size_type __pyx_t_4;
+  std::vector<std::string> ::size_type __pyx_t_5;
+  std::vector<std::string> ::size_type __pyx_t_6;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_7;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_8;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_9;
+  __Pyx_RefNannySetupContext("c_write", 0);
+
+  /* "sicer/utility/file_writers.pyx":236
+ * 
+ *     cdef void c_write(self, cstr outfile_path):
+ *         cdef FILE *fp = fopen(outfile_path, "w")             # <<<<<<<<<<<<<<
+ * 
+ *         if not self.fdr_filtered:
+ */
+  __pyx_v_fp = fopen(__pyx_v_outfile_path, ((char const *)"w"));
+
+  /* "sicer/utility/file_writers.pyx":238
+ *         cdef FILE *fp = fopen(outfile_path, "w")
+ * 
+ *         if not self.fdr_filtered:             # <<<<<<<<<<<<<<
+ *             fprintf(fp, self.header)
+ * 
+ */
+  __pyx_t_1 = ((!(__pyx_v_self->fdr_filtered != 0)) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/utility/file_writers.pyx":239
+ * 
+ *         if not self.fdr_filtered:
+ *             fprintf(fp, self.header)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef vector[string] chroms = self.islands.getChromosomes()
+ */
+    (void)(fprintf(__pyx_v_fp, __pyx_v_self->header));
+
+    /* "sicer/utility/file_writers.pyx":238
+ *         cdef FILE *fp = fopen(outfile_path, "w")
+ * 
+ *         if not self.fdr_filtered:             # <<<<<<<<<<<<<<
+ *             fprintf(fp, self.header)
+ * 
+ */
+  }
+
+  /* "sicer/utility/file_writers.pyx":241
+ *             fprintf(fp, self.header)
+ * 
+ *         cdef vector[string] chroms = self.islands.getChromosomes()             # <<<<<<<<<<<<<<
+ *         cdef vector[DiffExprIsland]* vptr
+ *         cdef DiffExprIsland island
+ */
+  __pyx_t_2 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_v_self->islands->__pyx_vtab)->getChromosomes(__pyx_v_self->islands, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 241, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_chroms = __pyx_t_3;
+
+  /* "sicer/utility/file_writers.pyx":245
+ *         cdef DiffExprIsland island
+ * 
+ *         for i in range(chroms.size()):             # <<<<<<<<<<<<<<
+ *             vptr = self.islands.getVectorPtr(chroms[i])
+ *             for j in range(deref(vptr).size()):
+ */
+  __pyx_t_4 = __pyx_v_chroms.size();
+  __pyx_t_5 = __pyx_t_4;
+  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+    __pyx_v_i = __pyx_t_6;
+
+    /* "sicer/utility/file_writers.pyx":246
+ * 
+ *         for i in range(chroms.size()):
+ *             vptr = self.islands.getVectorPtr(chroms[i])             # <<<<<<<<<<<<<<
+ *             for j in range(deref(vptr).size()):
+ *                 island = deref(vptr)[j]
+ */
+    __pyx_v_vptr = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_v_self->islands->__pyx_vtab)->getVectorPtr(__pyx_v_self->islands, (__pyx_v_chroms[__pyx_v_i]));
+
+    /* "sicer/utility/file_writers.pyx":247
+ *         for i in range(chroms.size()):
+ *             vptr = self.islands.getVectorPtr(chroms[i])
+ *             for j in range(deref(vptr).size()):             # <<<<<<<<<<<<<<
+ *                 island = deref(vptr)[j]
+ *                 fprintf(fp, self.format,
+ */
+    __pyx_t_7 = (*__pyx_v_vptr).size();
+    __pyx_t_8 = __pyx_t_7;
+    for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
+      __pyx_v_j = __pyx_t_9;
+
+      /* "sicer/utility/file_writers.pyx":248
+ *             vptr = self.islands.getVectorPtr(chroms[i])
+ *             for j in range(deref(vptr).size()):
+ *                 island = deref(vptr)[j]             # <<<<<<<<<<<<<<
+ *                 fprintf(fp, self.format,
+ *                     island.chrom.c_str(), island.start, island.end,
+ */
+      __pyx_v_island = ((*__pyx_v_vptr)[__pyx_v_j]);
+
+      /* "sicer/utility/file_writers.pyx":249
+ *             for j in range(deref(vptr).size()):
+ *                 island = deref(vptr)[j]
+ *                 fprintf(fp, self.format,             # <<<<<<<<<<<<<<
+ *                     island.chrom.c_str(), island.start, island.end,
+ *                     island.count_A, island.norm_count_A,
+ */
+      (void)(fprintf(__pyx_v_fp, __pyx_v_self->format, __pyx_v_island.chrom.c_str(), __pyx_v_island.start, __pyx_v_island.end, __pyx_v_island.count_A, __pyx_v_island.norm_count_A, __pyx_v_island.count_B, __pyx_v_island.norm_count_B, __pyx_v_island.fc_A_vs_B, __pyx_v_island.pvalue_A_vs_B, __pyx_v_island.fdr_A_vs_B, __pyx_v_island.fc_B_vs_A, __pyx_v_island.pvalue_B_vs_A, __pyx_v_island.fdr_B_vs_A));
+    }
+  }
+
+  /* "sicer/utility/file_writers.pyx":235
+ *             raise ValueError("Missing FDR value")
+ * 
+ *     cdef void c_write(self, cstr outfile_path):             # <<<<<<<<<<<<<<
+ *         cdef FILE *fp = fopen(outfile_path, "w")
+ * 
+ */
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_WriteUnraisable("sicer.utility.file_writers.DiffExprIslandWriter.c_write", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+}
+
+/* "sicer/utility/file_writers.pyx":257
+ *                 )
+ * 
+ *     cpdef void write(self):             # <<<<<<<<<<<<<<
+ *         file_name = self.file_name_1 + "-and-" + self.file_name_2
+ *         file_name += "-W" + str(self.window_size)
+ */
+
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3write(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static void __pyx_f_5sicer_7utility_12file_writers_20DiffExprIslandWriter_write(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_v_file_name = NULL;
+  PyObject *__pyx_v_outfile_path = 0;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_t_7;
+  __Pyx_RefNannySetupContext("write", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3write)) {
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+          __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_4)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+            __Pyx_INCREF(__pyx_t_4);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_3, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "sicer/utility/file_writers.pyx":258
+ * 
+ *     cpdef void write(self):
+ *         file_name = self.file_name_1 + "-and-" + self.file_name_2             # <<<<<<<<<<<<<<
+ *         file_name += "-W" + str(self.window_size)
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->file_name_1, __pyx_kp_u_and); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_t_1, __pyx_v_self->file_name_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_file_name = __pyx_t_2;
+  __pyx_t_2 = 0;
+
+  /* "sicer/utility/file_writers.pyx":259
+ *     cpdef void write(self):
+ *         file_name = self.file_name_1 + "-and-" + self.file_name_2
+ *         file_name += "-W" + str(self.window_size)             # <<<<<<<<<<<<<<
+ * 
+ *         if self.gap_size is not None:
+ */
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_W, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_v_file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(__pyx_v_file_name, __pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "sicer/utility/file_writers.pyx":261
+ *         file_name += "-W" + str(self.window_size)
+ * 
+ *         if self.gap_size is not None:             # <<<<<<<<<<<<<<
+ *             file_name += "-G" + str(self.gap_size)
+ * 
+ */
+  __pyx_t_5 = (__pyx_v_self->gap_size != Py_None);
+  __pyx_t_6 = (__pyx_t_5 != 0);
+  if (__pyx_t_6) {
+
+    /* "sicer/utility/file_writers.pyx":262
+ * 
+ *         if self.gap_size is not None:
+ *             file_name += "-G" + str(self.gap_size)             # <<<<<<<<<<<<<<
+ * 
+ *         if self.fdr_filtered:
+ */
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->gap_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_G, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 262, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF_SET(__pyx_v_file_name, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "sicer/utility/file_writers.pyx":261
+ *         file_name += "-W" + str(self.window_size)
+ * 
+ *         if self.gap_size is not None:             # <<<<<<<<<<<<<<
+ *             file_name += "-G" + str(self.gap_size)
+ * 
+ */
+  }
+
+  /* "sicer/utility/file_writers.pyx":264
+ *             file_name += "-G" + str(self.gap_size)
+ * 
+ *         if self.fdr_filtered:             # <<<<<<<<<<<<<<
+ *             if self.increased:
+ *                 file_name += '-increased-islands-summary-FDR' + str(self.fdr)
+ */
+  __pyx_t_6 = (__pyx_v_self->fdr_filtered != 0);
+  if (__pyx_t_6) {
+
+    /* "sicer/utility/file_writers.pyx":265
+ * 
+ *         if self.fdr_filtered:
+ *             if self.increased:             # <<<<<<<<<<<<<<
+ *                 file_name += '-increased-islands-summary-FDR' + str(self.fdr)
+ *             else:
+ */
+    __pyx_t_6 = (__pyx_v_self->increased != 0);
+    if (__pyx_t_6) {
+
+      /* "sicer/utility/file_writers.pyx":266
+ *         if self.fdr_filtered:
+ *             if self.increased:
+ *                 file_name += '-increased-islands-summary-FDR' + str(self.fdr)             # <<<<<<<<<<<<<<
+ *             else:
+ *                 file_name += '-decreased-islands-summary-FDR' + str(self.fdr)
+ */
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 266, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_increased_islands_summary_FDR, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 266, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF_SET(__pyx_v_file_name, __pyx_t_1);
+      __pyx_t_1 = 0;
+
+      /* "sicer/utility/file_writers.pyx":265
+ * 
+ *         if self.fdr_filtered:
+ *             if self.increased:             # <<<<<<<<<<<<<<
+ *                 file_name += '-increased-islands-summary-FDR' + str(self.fdr)
+ *             else:
+ */
+      goto __pyx_L5;
+    }
+
+    /* "sicer/utility/file_writers.pyx":268
+ *                 file_name += '-increased-islands-summary-FDR' + str(self.fdr)
+ *             else:
+ *                 file_name += '-decreased-islands-summary-FDR' + str(self.fdr)             # <<<<<<<<<<<<<<
+ *         else:
+ *             file_name += "-summary"
+ */
+    /*else*/ {
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_v_self->fdr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 268, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_decreased_islands_summary_FDR, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 268, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_file_name, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 268, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF_SET(__pyx_v_file_name, __pyx_t_1);
+      __pyx_t_1 = 0;
+    }
+    __pyx_L5:;
+
+    /* "sicer/utility/file_writers.pyx":264
+ *             file_name += "-G" + str(self.gap_size)
+ * 
+ *         if self.fdr_filtered:             # <<<<<<<<<<<<<<
+ *             if self.increased:
+ *                 file_name += '-increased-islands-summary-FDR' + str(self.fdr)
+ */
+    goto __pyx_L4;
+  }
+
+  /* "sicer/utility/file_writers.pyx":270
+ *                 file_name += '-decreased-islands-summary-FDR' + str(self.fdr)
+ *         else:
+ *             file_name += "-summary"             # <<<<<<<<<<<<<<
+ * 
+ *         cdef bytes outfile_path = (self.output_dir + "/" + file_name).encode("UTF-8")
+ */
+  /*else*/ {
+    __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_file_name, __pyx_kp_u_summary_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 270, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF_SET(__pyx_v_file_name, __pyx_t_1);
+    __pyx_t_1 = 0;
+  }
+  __pyx_L4:;
+
+  /* "sicer/utility/file_writers.pyx":272
+ *             file_name += "-summary"
+ * 
+ *         cdef bytes outfile_path = (self.output_dir + "/" + file_name).encode("UTF-8")             # <<<<<<<<<<<<<<
+ * 
+ *         self.c_write(outfile_path)
+ */
+  __pyx_t_2 = __Pyx_PyUnicode_ConcatSafe(__pyx_v_self->output_dir, __pyx_kp_u__4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_v_file_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_kp_u_UTF_8) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_kp_u_UTF_8);
+  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_v_outfile_path = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "sicer/utility/file_writers.pyx":274
+ *         cdef bytes outfile_path = (self.output_dir + "/" + file_name).encode("UTF-8")
+ * 
+ *         self.c_write(outfile_path)             # <<<<<<<<<<<<<<
+ */
+  if (unlikely(__pyx_v_outfile_path == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
+    __PYX_ERR(0, 274, __pyx_L1_error)
+  }
+  __pyx_t_7 = __Pyx_PyBytes_AsWritableString(__pyx_v_outfile_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 274, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self->__pyx_vtab)->c_write(__pyx_v_self, __pyx_t_7);
+
+  /* "sicer/utility/file_writers.pyx":257
+ *                 )
+ * 
+ *     cpdef void write(self):             # <<<<<<<<<<<<<<
+ *         file_name = self.file_name_1 + "-and-" + self.file_name_2
+ *         file_name += "-W" + str(self.window_size)
+ */
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_WriteUnraisable("sicer.utility.file_writers.DiffExprIslandWriter.write", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_file_name);
+  __Pyx_XDECREF(__pyx_v_outfile_path);
+  __Pyx_RefNannyFinishContext();
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3write(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3write(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("write (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_2write(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_2write(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("write", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_7utility_12file_writers_20DiffExprIslandWriter_write(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.write", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":66
+ *     # Writes islands produced from differential expression analysis
+ *     cdef public:
+ *         str file_name_1             # <<<<<<<<<<<<<<
+ *         str file_name_2
+ *         str output_dir
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->file_name_1);
+  __pyx_r = __pyx_v_self->file_name_1;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  if (!(likely(PyUnicode_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(2, 66, __pyx_L1_error)
+  __pyx_t_1 = __pyx_v_value;
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF(__pyx_v_self->file_name_1);
+  __Pyx_DECREF(__pyx_v_self->file_name_1);
+  __pyx_v_self->file_name_1 = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.file_name_1.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_5__del__(PyObject *__pyx_v_self); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_5__del__(PyObject *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_4__del__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_INCREF(Py_None);
+  __Pyx_GIVEREF(Py_None);
+  __Pyx_GOTREF(__pyx_v_self->file_name_1);
+  __Pyx_DECREF(__pyx_v_self->file_name_1);
+  __pyx_v_self->file_name_1 = ((PyObject*)Py_None);
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":67
+ *     cdef public:
+ *         str file_name_1
+ *         str file_name_2             # <<<<<<<<<<<<<<
+ *         str output_dir
+ *         DiffExprIslandContainer islands
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->file_name_2);
+  __pyx_r = __pyx_v_self->file_name_2;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  if (!(likely(PyUnicode_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(2, 67, __pyx_L1_error)
+  __pyx_t_1 = __pyx_v_value;
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF(__pyx_v_self->file_name_2);
+  __Pyx_DECREF(__pyx_v_self->file_name_2);
+  __pyx_v_self->file_name_2 = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.file_name_2.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_5__del__(PyObject *__pyx_v_self); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_5__del__(PyObject *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_4__del__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_INCREF(Py_None);
+  __Pyx_GIVEREF(Py_None);
+  __Pyx_GOTREF(__pyx_v_self->file_name_2);
+  __Pyx_DECREF(__pyx_v_self->file_name_2);
+  __pyx_v_self->file_name_2 = ((PyObject*)Py_None);
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":68
+ *         str file_name_1
+ *         str file_name_2
+ *         str output_dir             # <<<<<<<<<<<<<<
+ *         DiffExprIslandContainer islands
+ *         int window_size
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->output_dir);
+  __pyx_r = __pyx_v_self->output_dir;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  if (!(likely(PyUnicode_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(2, 68, __pyx_L1_error)
+  __pyx_t_1 = __pyx_v_value;
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF(__pyx_v_self->output_dir);
+  __Pyx_DECREF(__pyx_v_self->output_dir);
+  __pyx_v_self->output_dir = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.output_dir.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_5__del__(PyObject *__pyx_v_self); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_5__del__(PyObject *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_4__del__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_INCREF(Py_None);
+  __Pyx_GIVEREF(Py_None);
+  __Pyx_GOTREF(__pyx_v_self->output_dir);
+  __Pyx_DECREF(__pyx_v_self->output_dir);
+  __pyx_v_self->output_dir = ((PyObject*)Py_None);
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":69
+ *         str file_name_2
+ *         str output_dir
+ *         DiffExprIslandContainer islands             # <<<<<<<<<<<<<<
+ *         int window_size
+ *         bint fdr_filtered
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_self->islands));
+  __pyx_r = ((PyObject *)__pyx_v_self->islands);
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  if (!(likely(((__pyx_v_value) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_value, __pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer))))) __PYX_ERR(2, 69, __pyx_L1_error)
+  __pyx_t_1 = __pyx_v_value;
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF(__pyx_v_self->islands);
+  __Pyx_DECREF(((PyObject *)__pyx_v_self->islands));
+  __pyx_v_self->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.islands.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_5__del__(PyObject *__pyx_v_self); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_5__del__(PyObject *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_4__del__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_INCREF(Py_None);
+  __Pyx_GIVEREF(Py_None);
+  __Pyx_GOTREF(__pyx_v_self->islands);
+  __Pyx_DECREF(((PyObject *)__pyx_v_self->islands));
+  __pyx_v_self->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)Py_None);
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":70
+ *         str output_dir
+ *         DiffExprIslandContainer islands
+ *         int window_size             # <<<<<<<<<<<<<<
+ *         bint fdr_filtered
+ *         bint increased
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->window_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.window_size.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(2, 70, __pyx_L1_error)
+  __pyx_v_self->window_size = __pyx_t_1;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.window_size.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":71
+ *         DiffExprIslandContainer islands
+ *         int window_size
+ *         bint fdr_filtered             # <<<<<<<<<<<<<<
+ *         bint increased
+ *         object fdr
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->fdr_filtered); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.fdr_filtered.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(2, 71, __pyx_L1_error)
+  __pyx_v_self->fdr_filtered = __pyx_t_1;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.fdr_filtered.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":72
+ *         int window_size
+ *         bint fdr_filtered
+ *         bint increased             # <<<<<<<<<<<<<<
+ *         object fdr
+ *         object gap_size
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->increased); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 72, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.increased.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(2, 72, __pyx_L1_error)
+  __pyx_v_self->increased = __pyx_t_1;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.increased.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":73
+ *         bint fdr_filtered
+ *         bint increased
+ *         object fdr             # <<<<<<<<<<<<<<
+ *         object gap_size
+ *         cstr header
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->fdr);
+  __pyx_r = __pyx_v_self->fdr;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__", 0);
+  __Pyx_INCREF(__pyx_v_value);
+  __Pyx_GIVEREF(__pyx_v_value);
+  __Pyx_GOTREF(__pyx_v_self->fdr);
+  __Pyx_DECREF(__pyx_v_self->fdr);
+  __pyx_v_self->fdr = __pyx_v_value;
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_5__del__(PyObject *__pyx_v_self); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_5__del__(PyObject *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_4__del__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_INCREF(Py_None);
+  __Pyx_GIVEREF(Py_None);
+  __Pyx_GOTREF(__pyx_v_self->fdr);
+  __Pyx_DECREF(__pyx_v_self->fdr);
+  __pyx_v_self->fdr = Py_None;
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":74
+ *         bint increased
+ *         object fdr
+ *         object gap_size             # <<<<<<<<<<<<<<
+ *         cstr header
+ *         cstr format
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->gap_size);
+  __pyx_r = __pyx_v_self->gap_size;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__", 0);
+  __Pyx_INCREF(__pyx_v_value);
+  __Pyx_GIVEREF(__pyx_v_value);
+  __Pyx_GOTREF(__pyx_v_self->gap_size);
+  __Pyx_DECREF(__pyx_v_self->gap_size);
+  __pyx_v_self->gap_size = __pyx_v_value;
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_5__del__(PyObject *__pyx_v_self); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_5__del__(PyObject *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_4__del__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_4__del__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_INCREF(Py_None);
+  __Pyx_GIVEREF(Py_None);
+  __Pyx_GOTREF(__pyx_v_self->gap_size);
+  __Pyx_DECREF(__pyx_v_self->gap_size);
+  __pyx_v_self->gap_size = Py_None;
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":75
+ *         object fdr
+ *         object gap_size
+ *         cstr header             # <<<<<<<<<<<<<<
+ *         cstr format
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_self->header); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.header.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_t_1;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  __pyx_t_1 = __Pyx_PyObject_AsWritableString(__pyx_v_value); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(2, 75, __pyx_L1_error)
+  __pyx_v_self->header = __pyx_t_1;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.header.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sicer/utility/file_writers.pxd":76
+ *         object gap_size
+ *         cstr header
+ *         cstr format             # <<<<<<<<<<<<<<
+ * 
+ *         void c_write(self, cstr outfile_path)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format___get__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format___get__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_self->format); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.format.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_2__set__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_2__set__(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __pyx_t_5sicer_7utility_12file_writers_cstr __pyx_t_1;
+  __Pyx_RefNannySetupContext("__set__", 0);
+  __pyx_t_1 = __Pyx_PyObject_AsWritableString(__pyx_v_value); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(2, 76, __pyx_L1_error)
+  __pyx_v_self->format = __pyx_t_1;
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.format.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_4__reduce_cython__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__reduce_cython__", 0);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(1, 2, __pyx_L1_error)
+
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6__setstate_cython__(((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("__setstate_cython__", 0);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(1, 4, __pyx_L1_error)
+
+  /* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sicer.utility.file_writers.DiffExprIslandWriter.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -4898,7 +6892,7 @@ static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_WigFileWriter(PyTyp
   p->__pyx_vtab = __pyx_vtabptr_5sicer_7utility_12file_writers_WigFileWriter;
   p->file_name = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->output_dir = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)Py_None); Py_INCREF(Py_None);
+  p->windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *)Py_None); Py_INCREF(Py_None);
   p->fdr = Py_None; Py_INCREF(Py_None);
   if (unlikely(__pyx_pw_5sicer_7utility_12file_writers_13WigFileWriter_1__cinit__(o, a, k) < 0)) goto bad;
   return o;
@@ -4938,7 +6932,7 @@ static int __pyx_tp_clear_5sicer_7utility_12file_writers_WigFileWriter(PyObject 
   PyObject* tmp;
   struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *)o;
   tmp = ((PyObject*)p->windows);
-  p->windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer *)Py_None); Py_INCREF(Py_None);
+  p->windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->fdr);
   p->fdr = Py_None; Py_INCREF(Py_None);
@@ -5037,7 +7031,7 @@ static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_IslandFileWriter(Py
   p->file_name = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->output_dir = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->file_type = Py_None; Py_INCREF(Py_None);
-  p->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)Py_None); Py_INCREF(Py_None);
+  p->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)Py_None); Py_INCREF(Py_None);
   p->gap_size = Py_None; Py_INCREF(Py_None);
   p->fdr = Py_None; Py_INCREF(Py_None);
   if (unlikely(__pyx_pw_5sicer_7utility_12file_writers_16IslandFileWriter_1__cinit__(o, a, k) < 0)) goto bad;
@@ -5089,7 +7083,7 @@ static int __pyx_tp_clear_5sicer_7utility_12file_writers_IslandFileWriter(PyObje
   p->file_type = Py_None; Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->islands);
-  p->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer *)Py_None); Py_INCREF(Py_None);
+  p->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->gap_size);
   p->gap_size = Py_None; Py_INCREF(Py_None);
@@ -5190,7 +7184,7 @@ static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_BEDFileWriter(PyTyp
   p->__pyx_vtab = __pyx_vtabptr_5sicer_7utility_12file_writers_BEDFileWriter;
   p->file_name = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->output_dir = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)Py_None); Py_INCREF(Py_None);
+  p->reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)Py_None); Py_INCREF(Py_None);
   p->gap_size = Py_None; Py_INCREF(Py_None);
   p->fdr = Py_None; Py_INCREF(Py_None);
   if (unlikely(__pyx_pw_5sicer_7utility_12file_writers_13BEDFileWriter_1__cinit__(o, a, k) < 0)) goto bad;
@@ -5235,7 +7229,7 @@ static int __pyx_tp_clear_5sicer_7utility_12file_writers_BEDFileWriter(PyObject 
   PyObject* tmp;
   struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *)o;
   tmp = ((PyObject*)p->reads);
-  p->reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer *)Py_None); Py_INCREF(Py_None);
+  p->reads = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->gap_size);
   p->gap_size = Py_None; Py_INCREF(Py_None);
@@ -5321,6 +7315,317 @@ static PyTypeObject __pyx_type_5sicer_7utility_12file_writers_BEDFileWriter = {
   0, /*tp_print*/
   #endif
 };
+static struct __pyx_vtabstruct_5sicer_7utility_12file_writers_DiffExprIslandWriter __pyx_vtable_5sicer_7utility_12file_writers_DiffExprIslandWriter;
+
+static PyObject *__pyx_tp_new_5sicer_7utility_12file_writers_DiffExprIslandWriter(PyTypeObject *t, PyObject *a, PyObject *k) {
+  struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *p;
+  PyObject *o;
+  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
+    o = (*t->tp_alloc)(t, 0);
+  } else {
+    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
+  }
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)o);
+  p->__pyx_vtab = __pyx_vtabptr_5sicer_7utility_12file_writers_DiffExprIslandWriter;
+  p->file_name_1 = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  p->file_name_2 = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  p->output_dir = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  p->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)Py_None); Py_INCREF(Py_None);
+  p->fdr = Py_None; Py_INCREF(Py_None);
+  p->gap_size = Py_None; Py_INCREF(Py_None);
+  if (unlikely(__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_1__cinit__(o, a, k) < 0)) goto bad;
+  return o;
+  bad:
+  Py_DECREF(o); o = 0;
+  return NULL;
+}
+
+static void __pyx_tp_dealloc_5sicer_7utility_12file_writers_DiffExprIslandWriter(PyObject *o) {
+  struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)o;
+  #if CYTHON_USE_TP_FINALIZE
+  if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
+    if (PyObject_CallFinalizerFromDealloc(o)) return;
+  }
+  #endif
+  PyObject_GC_UnTrack(o);
+  Py_CLEAR(p->file_name_1);
+  Py_CLEAR(p->file_name_2);
+  Py_CLEAR(p->output_dir);
+  Py_CLEAR(p->islands);
+  Py_CLEAR(p->fdr);
+  Py_CLEAR(p->gap_size);
+  (*Py_TYPE(o)->tp_free)(o);
+}
+
+static int __pyx_tp_traverse_5sicer_7utility_12file_writers_DiffExprIslandWriter(PyObject *o, visitproc v, void *a) {
+  int e;
+  struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)o;
+  if (p->islands) {
+    e = (*v)(((PyObject *)p->islands), a); if (e) return e;
+  }
+  if (p->fdr) {
+    e = (*v)(p->fdr, a); if (e) return e;
+  }
+  if (p->gap_size) {
+    e = (*v)(p->gap_size, a); if (e) return e;
+  }
+  return 0;
+}
+
+static int __pyx_tp_clear_5sicer_7utility_12file_writers_DiffExprIslandWriter(PyObject *o) {
+  PyObject* tmp;
+  struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *p = (struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *)o;
+  tmp = ((PyObject*)p->islands);
+  p->islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)Py_None); Py_INCREF(Py_None);
+  Py_XDECREF(tmp);
+  tmp = ((PyObject*)p->fdr);
+  p->fdr = Py_None; Py_INCREF(Py_None);
+  Py_XDECREF(tmp);
+  tmp = ((PyObject*)p->gap_size);
+  p->gap_size = Py_None; Py_INCREF(Py_None);
+  Py_XDECREF(tmp);
+  return 0;
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_1(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_1(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_3__set__(o, v);
+  }
+  else {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_1_5__del__(o);
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_2(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_2(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_3__set__(o, v);
+  }
+  else {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11file_name_2_5__del__(o);
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_output_dir(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_output_dir(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_3__set__(o, v);
+  }
+  else {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_10output_dir_5__del__(o);
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_islands(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_islands(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_3__set__(o, v);
+  }
+  else {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7islands_5__del__(o);
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_window_size(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_window_size(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_11window_size_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr_filtered(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr_filtered(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_12fdr_filtered_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_increased(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_increased(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_9increased_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_3__set__(o, v);
+  }
+  else {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3fdr_5__del__(o);
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_gap_size(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_gap_size(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_3__set__(o, v);
+  }
+  else {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_8gap_size_5__del__(o);
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_header(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_header(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6header_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
+static PyObject *__pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_format(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_1__get__(o);
+}
+
+static int __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_format(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_6format_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
+static PyMethodDef __pyx_methods_5sicer_7utility_12file_writers_DiffExprIslandWriter[] = {
+  {"write", (PyCFunction)__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_3write, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_5__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_5sicer_7utility_12file_writers_20DiffExprIslandWriter_7__setstate_cython__, METH_O, 0},
+  {0, 0, 0, 0}
+};
+
+static struct PyGetSetDef __pyx_getsets_5sicer_7utility_12file_writers_DiffExprIslandWriter[] = {
+  {(char *)"file_name_1", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_1, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_1, (char *)0, 0},
+  {(char *)"file_name_2", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_2, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_file_name_2, (char *)0, 0},
+  {(char *)"output_dir", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_output_dir, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_output_dir, (char *)0, 0},
+  {(char *)"islands", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_islands, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_islands, (char *)0, 0},
+  {(char *)"window_size", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_window_size, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_window_size, (char *)0, 0},
+  {(char *)"fdr_filtered", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr_filtered, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr_filtered, (char *)0, 0},
+  {(char *)"increased", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_increased, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_increased, (char *)0, 0},
+  {(char *)"fdr", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_fdr, (char *)0, 0},
+  {(char *)"gap_size", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_gap_size, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_gap_size, (char *)0, 0},
+  {(char *)"header", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_header, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_header, (char *)0, 0},
+  {(char *)"format", __pyx_getprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_format, __pyx_setprop_5sicer_7utility_12file_writers_20DiffExprIslandWriter_format, (char *)0, 0},
+  {0, 0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "sicer.utility.file_writers.DiffExprIslandWriter", /*tp_name*/
+  sizeof(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_5sicer_7utility_12file_writers_DiffExprIslandWriter, /*tp_dealloc*/
+  #if PY_VERSION_HEX < 0x030800b4
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4
+  0, /*tp_vectorcall_offset*/
+  #endif
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
+  0, /*tp_doc*/
+  __pyx_tp_traverse_5sicer_7utility_12file_writers_DiffExprIslandWriter, /*tp_traverse*/
+  __pyx_tp_clear_5sicer_7utility_12file_writers_DiffExprIslandWriter, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_5sicer_7utility_12file_writers_DiffExprIslandWriter, /*tp_methods*/
+  0, /*tp_members*/
+  __pyx_getsets_5sicer_7utility_12file_writers_DiffExprIslandWriter, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  0, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_5sicer_7utility_12file_writers_DiffExprIslandWriter, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b1
+  0, /*tp_vectorcall*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
+  0, /*tp_print*/
+  #endif
+};
 
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
@@ -5369,28 +7674,38 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_BEDFileWriter, __pyx_k_BEDFileWriter, sizeof(__pyx_k_BEDFileWriter), 0, 0, 1, 1},
+  {&__pyx_n_s_DiffExprIslandWriter, __pyx_k_DiffExprIslandWriter, sizeof(__pyx_k_DiffExprIslandWriter), 0, 0, 1, 1},
   {&__pyx_kp_u_FDR, __pyx_k_FDR, sizeof(__pyx_k_FDR), 0, 1, 0, 0},
   {&__pyx_kp_u_G, __pyx_k_G, sizeof(__pyx_k_G), 0, 1, 0, 0},
   {&__pyx_n_s_IslandFileWriter, __pyx_k_IslandFileWriter, sizeof(__pyx_k_IslandFileWriter), 0, 0, 1, 1},
   {&__pyx_kp_u_Missing_FDR_value, __pyx_k_Missing_FDR_value, sizeof(__pyx_k_Missing_FDR_value), 0, 1, 0, 0},
   {&__pyx_kp_u_Normalizing_graphs_by_total_isla, __pyx_k_Normalizing_graphs_by_total_isla, sizeof(__pyx_k_Normalizing_graphs_by_total_isla), 0, 1, 0, 0},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
+  {&__pyx_kp_u_UTF_8, __pyx_k_UTF_8, sizeof(__pyx_k_UTF_8), 0, 1, 0, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_kp_u_W, __pyx_k_W, sizeof(__pyx_k_W), 0, 1, 0, 0},
   {&__pyx_n_s_WigFileWriter, __pyx_k_WigFileWriter, sizeof(__pyx_k_WigFileWriter), 0, 0, 1, 1},
   {&__pyx_kp_b__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 0, 0, 0},
   {&__pyx_kp_u__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
   {&__pyx_kp_u__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 1, 0, 0},
+  {&__pyx_kp_u_and, __pyx_k_and, sizeof(__pyx_k_and), 0, 1, 0, 0},
   {&__pyx_n_u_cgisland, __pyx_k_cgisland, sizeof(__pyx_k_cgisland), 0, 1, 0, 1},
   {&__pyx_kp_u_cgisland_2, __pyx_k_cgisland_2, sizeof(__pyx_k_cgisland_2), 0, 1, 0, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+  {&__pyx_kp_u_decreased_islands_summary_FDR, __pyx_k_decreased_islands_summary_FDR, sizeof(__pyx_k_decreased_islands_summary_FDR), 0, 1, 0, 0},
+  {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
   {&__pyx_n_s_fdr, __pyx_k_fdr, sizeof(__pyx_k_fdr), 0, 0, 1, 1},
   {&__pyx_kp_u_fdr_filtered, __pyx_k_fdr_filtered, sizeof(__pyx_k_fdr_filtered), 0, 1, 0, 0},
+  {&__pyx_n_s_fdr_filtered_2, __pyx_k_fdr_filtered_2, sizeof(__pyx_k_fdr_filtered_2), 0, 0, 1, 1},
   {&__pyx_n_s_file_name, __pyx_k_file_name, sizeof(__pyx_k_file_name), 0, 0, 1, 1},
+  {&__pyx_n_s_file_name_1, __pyx_k_file_name_1, sizeof(__pyx_k_file_name_1), 0, 0, 1, 1},
+  {&__pyx_n_s_file_name_2, __pyx_k_file_name_2, sizeof(__pyx_k_file_name_2), 0, 0, 1, 1},
   {&__pyx_n_s_file_type, __pyx_k_file_type, sizeof(__pyx_k_file_type), 0, 0, 1, 1},
   {&__pyx_n_s_filtered, __pyx_k_filtered, sizeof(__pyx_k_filtered), 0, 0, 1, 1},
   {&__pyx_n_s_gap_size, __pyx_k_gap_size, sizeof(__pyx_k_gap_size), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
+  {&__pyx_n_s_increased, __pyx_k_increased, sizeof(__pyx_k_increased), 0, 0, 1, 1},
+  {&__pyx_kp_u_increased_islands_summary_FDR, __pyx_k_increased_islands_summary_FDR, sizeof(__pyx_k_increased_islands_summary_FDR), 0, 1, 0, 0},
   {&__pyx_kp_u_island_bed, __pyx_k_island_bed, sizeof(__pyx_k_island_bed), 0, 1, 0, 0},
   {&__pyx_kp_u_islandfiltered_FDR, __pyx_k_islandfiltered_FDR, sizeof(__pyx_k_islandfiltered_FDR), 0, 1, 0, 0},
   {&__pyx_kp_u_islandfiltered_bed, __pyx_k_islandfiltered_bed, sizeof(__pyx_k_islandfiltered_bed), 0, 1, 0, 0},
@@ -5414,6 +7729,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_kp_b_span, __pyx_k_span, sizeof(__pyx_k_span), 0, 0, 0, 0},
   {&__pyx_n_u_summary, __pyx_k_summary, sizeof(__pyx_k_summary), 0, 1, 0, 1},
+  {&__pyx_kp_u_summary_2, __pyx_k_summary_2, sizeof(__pyx_k_summary_2), 0, 1, 0, 0},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_kp_u_track_type_wiggle_0_name, __pyx_k_track_type_wiggle_0_name, sizeof(__pyx_k_track_type_wiggle_0_name), 0, 1, 0, 0},
   {&__pyx_kp_b_variableStep_chrom, __pyx_k_variableStep_chrom, sizeof(__pyx_k_variableStep_chrom), 0, 0, 0, 0},
@@ -5424,8 +7740,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 34, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 57, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 60, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -5441,20 +7757,20 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         if filtered and fdr is None:
  *             raise ValueError("Missing FDR value")             # <<<<<<<<<<<<<<
  * 
- *     cdef cstr format_line(self, uint32_t pos, double count):
+ *     cdef void c_write(self,
  */
   __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Missing_FDR_value); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "sicer/utility/file_writers.pyx":67
+  /* "sicer/utility/file_writers.pyx":60
  * 
  *     cpdef void write(self):
  *         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")             # <<<<<<<<<<<<<<
  *         # We first need to normalize
  *         cdef int count = self.windows.getTotalTagCount()
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_u_Normalizing_graphs_by_total_isla); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_u_Normalizing_graphs_by_total_isla); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
@@ -5514,6 +7830,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__11);
+  __Pyx_GIVEREF(__pyx_tuple__11);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5565,7 +7900,6 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
   __pyx_vtabptr_5sicer_7utility_12file_writers_WigFileWriter = &__pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter;
-  __pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter.format_line = (__pyx_t_5sicer_7utility_12file_writers_cstr (*)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, uint32_t, double))__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_format_line;
   __pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter.c_write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr, __pyx_t_5sicer_7utility_12file_writers_cstr, int, double))__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_c_write;
   __pyx_vtable_5sicer_7utility_12file_writers_WigFileWriter.write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_WigFileWriter *, int __pyx_skip_dispatch))__pyx_f_5sicer_7utility_12file_writers_13WigFileWriter_write;
   if (PyType_Ready(&__pyx_type_5sicer_7utility_12file_writers_WigFileWriter) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
@@ -5585,32 +7919,45 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_5sicer_7utility_12file_writers_IslandFileWriter.format_scoreisland_line = (__pyx_t_5sicer_7utility_12file_writers_cstr (*)(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *, Island))__pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_format_scoreisland_line;
   __pyx_vtable_5sicer_7utility_12file_writers_IslandFileWriter.c_write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr))__pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_c_write;
   __pyx_vtable_5sicer_7utility_12file_writers_IslandFileWriter.write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_IslandFileWriter *, int __pyx_skip_dispatch))__pyx_f_5sicer_7utility_12file_writers_16IslandFileWriter_write;
-  if (PyType_Ready(&__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5sicer_7utility_12file_writers_IslandFileWriter.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter.tp_dictoffset && __pyx_type_5sicer_7utility_12file_writers_IslandFileWriter.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5sicer_7utility_12file_writers_IslandFileWriter.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter.tp_dict, __pyx_vtabptr_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_IslandFileWriter, (PyObject *)&__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter.tp_dict, __pyx_vtabptr_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_IslandFileWriter, (PyObject *)&__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
   __pyx_ptype_5sicer_7utility_12file_writers_IslandFileWriter = &__pyx_type_5sicer_7utility_12file_writers_IslandFileWriter;
   __pyx_vtabptr_5sicer_7utility_12file_writers_BEDFileWriter = &__pyx_vtable_5sicer_7utility_12file_writers_BEDFileWriter;
-  __pyx_vtable_5sicer_7utility_12file_writers_BEDFileWriter.format_read = (__pyx_t_5sicer_7utility_12file_writers_cstr (*)(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *, BEDRead))__pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_format_read;
   __pyx_vtable_5sicer_7utility_12file_writers_BEDFileWriter.c_write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr))__pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_c_write;
   __pyx_vtable_5sicer_7utility_12file_writers_BEDFileWriter.write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_BEDFileWriter *, int __pyx_skip_dispatch))__pyx_f_5sicer_7utility_12file_writers_13BEDFileWriter_write;
-  if (PyType_Ready(&__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 172, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5sicer_7utility_12file_writers_BEDFileWriter.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter.tp_dictoffset && __pyx_type_5sicer_7utility_12file_writers_BEDFileWriter.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5sicer_7utility_12file_writers_BEDFileWriter.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter.tp_dict, __pyx_vtabptr_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 172, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BEDFileWriter, (PyObject *)&__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 172, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 172, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter.tp_dict, __pyx_vtabptr_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BEDFileWriter, (PyObject *)&__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
   __pyx_ptype_5sicer_7utility_12file_writers_BEDFileWriter = &__pyx_type_5sicer_7utility_12file_writers_BEDFileWriter;
+  __pyx_vtabptr_5sicer_7utility_12file_writers_DiffExprIslandWriter = &__pyx_vtable_5sicer_7utility_12file_writers_DiffExprIslandWriter;
+  __pyx_vtable_5sicer_7utility_12file_writers_DiffExprIslandWriter.c_write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *, __pyx_t_5sicer_7utility_12file_writers_cstr))__pyx_f_5sicer_7utility_12file_writers_20DiffExprIslandWriter_c_write;
+  __pyx_vtable_5sicer_7utility_12file_writers_DiffExprIslandWriter.write = (void (*)(struct __pyx_obj_5sicer_7utility_12file_writers_DiffExprIslandWriter *, int __pyx_skip_dispatch))__pyx_f_5sicer_7utility_12file_writers_20DiffExprIslandWriter_write;
+  if (PyType_Ready(&__pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
+  #if PY_VERSION_HEX < 0x030800B1
+  __pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter.tp_print = 0;
+  #endif
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter.tp_dictoffset && __pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  }
+  if (__Pyx_SetVtable(__pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter.tp_dict, __pyx_vtabptr_5sicer_7utility_12file_writers_DiffExprIslandWriter) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_DiffExprIslandWriter, (PyObject *)&__pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
+  __pyx_ptype_5sicer_7utility_12file_writers_DiffExprIslandWriter = &__pyx_type_5sicer_7utility_12file_writers_DiffExprIslandWriter;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5623,17 +7970,20 @@ static int __Pyx_modinit_type_import_code(void) {
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 13, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("sicer.shared.chrom_containers"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromBEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromBEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer) __PYX_ERR(2, 13, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromBEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromBEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromBEDReadContainer)) __PYX_ERR(2, 13, __pyx_L1_error)
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromWindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromWindowContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer) __PYX_ERR(2, 30, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromWindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromWindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromWindowContainer)) __PYX_ERR(2, 30, __pyx_L1_error)
-  __pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "ChromIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_ChromIslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer) __PYX_ERR(2, 49, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_ChromIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_ChromIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_ChromIslandContainer)) __PYX_ERR(2, 49, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "BEDReadContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer) __PYX_ERR(3, 14, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_BEDReadContainer)) __PYX_ERR(3, 14, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "WindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer) __PYX_ERR(3, 29, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_WindowContainer)) __PYX_ERR(3, 29, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "IslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer) __PYX_ERR(3, 45, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_IslandContainer)) __PYX_ERR(3, 45, __pyx_L1_error)
+  __pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.chrom_containers", "DiffExprIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer) __PYX_ERR(3, 59, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_16chrom_containers_DiffExprIslandContainer)) __PYX_ERR(3, 59, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -5858,7 +8208,7 @@ if (!__Pyx_RefNanny) {
 
   /* "sicer/utility/file_writers.pyx":1
  * # SICER Internal Imports             # <<<<<<<<<<<<<<
- * from sicer.shared.data_classes cimport BEDRead, Window
+ * from sicer.shared.data_classes cimport BEDRead, Window, DiffExprIsland
  * from sicer.utility.utils cimport to_string
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -6749,6 +9099,48 @@ return_ne:
     #endif
     return (equals == Py_NE);
 #endif
+}
+
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
+}
+
+/* ExtTypeTest */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (likely(__Pyx_TypeCheck(obj, type)))
+        return 1;
+    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
+                 Py_TYPE(obj)->tp_name, type->tp_name);
+    return 0;
 }
 
 /* PyObject_GenericGetAttrNoDict */

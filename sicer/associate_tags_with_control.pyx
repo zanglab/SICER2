@@ -1,7 +1,7 @@
 # SICER Internal Imports
 from sicer.utility.utils cimport get_tag_pos, bin_tag_in_island
 from sicer.shared.data_classes cimport BEDRead, Island
-from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromIslandContainer
+from sicer.shared.chrom_containers cimport BEDReadContainer, IslandContainer
 
 # Cython Imports
 from libc.math cimport log, fmin
@@ -70,10 +70,10 @@ cdef vector[double] _associate_tag_count_to_regions_by_chrom (
 
     return pvalue_vec
 
-cdef ChromIslandContainer _associate_tag_count_to_region(
-    ChromIslandContainer islands,
-    ChromBEDReadContainer treatment_reads,
-    ChromBEDReadContainer control_reads,
+cdef IslandContainer _associate_tag_count_to_region(
+    IslandContainer islands,
+    BEDReadContainer treatment_reads,
+    BEDReadContainer control_reads,
     double genome_size,
     double scaling_factor,
     int frag_size,
@@ -118,7 +118,7 @@ cdef ChromIslandContainer _associate_tag_count_to_region(
 
     return islands
 
-cpdef ChromIslandContainer associate_tags_with_control(
+cpdef IslandContainer associate_tags_with_control(
     islands,
     treatment_reads,
     control_reads, 
@@ -137,5 +137,3 @@ cpdef ChromIslandContainer associate_tags_with_control(
         frag_size,
         num_cpu
     )
-
-

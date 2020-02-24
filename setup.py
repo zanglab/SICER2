@@ -13,7 +13,7 @@ USE_CYTHON = True
 
 EXT = '.pyx' if USE_CYTHON else '.cpp'
 
-extra_cpp_args = ["-O3","-ffast-math", "-stdlib=libc++"]
+extra_cpp_args = ["-O3","-ffast-math", "-stdlib=libc++", "-w"]
 
 extensions = [
             Extension('sicer.shared.data_classes',
@@ -85,6 +85,12 @@ extensions = [
                 ),
             Extension('sicer.find_union_islands',
                 sources=['sicer/find_union_islands' + EXT],
+                include_dirs=['.'],
+                extra_compile_args=extra_cpp_args,
+                language='c++'
+                ),
+            Extension('sicer.compare_two_libraries',
+                sources=['sicer/compare_two_libraries' + EXT],
                 include_dirs=['.'],
                 extra_compile_args=extra_cpp_args,
                 language='c++'

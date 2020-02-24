@@ -15,7 +15,8 @@ from sicer.associate_tags_with_control import associate_tags_with_control
 from sicer.filter_islands_by_fdr import filter_islands_by_fdr
 from sicer.recover_significant_reads import recover_significant_reads
 from sicer.find_union_islands import find_union_islands
-from sicer.utility.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter
+from sicer.compare_two_libraries import compare_two_libraries
+from sicer.utility.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter, DiffExprIslandWriter
 
 WINDOW_PVALUE = 0.20
 BIN_SIZE = 0.001
@@ -73,7 +74,7 @@ def run_sicer(args, df_run=False):
         IslandFileWriter(base_name, args.output_directory, "summary",
                                 islands, args.window_size, args.gap_size).write()
 
-        filtered_islands = filter_islands_by_fdr(islands, args.false_discovery_rate, args.cpu)
+        filtered_islands = filter_islands_by_fdr(islands, args.false_discovery_rate, args.cpu, False)
 
         IslandFileWriter(base_name, args.output_directory, "fdr-filtered", filtered_islands,
                                 args.window_size, args.gap_size, args.false_discovery_rate).write()
@@ -114,16 +115,30 @@ def run_sicer_df(args):
 
     union_islands = find_union_islands(islands_1, islands_2, genome_data, args.cpu)
 
-    print("Comparing two treatment libraries...")
-    compare_two_libraries_on_islands.main(args, temp_dir_1, temp_dir_2, library_size_file1, library_size_file2, pool)
-    print("\n")
+    df_islands = compare_two_libraries(
+        genome_data, treatment_reads_1, treatment_reads_2, 
+        union_islands, args.fragment_size, args.cpu
+    )
 
-    print("Identifying significantly increased islands using BH corrected p-value cutoff...")
-    filter_islands_by_significance.main(args, 9, pool)
-    print("\n")
+    df_writer = DiffExprIslandWriter(
+        file_name_1, file_name_2, args.output_directory,
+        df_islands, args.window_size, False, False, gap_size=args.gap_size
+    )
 
-    print("Identifying significantly decreased islands using BH-corrected p-value cutoff...")
-    filter_islands_by_significance.main(args, 12, pool)
-    print("\n")
+    df_writer.write()
 
+    a_vs_b_filtered = filter_islands_by_fdr(
+        df_islands, args.false_discovery_rate_df, args.cpu, True, True
+    )
 
+    df_writer.fdr_filtered = True
+    df_writer.increased = True
+    df_writer.fdr = args.false_discovery_rate_df
+    df_writer.write()
+
+    b_vs_a_filtered = filter_islands_by_fdr(
+        df_islands, args.false_discovery_rate_df, args.cpu, True, False
+    )
+
+    df_writer.increased = False
+    df_writer.write()

@@ -6,7 +6,7 @@ from libc.stdlib cimport free
 from libc.stdio cimport printf
 from libcpp.utility cimport pair
 
-cdef class ChromBEDReadContainer:
+cdef class BEDReadContainer:
 
     def __cinit__(self, object genome_data):
         self.species = genome_data.species
@@ -31,13 +31,10 @@ cdef class ChromBEDReadContainer:
     cdef vector[BEDRead]* getVectorPtr(self, string chrom) nogil:
         return &self.data.at(chrom)
 
-    cdef BEDRead getRead(self, string chrom, int i):
-        return self.data.at(chrom).at(i)
-
     cpdef list getChromosomes(self):
         return self.chromosomes
 
-    cpdef int getReadCount(self):
+    cpdef uint32_t getReadCount(self):
         return self.read_count
 
     def __dealloc__(self):
@@ -46,7 +43,7 @@ cdef class ChromBEDReadContainer:
             self.data.at(chrom).shrink_to_fit()
 
 
-cdef class ChromWindowContainer:
+cdef class WindowContainer:
 
     def __cinit__(self, object genome_data):
         self.species = genome_data.species
@@ -54,9 +51,6 @@ cdef class ChromWindowContainer:
         self.window_count = 0
         for chrom in self.chromosomes:
             self.data.insert(pair[string, vector[Window]](chrom, vector[Window]()))
-
-    cdef void insertWindow(self, string chrom, Window item):
-        self.data.at(chrom).push_back(item)
 
     cpdef void updateCounts(self):
         # Update two counters
@@ -76,16 +70,13 @@ cdef class ChromWindowContainer:
     cdef vector[Window]* getVectorPtr(self, string chrom) nogil:
         return &self.data.at(chrom)
 
-    cdef Window getWindow(self, string chrom, int index):
-        return self.data.at(chrom).at(index)
-
     cpdef list getChromosomes(self):
         return self.chromosomes
 
-    cpdef int getWindowCount(self):
+    cpdef uint32_t getWindowCount(self):
         return self.window_count
 
-    cpdef int getTotalTagCount(self):
+    cpdef uint32_t getTotalTagCount(self):
         return self.total_tag_count
 
     def __dealloc__(self):
@@ -94,7 +85,7 @@ cdef class ChromWindowContainer:
             self.data.at(chrom).shrink_to_fit()
 
 
-cdef class ChromIslandContainer:
+cdef class IslandContainer:
 
     def __cinit__(self, object genome_data):
         self.species = genome_data.species
@@ -102,9 +93,6 @@ cdef class ChromIslandContainer:
         self.island_count = 0
         for chrom in self.chromosomes:
             self.data.insert(pair[string, vector[Island]](chrom, vector[Island]()))
-
-    cdef void insertIsland(self, string chrom, Island item):
-        self.data.at(chrom).push_back(item)
 
     cpdef void updateIslandCount(self):
         cdef int new_count = 0
@@ -119,13 +107,44 @@ cdef class ChromIslandContainer:
     cdef vector[Island]* getVectorPtr(self, string chrom) nogil:
         return &self.data.at(chrom)
 
-    cdef Island getIsland(self, string chrom, int index):
-        return self.data.at(chrom).at(index)
+    cpdef list getChromosomes(self):
+        return self.chromosomes
+
+    cpdef uint32_t getIslandCount(self):
+        return self.island_count
+
+    def __dealloc__(self):
+        for chrom in self.chromosomes:
+            self.data.at(chrom).clear()
+            self.data.at(chrom).shrink_to_fit()
+
+cdef class DiffExprIslandContainer:
+
+    def __cinit__(self, object genome_data, IslandContainer islands):
+        self.species = genome_data.species
+        self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
+        self.island_count = 0
+        for chrom in self.chromosomes:
+            size = deref(islands.getVectorPtr(chrom)).size()
+            self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))
+
+    cpdef void updateIslandCount(self):
+        cdef int new_count = 0
+        for chrom in self.chromosomes:
+            new_count += self.data.at(chrom).size()
+
+        self.island_count = new_count
+
+    cdef mapcpp[string, vector[DiffExprIsland]] getData(self):
+        return self.data
+
+    cdef vector[DiffExprIsland]* getVectorPtr(self, string chrom) nogil:
+        return &self.data.at(chrom)
 
     cpdef list getChromosomes(self):
         return self.chromosomes
 
-    cpdef int getIslandCount(self):
+    cpdef uint32_t getIslandCount(self):
         return self.island_count
 
     def __dealloc__(self):

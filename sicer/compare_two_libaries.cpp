@@ -4,7 +4,8 @@
 {
     "distutils": {
         "depends": [
-            "sicer/shared/data_objects.h"
+            "sicer/shared/data_objects.h",
+            "sicer/utility/removeAt.cpp"
         ],
         "extra_compile_args": [
             "-O3",
@@ -15,15 +16,17 @@
         "include_dirs": [
             "sicer/shared",
             "./sicer/shared",
+            "./sicer/utility",
+            "sicer/utility",
             "."
         ],
         "language": "c++",
-        "name": "sicer.generate_windows",
+        "name": "sicer.compare_two_libaries",
         "sources": [
-            "sicer/generate_windows.pyx"
+            "sicer/compare_two_libaries.pyx"
         ]
     },
-    "module_name": "sicer.generate_windows"
+    "module_name": "sicer.compare_two_libaries"
 }
 END: Cython Metadata */
 
@@ -631,8 +634,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__sicer__generate_windows
-#define __PYX_HAVE_API__sicer__generate_windows
+#define __PYX_HAVE__sicer__compare_two_libaries
+#define __PYX_HAVE_API__sicer__compare_two_libaries
 /* Early includes */
 #include <string.h>
 #include "ios"
@@ -642,11 +645,12 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <string>
 #include <stdint.h>
 #include "data_objects.h"
+#include <vector>
+#include "removeAt.cpp"
+#include <algorithm>
 #include <utility>
 #include <map>
-#include <vector>
 #include <math.h>
-#include <algorithm>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -853,9 +857,31 @@ static int __pyx_clineno = 0;
 static const char * __pyx_cfilenm= __FILE__;
 static const char *__pyx_filename;
 
+/* Header.proto */
+#if !defined(CYTHON_CCOMPLEX)
+  #if defined(__cplusplus)
+    #define CYTHON_CCOMPLEX 1
+  #elif defined(_Complex_I)
+    #define CYTHON_CCOMPLEX 1
+  #else
+    #define CYTHON_CCOMPLEX 0
+  #endif
+#endif
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    #include <complex>
+  #else
+    #include <complex.h>
+  #endif
+#endif
+#if CYTHON_CCOMPLEX && !defined(__cplusplus) && defined(__sun__) && defined(__GNUC__)
+  #undef _Complex_I
+  #define _Complex_I 1.0fj
+#endif
+
 
 static const char *__pyx_f[] = {
-  "sicer/generate_windows.pyx",
+  "sicer/compare_two_libaries.pyx",
   "stringsource",
   "sicer/shared/chrom_containers.pxd",
 };
@@ -870,6 +896,18 @@ static const char *__pyx_f[] = {
 #define __Pyx_FastGIL_Remember()
 #define __Pyx_FastGIL_Forget()
 #define __Pyx_FastGilFuncInit()
+
+/* Declarations.proto */
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    typedef ::std::complex< double > __pyx_t_double_complex;
+  #else
+    typedef double _Complex __pyx_t_double_complex;
+  #endif
+#else
+    typedef struct { double real, imag; } __pyx_t_double_complex;
+#endif
+static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double, double);
 
 
 /*--- Type declarations ---*/
@@ -895,6 +933,19 @@ typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
  * cdef class BEDReadContainer:
  */
 typedef char *__pyx_t_5sicer_6shared_16chrom_containers_cstr;
+struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem;
+
+/* "sicer/compare_two_libaries.pyx":21
+ * from scipy.stats import rankdata
+ * 
+ * cdef struct ReturnItem:             # <<<<<<<<<<<<<<
+ *     vector[double] pvalues_A_vs_B
+ *     vector[double] pvalues_B_vs_A
+ */
+struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem {
+  std::vector<double>  pvalues_A_vs_B;
+  std::vector<double>  pvalues_B_vs_A;
+};
 
 /* "sicer/shared/chrom_containers.pxd":14
  * ctypedef char* cstr
@@ -927,7 +978,7 @@ struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer {
   PyObject *chromosomes;
   std::map<std::string,std::vector<Window> >  data;
   uint32_t window_count;
-  uint32_t total_tag_count;
+  PyObject *uint32_ttotal_tag_count;
 };
 
 
@@ -1155,33 +1206,58 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
-/* GetItemInt.proto */
-#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
-               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
-#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
-                                                     int is_list, int wraparound, int boundscheck);
-
-/* ObjectGetItem.proto */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
+/* PyObjectCall.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
 #else
-#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
+#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
+#endif
+
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
+/* GetModuleGlobalName.proto */
+#if CYTHON_USE_DICT_VERSIONS
+#define __Pyx_GetModuleGlobalName(var, name)  {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
+        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
+        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  {\
+    PY_UINT64_T __pyx_dict_version;\
+    PyObject *__pyx_dict_cached_value;\
+    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
+#else
+#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
 /* PyCFunctionFastCall.proto */
@@ -1214,12 +1290,8 @@ static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, 
     (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
 #endif
 
-/* PyObjectCall.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
-#else
-#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
-#endif
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
 
 /* PyObjectCallMethO.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1229,8 +1301,27 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
-/* ExtTypeTest.proto */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
+/* GetItemInt.proto */
+#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
+    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
+               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
+#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
+                                                     int is_list, int wraparound, int boundscheck);
 
 /* RaiseArgTupleInvalid.proto */
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
@@ -1243,6 +1334,29 @@ static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_n
 static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
+
+/* ArgTypeTest.proto */
+#define __Pyx_ArgTypeTest(obj, type, none_allowed, name, exact)\
+    ((likely((Py_TYPE(obj) == type) | (none_allowed && (obj == Py_None)))) ? 1 :\
+        __Pyx__ArgTypeTest(obj, type, name, exact))
+static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
+
+/* ListCompAppend.proto */
+#if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
+static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
+    PyListObject* L = (PyListObject*) list;
+    Py_ssize_t len = Py_SIZE(list);
+    if (likely(L->allocated > len)) {
+        Py_INCREF(x);
+        PyList_SET_ITEM(list, len, x);
+        Py_SIZE(list) = len+1;
+        return 0;
+    }
+    return PyList_Append(list, x);
+}
+#else
+#define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
+#endif
 
 /* TypeImport.proto */
 #ifndef __PYX_HAVE_RT_ImportType_proto
@@ -1258,31 +1372,11 @@ static PyTypeObject *__Pyx_ImportType(PyObject* module, const char *module_name,
 /* GetVTable.proto */
 static void* __Pyx_GetVtable(PyObject *dict);
 
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
-#endif
+/* Import.proto */
+static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
+
+/* ImportFrom.proto */
+static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
 
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
@@ -1353,22 +1447,76 @@ static void __Pyx_CppExn2PyErr() {
 #endif
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* None.proto */
 #include <new>
 
-/* CIntFromPy.proto */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
+/* RealImag.proto */
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    #define __Pyx_CREAL(z) ((z).real())
+    #define __Pyx_CIMAG(z) ((z).imag())
+  #else
+    #define __Pyx_CREAL(z) (__real__(z))
+    #define __Pyx_CIMAG(z) (__imag__(z))
+  #endif
+#else
+    #define __Pyx_CREAL(z) ((z).real)
+    #define __Pyx_CIMAG(z) ((z).imag)
+#endif
+#if defined(__cplusplus) && CYTHON_CCOMPLEX\
+        && (defined(_WIN32) || defined(__clang__) || (defined(__GNUC__) && (__GNUC__ >= 5 || __GNUC__ == 4 && __GNUC_MINOR__ >= 4 )) || __cplusplus >= 201103)
+    #define __Pyx_SET_CREAL(z,x) ((z).real(x))
+    #define __Pyx_SET_CIMAG(z,y) ((z).imag(y))
+#else
+    #define __Pyx_SET_CREAL(z,x) __Pyx_CREAL(z) = (x)
+    #define __Pyx_SET_CIMAG(z,y) __Pyx_CIMAG(z) = (y)
+#endif
 
-/* CIntFromPy.proto */
-static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *);
+/* Arithmetic.proto */
+#if CYTHON_CCOMPLEX
+    #define __Pyx_c_eq_double(a, b)   ((a)==(b))
+    #define __Pyx_c_sum_double(a, b)  ((a)+(b))
+    #define __Pyx_c_diff_double(a, b) ((a)-(b))
+    #define __Pyx_c_prod_double(a, b) ((a)*(b))
+    #define __Pyx_c_quot_double(a, b) ((a)/(b))
+    #define __Pyx_c_neg_double(a)     (-(a))
+  #ifdef __cplusplus
+    #define __Pyx_c_is_zero_double(z) ((z)==(double)0)
+    #define __Pyx_c_conj_double(z)    (::std::conj(z))
+    #if 1
+        #define __Pyx_c_abs_double(z)     (::std::abs(z))
+        #define __Pyx_c_pow_double(a, b)  (::std::pow(a, b))
+    #endif
+  #else
+    #define __Pyx_c_is_zero_double(z) ((z)==0)
+    #define __Pyx_c_conj_double(z)    (conj(z))
+    #if 1
+        #define __Pyx_c_abs_double(z)     (cabs(z))
+        #define __Pyx_c_pow_double(a, b)  (cpow(a, b))
+    #endif
+ #endif
+#else
+    static CYTHON_INLINE int __Pyx_c_eq_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_sum_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_diff_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_prod_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_quot_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_neg_double(__pyx_t_double_complex);
+    static CYTHON_INLINE int __Pyx_c_is_zero_double(__pyx_t_double_complex);
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_conj_double(__pyx_t_double_complex);
+    #if 1
+        static CYTHON_INLINE double __Pyx_c_abs_double(__pyx_t_double_complex);
+        static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_pow_double(__pyx_t_double_complex, __pyx_t_double_complex);
+    #endif
+#endif
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+/* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -1389,6 +1537,9 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
+/* FunctionImport.proto */
+static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**f)(void), const char *sig);
+
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
@@ -1401,11 +1552,15 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'sicer.shared.data_classes' */
 
+/* Module declarations from 'libcpp.vector' */
+
+/* Module declarations from 'sicer.utility.utils' */
+static int (*__pyx_f_5sicer_7utility_5utils_get_tag_pos)(BEDRead &, int); /*proto*/
+static int (*__pyx_f_5sicer_7utility_5utils_bin_tag_in_island)(std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t); /*proto*/
+
 /* Module declarations from 'libcpp.utility' */
 
 /* Module declarations from 'libcpp.map' */
-
-/* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'sicer.shared.chrom_containers' */
 static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer = 0;
@@ -1413,808 +1568,776 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContain
 static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer = 0;
 static PyTypeObject *__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer = 0;
 
-/* Module declarations from 'libcpp' */
-
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from 'libcpp.algorithm' */
+/* Module declarations from 'libcpp.pair' */
 
-/* Module declarations from 'sicer.generate_windows' */
-static std::vector<uint32_t>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::vector<BEDRead>  &, uint32_t, int); /*proto*/
-static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::vector<Window>  &, std::vector<uint32_t> , std::string, uint32_t, int); /*proto*/
-static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::vector<BEDRead>  &, std::vector<Window>  &, std::string, uint32_t, int, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_f_5sicer_16generate_windows__generate_windows(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, PyObject *, int, int, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_f_5sicer_16generate_windows_generate_windows(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+/* Module declarations from 'scipy.special.cython_special' */
+static double (*__pyx_f_5scipy_7special_14cython_special_pdtrc)(double, double, int __pyx_skip_dispatch); /*proto*/
+
+/* Module declarations from 'sicer.compare_two_libaries' */
+static double __pyx_f_5sicer_20compare_two_libaries__calc_pvalue(uint32_t, uint32_t, double); /*proto*/
+static struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem __pyx_f_5sicer_20compare_two_libaries__associate_tag_count_to_regions_by_chrom(std::vector<DiffExprIsland>  &, std::vector<BEDRead>  &, std::vector<BEDRead>  &, double, int); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_f_5sicer_20compare_two_libaries_compare_two_libaries(PyObject *, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *, int, int, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
-#define __Pyx_MODULE_NAME "sicer.generate_windows"
-extern int __pyx_module_is_main_sicer__generate_windows;
-int __pyx_module_is_main_sicer__generate_windows = 0;
+static PyObject *__pyx_convert_vector_to_py_double(const std::vector<double>  &); /*proto*/
+static std::vector<double>  __pyx_convert_vector_from_py_double(PyObject *); /*proto*/
+#define __Pyx_MODULE_NAME "sicer.compare_two_libaries"
+extern int __pyx_module_is_main_sicer__compare_two_libaries;
+int __pyx_module_is_main_sicer__compare_two_libaries = 0;
 
-/* Implementation of 'sicer.generate_windows' */
+/* Implementation of 'sicer.compare_two_libaries' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_print;
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_chrom[] = "chrom";
 static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
-static const char __pyx_k_reads[] = "reads";
+static const char __pyx_k_scipy[] = "scipy";
+static const char __pyx_k_stats[] = "stats";
+static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_num_cpu[] = "num_cpu";
+static const char __pyx_k_reads_A[] = "reads_A";
+static const char __pyx_k_reads_B[] = "reads_B";
+static const char __pyx_k_pearsonr[] = "pearsonr";
+static const char __pyx_k_rankdata[] = "rankdata";
 static const char __pyx_k_frag_size[] = "frag_size";
+static const char __pyx_k_spearmanr[] = "spearmanr";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_genome_data[] = "genome_data";
-static const char __pyx_k_window_size[] = "window_size";
-static const char __pyx_k_Window_count[] = "Window count: ";
-static const char __pyx_k_chrom_length[] = "chrom_length";
+static const char __pyx_k_scipy_stats[] = "scipy.stats";
+static const char __pyx_k_with_p_value[] = " with p-value ";
+static const char __pyx_k_union_islands[] = "union_islands";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_Generating_windows_from_treateme[] = "Generating windows from treatement reads...";
-static PyObject *__pyx_kp_u_Generating_windows_from_treateme;
-static PyObject *__pyx_kp_u_Window_count;
-static PyObject *__pyx_n_s_chrom;
-static PyObject *__pyx_n_s_chrom_length;
+static const char __pyx_k_Pearson_s_correlation_is[] = "Pearson's correlation is: ";
+static const char __pyx_k_Spearman_s_correlation_is[] = "Spearman's correlation is: ";
+static const char __pyx_k_Comparing_two_treatment_librarie[] = "Comparing two treatment libraries...";
+static PyObject *__pyx_kp_u_Comparing_two_treatment_librarie;
+static PyObject *__pyx_kp_u_Pearson_s_correlation_is;
+static PyObject *__pyx_kp_u_Spearman_s_correlation_is;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_frag_size;
 static PyObject *__pyx_n_s_genome_data;
+static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_num_cpu;
+static PyObject *__pyx_n_s_pearsonr;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_reads;
+static PyObject *__pyx_n_s_rankdata;
+static PyObject *__pyx_n_s_reads_A;
+static PyObject *__pyx_n_s_reads_B;
+static PyObject *__pyx_n_s_scipy;
+static PyObject *__pyx_n_s_scipy_stats;
+static PyObject *__pyx_n_s_spearmanr;
+static PyObject *__pyx_n_s_stats;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_window_size;
-static PyObject *__pyx_pf_5sicer_16generate_windows_generate_windows(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_frag_size, PyObject *__pyx_v_window_size, PyObject *__pyx_v_num_cpu); /* proto */
+static PyObject *__pyx_n_s_union_islands;
+static PyObject *__pyx_kp_u_with_p_value;
+static PyObject *__pyx_pf_5sicer_20compare_two_libaries_compare_two_libaries(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, int __pyx_v_num_cpu); /* proto */
 static PyObject *__pyx_tuple_;
 /* Late includes */
 
-/* "sicer/generate_windows.pyx":18
+/* "sicer/compare_two_libaries.pyx":25
+ *     vector[double] pvalues_B_vs_A
  * 
- * 
- * cdef vector[uint32_t] _get_tag_list(vector[BEDRead]& reads, uint32_t chrom_length, int frag_size) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[uint32_t] tag_list
- *     cdef int shift = <int> round(frag_size / 2.0)
+ * cdef double _calc_pvalue(             # <<<<<<<<<<<<<<
+ *     uint32_t count_A,
+ *     uint32_t count_B,
  */
 
-static std::vector<uint32_t>  __pyx_f_5sicer_16generate_windows__get_tag_list(std::vector<BEDRead>  &__pyx_v_reads, uint32_t __pyx_v_chrom_length, int __pyx_v_frag_size) {
-  std::vector<uint32_t>  __pyx_v_tag_list;
-  int __pyx_v_shift;
+static double __pyx_f_5sicer_20compare_two_libaries__calc_pvalue(uint32_t __pyx_v_count_A, uint32_t __pyx_v_count_B, double __pyx_v_scaling_factor) {
+  double __pyx_v_average;
+  double __pyx_v_pvalue;
+  double __pyx_r;
+  int __pyx_t_1;
+
+  /* "sicer/compare_two_libaries.pyx":41
+ *     cdef double average
+ *     cdef double pvalue
+ *     if count_B > 0:             # <<<<<<<<<<<<<<
+ *         average = count_B * scaling_factor
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_count_B > 0) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/compare_two_libaries.pyx":42
+ *     cdef double pvalue
+ *     if count_B > 0:
+ *         average = count_B * scaling_factor             # <<<<<<<<<<<<<<
+ *     else:
+ *         average = scaling_factor
+ */
+    __pyx_v_average = (__pyx_v_count_B * __pyx_v_scaling_factor);
+
+    /* "sicer/compare_two_libaries.pyx":41
+ *     cdef double average
+ *     cdef double pvalue
+ *     if count_B > 0:             # <<<<<<<<<<<<<<
+ *         average = count_B * scaling_factor
+ *     else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "sicer/compare_two_libaries.pyx":44
+ *         average = count_B * scaling_factor
+ *     else:
+ *         average = scaling_factor             # <<<<<<<<<<<<<<
+ *     if count_A > average:
+ *         pvalue = poisson_sf(count_A, average)
+ */
+  /*else*/ {
+    __pyx_v_average = __pyx_v_scaling_factor;
+  }
+  __pyx_L3:;
+
+  /* "sicer/compare_two_libaries.pyx":45
+ *     else:
+ *         average = scaling_factor
+ *     if count_A > average:             # <<<<<<<<<<<<<<
+ *         pvalue = poisson_sf(count_A, average)
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_count_A > __pyx_v_average) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/compare_two_libaries.pyx":46
+ *         average = scaling_factor
+ *     if count_A > average:
+ *         pvalue = poisson_sf(count_A, average)             # <<<<<<<<<<<<<<
+ *     else:
+ *         pvalue = 1
+ */
+    __pyx_v_pvalue = __pyx_f_5scipy_7special_14cython_special_pdtrc(__pyx_v_count_A, __pyx_v_average, 0);
+
+    /* "sicer/compare_two_libaries.pyx":45
+ *     else:
+ *         average = scaling_factor
+ *     if count_A > average:             # <<<<<<<<<<<<<<
+ *         pvalue = poisson_sf(count_A, average)
+ *     else:
+ */
+    goto __pyx_L4;
+  }
+
+  /* "sicer/compare_two_libaries.pyx":48
+ *         pvalue = poisson_sf(count_A, average)
+ *     else:
+ *         pvalue = 1             # <<<<<<<<<<<<<<
+ *     return pvalue
+ * 
+ */
+  /*else*/ {
+    __pyx_v_pvalue = 1.0;
+  }
+  __pyx_L4:;
+
+  /* "sicer/compare_two_libaries.pyx":49
+ *     else:
+ *         pvalue = 1
+ *     return pvalue             # <<<<<<<<<<<<<<
+ * 
+ * cdef ReturnItem _associate_tag_count_to_regions_by_chrom (
+ */
+  __pyx_r = __pyx_v_pvalue;
+  goto __pyx_L0;
+
+  /* "sicer/compare_two_libaries.pyx":25
+ *     vector[double] pvalues_B_vs_A
+ * 
+ * cdef double _calc_pvalue(             # <<<<<<<<<<<<<<
+ *     uint32_t count_A,
+ *     uint32_t count_B,
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sicer/compare_two_libaries.pyx":51
+ *     return pvalue
+ * 
+ * cdef ReturnItem _associate_tag_count_to_regions_by_chrom (             # <<<<<<<<<<<<<<
+ *     vector[DiffExprIsland]& islands,
+ *     vector[BEDRead]& reads_A,
+ */
+
+static struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem __pyx_f_5sicer_20compare_two_libaries__associate_tag_count_to_regions_by_chrom(std::vector<DiffExprIsland>  &__pyx_v_islands, std::vector<BEDRead>  &__pyx_v_reads_A, std::vector<BEDRead>  &__pyx_v_reads_B, double __pyx_v_scaling_factor, int __pyx_v_frag_size) {
+  struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem __pyx_v_ret;
   uint32_t __pyx_v_pos;
-  std::vector<BEDRead> ::size_type __pyx_v_i;
-  BEDRead __pyx_v_read;
-  std::vector<uint32_t>  __pyx_r;
-  std::vector<BEDRead> ::size_type __pyx_t_1;
-  std::vector<BEDRead> ::size_type __pyx_t_2;
-  std::vector<BEDRead> ::size_type __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
+  int __pyx_v_index;
+  std::vector<uint32_t>  __pyx_v_island_starts;
+  std::vector<uint32_t>  __pyx_v_island_ends;
+  std::vector<DiffExprIsland> ::size_type __pyx_v_i;
+  std::vector<double>  __pyx_v_pvalues_A_vs_B;
+  std::vector<double>  __pyx_v_pvalues_B_vs_A;
+  double __pyx_v_pvalue_A_vs_B;
+  double __pyx_v_pvalue_B_vs_A;
+  struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem __pyx_r;
+  int __pyx_t_1;
+  std::vector<uint32_t>  __pyx_t_2;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_3;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_4;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_5;
+  uint32_t __pyx_t_6;
+  std::vector<BEDRead> ::size_type __pyx_t_7;
+  std::vector<BEDRead> ::size_type __pyx_t_8;
+  std::vector<double>  __pyx_t_9;
 
-  /* "sicer/generate_windows.pyx":20
- * cdef vector[uint32_t] _get_tag_list(vector[BEDRead]& reads, uint32_t chrom_length, int frag_size) nogil:
- *     cdef vector[uint32_t] tag_list
- *     cdef int shift = <int> round(frag_size / 2.0)             # <<<<<<<<<<<<<<
- *     cdef uint32_t pos
+  /* "sicer/compare_two_libaries.pyx":60
+ *     cdef ReturnItem ret
+ * 
+ *     if islands.size() == 0:             # <<<<<<<<<<<<<<
+ *         return ret
  * 
  */
-  __pyx_v_shift = ((int)round((((double)__pyx_v_frag_size) / 2.0)));
+  __pyx_t_1 = ((__pyx_v_islands.size() == 0) != 0);
+  if (__pyx_t_1) {
 
-  /* "sicer/generate_windows.pyx":23
- *     cdef uint32_t pos
+    /* "sicer/compare_two_libaries.pyx":61
  * 
- *     for i in range(reads.size()):             # <<<<<<<<<<<<<<
- *         read = reads[i]
- *         if read.start >= 0 and read.end < chrom_length:
+ *     if islands.size() == 0:
+ *         return ret             # <<<<<<<<<<<<<<
+ * 
+ *     cdef uint32_t pos
  */
-  __pyx_t_1 = __pyx_v_reads.size();
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_r = __pyx_v_ret;
+    goto __pyx_L0;
+
+    /* "sicer/compare_two_libaries.pyx":60
+ *     cdef ReturnItem ret
+ * 
+ *     if islands.size() == 0:             # <<<<<<<<<<<<<<
+ *         return ret
+ * 
+ */
+  }
+
+  /* "sicer/compare_two_libaries.pyx":65
+ *     cdef uint32_t pos
+ *     cdef int index
+ *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())             # <<<<<<<<<<<<<<
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
+ *     for i in range(islands.size()):
+ */
+  try {
+    __pyx_t_2 = std::vector<uint32_t> (__pyx_v_islands.size());
+  } catch(...) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    __Pyx_CppExn2PyErr();
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 65, __pyx_L1_error)
+  }
+  __pyx_v_island_starts = __pyx_t_2;
+
+  /* "sicer/compare_two_libaries.pyx":66
+ *     cdef int index
+ *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())             # <<<<<<<<<<<<<<
+ *     for i in range(islands.size()):
+ *         island_starts[i] = islands[i].start
+ */
+  try {
+    __pyx_t_2 = std::vector<uint32_t> (__pyx_v_islands.size());
+  } catch(...) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    __Pyx_CppExn2PyErr();
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 66, __pyx_L1_error)
+  }
+  __pyx_v_island_ends = __pyx_t_2;
+
+  /* "sicer/compare_two_libaries.pyx":67
+ *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
+ *     for i in range(islands.size()):             # <<<<<<<<<<<<<<
+ *         island_starts[i] = islands[i].start
+ *         island_ends[i] = islands[i].end
+ */
+  __pyx_t_3 = __pyx_v_islands.size();
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+    __pyx_v_i = __pyx_t_5;
+
+    /* "sicer/compare_two_libaries.pyx":68
+ *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
+ *     for i in range(islands.size()):
+ *         island_starts[i] = islands[i].start             # <<<<<<<<<<<<<<
+ *         island_ends[i] = islands[i].end
+ * 
+ */
+    __pyx_t_6 = (__pyx_v_islands[__pyx_v_i]).start;
+    (__pyx_v_island_starts[__pyx_v_i]) = __pyx_t_6;
+
+    /* "sicer/compare_two_libaries.pyx":69
+ *     for i in range(islands.size()):
+ *         island_starts[i] = islands[i].start
+ *         island_ends[i] = islands[i].end             # <<<<<<<<<<<<<<
+ * 
+ *     for i in range(reads_A.size()):
+ */
+    __pyx_t_6 = (__pyx_v_islands[__pyx_v_i]).end;
+    (__pyx_v_island_ends[__pyx_v_i]) = __pyx_t_6;
+  }
+
+  /* "sicer/compare_two_libaries.pyx":71
+ *         island_ends[i] = islands[i].end
+ * 
+ *     for i in range(reads_A.size()):             # <<<<<<<<<<<<<<
+ *         pos = get_tag_pos(reads_A[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ */
+  __pyx_t_7 = __pyx_v_reads_A.size();
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_8; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "sicer/generate_windows.pyx":24
+    /* "sicer/compare_two_libaries.pyx":72
  * 
- *     for i in range(reads.size()):
- *         read = reads[i]             # <<<<<<<<<<<<<<
- *         if read.start >= 0 and read.end < chrom_length:
- *             if read.strand == b'+':
+ *     for i in range(reads_A.size()):
+ *         pos = get_tag_pos(reads_A[i], frag_size)             # <<<<<<<<<<<<<<
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:
  */
-    __pyx_v_read = (__pyx_v_reads[__pyx_v_i]);
+    __pyx_v_pos = __pyx_f_5sicer_7utility_5utils_get_tag_pos((__pyx_v_reads_A[__pyx_v_i]), __pyx_v_frag_size);
 
-    /* "sicer/generate_windows.pyx":25
- *     for i in range(reads.size()):
- *         read = reads[i]
- *         if read.start >= 0 and read.end < chrom_length:             # <<<<<<<<<<<<<<
- *             if read.strand == b'+':
- *                 pos = read.start + shift
+    /* "sicer/compare_two_libaries.pyx":73
+ *     for i in range(reads_A.size()):
+ *         pos = get_tag_pos(reads_A[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)             # <<<<<<<<<<<<<<
+ *         if index >= 0:
+ *             preinc(islands[index].count_A)
  */
-    __pyx_t_5 = ((__pyx_v_read.start >= 0) != 0);
-    if (__pyx_t_5) {
-    } else {
-      __pyx_t_4 = __pyx_t_5;
-      goto __pyx_L6_bool_binop_done;
-    }
-    __pyx_t_5 = ((__pyx_v_read.end < __pyx_v_chrom_length) != 0);
-    __pyx_t_4 = __pyx_t_5;
-    __pyx_L6_bool_binop_done:;
-    if (__pyx_t_4) {
+    __pyx_v_index = __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(__pyx_v_island_starts, __pyx_v_island_ends, __pyx_v_pos);
 
-      /* "sicer/generate_windows.pyx":26
- *         read = reads[i]
- *         if read.start >= 0 and read.end < chrom_length:
- *             if read.strand == b'+':             # <<<<<<<<<<<<<<
- *                 pos = read.start + shift
- *                 if pos >= chrom_length:
- */
-      __pyx_t_4 = ((__pyx_v_read.strand == '+') != 0);
-      if (__pyx_t_4) {
-
-        /* "sicer/generate_windows.pyx":27
- *         if read.start >= 0 and read.end < chrom_length:
- *             if read.strand == b'+':
- *                 pos = read.start + shift             # <<<<<<<<<<<<<<
- *                 if pos >= chrom_length:
- *                     pos = chrom_length - 1
- */
-        __pyx_v_pos = (__pyx_v_read.start + __pyx_v_shift);
-
-        /* "sicer/generate_windows.pyx":28
- *             if read.strand == b'+':
- *                 pos = read.start + shift
- *                 if pos >= chrom_length:             # <<<<<<<<<<<<<<
- *                     pos = chrom_length - 1
- *             else:
- */
-        __pyx_t_4 = ((__pyx_v_pos >= __pyx_v_chrom_length) != 0);
-        if (__pyx_t_4) {
-
-          /* "sicer/generate_windows.pyx":29
- *                 pos = read.start + shift
- *                 if pos >= chrom_length:
- *                     pos = chrom_length - 1             # <<<<<<<<<<<<<<
- *             else:
- *                 pos = read.end - shift - 1
- */
-          __pyx_v_pos = (__pyx_v_chrom_length - 1);
-
-          /* "sicer/generate_windows.pyx":28
- *             if read.strand == b'+':
- *                 pos = read.start + shift
- *                 if pos >= chrom_length:             # <<<<<<<<<<<<<<
- *                     pos = chrom_length - 1
- *             else:
- */
-        }
-
-        /* "sicer/generate_windows.pyx":26
- *         read = reads[i]
- *         if read.start >= 0 and read.end < chrom_length:
- *             if read.strand == b'+':             # <<<<<<<<<<<<<<
- *                 pos = read.start + shift
- *                 if pos >= chrom_length:
- */
-        goto __pyx_L8;
-      }
-
-      /* "sicer/generate_windows.pyx":31
- *                     pos = chrom_length - 1
- *             else:
- *                 pos = read.end - shift - 1             # <<<<<<<<<<<<<<
- *                 if pos < 0:
- *                     pos = 0
- */
-      /*else*/ {
-        __pyx_v_pos = ((__pyx_v_read.end - __pyx_v_shift) - 1);
-
-        /* "sicer/generate_windows.pyx":32
- *             else:
- *                 pos = read.end - shift - 1
- *                 if pos < 0:             # <<<<<<<<<<<<<<
- *                     pos = 0
+    /* "sicer/compare_two_libaries.pyx":74
+ *         pos = get_tag_pos(reads_A[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:             # <<<<<<<<<<<<<<
+ *             preinc(islands[index].count_A)
  * 
  */
-        __pyx_t_4 = ((__pyx_v_pos < 0) != 0);
-        if (__pyx_t_4) {
+    __pyx_t_1 = ((__pyx_v_index >= 0) != 0);
+    if (__pyx_t_1) {
 
-          /* "sicer/generate_windows.pyx":33
- *                 pos = read.end - shift - 1
- *                 if pos < 0:
- *                     pos = 0             # <<<<<<<<<<<<<<
+      /* "sicer/compare_two_libaries.pyx":75
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:
+ *             preinc(islands[index].count_A)             # <<<<<<<<<<<<<<
  * 
- *             tag_list.push_back(pos)
+ *     for i in range(reads_B.size()):
  */
-          __pyx_v_pos = 0;
+      (void)((++(__pyx_v_islands[__pyx_v_index]).count_A));
 
-          /* "sicer/generate_windows.pyx":32
- *             else:
- *                 pos = read.end - shift - 1
- *                 if pos < 0:             # <<<<<<<<<<<<<<
- *                     pos = 0
+      /* "sicer/compare_two_libaries.pyx":74
+ *         pos = get_tag_pos(reads_A[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:             # <<<<<<<<<<<<<<
+ *             preinc(islands[index].count_A)
  * 
- */
-        }
-      }
-      __pyx_L8:;
-
-      /* "sicer/generate_windows.pyx":35
- *                     pos = 0
- * 
- *             tag_list.push_back(pos)             # <<<<<<<<<<<<<<
- * 
- *     sort(tag_list.begin(), tag_list.end())
- */
-      try {
-        __pyx_v_tag_list.push_back(__pyx_v_pos);
-      } catch(...) {
-        #ifdef WITH_THREAD
-        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-        #endif
-        __Pyx_CppExn2PyErr();
-        #ifdef WITH_THREAD
-        __Pyx_PyGILState_Release(__pyx_gilstate_save);
-        #endif
-        __PYX_ERR(0, 35, __pyx_L1_error)
-      }
-
-      /* "sicer/generate_windows.pyx":25
- *     for i in range(reads.size()):
- *         read = reads[i]
- *         if read.start >= 0 and read.end < chrom_length:             # <<<<<<<<<<<<<<
- *             if read.strand == b'+':
- *                 pos = read.start + shift
  */
     }
   }
 
-  /* "sicer/generate_windows.pyx":37
- *             tag_list.push_back(pos)
+  /* "sicer/compare_two_libaries.pyx":77
+ *             preinc(islands[index].count_A)
  * 
- *     sort(tag_list.begin(), tag_list.end())             # <<<<<<<<<<<<<<
- * 
- *     return tag_list
+ *     for i in range(reads_B.size()):             # <<<<<<<<<<<<<<
+ *         pos = get_tag_pos(reads_B[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
  */
-  std::sort<std::vector<uint32_t> ::iterator>(__pyx_v_tag_list.begin(), __pyx_v_tag_list.end());
+  __pyx_t_7 = __pyx_v_reads_B.size();
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_8; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
 
-  /* "sicer/generate_windows.pyx":39
- *     sort(tag_list.begin(), tag_list.end())
+    /* "sicer/compare_two_libaries.pyx":78
  * 
- *     return tag_list             # <<<<<<<<<<<<<<
- * 
- * cdef void _generate_window_from_tags(
+ *     for i in range(reads_B.size()):
+ *         pos = get_tag_pos(reads_B[i], frag_size)             # <<<<<<<<<<<<<<
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:
  */
-  __pyx_r = __pyx_v_tag_list;
+    __pyx_v_pos = __pyx_f_5sicer_7utility_5utils_get_tag_pos((__pyx_v_reads_B[__pyx_v_i]), __pyx_v_frag_size);
+
+    /* "sicer/compare_two_libaries.pyx":79
+ *     for i in range(reads_B.size()):
+ *         pos = get_tag_pos(reads_B[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)             # <<<<<<<<<<<<<<
+ *         if index >= 0:
+ *             preinc(islands[index].count_B)
+ */
+    __pyx_v_index = __pyx_f_5sicer_7utility_5utils_bin_tag_in_island(__pyx_v_island_starts, __pyx_v_island_ends, __pyx_v_pos);
+
+    /* "sicer/compare_two_libaries.pyx":80
+ *         pos = get_tag_pos(reads_B[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:             # <<<<<<<<<<<<<<
+ *             preinc(islands[index].count_B)
+ * 
+ */
+    __pyx_t_1 = ((__pyx_v_index >= 0) != 0);
+    if (__pyx_t_1) {
+
+      /* "sicer/compare_two_libaries.pyx":81
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:
+ *             preinc(islands[index].count_B)             # <<<<<<<<<<<<<<
+ * 
+ *     # We store pvalues again in vectors to easily compute fdr later
+ */
+      (void)((++(__pyx_v_islands[__pyx_v_index]).count_B));
+
+      /* "sicer/compare_two_libaries.pyx":80
+ *         pos = get_tag_pos(reads_B[i], frag_size)
+ *         index = bin_tag_in_island(island_starts, island_ends, pos)
+ *         if index >= 0:             # <<<<<<<<<<<<<<
+ *             preinc(islands[index].count_B)
+ * 
+ */
+    }
+  }
+
+  /* "sicer/compare_two_libaries.pyx":84
+ * 
+ *     # We store pvalues again in vectors to easily compute fdr later
+ *     cdef vector[double] pvalues_A_vs_B = vector[double](islands.size())             # <<<<<<<<<<<<<<
+ *     cdef vector[double] pvalues_B_vs_A = vector[double](islands.size())
+ *     cdef double pvalue_A_vs_B, pvalue_B_vs_A
+ */
+  try {
+    __pyx_t_9 = std::vector<double> (__pyx_v_islands.size());
+  } catch(...) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    __Pyx_CppExn2PyErr();
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 84, __pyx_L1_error)
+  }
+  __pyx_v_pvalues_A_vs_B = __pyx_t_9;
+
+  /* "sicer/compare_two_libaries.pyx":85
+ *     # We store pvalues again in vectors to easily compute fdr later
+ *     cdef vector[double] pvalues_A_vs_B = vector[double](islands.size())
+ *     cdef vector[double] pvalues_B_vs_A = vector[double](islands.size())             # <<<<<<<<<<<<<<
+ *     cdef double pvalue_A_vs_B, pvalue_B_vs_A
+ * 
+ */
+  try {
+    __pyx_t_9 = std::vector<double> (__pyx_v_islands.size());
+  } catch(...) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    __Pyx_CppExn2PyErr();
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 85, __pyx_L1_error)
+  }
+  __pyx_v_pvalues_B_vs_A = __pyx_t_9;
+
+  /* "sicer/compare_two_libaries.pyx":88
+ *     cdef double pvalue_A_vs_B, pvalue_B_vs_A
+ * 
+ *     for i in range(islands.size()):             # <<<<<<<<<<<<<<
+ *         pvalue_A_vs_B = _calc_pvalue(islands[i].count_A, islands[i].count_B, scaling_factor)
+ *         pvalue_B_vs_A = _calc_pvalue(islands[i].count_B, islands[i].count_A, 1/scaling_factor)
+ */
+  __pyx_t_3 = __pyx_v_islands.size();
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+    __pyx_v_i = __pyx_t_5;
+
+    /* "sicer/compare_two_libaries.pyx":89
+ * 
+ *     for i in range(islands.size()):
+ *         pvalue_A_vs_B = _calc_pvalue(islands[i].count_A, islands[i].count_B, scaling_factor)             # <<<<<<<<<<<<<<
+ *         pvalue_B_vs_A = _calc_pvalue(islands[i].count_B, islands[i].count_A, 1/scaling_factor)
+ *         pvalues_A_vs_B[i] = pvalue_A_vs_B
+ */
+    __pyx_v_pvalue_A_vs_B = __pyx_f_5sicer_20compare_two_libaries__calc_pvalue((__pyx_v_islands[__pyx_v_i]).count_A, (__pyx_v_islands[__pyx_v_i]).count_B, __pyx_v_scaling_factor);
+
+    /* "sicer/compare_two_libaries.pyx":90
+ *     for i in range(islands.size()):
+ *         pvalue_A_vs_B = _calc_pvalue(islands[i].count_A, islands[i].count_B, scaling_factor)
+ *         pvalue_B_vs_A = _calc_pvalue(islands[i].count_B, islands[i].count_A, 1/scaling_factor)             # <<<<<<<<<<<<<<
+ *         pvalues_A_vs_B[i] = pvalue_A_vs_B
+ *         pvalues_B_vs_A[i] = pvalue_B_vs_A
+ */
+    if (unlikely(__pyx_v_scaling_factor == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 90, __pyx_L1_error)
+    }
+    __pyx_v_pvalue_B_vs_A = __pyx_f_5sicer_20compare_two_libaries__calc_pvalue((__pyx_v_islands[__pyx_v_i]).count_B, (__pyx_v_islands[__pyx_v_i]).count_A, (1.0 / __pyx_v_scaling_factor));
+
+    /* "sicer/compare_two_libaries.pyx":91
+ *         pvalue_A_vs_B = _calc_pvalue(islands[i].count_A, islands[i].count_B, scaling_factor)
+ *         pvalue_B_vs_A = _calc_pvalue(islands[i].count_B, islands[i].count_A, 1/scaling_factor)
+ *         pvalues_A_vs_B[i] = pvalue_A_vs_B             # <<<<<<<<<<<<<<
+ *         pvalues_B_vs_A[i] = pvalue_B_vs_A
+ *         islands[i].pvalue_A_vs_B = pvalue_A_vs_B
+ */
+    (__pyx_v_pvalues_A_vs_B[__pyx_v_i]) = __pyx_v_pvalue_A_vs_B;
+
+    /* "sicer/compare_two_libaries.pyx":92
+ *         pvalue_B_vs_A = _calc_pvalue(islands[i].count_B, islands[i].count_A, 1/scaling_factor)
+ *         pvalues_A_vs_B[i] = pvalue_A_vs_B
+ *         pvalues_B_vs_A[i] = pvalue_B_vs_A             # <<<<<<<<<<<<<<
+ *         islands[i].pvalue_A_vs_B = pvalue_A_vs_B
+ *         islands[i].pvalue_B_vs_A = pvalue_B_vs_A
+ */
+    (__pyx_v_pvalues_B_vs_A[__pyx_v_i]) = __pyx_v_pvalue_B_vs_A;
+
+    /* "sicer/compare_two_libaries.pyx":93
+ *         pvalues_A_vs_B[i] = pvalue_A_vs_B
+ *         pvalues_B_vs_A[i] = pvalue_B_vs_A
+ *         islands[i].pvalue_A_vs_B = pvalue_A_vs_B             # <<<<<<<<<<<<<<
+ *         islands[i].pvalue_B_vs_A = pvalue_B_vs_A
+ * 
+ */
+    (__pyx_v_islands[__pyx_v_i]).pvalue_A_vs_B = __pyx_v_pvalue_A_vs_B;
+
+    /* "sicer/compare_two_libaries.pyx":94
+ *         pvalues_B_vs_A[i] = pvalue_B_vs_A
+ *         islands[i].pvalue_A_vs_B = pvalue_A_vs_B
+ *         islands[i].pvalue_B_vs_A = pvalue_B_vs_A             # <<<<<<<<<<<<<<
+ * 
+ *     ret.pvalues_B_vs_A.swap(pvalues_A_vs_B)
+ */
+    (__pyx_v_islands[__pyx_v_i]).pvalue_B_vs_A = __pyx_v_pvalue_B_vs_A;
+  }
+
+  /* "sicer/compare_two_libaries.pyx":96
+ *         islands[i].pvalue_B_vs_A = pvalue_B_vs_A
+ * 
+ *     ret.pvalues_B_vs_A.swap(pvalues_A_vs_B)             # <<<<<<<<<<<<<<
+ *     ret.pvalues_A_vs_B.swap(pvalues_B_vs_A)
+ * 
+ */
+  __pyx_v_ret.pvalues_B_vs_A.swap(__pyx_v_pvalues_A_vs_B);
+
+  /* "sicer/compare_two_libaries.pyx":97
+ * 
+ *     ret.pvalues_B_vs_A.swap(pvalues_A_vs_B)
+ *     ret.pvalues_A_vs_B.swap(pvalues_B_vs_A)             # <<<<<<<<<<<<<<
+ * 
+ *     return ret
+ */
+  __pyx_v_ret.pvalues_A_vs_B.swap(__pyx_v_pvalues_B_vs_A);
+
+  /* "sicer/compare_two_libaries.pyx":99
+ *     ret.pvalues_A_vs_B.swap(pvalues_B_vs_A)
+ * 
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cpdef DiffExprIslandContainer compare_two_libaries(
+ */
+  __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "sicer/generate_windows.pyx":18
+  /* "sicer/compare_two_libaries.pyx":51
+ *     return pvalue
  * 
- * 
- * cdef vector[uint32_t] _get_tag_list(vector[BEDRead]& reads, uint32_t chrom_length, int frag_size) nogil:             # <<<<<<<<<<<<<<
- *     cdef vector[uint32_t] tag_list
- *     cdef int shift = <int> round(frag_size / 2.0)
+ * cdef ReturnItem _associate_tag_count_to_regions_by_chrom (             # <<<<<<<<<<<<<<
+ *     vector[DiffExprIsland]& islands,
+ *     vector[BEDRead]& reads_A,
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.generate_windows._get_tag_list", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_WriteUnraisable("sicer.compare_two_libaries._associate_tag_count_to_regions_by_chrom", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
   return __pyx_r;
 }
 
-/* "sicer/generate_windows.pyx":41
- *     return tag_list
+/* "sicer/compare_two_libaries.pyx":101
+ *     return ret
  * 
- * cdef void _generate_window_from_tags(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[uint32_t] tag_list,
- */
-
-static void __pyx_f_5sicer_16generate_windows__generate_window_from_tags(std::vector<Window>  &__pyx_v_windows, std::vector<uint32_t>  __pyx_v_tag_list, std::string __pyx_v_chrom, uint32_t __pyx_v_chrom_length, int __pyx_v_window_size) {
-  uint32_t __pyx_v_curr_win_start;
-  uint32_t __pyx_v_curr_win_end;
-  uint32_t __pyx_v_curr_tag_count;
-  uint32_t __pyx_v_adjusted_tag_pos;
-  std::vector<uint32_t> ::size_type __pyx_v_i;
-  int __pyx_t_1;
-  __Pyx_FakeReference<uint32_t> __pyx_t_2;
-  std::vector<uint32_t> ::size_type __pyx_t_3;
-  std::vector<uint32_t> ::size_type __pyx_t_4;
-  std::vector<uint32_t> ::size_type __pyx_t_5;
-  uint32_t __pyx_t_6;
-
-  /* "sicer/generate_windows.pyx":54
- *     cdef uint32_t adjusted_tag_pos
- * 
- *     if tag_list.size() > 0:             # <<<<<<<<<<<<<<
- *         curr_win_start = (tag_list.at(0) // window_size) * window_size
- *         curr_tag_count = 1
- */
-  __pyx_t_1 = ((__pyx_v_tag_list.size() > 0) != 0);
-  if (__pyx_t_1) {
-
-    /* "sicer/generate_windows.pyx":55
- * 
- *     if tag_list.size() > 0:
- *         curr_win_start = (tag_list.at(0) // window_size) * window_size             # <<<<<<<<<<<<<<
- *         curr_tag_count = 1
- * 
- */
-    try {
-      __pyx_t_2 = __pyx_v_tag_list.at(0);
-    } catch(...) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      __Pyx_CppExn2PyErr();
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 55, __pyx_L1_error)
-    }
-    if (unlikely(__pyx_v_window_size == 0)) {
-      #ifdef WITH_THREAD
-      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-      #endif
-      PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-      #ifdef WITH_THREAD
-      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-      #endif
-      __PYX_ERR(0, 55, __pyx_L1_error)
-    }
-    __pyx_v_curr_win_start = ((__pyx_t_2 / __pyx_v_window_size) * __pyx_v_window_size);
-
-    /* "sicer/generate_windows.pyx":56
- *     if tag_list.size() > 0:
- *         curr_win_start = (tag_list.at(0) // window_size) * window_size
- *         curr_tag_count = 1             # <<<<<<<<<<<<<<
- * 
- *         if tag_list.size() > 1:
- */
-    __pyx_v_curr_tag_count = 1;
-
-    /* "sicer/generate_windows.pyx":58
- *         curr_tag_count = 1
- * 
- *         if tag_list.size() > 1:             # <<<<<<<<<<<<<<
- *             for i in range(1, tag_list.size()):
- *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
- */
-    __pyx_t_1 = ((__pyx_v_tag_list.size() > 1) != 0);
-    if (__pyx_t_1) {
-
-      /* "sicer/generate_windows.pyx":59
- * 
- *         if tag_list.size() > 1:
- *             for i in range(1, tag_list.size()):             # <<<<<<<<<<<<<<
- *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
- *                 if adjusted_tag_pos == curr_win_start:
- */
-      __pyx_t_3 = __pyx_v_tag_list.size();
-      __pyx_t_4 = __pyx_t_3;
-      for (__pyx_t_5 = 1; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-        __pyx_v_i = __pyx_t_5;
-
-        /* "sicer/generate_windows.pyx":60
- *         if tag_list.size() > 1:
- *             for i in range(1, tag_list.size()):
- *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size             # <<<<<<<<<<<<<<
- *                 if adjusted_tag_pos == curr_win_start:
- *                     preinc(curr_tag_count)
- */
-        __pyx_t_6 = (__pyx_v_tag_list[__pyx_v_i]);
-        if (unlikely(__pyx_v_window_size == 0)) {
-          #ifdef WITH_THREAD
-          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-          #endif
-          PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-          #ifdef WITH_THREAD
-          __Pyx_PyGILState_Release(__pyx_gilstate_save);
-          #endif
-          __PYX_ERR(0, 60, __pyx_L1_error)
-        }
-        __pyx_v_adjusted_tag_pos = ((__pyx_t_6 / __pyx_v_window_size) * __pyx_v_window_size);
-
-        /* "sicer/generate_windows.pyx":61
- *             for i in range(1, tag_list.size()):
- *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
- *                 if adjusted_tag_pos == curr_win_start:             # <<<<<<<<<<<<<<
- *                     preinc(curr_tag_count)
- *                 elif adjusted_tag_pos > curr_win_start:
- */
-        __pyx_t_1 = ((__pyx_v_adjusted_tag_pos == __pyx_v_curr_win_start) != 0);
-        if (__pyx_t_1) {
-
-          /* "sicer/generate_windows.pyx":62
- *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
- *                 if adjusted_tag_pos == curr_win_start:
- *                     preinc(curr_tag_count)             # <<<<<<<<<<<<<<
- *                 elif adjusted_tag_pos > curr_win_start:
- *                     curr_win_end = curr_win_start + window_size - 1
- */
-          (void)((++__pyx_v_curr_tag_count));
-
-          /* "sicer/generate_windows.pyx":61
- *             for i in range(1, tag_list.size()):
- *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
- *                 if adjusted_tag_pos == curr_win_start:             # <<<<<<<<<<<<<<
- *                     preinc(curr_tag_count)
- *                 elif adjusted_tag_pos > curr_win_start:
- */
-          goto __pyx_L7;
-        }
-
-        /* "sicer/generate_windows.pyx":63
- *                 if adjusted_tag_pos == curr_win_start:
- *                     preinc(curr_tag_count)
- *                 elif adjusted_tag_pos > curr_win_start:             # <<<<<<<<<<<<<<
- *                     curr_win_end = curr_win_start + window_size - 1
- * 
- */
-        __pyx_t_1 = ((__pyx_v_adjusted_tag_pos > __pyx_v_curr_win_start) != 0);
-        if (__pyx_t_1) {
-
-          /* "sicer/generate_windows.pyx":64
- *                     preinc(curr_tag_count)
- *                 elif adjusted_tag_pos > curr_win_start:
- *                     curr_win_end = curr_win_start + window_size - 1             # <<<<<<<<<<<<<<
- * 
- *                     if curr_win_end < chrom_length:
- */
-          __pyx_v_curr_win_end = ((__pyx_v_curr_win_start + __pyx_v_window_size) - 1);
-
-          /* "sicer/generate_windows.pyx":66
- *                     curr_win_end = curr_win_start + window_size - 1
- * 
- *                     if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
- *                         # Create new window
- *                         windows.push_back(Window(
- */
-          __pyx_t_1 = ((__pyx_v_curr_win_end < __pyx_v_chrom_length) != 0);
-          if (__pyx_t_1) {
-
-            /* "sicer/generate_windows.pyx":68
- *                     if curr_win_end < chrom_length:
- *                         # Create new window
- *                         windows.push_back(Window(             # <<<<<<<<<<<<<<
- *                             chrom,
- *                             curr_win_start,
- */
-            try {
-              __pyx_v_windows.push_back(Window(__pyx_v_chrom, __pyx_v_curr_win_start, __pyx_v_curr_win_end, __pyx_v_curr_tag_count));
-            } catch(...) {
-              #ifdef WITH_THREAD
-              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-              #endif
-              __Pyx_CppExn2PyErr();
-              #ifdef WITH_THREAD
-              __Pyx_PyGILState_Release(__pyx_gilstate_save);
-              #endif
-              __PYX_ERR(0, 68, __pyx_L1_error)
-            }
-
-            /* "sicer/generate_windows.pyx":66
- *                     curr_win_end = curr_win_start + window_size - 1
- * 
- *                     if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
- *                         # Create new window
- *                         windows.push_back(Window(
- */
-          }
-
-          /* "sicer/generate_windows.pyx":75
- *                         ))
- * 
- *                     curr_win_start = adjusted_tag_pos             # <<<<<<<<<<<<<<
- *                     curr_tag_count = 1
- * 
- */
-          __pyx_v_curr_win_start = __pyx_v_adjusted_tag_pos;
-
-          /* "sicer/generate_windows.pyx":76
- * 
- *                     curr_win_start = adjusted_tag_pos
- *                     curr_tag_count = 1             # <<<<<<<<<<<<<<
- * 
- *         curr_win_end = curr_win_start + window_size - 1
- */
-          __pyx_v_curr_tag_count = 1;
-
-          /* "sicer/generate_windows.pyx":63
- *                 if adjusted_tag_pos == curr_win_start:
- *                     preinc(curr_tag_count)
- *                 elif adjusted_tag_pos > curr_win_start:             # <<<<<<<<<<<<<<
- *                     curr_win_end = curr_win_start + window_size - 1
- * 
- */
-        }
-        __pyx_L7:;
-      }
-
-      /* "sicer/generate_windows.pyx":58
- *         curr_tag_count = 1
- * 
- *         if tag_list.size() > 1:             # <<<<<<<<<<<<<<
- *             for i in range(1, tag_list.size()):
- *                 adjusted_tag_pos = (tag_list[i] // window_size) * window_size
- */
-    }
-
-    /* "sicer/generate_windows.pyx":78
- *                     curr_tag_count = 1
- * 
- *         curr_win_end = curr_win_start + window_size - 1             # <<<<<<<<<<<<<<
- *         if curr_win_end < chrom_length:
- *             windows.push_back(Window(
- */
-    __pyx_v_curr_win_end = ((__pyx_v_curr_win_start + __pyx_v_window_size) - 1);
-
-    /* "sicer/generate_windows.pyx":79
- * 
- *         curr_win_end = curr_win_start + window_size - 1
- *         if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
- *             windows.push_back(Window(
- *                 chrom,
- */
-    __pyx_t_1 = ((__pyx_v_curr_win_end < __pyx_v_chrom_length) != 0);
-    if (__pyx_t_1) {
-
-      /* "sicer/generate_windows.pyx":80
- *         curr_win_end = curr_win_start + window_size - 1
- *         if curr_win_end < chrom_length:
- *             windows.push_back(Window(             # <<<<<<<<<<<<<<
- *                 chrom,
- *                 curr_win_start,
- */
-      try {
-        __pyx_v_windows.push_back(Window(__pyx_v_chrom, __pyx_v_curr_win_start, __pyx_v_curr_win_end, __pyx_v_curr_tag_count));
-      } catch(...) {
-        #ifdef WITH_THREAD
-        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-        #endif
-        __Pyx_CppExn2PyErr();
-        #ifdef WITH_THREAD
-        __Pyx_PyGILState_Release(__pyx_gilstate_save);
-        #endif
-        __PYX_ERR(0, 80, __pyx_L1_error)
-      }
-
-      /* "sicer/generate_windows.pyx":79
- * 
- *         curr_win_end = curr_win_start + window_size - 1
- *         if curr_win_end < chrom_length:             # <<<<<<<<<<<<<<
- *             windows.push_back(Window(
- *                 chrom,
- */
-    }
-
-    /* "sicer/generate_windows.pyx":54
- *     cdef uint32_t adjusted_tag_pos
- * 
- *     if tag_list.size() > 0:             # <<<<<<<<<<<<<<
- *         curr_win_start = (tag_list.at(0) // window_size) * window_size
- *         curr_tag_count = 1
- */
-  }
-
-  /* "sicer/generate_windows.pyx":41
- *     return tag_list
- * 
- * cdef void _generate_window_from_tags(             # <<<<<<<<<<<<<<
- *     vector[Window]& windows,
- *     vector[uint32_t] tag_list,
- */
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("sicer.generate_windows._generate_window_from_tags", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
-  __pyx_L0:;
-}
-
-/* "sicer/generate_windows.pyx":87
- *             ))
- * 
- * cdef void _generate_windows_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[BEDRead]& reads,
- *     vector[Window]& windows,
- */
-
-static void __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom(std::vector<BEDRead>  &__pyx_v_reads, std::vector<Window>  &__pyx_v_windows, std::string __pyx_v_chrom, uint32_t __pyx_v_chrom_length, int __pyx_v_frag_size, int __pyx_v_window_size) {
-  std::vector<uint32_t>  __pyx_v_tag_list;
-  int __pyx_t_1;
-
-  /* "sicer/generate_windows.pyx":96
- * ) nogil:
- *     cdef vector[uint32_t] tag_list
- *     if reads.size() > 0:             # <<<<<<<<<<<<<<
- *         tag_list = _get_tag_list(reads, chrom_length, frag_size)
- *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
- */
-  __pyx_t_1 = ((__pyx_v_reads.size() > 0) != 0);
-  if (__pyx_t_1) {
-
-    /* "sicer/generate_windows.pyx":97
- *     cdef vector[uint32_t] tag_list
- *     if reads.size() > 0:
- *         tag_list = _get_tag_list(reads, chrom_length, frag_size)             # <<<<<<<<<<<<<<
- *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
- * 
- */
-    __pyx_v_tag_list = __pyx_f_5sicer_16generate_windows__get_tag_list(__pyx_v_reads, __pyx_v_chrom_length, __pyx_v_frag_size);
-
-    /* "sicer/generate_windows.pyx":98
- *     if reads.size() > 0:
- *         tag_list = _get_tag_list(reads, chrom_length, frag_size)
- *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)             # <<<<<<<<<<<<<<
- * 
- * cdef WindowContainer _generate_windows(
- */
-    __pyx_f_5sicer_16generate_windows__generate_window_from_tags(__pyx_v_windows, __pyx_v_tag_list, __pyx_v_chrom, __pyx_v_chrom_length, __pyx_v_window_size);
-
-    /* "sicer/generate_windows.pyx":96
- * ) nogil:
- *     cdef vector[uint32_t] tag_list
- *     if reads.size() > 0:             # <<<<<<<<<<<<<<
- *         tag_list = _get_tag_list(reads, chrom_length, frag_size)
- *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
- */
-  }
-
-  /* "sicer/generate_windows.pyx":87
- *             ))
- * 
- * cdef void _generate_windows_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[BEDRead]& reads,
- *     vector[Window]& windows,
- */
-
-  /* function exit code */
-}
-
-/* "sicer/generate_windows.pyx":100
- *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
- * 
- * cdef WindowContainer _generate_windows(             # <<<<<<<<<<<<<<
- *     BEDReadContainer reads,
+ * cpdef DiffExprIslandContainer compare_two_libaries(             # <<<<<<<<<<<<<<
  *     object genome_data,
+ *     BEDReadContainer reads_A,
  */
 
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_f_5sicer_16generate_windows__generate_windows(struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads, PyObject *__pyx_v_genome_data, int __pyx_v_frag_size, int __pyx_v_window_size, CYTHON_UNUSED int __pyx_v_num_cpu) {
+static PyObject *__pyx_pw_5sicer_20compare_two_libaries_1compare_two_libaries(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_f_5sicer_20compare_two_libaries_compare_two_libaries(PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, CYTHON_UNUSED int __pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
   std::vector<std::string>  __pyx_v_chroms;
-  std::vector<uint32_t>  __pyx_v_chrom_lengths;
-  PyObject *__pyx_v_c = NULL;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_v_windows = 0;
+  uint32_t __pyx_v_lib_size_A;
+  uint32_t __pyx_v_lib_size_B;
+  double __pyx_v_lib_scaling_factor;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_v_df_container = 0;
   int __pyx_v_i;
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_r = NULL;
+  struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem __pyx_v_result;
+  std::vector<double>  __pyx_v_pvalues_A_vs_B;
+  std::vector<double>  __pyx_v_pvalues_B_vs_A;
+  std::vector<double>  __pyx_v_pvalues_rank_A_vs_B;
+  std::vector<double>  __pyx_v_pvalues_rank_B_vs_A;
+  uint32_t __pyx_v_total_count;
+  std::vector<double>  __pyx_v_norm_counts_A;
+  std::vector<double>  __pyx_v_norm_counts_B;
+  uint32_t __pyx_v_k;
+  std::vector<DiffExprIsland>  __pyx_v_vec;
+  double __pyx_v_norm_count_A;
+  double __pyx_v_norm_count_B;
+  PyObject *__pyx_v_chrom = NULL;
+  std::vector<DiffExprIsland> ::size_type __pyx_v_j;
+  PyObject *__pyx_v_pearson = NULL;
+  PyObject *__pyx_v_spearman = NULL;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   std::vector<std::string>  __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  PyObject *(*__pyx_t_5)(PyObject *);
-  PyObject *__pyx_t_6 = NULL;
-  uint32_t __pyx_t_7;
+  double __pyx_t_3;
+  uint32_t __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  std::vector<std::string> ::size_type __pyx_t_6;
+  std::vector<std::string> ::size_type __pyx_t_7;
   std::vector<std::string> ::size_type __pyx_t_8;
-  std::vector<std::string> ::size_type __pyx_t_9;
-  std::vector<std::string> ::size_type __pyx_t_10;
+  __Pyx_FakeReference<std::string> __pyx_t_9;
+  __Pyx_FakeReference<std::string> __pyx_t_10;
   __Pyx_FakeReference<std::string> __pyx_t_11;
-  __Pyx_FakeReference<std::string> __pyx_t_12;
-  __Pyx_RefNannySetupContext("_generate_windows", 0);
+  PyObject *__pyx_t_12 = NULL;
+  PyObject *__pyx_t_13 = NULL;
+  std::vector<double>  __pyx_t_14;
+  Py_ssize_t __pyx_t_15;
+  std::string __pyx_t_16;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_17;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_18;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_19;
+  double __pyx_t_20;
+  long __pyx_t_21;
+  PyObject *__pyx_t_22 = NULL;
+  int __pyx_t_23;
+  PyObject *__pyx_t_24 = NULL;
+  __Pyx_RefNannySetupContext("compare_two_libaries", 0);
 
-  /* "sicer/generate_windows.pyx":108
+  /* "sicer/compare_two_libaries.pyx":109
+ *     int num_cpu
  * ):
+ *     print("Comparing two treatment libraries...")             # <<<<<<<<<<<<<<
  *     # Convert Python list to vector for no-GIL use
- *     cdef vector[string] chroms = reads.getChromosomes()             # <<<<<<<<<<<<<<
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:
+ *     cdef vector[string] chroms = reads_A.getChromosomes()
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getChromosomes(__pyx_v_reads, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "sicer/compare_two_libaries.pyx":111
+ *     print("Comparing two treatment libraries...")
+ *     # Convert Python list to vector for no-GIL use
+ *     cdef vector[string] chroms = reads_A.getChromosomes()             # <<<<<<<<<<<<<<
+ *     cdef uint32_t lib_size_A = reads_A.getReadCount()
+ *     cdef uint32_t lib_size_B = reads_B.getReadCount()
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads_A->__pyx_vtab)->getChromosomes(__pyx_v_reads_A, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/generate_windows.pyx":110
- *     cdef vector[string] chroms = reads.getChromosomes()
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:             # <<<<<<<<<<<<<<
- *         chrom_lengths.push_back(genome_data.chrom_length[c])
+  /* "sicer/compare_two_libaries.pyx":112
+ *     # Convert Python list to vector for no-GIL use
+ *     cdef vector[string] chroms = reads_A.getChromosomes()
+ *     cdef uint32_t lib_size_A = reads_A.getReadCount()             # <<<<<<<<<<<<<<
+ *     cdef uint32_t lib_size_B = reads_B.getReadCount()
+ *     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()
+ */
+  __pyx_v_lib_size_A = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads_A->__pyx_vtab)->getReadCount(__pyx_v_reads_A, 0);
+
+  /* "sicer/compare_two_libaries.pyx":113
+ *     cdef vector[string] chroms = reads_A.getChromosomes()
+ *     cdef uint32_t lib_size_A = reads_A.getReadCount()
+ *     cdef uint32_t lib_size_B = reads_B.getReadCount()             # <<<<<<<<<<<<<<
+ *     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()
+ *     cdef DiffExprIslandContainer df_container = DiffExprIslandContainer(genome_data, union_islands)
+ */
+  __pyx_v_lib_size_B = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads_B->__pyx_vtab)->getReadCount(__pyx_v_reads_B, 0);
+
+  /* "sicer/compare_two_libaries.pyx":114
+ *     cdef uint32_t lib_size_A = reads_A.getReadCount()
+ *     cdef uint32_t lib_size_B = reads_B.getReadCount()
+ *     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()             # <<<<<<<<<<<<<<
+ *     cdef DiffExprIslandContainer df_container = DiffExprIslandContainer(genome_data, union_islands)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_3 = ((double)((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads_A->__pyx_vtab)->getReadCount(__pyx_v_reads_A, 0));
+  __pyx_t_4 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads_B->__pyx_vtab)->getReadCount(__pyx_v_reads_B, 0);
+  if (unlikely(__pyx_t_4 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 114, __pyx_L1_error)
+  }
+  __pyx_v_lib_scaling_factor = (__pyx_t_3 / ((double)__pyx_t_4));
+
+  /* "sicer/compare_two_libaries.pyx":115
+ *     cdef uint32_t lib_size_B = reads_B.getReadCount()
+ *     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()
+ *     cdef DiffExprIslandContainer df_container = DiffExprIslandContainer(genome_data, union_islands)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int i
+ */
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
-    __pyx_t_5 = NULL;
-  } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
-  }
+  __Pyx_INCREF(__pyx_v_genome_data);
+  __Pyx_GIVEREF(__pyx_v_genome_data);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_genome_data);
+  __Pyx_INCREF(((PyObject *)__pyx_v_union_islands));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_union_islands));
+  PyTuple_SET_ITEM(__pyx_t_1, 1, ((PyObject *)__pyx_v_union_islands));
+  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_DiffExprIslandContainer), __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_5)) {
-      if (likely(PyList_CheckExact(__pyx_t_3))) {
-        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_5(__pyx_t_3);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 110, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_XDECREF_SET(__pyx_v_c, __pyx_t_1);
-    __pyx_t_1 = 0;
+  __pyx_v_df_container = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_t_5);
+  __pyx_t_5 = 0;
 
-    /* "sicer/generate_windows.pyx":111
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:
- *         chrom_lengths.push_back(genome_data.chrom_length[c])             # <<<<<<<<<<<<<<
- * 
- *     cdef WindowContainer windows = WindowContainer(genome_data)
+  /* "sicer/compare_two_libaries.pyx":120
+ *     cdef ReturnItem result
+ *     cdef vector[double] pvalues_A_vs_B
+ *     pvalues_A_vs_B.reserve(union_islands.getIslandCount())             # <<<<<<<<<<<<<<
+ *     cdef vector[double] pvalues_B_vs_A
+ *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_genome_data, __pyx_n_s_chrom_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_t_1, __pyx_v_c); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_7 = __Pyx_PyInt_As_uint32_t(__pyx_t_6); if (unlikely((__pyx_t_7 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    try {
-      __pyx_v_chrom_lengths.push_back(__pyx_t_7);
-    } catch(...) {
-      __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 111, __pyx_L1_error)
-    }
+  __pyx_v_pvalues_A_vs_B.reserve(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0));
 
-    /* "sicer/generate_windows.pyx":110
- *     cdef vector[string] chroms = reads.getChromosomes()
- *     cdef vector[uint32_t] chrom_lengths
- *     for c in genome_data.chrom:             # <<<<<<<<<<<<<<
- *         chrom_lengths.push_back(genome_data.chrom_length[c])
+  /* "sicer/compare_two_libaries.pyx":122
+ *     pvalues_A_vs_B.reserve(union_islands.getIslandCount())
+ *     cdef vector[double] pvalues_B_vs_A
+ *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())             # <<<<<<<<<<<<<<
  * 
+ *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  */
-  }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_pvalues_B_vs_A.reserve(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0));
 
-  /* "sicer/generate_windows.pyx":113
- *         chrom_lengths.push_back(genome_data.chrom_length[c])
+  /* "sicer/compare_two_libaries.pyx":124
+ *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())
  * 
- *     cdef WindowContainer windows = WindowContainer(genome_data)             # <<<<<<<<<<<<<<
- * 
- *     cdef int i
- */
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_16chrom_containers_WindowContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_v_windows = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_t_3);
-  __pyx_t_3 = 0;
-
-  /* "sicer/generate_windows.pyx":116
- * 
- *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
- *         _generate_windows_by_chrom(
- *             deref(reads.getVectorPtr(chroms.at(i))),
+ *         result = _associate_tag_count_to_regions_by_chrom(
+ *                             deref(df_container.getVectorPtr(chroms.at(i))),
  */
   {
       #ifdef WITH_THREAD
@@ -2223,10 +2346,11 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
       __Pyx_FastGIL_Remember();
       #endif
       /*try:*/ {
-        __pyx_t_8 = __pyx_v_chroms.size();
+        __pyx_t_6 = __pyx_v_chroms.size();
         if (1 == 0) abort();
         {
             int __pyx_parallel_temp0 = ((int)0xbad0bad0);
+            struct __pyx_t_5sicer_20compare_two_libaries_ReturnItem __pyx_parallel_temp1;
             const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
             PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
             int __pyx_parallel_why;
@@ -2237,11 +2361,11 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_10 = (__pyx_t_8 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_10 > 0)
+            __pyx_t_8 = (__pyx_t_6 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_8 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel num_threads(__pyx_v_num_cpu) private(__pyx_t_11, __pyx_t_12) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
+                #pragma omp parallel num_threads(__pyx_v_num_cpu) private(__pyx_t_10, __pyx_t_11, __pyx_t_9) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
@@ -2251,19 +2375,59 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
                     Py_BEGIN_ALLOW_THREADS
                     #endif /* _OPENMP */
                     #ifdef _OPENMP
-                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) schedule(guided)
+                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_result) schedule(guided)
                     #endif /* _OPENMP */
-                    for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_10; __pyx_t_9++){
+                    for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_8; __pyx_t_7++){
                         if (__pyx_parallel_why < 2)
                         {
-                            __pyx_v_i = (int)(0 + 1 * __pyx_t_9);
+                            __pyx_v_i = (int)(0 + 1 * __pyx_t_7);
 
-                            /* "sicer/generate_windows.pyx":118
+                            /* "sicer/compare_two_libaries.pyx":126
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
- *         _generate_windows_by_chrom(
- *             deref(reads.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
- *             deref(windows.getVectorPtr(chroms.at(i))),
- *             chroms[i],
+ *         result = _associate_tag_count_to_regions_by_chrom(
+ *                             deref(df_container.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
+ *                             deref(reads_A.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_B.getVectorPtr(chroms.at(i))),
+ */
+                            try {
+                              __pyx_t_9 = __pyx_v_chroms.at(__pyx_v_i);
+                            } catch(...) {
+                              #ifdef WITH_THREAD
+                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                              #endif
+                              __Pyx_CppExn2PyErr();
+                              #ifdef WITH_THREAD
+                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                              #endif
+                              __PYX_ERR(0, 126, __pyx_L8_error)
+                            }
+
+                            /* "sicer/compare_two_libaries.pyx":127
+ *         result = _associate_tag_count_to_regions_by_chrom(
+ *                             deref(df_container.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_A.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
+ *                             deref(reads_B.getVectorPtr(chroms.at(i))),
+ *                             lib_scaling_factor,
+ */
+                            try {
+                              __pyx_t_10 = __pyx_v_chroms.at(__pyx_v_i);
+                            } catch(...) {
+                              #ifdef WITH_THREAD
+                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                              #endif
+                              __Pyx_CppExn2PyErr();
+                              #ifdef WITH_THREAD
+                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                              #endif
+                              __PYX_ERR(0, 127, __pyx_L8_error)
+                            }
+
+                            /* "sicer/compare_two_libaries.pyx":128
+ *                             deref(df_container.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_A.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_B.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
+ *                             lib_scaling_factor,
+ *                             frag_size
  */
                             try {
                               __pyx_t_11 = __pyx_v_chroms.at(__pyx_v_i);
@@ -2275,18 +2439,27 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 118, __pyx_L10_error)
+                              __PYX_ERR(0, 128, __pyx_L8_error)
                             }
 
-                            /* "sicer/generate_windows.pyx":119
- *         _generate_windows_by_chrom(
- *             deref(reads.getVectorPtr(chroms.at(i))),
- *             deref(windows.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
- *             chroms[i],
- *             chrom_lengths[i],
+                            /* "sicer/compare_two_libaries.pyx":125
+ * 
+ *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
+ *         result = _associate_tag_count_to_regions_by_chrom(             # <<<<<<<<<<<<<<
+ *                             deref(df_container.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_A.getVectorPtr(chroms.at(i))),
+ */
+                            __pyx_v_result = __pyx_f_5sicer_20compare_two_libaries__associate_tag_count_to_regions_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getVectorPtr(__pyx_v_df_container, __pyx_t_9)), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads_A->__pyx_vtab)->getVectorPtr(__pyx_v_reads_A, __pyx_t_10)), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads_B->__pyx_vtab)->getVectorPtr(__pyx_v_reads_B, __pyx_t_11)), __pyx_v_lib_scaling_factor, __pyx_v_frag_size);
+
+                            /* "sicer/compare_two_libaries.pyx":132
+ *                             frag_size
+ *                         )
+ *         pvalues_A_vs_B.insert(pvalues_A_vs_B.end(), result.pvalues_A_vs_B.begin(), result.pvalues_A_vs_B.end())             # <<<<<<<<<<<<<<
+ *         pvalues_B_vs_A.insert(pvalues_B_vs_A.end(), result.pvalues_B_vs_A.begin(), result.pvalues_B_vs_A.end())
+ * 
  */
                             try {
-                              __pyx_t_12 = __pyx_v_chroms.at(__pyx_v_i);
+                              __pyx_v_pvalues_A_vs_B.insert(__pyx_v_pvalues_A_vs_B.end(), __pyx_v_result.pvalues_A_vs_B.begin(), __pyx_v_result.pvalues_A_vs_B.end());
                             } catch(...) {
                               #ifdef WITH_THREAD
                               PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -2295,19 +2468,30 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 119, __pyx_L10_error)
+                              __PYX_ERR(0, 132, __pyx_L8_error)
                             }
 
-                            /* "sicer/generate_windows.pyx":117
- *     cdef int i
- *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
- *         _generate_windows_by_chrom(             # <<<<<<<<<<<<<<
- *             deref(reads.getVectorPtr(chroms.at(i))),
- *             deref(windows.getVectorPtr(chroms.at(i))),
+                            /* "sicer/compare_two_libaries.pyx":133
+ *                         )
+ *         pvalues_A_vs_B.insert(pvalues_A_vs_B.end(), result.pvalues_A_vs_B.begin(), result.pvalues_A_vs_B.end())
+ *         pvalues_B_vs_A.insert(pvalues_B_vs_A.end(), result.pvalues_B_vs_A.begin(), result.pvalues_B_vs_A.end())             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
-                            __pyx_f_5sicer_16generate_windows__generate_windows_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads->__pyx_vtab)->getVectorPtr(__pyx_v_reads, __pyx_t_11)), (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_v_windows->__pyx_vtab)->getVectorPtr(__pyx_v_windows, __pyx_t_12)), (__pyx_v_chroms[__pyx_v_i]), (__pyx_v_chrom_lengths[__pyx_v_i]), __pyx_v_frag_size, __pyx_v_window_size);
-                            goto __pyx_L13;
-                            __pyx_L10_error:;
+                            try {
+                              __pyx_v_pvalues_B_vs_A.insert(__pyx_v_pvalues_B_vs_A.end(), __pyx_v_result.pvalues_B_vs_A.begin(), __pyx_v_result.pvalues_B_vs_A.end());
+                            } catch(...) {
+                              #ifdef WITH_THREAD
+                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                              #endif
+                              __Pyx_CppExn2PyErr();
+                              #ifdef WITH_THREAD
+                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                              #endif
+                              __PYX_ERR(0, 133, __pyx_L8_error)
+                            }
+                            goto __pyx_L11;
+                            __pyx_L8_error:;
                             {
                                 #ifdef WITH_THREAD
                                 PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -2325,15 +2509,16 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
                                 #endif
                             }
                             __pyx_parallel_why = 4;
-                            goto __pyx_L12;
-                            __pyx_L12:;
+                            goto __pyx_L10;
+                            __pyx_L10:;
                             #ifdef _OPENMP
-                            #pragma omp critical(__pyx_parallel_lastprivates4)
+                            #pragma omp critical(__pyx_parallel_lastprivates0)
                             #endif /* _OPENMP */
                             {
                                 __pyx_parallel_temp0 = __pyx_v_i;
+                                __pyx_parallel_temp1 = __pyx_v_result;
                             }
-                            __pyx_L13:;
+                            __pyx_L11:;
                             #ifdef _OPENMP
                             #pragma omp flush(__pyx_parallel_why)
                             #endif /* _OPENMP */
@@ -2362,6 +2547,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
             }
             if (__pyx_parallel_why) {
               __pyx_v_i = __pyx_parallel_temp0;
+              __pyx_v_result = __pyx_parallel_temp1;
               switch (__pyx_parallel_why) {
                     case 4:
                 {
@@ -2375,7 +2561,7 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
                     __Pyx_PyGILState_Release(__pyx_gilstate_save);
                     #endif
                 }
-                goto __pyx_L6_error;
+                goto __pyx_L4_error;
               }
             }
         }
@@ -2387,12 +2573,12 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
         #endif
       }
 
-      /* "sicer/generate_windows.pyx":116
+      /* "sicer/compare_two_libaries.pyx":124
+ *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())
  * 
- *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
- *         _generate_windows_by_chrom(
- *             deref(reads.getVectorPtr(chroms.at(i))),
+ *         result = _associate_tag_count_to_regions_by_chrom(
+ *                             deref(df_container.getVectorPtr(chroms.at(i))),
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -2400,169 +2586,587 @@ static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx
           __Pyx_FastGIL_Forget();
           Py_BLOCK_THREADS
           #endif
-          goto __pyx_L7;
+          goto __pyx_L5;
         }
-        __pyx_L6_error: {
+        __pyx_L4_error: {
           #ifdef WITH_THREAD
           __Pyx_FastGIL_Forget();
           Py_BLOCK_THREADS
           #endif
           goto __pyx_L1_error;
         }
-        __pyx_L7:;
+        __pyx_L5:;
       }
   }
 
-  /* "sicer/generate_windows.pyx":126
- *         )
+  /* "sicer/compare_two_libaries.pyx":136
  * 
- *     windows.updateCounts()             # <<<<<<<<<<<<<<
- *     print("Window count: ", windows.getWindowCount())
  * 
- */
-  ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_v_windows->__pyx_vtab)->updateCounts(__pyx_v_windows, 0);
-
-  /* "sicer/generate_windows.pyx":127
- * 
- *     windows.updateCounts()
- *     print("Window count: ", windows.getWindowCount())             # <<<<<<<<<<<<<<
- * 
- *     return windows
- */
-  __pyx_t_3 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_v_windows->__pyx_vtab)->getWindowCount(__pyx_v_windows, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_INCREF(__pyx_kp_u_Window_count);
-  __Pyx_GIVEREF(__pyx_kp_u_Window_count);
-  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_kp_u_Window_count);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_3);
-  __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "sicer/generate_windows.pyx":129
- *     print("Window count: ", windows.getWindowCount())
- * 
- *     return windows             # <<<<<<<<<<<<<<
- * 
- * cpdef WindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_windows));
-  __pyx_r = __pyx_v_windows;
-  goto __pyx_L0;
-
-  /* "sicer/generate_windows.pyx":100
- *         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
- * 
- * cdef WindowContainer _generate_windows(             # <<<<<<<<<<<<<<
- *     BEDReadContainer reads,
- *     object genome_data,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("sicer.generate_windows._generate_windows", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_c);
-  __Pyx_XDECREF((PyObject *)__pyx_v_windows);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "sicer/generate_windows.pyx":131
- *     return windows
- * 
- * cpdef WindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):             # <<<<<<<<<<<<<<
- *     print("Generating windows from treatement reads...")
- *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)
- */
-
-static PyObject *__pyx_pw_5sicer_16generate_windows_1generate_windows(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_f_5sicer_16generate_windows_generate_windows(PyObject *__pyx_v_reads, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_frag_size, PyObject *__pyx_v_window_size, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  __Pyx_RefNannySetupContext("generate_windows", 0);
-
-  /* "sicer/generate_windows.pyx":132
- * 
- * cpdef WindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
- *     print("Generating windows from treatement reads...")             # <<<<<<<<<<<<<<
- *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)
+ *     cdef vector[double] pvalues_rank_A_vs_B = rankdata(pvalues_A_vs_B)             # <<<<<<<<<<<<<<
+ *     cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues_A_vs_B); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_13 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_13)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_13);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_5 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_14 = __pyx_convert_vector_from_py_double(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_v_pvalues_rank_A_vs_B = __pyx_t_14;
+
+  /* "sicer/compare_two_libaries.pyx":137
+ * 
+ *     cdef vector[double] pvalues_rank_A_vs_B = rankdata(pvalues_A_vs_B)
+ *     cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef uint32_t total_count = df_container.getIslandCount()
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues_B_vs_A); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_13 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_13)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_13);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_5 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_14 = __pyx_convert_vector_from_py_double(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_v_pvalues_rank_B_vs_A = __pyx_t_14;
+
+  /* "sicer/compare_two_libaries.pyx":139
+ *     cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)
+ * 
+ *     cdef uint32_t total_count = df_container.getIslandCount()             # <<<<<<<<<<<<<<
+ *     cdef vector[double] norm_counts_A = vector[double](total_count)
+ *     cdef vector[double] norm_counts_B = vector[double](total_count)
+ */
+  __pyx_v_total_count = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getIslandCount(__pyx_v_df_container, 0);
+
+  /* "sicer/compare_two_libaries.pyx":140
+ * 
+ *     cdef uint32_t total_count = df_container.getIslandCount()
+ *     cdef vector[double] norm_counts_A = vector[double](total_count)             # <<<<<<<<<<<<<<
+ *     cdef vector[double] norm_counts_B = vector[double](total_count)
+ * 
+ */
+  try {
+    __pyx_t_14 = std::vector<double> (__pyx_v_total_count);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 140, __pyx_L1_error)
+  }
+  __pyx_v_norm_counts_A = __pyx_t_14;
+
+  /* "sicer/compare_two_libaries.pyx":141
+ *     cdef uint32_t total_count = df_container.getIslandCount()
+ *     cdef vector[double] norm_counts_A = vector[double](total_count)
+ *     cdef vector[double] norm_counts_B = vector[double](total_count)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef uint32_t k = 0
+ */
+  try {
+    __pyx_t_14 = std::vector<double> (__pyx_v_total_count);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 141, __pyx_L1_error)
+  }
+  __pyx_v_norm_counts_B = __pyx_t_14;
+
+  /* "sicer/compare_two_libaries.pyx":143
+ *     cdef vector[double] norm_counts_B = vector[double](total_count)
+ * 
+ *     cdef uint32_t k = 0             # <<<<<<<<<<<<<<
+ *     cdef vector[DiffExprIsland] vec
+ *     cdef double norm_count_A, norm_count_B
+ */
+  __pyx_v_k = 0;
+
+  /* "sicer/compare_two_libaries.pyx":147
+ *     cdef double norm_count_A, norm_count_B
+ * 
+ *     for chrom in df_container.getChromosomes():             # <<<<<<<<<<<<<<
+ *         vec = deref(df_container.getVectorPtr(chrom))
+ *         for j in range(vec.size()):
+ */
+  __pyx_t_5 = ((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getChromosomes(__pyx_v_df_container, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(__pyx_t_5 == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+    __PYX_ERR(0, 147, __pyx_L1_error)
+  }
+  __pyx_t_1 = __pyx_t_5; __Pyx_INCREF(__pyx_t_1); __pyx_t_15 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  for (;;) {
+    if (__pyx_t_15 >= PyList_GET_SIZE(__pyx_t_1)) break;
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_15); __Pyx_INCREF(__pyx_t_5); __pyx_t_15++; if (unlikely(0 < 0)) __PYX_ERR(0, 147, __pyx_L1_error)
+    #else
+    __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_15); __pyx_t_15++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 147, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    #endif
+    __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "sicer/compare_two_libaries.pyx":148
+ * 
+ *     for chrom in df_container.getChromosomes():
+ *         vec = deref(df_container.getVectorPtr(chrom))             # <<<<<<<<<<<<<<
+ *         for j in range(vec.size()):
+ *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
+ */
+    __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_v_vec = (*((struct __pyx_vtabstruct_5sicer_6shared_16chrom_containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getVectorPtr(__pyx_v_df_container, __pyx_t_16));
+
+    /* "sicer/compare_two_libaries.pyx":149
+ *     for chrom in df_container.getChromosomes():
+ *         vec = deref(df_container.getVectorPtr(chrom))
+ *         for j in range(vec.size()):             # <<<<<<<<<<<<<<
+ *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
+ *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
+ */
+    __pyx_t_17 = __pyx_v_vec.size();
+    __pyx_t_18 = __pyx_t_17;
+    for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_18; __pyx_t_19+=1) {
+      __pyx_v_j = __pyx_t_19;
+
+      /* "sicer/compare_two_libaries.pyx":150
+ *         vec = deref(df_container.getVectorPtr(chrom))
+ *         for j in range(vec.size()):
+ *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]             # <<<<<<<<<<<<<<
+ *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
+ *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000
+ */
+      __pyx_t_3 = ((__pyx_v_pvalues_A_vs_B[__pyx_v_k]) * __pyx_v_total_count);
+      __pyx_t_20 = (__pyx_v_pvalues_rank_A_vs_B[__pyx_v_k]);
+      if (unlikely(__pyx_t_20 == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 150, __pyx_L1_error)
+      }
+      (__pyx_v_vec[__pyx_v_j]).fdr_A_vs_B = (__pyx_t_3 / __pyx_t_20);
+
+      /* "sicer/compare_two_libaries.pyx":151
+ *         for j in range(vec.size()):
+ *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
+ *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]             # <<<<<<<<<<<<<<
+ *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000
+ *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000
+ */
+      __pyx_t_20 = ((__pyx_v_pvalues_B_vs_A[__pyx_v_k]) * __pyx_v_total_count);
+      __pyx_t_3 = (__pyx_v_pvalues_rank_B_vs_A[__pyx_v_k]);
+      if (unlikely(__pyx_t_3 == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 151, __pyx_L1_error)
+      }
+      (__pyx_v_vec[__pyx_v_j]).fdr_B_vs_A = (__pyx_t_20 / __pyx_t_3);
+
+      /* "sicer/compare_two_libaries.pyx":152
+ *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
+ *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
+ *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000             # <<<<<<<<<<<<<<
+ *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000
+ *             vec[j].norm_count_A = norm_count_A
+ */
+      __pyx_t_3 = ((double)(__pyx_v_vec[__pyx_v_j]).count_A);
+      if (unlikely(__pyx_v_lib_size_A == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 152, __pyx_L1_error)
+      }
+      __pyx_v_norm_count_A = ((__pyx_t_3 / ((double)__pyx_v_lib_size_A)) * 1000000.0);
+
+      /* "sicer/compare_two_libaries.pyx":153
+ *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
+ *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000
+ *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000             # <<<<<<<<<<<<<<
+ *             vec[j].norm_count_A = norm_count_A
+ *             vec[j].norm_count_B = norm_count_B
+ */
+      __pyx_t_3 = ((double)(__pyx_v_vec[__pyx_v_j]).count_B);
+      if (unlikely(__pyx_v_lib_size_B == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 153, __pyx_L1_error)
+      }
+      __pyx_v_norm_count_B = ((__pyx_t_3 / ((double)__pyx_v_lib_size_B)) * 1000000.0);
+
+      /* "sicer/compare_two_libaries.pyx":154
+ *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000
+ *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000
+ *             vec[j].norm_count_A = norm_count_A             # <<<<<<<<<<<<<<
+ *             vec[j].norm_count_B = norm_count_B
+ *             norm_counts_A[k] = norm_count_A
+ */
+      (__pyx_v_vec[__pyx_v_j]).norm_count_A = __pyx_v_norm_count_A;
+
+      /* "sicer/compare_two_libaries.pyx":155
+ *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000
+ *             vec[j].norm_count_A = norm_count_A
+ *             vec[j].norm_count_B = norm_count_B             # <<<<<<<<<<<<<<
+ *             norm_counts_A[k] = norm_count_A
+ *             norm_counts_B[k] = norm_count_B
+ */
+      (__pyx_v_vec[__pyx_v_j]).norm_count_B = __pyx_v_norm_count_B;
+
+      /* "sicer/compare_two_libaries.pyx":156
+ *             vec[j].norm_count_A = norm_count_A
+ *             vec[j].norm_count_B = norm_count_B
+ *             norm_counts_A[k] = norm_count_A             # <<<<<<<<<<<<<<
+ *             norm_counts_B[k] = norm_count_B
+ *             vec[j].fc_A_vs_B = (<double> vec[j].count_A + 1) / (vec[j].count_B + 1) / lib_scaling_factor
+ */
+      (__pyx_v_norm_counts_A[__pyx_v_k]) = __pyx_v_norm_count_A;
+
+      /* "sicer/compare_two_libaries.pyx":157
+ *             vec[j].norm_count_B = norm_count_B
+ *             norm_counts_A[k] = norm_count_A
+ *             norm_counts_B[k] = norm_count_B             # <<<<<<<<<<<<<<
+ *             vec[j].fc_A_vs_B = (<double> vec[j].count_A + 1) / (vec[j].count_B + 1) / lib_scaling_factor
+ *             vec[j].fc_B_vs_A = (<double> vec[j].count_B + 1) / (vec[j].count_A + 1) * lib_scaling_factor
+ */
+      (__pyx_v_norm_counts_B[__pyx_v_k]) = __pyx_v_norm_count_B;
+
+      /* "sicer/compare_two_libaries.pyx":158
+ *             norm_counts_A[k] = norm_count_A
+ *             norm_counts_B[k] = norm_count_B
+ *             vec[j].fc_A_vs_B = (<double> vec[j].count_A + 1) / (vec[j].count_B + 1) / lib_scaling_factor             # <<<<<<<<<<<<<<
+ *             vec[j].fc_B_vs_A = (<double> vec[j].count_B + 1) / (vec[j].count_A + 1) * lib_scaling_factor
+ *             preinc(k)
+ */
+      __pyx_t_3 = (((double)(__pyx_v_vec[__pyx_v_j]).count_A) + 1.0);
+      __pyx_t_21 = ((__pyx_v_vec[__pyx_v_j]).count_B + 1);
+      if (unlikely(__pyx_t_21 == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 158, __pyx_L1_error)
+      }
+      __pyx_t_20 = (__pyx_t_3 / ((double)__pyx_t_21));
+      if (unlikely(__pyx_v_lib_scaling_factor == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 158, __pyx_L1_error)
+      }
+      (__pyx_v_vec[__pyx_v_j]).fc_A_vs_B = (__pyx_t_20 / __pyx_v_lib_scaling_factor);
+
+      /* "sicer/compare_two_libaries.pyx":159
+ *             norm_counts_B[k] = norm_count_B
+ *             vec[j].fc_A_vs_B = (<double> vec[j].count_A + 1) / (vec[j].count_B + 1) / lib_scaling_factor
+ *             vec[j].fc_B_vs_A = (<double> vec[j].count_B + 1) / (vec[j].count_A + 1) * lib_scaling_factor             # <<<<<<<<<<<<<<
+ *             preinc(k)
+ * 
+ */
+      __pyx_t_20 = (((double)(__pyx_v_vec[__pyx_v_j]).count_B) + 1.0);
+      __pyx_t_21 = ((__pyx_v_vec[__pyx_v_j]).count_A + 1);
+      if (unlikely(__pyx_t_21 == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 159, __pyx_L1_error)
+      }
+      (__pyx_v_vec[__pyx_v_j]).fc_B_vs_A = ((__pyx_t_20 / ((double)__pyx_t_21)) * __pyx_v_lib_scaling_factor);
+
+      /* "sicer/compare_two_libaries.pyx":160
+ *             vec[j].fc_A_vs_B = (<double> vec[j].count_A + 1) / (vec[j].count_B + 1) / lib_scaling_factor
+ *             vec[j].fc_B_vs_A = (<double> vec[j].count_B + 1) / (vec[j].count_A + 1) * lib_scaling_factor
+ *             preinc(k)             # <<<<<<<<<<<<<<
+ * 
+ *     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)
+ */
+      (void)((++__pyx_v_k));
+    }
+
+    /* "sicer/compare_two_libaries.pyx":147
+ *     cdef double norm_count_A, norm_count_B
+ * 
+ *     for chrom in df_container.getChromosomes():             # <<<<<<<<<<<<<<
+ *         vec = deref(df_container.getVectorPtr(chrom))
+ *         for j in range(vec.size()):
+ */
+  }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/generate_windows.pyx":133
- * cpdef WindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
- *     print("Generating windows from treatement reads...")
- *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)             # <<<<<<<<<<<<<<
+  /* "sicer/compare_two_libaries.pyx":162
+ *             preinc(k)
  * 
+ *     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)             # <<<<<<<<<<<<<<
+ *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
+ *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_scipy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_stats); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_pearsonr); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_A); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_13 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_B); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_22 = NULL;
+  __pyx_t_23 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+    __pyx_t_22 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_22)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_22);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_5, function);
+      __pyx_t_23 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_5)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_22, __pyx_t_12, __pyx_t_13};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_22, __pyx_t_12, __pyx_t_13};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_24 = PyTuple_New(2+__pyx_t_23); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_24);
+    if (__pyx_t_22) {
+      __Pyx_GIVEREF(__pyx_t_22); PyTuple_SET_ITEM(__pyx_t_24, 0, __pyx_t_22); __pyx_t_22 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_24, 0+__pyx_t_23, __pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_13);
+    PyTuple_SET_ITEM(__pyx_t_24, 1+__pyx_t_23, __pyx_t_13);
+    __pyx_t_12 = 0;
+    __pyx_t_13 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_24, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_v_pearson = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "sicer/compare_two_libaries.pyx":163
+ * 
+ *     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)
+ *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])             # <<<<<<<<<<<<<<
+ *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)
+ *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
+ */
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pearson, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_pearson, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_24 = PyTuple_New(4); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_24);
+  __Pyx_INCREF(__pyx_kp_u_Pearson_s_correlation_is);
+  __Pyx_GIVEREF(__pyx_kp_u_Pearson_s_correlation_is);
+  PyTuple_SET_ITEM(__pyx_t_24, 0, __pyx_kp_u_Pearson_s_correlation_is);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_24, 1, __pyx_t_1);
+  __Pyx_INCREF(__pyx_kp_u_with_p_value);
+  __Pyx_GIVEREF(__pyx_kp_u_with_p_value);
+  PyTuple_SET_ITEM(__pyx_t_24, 2, __pyx_kp_u_with_p_value);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_24, 3, __pyx_t_5);
+  __pyx_t_1 = 0;
+  __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_24, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+  /* "sicer/compare_two_libaries.pyx":164
+ *     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)
+ *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
+ *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)             # <<<<<<<<<<<<<<
+ *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
  * 
  */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  if (!(likely(((__pyx_v_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_reads, __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer))))) __PYX_ERR(0, 133, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_frag_size); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_window_size); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_16generate_windows__generate_windows(((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)__pyx_v_reads), __pyx_v_genome_data, __pyx_t_2, __pyx_t_3, __pyx_t_4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_24, __pyx_n_s_scipy); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_24);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_stats); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_WindowContainer *)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
+  __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_spearmanr); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_24);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_A); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_13 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_B); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_12 = NULL;
+  __pyx_t_23 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_24))) {
+    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_24);
+    if (likely(__pyx_t_12)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_24);
+      __Pyx_INCREF(__pyx_t_12);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_24, function);
+      __pyx_t_23 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_24)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_13};
+    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_24, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_24)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_13};
+    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_24, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_22 = PyTuple_New(2+__pyx_t_23); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_22);
+    if (__pyx_t_12) {
+      __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_22, 0, __pyx_t_12); __pyx_t_12 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_22, 0+__pyx_t_23, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_13);
+    PyTuple_SET_ITEM(__pyx_t_22, 1+__pyx_t_23, __pyx_t_13);
+    __pyx_t_1 = 0;
+    __pyx_t_13 = 0;
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_24, __pyx_t_22, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
+  __pyx_v_spearman = __pyx_t_5;
+  __pyx_t_5 = 0;
+
+  /* "sicer/compare_two_libaries.pyx":165
+ *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
+ *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)
+ *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])             # <<<<<<<<<<<<<<
+ * 
+ *     return df_container
+ */
+  __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_spearman, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_24 = __Pyx_GetItemInt(__pyx_v_spearman, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_24);
+  __pyx_t_22 = PyTuple_New(4); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_22);
+  __Pyx_INCREF(__pyx_kp_u_Spearman_s_correlation_is);
+  __Pyx_GIVEREF(__pyx_kp_u_Spearman_s_correlation_is);
+  PyTuple_SET_ITEM(__pyx_t_22, 0, __pyx_kp_u_Spearman_s_correlation_is);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_22, 1, __pyx_t_5);
+  __Pyx_INCREF(__pyx_kp_u_with_p_value);
+  __Pyx_GIVEREF(__pyx_kp_u_with_p_value);
+  PyTuple_SET_ITEM(__pyx_t_22, 2, __pyx_kp_u_with_p_value);
+  __Pyx_GIVEREF(__pyx_t_24);
+  PyTuple_SET_ITEM(__pyx_t_22, 3, __pyx_t_24);
+  __pyx_t_5 = 0;
+  __pyx_t_24 = 0;
+  __pyx_t_24 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_22, NULL); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_24);
+  __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+  __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
+
+  /* "sicer/compare_two_libaries.pyx":167
+ *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
+ * 
+ *     return df_container             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_df_container));
+  __pyx_r = __pyx_v_df_container;
   goto __pyx_L0;
 
-  /* "sicer/generate_windows.pyx":131
- *     return windows
+  /* "sicer/compare_two_libaries.pyx":101
+ *     return ret
  * 
- * cpdef WindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):             # <<<<<<<<<<<<<<
- *     print("Generating windows from treatement reads...")
- *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)
+ * cpdef DiffExprIslandContainer compare_two_libaries(             # <<<<<<<<<<<<<<
+ *     object genome_data,
+ *     BEDReadContainer reads_A,
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.generate_windows.generate_windows", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_22);
+  __Pyx_XDECREF(__pyx_t_24);
+  __Pyx_AddTraceback("sicer.compare_two_libaries.compare_two_libaries", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_df_container);
+  __Pyx_XDECREF(__pyx_v_chrom);
+  __Pyx_XDECREF(__pyx_v_pearson);
+  __Pyx_XDECREF(__pyx_v_spearman);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5sicer_16generate_windows_1generate_windows(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5sicer_16generate_windows_1generate_windows(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_reads = 0;
+static PyObject *__pyx_pw_5sicer_20compare_two_libaries_1compare_two_libaries(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_5sicer_20compare_two_libaries_1compare_two_libaries(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_genome_data = 0;
-  PyObject *__pyx_v_frag_size = 0;
-  PyObject *__pyx_v_window_size = 0;
-  PyObject *__pyx_v_num_cpu = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_A = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_B = 0;
+  struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_union_islands = 0;
+  int __pyx_v_frag_size;
+  int __pyx_v_num_cpu;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("generate_windows (wrapper)", 0);
+  __Pyx_RefNannySetupContext("compare_two_libaries (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_reads,&__pyx_n_s_genome_data,&__pyx_n_s_frag_size,&__pyx_n_s_window_size,&__pyx_n_s_num_cpu,0};
-    PyObject* values[5] = {0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_genome_data,&__pyx_n_s_reads_A,&__pyx_n_s_reads_B,&__pyx_n_s_union_islands,&__pyx_n_s_frag_size,&__pyx_n_s_num_cpu,0};
+    PyObject* values[6] = {0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
         CYTHON_FALLTHROUGH;
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
@@ -2579,37 +3183,43 @@ static PyObject *__pyx_pw_5sicer_16generate_windows_1generate_windows(PyObject *
       kw_args = PyDict_Size(__pyx_kwds);
       switch (pos_args) {
         case  0:
-        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_reads)) != 0)) kw_args--;
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_reads_A)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 1); __PYX_ERR(0, 131, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compare_two_libaries", 1, 6, 6, 1); __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_frag_size)) != 0)) kw_args--;
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_reads_B)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 2); __PYX_ERR(0, 131, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compare_two_libaries", 1, 6, 6, 2); __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
-        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_union_islands)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 3); __PYX_ERR(0, 131, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compare_two_libaries", 1, 6, 6, 3); __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
-        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
+        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_frag_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, 4); __PYX_ERR(0, 131, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compare_two_libaries", 1, 6, 6, 4); __PYX_ERR(0, 101, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  5:
+        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("compare_two_libaries", 1, 6, 6, 5); __PYX_ERR(0, 101, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "generate_windows") < 0)) __PYX_ERR(0, 131, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compare_two_libaries") < 0)) __PYX_ERR(0, 101, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -2617,35 +3227,44 @@ static PyObject *__pyx_pw_5sicer_16generate_windows_1generate_windows(PyObject *
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
       values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+      values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
     }
-    __pyx_v_reads = values[0];
-    __pyx_v_genome_data = values[1];
-    __pyx_v_frag_size = values[2];
-    __pyx_v_window_size = values[3];
-    __pyx_v_num_cpu = values[4];
+    __pyx_v_genome_data = values[0];
+    __pyx_v_reads_A = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)values[1]);
+    __pyx_v_reads_B = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *)values[2]);
+    __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *)values[3]);
+    __pyx_v_frag_size = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_frag_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
+    __pyx_v_num_cpu = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_num_cpu == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("generate_windows", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 131, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compare_two_libaries", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 101, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("sicer.generate_windows.generate_windows", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.compare_two_libaries.compare_two_libaries", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5sicer_16generate_windows_generate_windows(__pyx_self, __pyx_v_reads, __pyx_v_genome_data, __pyx_v_frag_size, __pyx_v_window_size, __pyx_v_num_cpu);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_reads_A), __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer, 1, "reads_A", 0))) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_reads_B), __pyx_ptype_5sicer_6shared_16chrom_containers_BEDReadContainer, 1, "reads_B", 0))) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_union_islands), __pyx_ptype_5sicer_6shared_16chrom_containers_IslandContainer, 1, "union_islands", 0))) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5sicer_20compare_two_libaries_compare_two_libaries(__pyx_self, __pyx_v_genome_data, __pyx_v_reads_A, __pyx_v_reads_B, __pyx_v_union_islands, __pyx_v_frag_size, __pyx_v_num_cpu);
 
   /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_16generate_windows_generate_windows(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_frag_size, PyObject *__pyx_v_window_size, PyObject *__pyx_v_num_cpu) {
+static PyObject *__pyx_pf_5sicer_20compare_two_libaries_compare_two_libaries(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_16chrom_containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_16chrom_containers_IslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, int __pyx_v_num_cpu) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("generate_windows", 0);
+  __Pyx_RefNannySetupContext("compare_two_libaries", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_16generate_windows_generate_windows(__pyx_v_reads, __pyx_v_genome_data, __pyx_v_frag_size, __pyx_v_window_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_20compare_two_libaries_compare_two_libaries(__pyx_v_genome_data, __pyx_v_reads_A, __pyx_v_reads_B, __pyx_v_union_islands, __pyx_v_frag_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2654,7 +3273,7 @@ static PyObject *__pyx_pf_5sicer_16generate_windows_generate_windows(CYTHON_UNUS
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sicer.generate_windows.generate_windows", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("sicer.compare_two_libaries.compare_two_libaries", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2843,25 +3462,206 @@ static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(
   return __pyx_r;
 }
 
+/* "vector.to_py":60
+ * 
+ * @cname("__pyx_convert_vector_to_py_double")
+ * cdef object __pyx_convert_vector_to_py_double(vector[X]& v):             # <<<<<<<<<<<<<<
+ *     return [v[i] for i in range(v.size())]
+ * 
+ */
+
+static PyObject *__pyx_convert_vector_to_py_double(const std::vector<double>  &__pyx_v_v) {
+  size_t __pyx_v_i;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  size_t __pyx_t_2;
+  size_t __pyx_t_3;
+  size_t __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_RefNannySetupContext("__pyx_convert_vector_to_py_double", 0);
+
+  /* "vector.to_py":61
+ * @cname("__pyx_convert_vector_to_py_double")
+ * cdef object __pyx_convert_vector_to_py_double(vector[X]& v):
+ *     return [v[i] for i in range(v.size())]             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 61, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __pyx_v_v.size();
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
+    __pyx_t_5 = PyFloat_FromDouble((__pyx_v_v[__pyx_v_i])); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 61, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(1, 61, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  }
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "vector.to_py":60
+ * 
+ * @cname("__pyx_convert_vector_to_py_double")
+ * cdef object __pyx_convert_vector_to_py_double(vector[X]& v):             # <<<<<<<<<<<<<<
+ *     return [v[i] for i in range(v.size())]
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("vector.to_py.__pyx_convert_vector_to_py_double", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "vector.from_py":45
+ * 
+ * @cname("__pyx_convert_vector_from_py_double")
+ * cdef vector[X] __pyx_convert_vector_from_py_double(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef vector[X] v
+ *     for item in o:
+ */
+
+static std::vector<double>  __pyx_convert_vector_from_py_double(PyObject *__pyx_v_o) {
+  std::vector<double>  __pyx_v_v;
+  PyObject *__pyx_v_item = NULL;
+  std::vector<double>  __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  PyObject *(*__pyx_t_3)(PyObject *);
+  PyObject *__pyx_t_4 = NULL;
+  double __pyx_t_5;
+  __Pyx_RefNannySetupContext("__pyx_convert_vector_from_py_double", 0);
+
+  /* "vector.from_py":47
+ * cdef vector[X] __pyx_convert_vector_from_py_double(object o) except *:
+ *     cdef vector[X] v
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         v.push_back(<X>item)
+ *     return v
+ */
+  if (likely(PyList_CheckExact(__pyx_v_o)) || PyTuple_CheckExact(__pyx_v_o)) {
+    __pyx_t_1 = __pyx_v_o; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
+    __pyx_t_3 = NULL;
+  } else {
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 47, __pyx_L1_error)
+  }
+  for (;;) {
+    if (likely(!__pyx_t_3)) {
+      if (likely(PyList_CheckExact(__pyx_t_1))) {
+        if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 47, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      } else {
+        if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 47, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      }
+    } else {
+      __pyx_t_4 = __pyx_t_3(__pyx_t_1);
+      if (unlikely(!__pyx_t_4)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(1, 47, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_4);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_4);
+    __pyx_t_4 = 0;
+
+    /* "vector.from_py":48
+ *     cdef vector[X] v
+ *     for item in o:
+ *         v.push_back(<X>item)             # <<<<<<<<<<<<<<
+ *     return v
+ * 
+ */
+    __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_item); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L1_error)
+    __pyx_v_v.push_back(((double)__pyx_t_5));
+
+    /* "vector.from_py":47
+ * cdef vector[X] __pyx_convert_vector_from_py_double(object o) except *:
+ *     cdef vector[X] v
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         v.push_back(<X>item)
+ *     return v
+ */
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "vector.from_py":49
+ *     for item in o:
+ *         v.push_back(<X>item)
+ *     return v             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_v;
+  goto __pyx_L0;
+
+  /* "vector.from_py":45
+ * 
+ * @cname("__pyx_convert_vector_from_py_double")
+ * cdef vector[X] __pyx_convert_vector_from_py_double(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef vector[X] v
+ *     for item in o:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("vector.from_py.__pyx_convert_vector_from_py_double", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_item);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 static PyMethodDef __pyx_methods[] = {
-  {"generate_windows", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_16generate_windows_1generate_windows, METH_VARARGS|METH_KEYWORDS, 0},
+  {"compare_two_libaries", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5sicer_20compare_two_libaries_1compare_two_libaries, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_generate_windows(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_compare_two_libaries(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_generate_windows},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_compare_two_libaries},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "generate_windows",
+    "compare_two_libaries",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -2890,27 +3690,35 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_u_Generating_windows_from_treateme, __pyx_k_Generating_windows_from_treateme, sizeof(__pyx_k_Generating_windows_from_treateme), 0, 1, 0, 0},
-  {&__pyx_kp_u_Window_count, __pyx_k_Window_count, sizeof(__pyx_k_Window_count), 0, 1, 0, 0},
-  {&__pyx_n_s_chrom, __pyx_k_chrom, sizeof(__pyx_k_chrom), 0, 0, 1, 1},
-  {&__pyx_n_s_chrom_length, __pyx_k_chrom_length, sizeof(__pyx_k_chrom_length), 0, 0, 1, 1},
+  {&__pyx_kp_u_Comparing_two_treatment_librarie, __pyx_k_Comparing_two_treatment_librarie, sizeof(__pyx_k_Comparing_two_treatment_librarie), 0, 1, 0, 0},
+  {&__pyx_kp_u_Pearson_s_correlation_is, __pyx_k_Pearson_s_correlation_is, sizeof(__pyx_k_Pearson_s_correlation_is), 0, 1, 0, 0},
+  {&__pyx_kp_u_Spearman_s_correlation_is, __pyx_k_Spearman_s_correlation_is, sizeof(__pyx_k_Spearman_s_correlation_is), 0, 1, 0, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_frag_size, __pyx_k_frag_size, sizeof(__pyx_k_frag_size), 0, 0, 1, 1},
   {&__pyx_n_s_genome_data, __pyx_k_genome_data, sizeof(__pyx_k_genome_data), 0, 0, 1, 1},
+  {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_num_cpu, __pyx_k_num_cpu, sizeof(__pyx_k_num_cpu), 0, 0, 1, 1},
+  {&__pyx_n_s_pearsonr, __pyx_k_pearsonr, sizeof(__pyx_k_pearsonr), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_reads, __pyx_k_reads, sizeof(__pyx_k_reads), 0, 0, 1, 1},
+  {&__pyx_n_s_rankdata, __pyx_k_rankdata, sizeof(__pyx_k_rankdata), 0, 0, 1, 1},
+  {&__pyx_n_s_reads_A, __pyx_k_reads_A, sizeof(__pyx_k_reads_A), 0, 0, 1, 1},
+  {&__pyx_n_s_reads_B, __pyx_k_reads_B, sizeof(__pyx_k_reads_B), 0, 0, 1, 1},
+  {&__pyx_n_s_scipy, __pyx_k_scipy, sizeof(__pyx_k_scipy), 0, 0, 1, 1},
+  {&__pyx_n_s_scipy_stats, __pyx_k_scipy_stats, sizeof(__pyx_k_scipy_stats), 0, 0, 1, 1},
+  {&__pyx_n_s_spearmanr, __pyx_k_spearmanr, sizeof(__pyx_k_spearmanr), 0, 0, 1, 1},
+  {&__pyx_n_s_stats, __pyx_k_stats, sizeof(__pyx_k_stats), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_window_size, __pyx_k_window_size, sizeof(__pyx_k_window_size), 0, 0, 1, 1},
+  {&__pyx_n_s_union_islands, __pyx_k_union_islands, sizeof(__pyx_k_union_islands), 0, 0, 1, 1},
+  {&__pyx_kp_u_with_p_value, __pyx_k_with_p_value, sizeof(__pyx_k_with_p_value), 0, 1, 0, 0},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 23, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 109, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2920,14 +3728,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/generate_windows.pyx":132
- * 
- * cpdef WindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
- *     print("Generating windows from treatement reads...")             # <<<<<<<<<<<<<<
- *     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)
- * 
+  /* "sicer/compare_two_libaries.pyx":109
+ *     int num_cpu
+ * ):
+ *     print("Comparing two treatment libraries...")             # <<<<<<<<<<<<<<
+ *     # Convert Python list to vector for no-GIL use
+ *     cdef vector[string] chroms = reads_A.getChromosomes()
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Generating_windows_from_treateme); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Comparing_two_treatment_librarie); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -3029,10 +3837,24 @@ static int __Pyx_modinit_variable_import_code(void) {
 
 static int __Pyx_modinit_function_import_code(void) {
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
+  __pyx_t_1 = PyImport_ImportModule("sicer.utility.utils"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_tag_pos", (void (**)(void))&__pyx_f_5sicer_7utility_5utils_get_tag_pos, "int (BEDRead &, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "bin_tag_in_island", (void (**)(void))&__pyx_f_5sicer_7utility_5utils_bin_tag_in_island, "int (std::vector<uint32_t>  &, std::vector<uint32_t>  &, uint32_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  Py_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_2 = PyImport_ImportModule("scipy.special.cython_special"); if (!__pyx_t_2) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_2, "pdtrc", (void (**)(void))&__pyx_f_5scipy_7special_14cython_special_pdtrc, "double (double, double, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  Py_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 
@@ -3052,11 +3874,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initgenerate_windows(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initgenerate_windows(void)
+__Pyx_PyMODINIT_FUNC initcompare_two_libaries(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initcompare_two_libaries(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_generate_windows(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_generate_windows(void)
+__Pyx_PyMODINIT_FUNC PyInit_compare_two_libaries(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_compare_two_libaries(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -3123,16 +3945,17 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_generate_windows(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_compare_two_libaries(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannyDeclarations
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'generate_windows' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'compare_two_libaries' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -3147,7 +3970,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_generate_windows(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_compare_two_libaries(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -3186,7 +4009,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("generate_windows", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("compare_two_libaries", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -3204,14 +4027,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_sicer__generate_windows) {
+  if (__pyx_module_is_main_sicer__compare_two_libaries) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "sicer.generate_windows")) {
-      if (unlikely(PyDict_SetItemString(modules, "sicer.generate_windows", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "sicer.compare_two_libaries")) {
+      if (unlikely(PyDict_SetItemString(modules, "sicer.compare_two_libaries", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -3226,26 +4049,59 @@ if (!__Pyx_RefNanny) {
   (void)__Pyx_modinit_type_init_code();
   if (unlikely(__Pyx_modinit_type_import_code() != 0)) goto __pyx_L1_error;
   (void)__Pyx_modinit_variable_import_code();
-  (void)__Pyx_modinit_function_import_code();
+  if (unlikely(__Pyx_modinit_function_import_code() != 0)) goto __pyx_L1_error;
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "sicer/generate_windows.pyx":1
- * # SICER Internal Imports             # <<<<<<<<<<<<<<
- * from sicer.shared.data_classes cimport BEDRead, Window
- * from sicer.shared.chrom_containers cimport BEDReadContainer, WindowContainer
+  /* "sicer/compare_two_libaries.pyx":18
+ * 
+ * from scipy.special.cython_special cimport pdtrc as poisson_sf
+ * import scipy.stats             # <<<<<<<<<<<<<<
+ * from scipy.stats import rankdata
+ * 
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_scipy_stats, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_scipy, __pyx_t_1) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "sicer/compare_two_libaries.pyx":19
+ * from scipy.special.cython_special cimport pdtrc as poisson_sf
+ * import scipy.stats
+ * from scipy.stats import rankdata             # <<<<<<<<<<<<<<
+ * 
+ * cdef struct ReturnItem:
+ */
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_n_s_rankdata);
+  __Pyx_GIVEREF(__pyx_n_s_rankdata);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_rankdata);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_stats, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rankdata, __pyx_t_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "sicer/compare_two_libaries.pyx":1
+ * # SICER Internal Imports             # <<<<<<<<<<<<<<
+ * from sicer.utility.utils cimport get_tag_pos, bin_tag_in_island, remove_at
+ * from sicer.shared.data_classes cimport BEDRead, Island, DiffExprIsland
+ */
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "vector.from_py":45
  * 
- * @cname("__pyx_convert_vector_from_py_std_3a__3a_string")
- * cdef vector[X] __pyx_convert_vector_from_py_std_3a__3a_string(object o) except *:             # <<<<<<<<<<<<<<
+ * @cname("__pyx_convert_vector_from_py_double")
+ * cdef vector[X] __pyx_convert_vector_from_py_double(object o) except *:             # <<<<<<<<<<<<<<
  *     cdef vector[X] v
  *     for item in o:
  */
@@ -3255,13 +4111,14 @@ if (!__Pyx_RefNanny) {
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init sicer.generate_windows", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init sicer.compare_two_libaries", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init sicer.generate_windows");
+    PyErr_SetString(PyExc_ImportError, "init sicer.compare_two_libaries");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -3386,121 +4243,86 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
 #endif
 }
 
-/* GetItemInt */
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
-    PyObject *r;
-    if (!j) return NULL;
-    r = PyObject_GetItem(o, j);
-    Py_DECREF(j);
-    return r;
+/* PyObjectCall */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = func->ob_type->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
 }
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyList_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
-        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
 #endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyTuple_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
-        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
-                                                     CYTHON_NCP_UNUSED int wraparound,
-                                                     CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
-        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
-            PyObject *r = PyList_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    }
-    else if (PyTuple_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
-            PyObject *r = PyTuple_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return NULL;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_item(o, i);
-        }
-    }
-#else
-    if (is_list || PySequence_Check(o)) {
-        return PySequence_GetItem(o, i);
-    }
-#endif
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-}
 
-/* ObjectGetItem */
-#if CYTHON_USE_TYPE_SLOTS
-static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
-    PyObject *runerr;
-    Py_ssize_t key_value;
-    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
-    if (unlikely(!(m && m->sq_item))) {
-        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
+/* PyDictVersioning */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
+    PyObject **dictptr = NULL;
+    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
+    if (offset) {
+#if CYTHON_COMPILING_IN_CPYTHON
+        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
+#else
+        dictptr = _PyObject_GetDictPtr(obj);
+#endif
+    }
+    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+}
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+        return 0;
+    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+}
+#endif
+
+/* GetModuleGlobalName */
+#if CYTHON_USE_DICT_VERSIONS
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
+#else
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
+#endif
+{
+    PyObject *result;
+#if !CYTHON_AVOID_BORROWED_REFS
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
+    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    } else if (unlikely(PyErr_Occurred())) {
         return NULL;
     }
-    key_value = __Pyx_PyIndex_AsSsize_t(index);
-    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
-        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
+#else
+    result = PyDict_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
     }
-    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
-        PyErr_Clear();
-        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
-    }
-    return NULL;
-}
-static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
-    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(m && m->mp_subscript)) {
-        return m->mp_subscript(obj, key);
-    }
-    return __Pyx_PyObject_GetIndex(obj, key);
-}
 #endif
+#else
+    result = PyObject_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+    PyErr_Clear();
+#endif
+    return __Pyx_GetBuiltinName(name);
+}
 
 /* PyCFunctionFastCall */
 #if CYTHON_FAST_PYCCALL
@@ -3644,25 +4466,34 @@ done:
 #endif
 #endif
 
-/* PyObjectCall */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    PyObject *result;
-    ternaryfunc call = func->ob_type->tp_call;
-    if (unlikely(!call))
-        return PyObject_Call(func, arg, kw);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = (*call)(func, arg, kw);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
     }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
     return result;
 }
-#endif
 
 /* PyObjectCallMethO */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -3724,17 +4555,91 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 }
 #endif
 
-/* ExtTypeTest */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
+/* GetItemInt */
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+    PyObject *r;
+    if (!j) return NULL;
+    r = PyObject_GetItem(o, j);
+    Py_DECREF(j);
+    return r;
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyList_GET_SIZE(o);
     }
-    if (likely(__Pyx_TypeCheck(obj, type)))
-        return 1;
-    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
-                 Py_TYPE(obj)->tp_name, type->tp_name);
-    return 0;
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
+        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyTuple_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
+        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
+                                                     CYTHON_NCP_UNUSED int wraparound,
+                                                     CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
+    if (is_list || PyList_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
+        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
+            PyObject *r = PyList_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    }
+    else if (PyTuple_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
+        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
+            PyObject *r = PyTuple_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    } else {
+        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
+        if (likely(m && m->sq_item)) {
+            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
+                Py_ssize_t l = m->sq_length(o);
+                if (likely(l >= 0)) {
+                    i += l;
+                } else {
+                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                        return NULL;
+                    PyErr_Clear();
+                }
+            }
+            return m->sq_item(o, i);
+        }
+    }
+#else
+    if (is_list || PySequence_Check(o)) {
+        return PySequence_GetItem(o, i);
+    }
+#endif
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
 }
 
 /* RaiseArgTupleInvalid */
@@ -3879,6 +4784,27 @@ bad:
     return -1;
 }
 
+/* ArgTypeTest */
+static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact)
+{
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    else if (exact) {
+        #if PY_MAJOR_VERSION == 2
+        if ((type == &PyBaseString_Type) && likely(__Pyx_PyBaseString_CheckExact(obj))) return 1;
+        #endif
+    }
+    else {
+        if (likely(__Pyx_TypeCheck(obj, type))) return 1;
+    }
+    PyErr_Format(PyExc_TypeError,
+        "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
+        name, type->tp_name, Py_TYPE(obj)->tp_name);
+    return 0;
+}
+
 /* TypeImport */
 #ifndef __PYX_HAVE_RT_ImportType
 #define __PYX_HAVE_RT_ImportType
@@ -3960,31 +4886,84 @@ bad:
     return NULL;
 }
 
-/* PyDictVersioning */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
-    PyObject **dictptr = NULL;
-    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
-    if (offset) {
-#if CYTHON_COMPILING_IN_CPYTHON
-        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
-#else
-        dictptr = _PyObject_GetDictPtr(obj);
-#endif
+/* Import */
+static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
+    PyObject *empty_list = 0;
+    PyObject *module = 0;
+    PyObject *global_dict = 0;
+    PyObject *empty_dict = 0;
+    PyObject *list;
+    #if PY_MAJOR_VERSION < 3
+    PyObject *py_import;
+    py_import = __Pyx_PyObject_GetAttrStr(__pyx_b, __pyx_n_s_import);
+    if (!py_import)
+        goto bad;
+    #endif
+    if (from_list)
+        list = from_list;
+    else {
+        empty_list = PyList_New(0);
+        if (!empty_list)
+            goto bad;
+        list = empty_list;
     }
-    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+    global_dict = PyModule_GetDict(__pyx_m);
+    if (!global_dict)
+        goto bad;
+    empty_dict = PyDict_New();
+    if (!empty_dict)
+        goto bad;
+    {
+        #if PY_MAJOR_VERSION >= 3
+        if (level == -1) {
+            if (strchr(__Pyx_MODULE_NAME, '.')) {
+                module = PyImport_ImportModuleLevelObject(
+                    name, global_dict, empty_dict, list, 1);
+                if (!module) {
+                    if (!PyErr_ExceptionMatches(PyExc_ImportError))
+                        goto bad;
+                    PyErr_Clear();
+                }
+            }
+            level = 0;
+        }
+        #endif
+        if (!module) {
+            #if PY_MAJOR_VERSION < 3
+            PyObject *py_level = PyInt_FromLong(level);
+            if (!py_level)
+                goto bad;
+            module = PyObject_CallFunctionObjArgs(py_import,
+                name, global_dict, empty_dict, list, py_level, (PyObject *)NULL);
+            Py_DECREF(py_level);
+            #else
+            module = PyImport_ImportModuleLevelObject(
+                name, global_dict, empty_dict, list, level);
+            #endif
+        }
+    }
+bad:
+    #if PY_MAJOR_VERSION < 3
+    Py_XDECREF(py_import);
+    #endif
+    Py_XDECREF(empty_list);
+    Py_XDECREF(empty_dict);
+    return module;
 }
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
-        return 0;
-    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+
+/* ImportFrom */
+static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
+    PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
+    if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
+        PyErr_Format(PyExc_ImportError,
+        #if PY_MAJOR_VERSION < 3
+            "cannot import name %.230s", PyString_AS_STRING(name));
+        #else
+            "cannot import name %S", name);
+        #endif
+    }
+    return value;
 }
-#endif
 
 /* CLineInTraceback */
 #ifndef CYTHON_CLINE_IN_TRACEBACK
@@ -4216,24 +5195,24 @@ bad:
     }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
-    const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(uint32_t) < sizeof(long)) {
+        if (sizeof(long) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
         }
     } else {
-        if (sizeof(uint32_t) <= sizeof(long)) {
+        if (sizeof(long) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
         }
@@ -4241,388 +5220,164 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
+        return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
 }
 
-/* CIntFromPy */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
-    const size_t neg_one = (size_t) ((size_t) 0 - (size_t) 1), const_zero = (size_t) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(size_t) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (size_t) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
-                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
-                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
-                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (size_t) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            size_t val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (size_t) -1;
-        }
-    } else {
-        size_t val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (size_t) -1;
-        val = __Pyx_PyInt_As_size_t(tmp);
-        Py_DECREF(tmp);
-        return val;
+/* Declarations */
+#if CYTHON_CCOMPLEX
+  #ifdef __cplusplus
+    static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double x, double y) {
+      return ::std::complex< double >(x, y);
     }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to size_t");
-    return (size_t) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to size_t");
-    return (size_t) -1;
-}
+  #else
+    static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double x, double y) {
+      return x + y*(__pyx_t_double_complex)_Complex_I;
+    }
+  #endif
+#else
+    static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double x, double y) {
+      __pyx_t_double_complex z;
+      z.real = x;
+      z.imag = y;
+      return z;
+    }
+#endif
 
-/* CIntFromPy */
-static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *x) {
-    const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(uint32_t) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(uint32_t, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (uint32_t) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (uint32_t) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(uint32_t, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(uint32_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) >= 2 * PyLong_SHIFT) {
-                            return (uint32_t) (((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(uint32_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) >= 3 * PyLong_SHIFT) {
-                            return (uint32_t) (((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(uint32_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) >= 4 * PyLong_SHIFT) {
-                            return (uint32_t) (((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
+/* Arithmetic */
+#if CYTHON_CCOMPLEX
 #else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (uint32_t) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(uint32_t) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (uint32_t) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(uint32_t, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(uint32_t,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(uint32_t) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (uint32_t) (((uint32_t)-1)*(((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(uint32_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (uint32_t) ((((((uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(uint32_t) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (uint32_t) (((uint32_t)-1)*(((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(uint32_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (uint32_t) ((((((((uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(uint32_t) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (uint32_t) (((uint32_t)-1)*(((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(uint32_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(uint32_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(uint32_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (uint32_t) ((((((((((uint32_t)digits[3]) << PyLong_SHIFT) | (uint32_t)digits[2]) << PyLong_SHIFT) | (uint32_t)digits[1]) << PyLong_SHIFT) | (uint32_t)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(uint32_t) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(uint32_t, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            uint32_t val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (uint32_t) -1;
-        }
-    } else {
-        uint32_t val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (uint32_t) -1;
-        val = __Pyx_PyInt_As_uint32_t(tmp);
-        Py_DECREF(tmp);
-        return val;
+    static CYTHON_INLINE int __Pyx_c_eq_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+       return (a.real == b.real) && (a.imag == b.imag);
     }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to uint32_t");
-    return (uint32_t) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to uint32_t");
-    return (uint32_t) -1;
-}
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_sum_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        __pyx_t_double_complex z;
+        z.real = a.real + b.real;
+        z.imag = a.imag + b.imag;
+        return z;
+    }
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_diff_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        __pyx_t_double_complex z;
+        z.real = a.real - b.real;
+        z.imag = a.imag - b.imag;
+        return z;
+    }
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_prod_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        __pyx_t_double_complex z;
+        z.real = a.real * b.real - a.imag * b.imag;
+        z.imag = a.real * b.imag + a.imag * b.real;
+        return z;
+    }
+    #if 1
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_quot_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        if (b.imag == 0) {
+            return __pyx_t_double_complex_from_parts(a.real / b.real, a.imag / b.real);
+        } else if (fabs(b.real) >= fabs(b.imag)) {
+            if (b.real == 0 && b.imag == 0) {
+                return __pyx_t_double_complex_from_parts(a.real / b.real, a.imag / b.imag);
+            } else {
+                double r = b.imag / b.real;
+                double s = (double)(1.0) / (b.real + b.imag * r);
+                return __pyx_t_double_complex_from_parts(
+                    (a.real + a.imag * r) * s, (a.imag - a.real * r) * s);
+            }
+        } else {
+            double r = b.real / b.imag;
+            double s = (double)(1.0) / (b.imag + b.real * r);
+            return __pyx_t_double_complex_from_parts(
+                (a.real * r + a.imag) * s, (a.imag * r - a.real) * s);
+        }
+    }
+    #else
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_quot_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+        if (b.imag == 0) {
+            return __pyx_t_double_complex_from_parts(a.real / b.real, a.imag / b.real);
+        } else {
+            double denom = b.real * b.real + b.imag * b.imag;
+            return __pyx_t_double_complex_from_parts(
+                (a.real * b.real + a.imag * b.imag) / denom,
+                (a.imag * b.real - a.real * b.imag) / denom);
+        }
+    }
+    #endif
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_neg_double(__pyx_t_double_complex a) {
+        __pyx_t_double_complex z;
+        z.real = -a.real;
+        z.imag = -a.imag;
+        return z;
+    }
+    static CYTHON_INLINE int __Pyx_c_is_zero_double(__pyx_t_double_complex a) {
+       return (a.real == 0) && (a.imag == 0);
+    }
+    static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_conj_double(__pyx_t_double_complex a) {
+        __pyx_t_double_complex z;
+        z.real =  a.real;
+        z.imag = -a.imag;
+        return z;
+    }
+    #if 1
+        static CYTHON_INLINE double __Pyx_c_abs_double(__pyx_t_double_complex z) {
+          #if !defined(HAVE_HYPOT) || defined(_MSC_VER)
+            return sqrt(z.real*z.real + z.imag*z.imag);
+          #else
+            return hypot(z.real, z.imag);
+          #endif
+        }
+        static CYTHON_INLINE __pyx_t_double_complex __Pyx_c_pow_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
+            __pyx_t_double_complex z;
+            double r, lnr, theta, z_r, z_theta;
+            if (b.imag == 0 && b.real == (int)b.real) {
+                if (b.real < 0) {
+                    double denom = a.real * a.real + a.imag * a.imag;
+                    a.real = a.real / denom;
+                    a.imag = -a.imag / denom;
+                    b.real = -b.real;
+                }
+                switch ((int)b.real) {
+                    case 0:
+                        z.real = 1;
+                        z.imag = 0;
+                        return z;
+                    case 1:
+                        return a;
+                    case 2:
+                        return __Pyx_c_prod_double(a, a);
+                    case 3:
+                        z = __Pyx_c_prod_double(a, a);
+                        return __Pyx_c_prod_double(z, a);
+                    case 4:
+                        z = __Pyx_c_prod_double(a, a);
+                        return __Pyx_c_prod_double(z, z);
+                }
+            }
+            if (a.imag == 0) {
+                if (a.real == 0) {
+                    return a;
+                } else if (b.imag == 0) {
+                    z.real = pow(a.real, b.real);
+                    z.imag = 0;
+                    return z;
+                } else if (a.real > 0) {
+                    r = a.real;
+                    theta = 0;
+                } else {
+                    r = -a.real;
+                    theta = atan2(0.0, -1.0);
+                }
+            } else {
+                r = __Pyx_c_abs_double(a);
+                theta = atan2(a.imag, a.real);
+            }
+            lnr = log(r);
+            z_r = exp(lnr * b.real - theta * b.imag);
+            z_theta = theta * b.real + lnr * b.imag;
+            z.real = z_r * cos(z_theta);
+            z.imag = z_r * sin(z_theta);
+            return z;
+        }
+    #endif
+#endif
 
 /* CIntFromPy */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
@@ -4813,35 +5568,193 @@ raise_neg_overflow:
     return (int) -1;
 }
 
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
+/* CIntFromPy */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+    const size_t neg_one = (size_t) ((size_t) 0 - (size_t) 1), const_zero = (size_t) 0;
     const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
 #endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (size_t) -1;
         }
     } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
     }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
 }
 
 /* CIntFromPy */
@@ -5148,6 +6061,60 @@ static int __Pyx_check_binary_version(void) {
     }
     return 0;
 }
+
+/* FunctionImport */
+#ifndef __PYX_HAVE_RT_ImportFunction
+#define __PYX_HAVE_RT_ImportFunction
+static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(module, (char *)"__pyx_capi__");
+    if (!d)
+        goto bad;
+    cobj = PyDict_GetItemString(d, funcname);
+    if (!cobj) {
+        PyErr_Format(PyExc_ImportError,
+            "%.200s does not export expected C function %.200s",
+                PyModule_GetName(module), funcname);
+        goto bad;
+    }
+#if PY_VERSION_HEX >= 0x02070000
+    if (!PyCapsule_IsValid(cobj, sig)) {
+        PyErr_Format(PyExc_TypeError,
+            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
+             PyModule_GetName(module), funcname, sig, PyCapsule_GetName(cobj));
+        goto bad;
+    }
+    tmp.p = PyCapsule_GetPointer(cobj, sig);
+#else
+    {const char *desc, *s1, *s2;
+    desc = (const char *)PyCObject_GetDesc(cobj);
+    if (!desc)
+        goto bad;
+    s1 = desc; s2 = sig;
+    while (*s1 != '\0' && *s1 == *s2) { s1++; s2++; }
+    if (*s1 != *s2) {
+        PyErr_Format(PyExc_TypeError,
+            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
+             PyModule_GetName(module), funcname, sig, desc);
+        goto bad;
+    }
+    tmp.p = PyCObject_AsVoidPtr(cobj);}
+#endif
+    *f = tmp.fp;
+    if (!(*f))
+        goto bad;
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(d);
+    return -1;
+}
+#endif
 
 /* InitStrings */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {

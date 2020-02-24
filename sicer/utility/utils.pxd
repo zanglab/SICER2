@@ -11,7 +11,7 @@ cdef extern from "removeAt.cpp" nogil:
     V remove_at[V, I](V first, V last, I ii_first, I ii_last)
 
 # Read interval manipulation functions
-cdef int get_tag_pos(BEDRead read, int frag_size) nogil
+cdef int get_tag_pos(BEDRead& read, int frag_size) nogil
 cdef int bin_tag_in_island(
     vector[uint32_t]& island_starts,
     vector[uint32_t]& island_ends, 

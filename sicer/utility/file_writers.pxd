@@ -1,6 +1,6 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport Island, BEDRead
-from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowContainer, ChromIslandContainer
+from sicer.shared.chrom_containers cimport BEDReadContainer, WindowContainer, IslandContainer, DiffExprIslandContainer
 
 from libc.stdint cimport uint32_t
 
@@ -11,12 +11,10 @@ cdef class WigFileWriter:
     cdef:
         str file_name
         str output_dir
-        ChromWindowContainer windows
+        WindowContainer windows
         int window_size
         bint filtered
         object fdr
-
-        cstr format_line(self, uint32_t pos, double count)
 
         void c_write(self, 
             cstr outfile_path,
@@ -33,7 +31,7 @@ cdef class IslandFileWriter:
         str file_name
         str output_dir
         object file_type
-        ChromIslandContainer islands
+        IslandContainer islands
         int window_size
         object gap_size
         object fdr
@@ -52,12 +50,30 @@ cdef class BEDFileWriter:
     cdef:
         str file_name
         str output_dir
-        ChromBEDReadContainer reads
+        BEDReadContainer reads
         int window_size
         object gap_size
         object fdr
 
-        cstr format_read(self, BEDRead read)
+        void c_write(self, cstr outfile_path)
+
+    cpdef void write(self)
+
+
+cdef class DiffExprIslandWriter:
+    # Writes islands produced from differential expression analysis
+    cdef public:
+        str file_name_1
+        str file_name_2
+        str output_dir
+        DiffExprIslandContainer islands
+        int window_size
+        bint fdr_filtered
+        bint increased
+        object fdr
+        object gap_size
+        cstr header
+        cstr format
 
         void c_write(self, cstr outfile_path)
 

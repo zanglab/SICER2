@@ -1,6 +1,6 @@
 # SICER Internal Imports
 from sicer.shared.data_classes cimport BEDRead, Window
-from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromWindowContainer
+from sicer.shared.chrom_containers cimport BEDReadContainer, WindowContainer
 
 # Cython Imports
 from libcpp cimport bool
@@ -97,8 +97,8 @@ cdef void _generate_windows_by_chrom(
         tag_list = _get_tag_list(reads, chrom_length, frag_size)
         _generate_window_from_tags(windows, tag_list, chrom, chrom_length, window_size)
     
-cdef ChromWindowContainer _generate_windows(
-    ChromBEDReadContainer reads, 
+cdef WindowContainer _generate_windows(
+    BEDReadContainer reads, 
     object genome_data, 
     int frag_size,
     int window_size,
@@ -110,7 +110,7 @@ cdef ChromWindowContainer _generate_windows(
     for c in genome_data.chrom:
         chrom_lengths.push_back(genome_data.chrom_length[c])
 
-    cdef ChromWindowContainer windows = ChromWindowContainer(genome_data)
+    cdef WindowContainer windows = WindowContainer(genome_data)
 
     cdef int i
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
@@ -128,7 +128,7 @@ cdef ChromWindowContainer _generate_windows(
 
     return windows
 
-cpdef ChromWindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
+cpdef WindowContainer generate_windows(reads, genome_data, frag_size, window_size, num_cpu):
     print("Generating windows from treatement reads...")
     return _generate_windows(reads, genome_data, frag_size, window_size, num_cpu)
 

@@ -41,3 +41,22 @@ cdef extern from "data_objects.h" nogil:
         Island()
         Island(string chrom, uint32_t start, uint32_t end, double score)
         string toString()
+
+    cdef cppclass DiffExprIsland:
+        string chrom
+        uint32_t start
+        uint32_t end
+        uint32_t count_A
+        double norm_count_A
+        uint32_t count_B
+        double norm_count_B
+        double fc_A_vs_B
+        double pvalue_A_vs_B
+        double fdr_A_vs_B
+        double fc_B_vs_A
+        double pvalue_B_vs_A
+        double fdr_B_vs_A
+
+        DiffExprIsland()
+        DiffExprIsland(string chrom, uint32_t start, uint32_t end)
+        string toString()

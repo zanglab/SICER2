@@ -1,7 +1,7 @@
 # SICER Internal Imports
 from sicer.utility.utils cimport remove_at, get_tag_pos, bin_tag_in_island
 from sicer.shared.data_classes cimport BEDRead, Island
-from sicer.shared.chrom_containers cimport ChromBEDReadContainer, ChromIslandContainer
+from sicer.shared.chrom_containers cimport BEDReadContainer, IslandContainer
 
 # Cython Imports
 from libc.math cimport log, fmin
@@ -41,9 +41,9 @@ cdef void _recover_significant_reads_by_chrom(
         treatment_reads.end()
     )
 
-cdef ChromBEDReadContainer _recover_significant_reads(
-    ChromIslandContainer islands,
-    ChromBEDReadContainer treatment_reads,
+cdef BEDReadContainer _recover_significant_reads(
+    IslandContainer islands,
+    BEDReadContainer treatment_reads,
     int frag_size,
     int num_cpu
 ):
@@ -61,7 +61,7 @@ cdef ChromBEDReadContainer _recover_significant_reads(
 
     return treatment_reads
 
-cpdef ChromBEDReadContainer recover_significant_reads(
+cpdef BEDReadContainer recover_significant_reads(
     islands,
     treatment_reads,
     frag_size,

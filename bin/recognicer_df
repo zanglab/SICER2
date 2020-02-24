@@ -13,7 +13,7 @@ import subprocess
 import argparse
 
 # SICER Internal Imports
-from sicer.recognicer_df import run_recognicer_df
+from sicer.recognicer import run_recognicer_df
 from sicer.shared.genome_data import get_available_species
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
@@ -245,7 +245,7 @@ def main():
 
 
     print("Running RECOGNICER with given arguments \n")
-    run_RECOGNICER_df.main(args)
+    run_recognicer_df(args)
     print("Program Finished Running")
 
 
