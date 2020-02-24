@@ -1,16 +1,65 @@
 os:
-- linux
+  - linux
+  - osx
 language: python
 python:
-- '3.4'
-- '3.5'
-- '3.6'
+  - '3.4'
+  - '3.5'
+  - '3.6'
+  - '3.7'
+  - '3.8'
+compiler:
+  - clang
+  - gcc
 matrix:
   include:
-  - python: 3.7
-    dist: xenial
-    sudo: true
-before_install: 
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env:
+         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+    - os: osx
+      osx_image: xcode8
+      env:
+        - MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5"
+
+    - os: osx
+      osx_image: xcode8
+      env:
+        - MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6"
+
+    - os: osx
+      osx_image: xcode8
+      env:
+        - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7
+
+before_install:
+    - eval "${MATRIX_EVAL}"
 install:
 - pip install numpy
 - pip install scipy
