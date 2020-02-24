@@ -2,8 +2,8 @@
 #define DATAOBJECTS_h
 
 #include <string>
-#include <vector>
-#include <map>
+
+using namespace std;
 
 typedef struct BEDRead {
     string chrom;
