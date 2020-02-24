@@ -1,6 +1,6 @@
 import os
 import sys
-import glob
+import subprocess
 from distutils.core import setup
 from setuptools import find_packages, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
@@ -13,7 +13,11 @@ USE_CYTHON = False
 
 EXT = '.pyx' if USE_CYTHON else '.cpp'
 
-extra_cpp_args = ['-O3','-ffast-math', '-stdlib=libc++', '-w']
+extra_cpp_args = ['-O3','-ffast-math', '-w']
+
+# Check if C++ compiler is GCC or Clang
+if "clang" in subprocess.check_output(['gcc', '--version']).decode('utf-8').lower():
+    extra_cpp_args.append('-stdlib=libc++')
 
 extension_names = [
     'sicer.shared.data_classes', 'sicer.shared.containers', 'sicer.shared.utils',
