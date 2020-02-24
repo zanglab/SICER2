@@ -2,6 +2,7 @@
 #define DATAOBJECTS_h
 
 #include <string>
+ #include <sstream>
 
 using namespace std;
 
@@ -16,10 +17,12 @@ public:
     BEDRead() {}
     BEDRead(string chr, unsigned int start, unsigned int end, string name, int scr, char strd):
         chrom(chr), start(start), end(end), name(name), score(scr), strand(strd) {}
-    string toString() 
-    {
-        return chrom + "\t" + std::to_string(start) + "\t" + std::to_string(end) 
-                + "\t" + name + "\t" + std::to_string(score) + "\t" + strand;
+    // toString is primarily for debugging
+    string toString()
+    {   
+        ostringstream ostr;
+        ostr << chrom << "\t" << start << "\t" << end << "\t" << name << "\t" << score << "\t" << strand;
+        return ostr.str();
     }
 } BEDRead;
 
@@ -34,8 +37,9 @@ public:
         chrom(chr), start(start), end(end), count(count) {}
     string toString()
     {
-        return chrom + "\t" + std::to_string(start) + "\t" 
-                + std::to_string(end) + "\t" + std::to_string(count);
+        ostringstream ostr;
+        ostr << chrom << "\t" << start << "\t" << end << "\t" << count;
+        return ostr.str();
     }
 } Window;
 
@@ -56,8 +60,9 @@ public:
         chrom(chr), start(start), end(end), score(score) {}
     string toString()
     {
-        return chrom + "\t" + std::to_string(start) + "\t" 
-                + std::to_string(end) + "\t" + std::to_string(score);
+        ostringstream ostr;
+        ostr << chrom << "\t" << start << "\t" << end << "\t" << score;
+        return ostr.str();
     }
 } Island;
 
@@ -83,8 +88,9 @@ public:
     DiffExprIsland(Island island): chrom(island.chrom), start(island.start), end(island.end) {}
     string toString()
     {
-        return chrom + "\t" + std::to_string(start) + "\t" 
-                + std::to_string(end);
+        ostringstream ostr;
+        ostr << chrom << "\t" << start << "\t" << end;
+        return ostr.str();
     }
 } DiffExprIsland;
 
