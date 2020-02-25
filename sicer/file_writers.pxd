@@ -14,6 +14,7 @@ cdef class WigFileWriter:
         WindowContainer windows
         int window_size
         bint filtered
+        object gap_size
         object fdr
 
         void c_write(self, 

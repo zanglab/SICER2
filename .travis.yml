@@ -2,7 +2,6 @@ sudo: false
 language: python
 os:
   - linux
-  - osx
 python:
   - '3.4'
   - '3.5'
@@ -17,7 +16,6 @@ before_install:
 - if [[ $CXX = g++ ]]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 # /usr/bin/clang has a conflict with gcc, so use clang-X.Y.
 - if [[ $CXX = clang++ ]]; then export CXX="clang++-3.5" CC="clang-3.5"; fi
-- eval "${MATRIX_EVAL}"
 - gcc --version
 install:
 - pip install numpy

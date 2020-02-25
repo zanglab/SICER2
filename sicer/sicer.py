@@ -86,7 +86,7 @@ def run_sicer(args, df_run=False):
 
         sig_windows = generate_windows(sig_reads, genome_data, args.fragment_size, args.window_size, args.cpu)
         WigFileWriter(base_name, args.output_directory, sig_windows, 
-                        args.window_size, True, args.false_discovery_rate).write()
+                        args.window_size, True, args.gap_size, args.false_discovery_rate).write()
 
     if df_run:
         return treatment_reads, islands

@@ -22,6 +22,7 @@ cdef class WigFileWriter:
         WindowContainer windows,
         int window_size,
         bint filtered,
+        object gap_size = None,
         object fdr = None
     ):
         self.file_name = file_name
@@ -65,7 +66,7 @@ cdef class WigFileWriter:
         # Format final file_name
         self.file_name += "-W" + str(self.window_size)
         if self.filtered:
-            self.file_name += "-islandfiltered" + "-FDR" + str(self.fdr)
+            self.file_name += "-G" + str(self.gap_size) + "-FDR" + str(self.fdr) + "-islandfiltered"
 
         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")
         self.file_name += "-normalized.wig"
