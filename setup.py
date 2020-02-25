@@ -13,7 +13,7 @@ USE_CYTHON = False
 
 EXT = '.pyx' if USE_CYTHON else '.cpp'
 
-extra_cpp_args = ['-O3','-ffast-math', '-w']
+extra_cpp_args = ['-O3','-ffast-math', '-w', '-std=c++11']
 
 # Check if C++ compiler is GCC or Clang
 if "clang" in subprocess.check_output(['gcc', '--version']).decode('utf-8').lower():

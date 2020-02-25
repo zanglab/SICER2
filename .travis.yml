@@ -1,7 +1,8 @@
+sudo: false
+language: python
 os:
   - linux
   - osx
-language: python
 python:
   - '3.4'
   - '3.5'
@@ -9,62 +10,20 @@ python:
   - '3.7'
   - '3.8'
 compiler:
-  - clang
   - gcc
-matrix:
-  include:
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-5
-      env:
-         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-6
-      env:
-        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5"
-
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6"
-
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7
-
+  - clang
 before_install:
-    - eval "${MATRIX_EVAL}"
+# /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
+- if [[ $CXX = g++ ]]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+# /usr/bin/clang has a conflict with gcc, so use clang-X.Y.
+- if [[ $CXX = clang++ ]]; then export CXX="clang++-3.5" CC="clang-3.5"; fi
+- eval "${MATRIX_EVAL}"
+- gcc --version
 install:
 - pip install numpy
 - pip install scipy
 script:
-- bash ./test/travisCI/test.sh
+- ./test/travisCI/test.sh
 deploy:
   provider: pypi
   user: __token__
