@@ -16,7 +16,7 @@ from sicer.filter_islands_by_fdr import filter_islands_by_fdr
 from sicer.recover_significant_reads import recover_significant_reads
 from sicer.find_union_islands import find_union_islands
 from sicer.compare_two_libraries import compare_two_libraries
-from sicer.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter, DiffExprIslandWriter
+from sicer.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter, DiffExprIslandFileWriter
 
 WINDOW_PVALUE = 0.20
 BIN_SIZE = 0.001
@@ -86,7 +86,7 @@ def run_sicer(args, df_run=False):
 
         sig_windows = generate_windows(sig_reads, genome_data, args.fragment_size, args.window_size, args.cpu)
         WigFileWriter(base_name, args.output_directory, sig_windows, 
-                        args.window_size, True, args.gap_size, args.false_discovery_rate).write()
+                        args.window_size, True, args.false_discovery_rate, args.gap_size).write()
 
     if df_run:
         return treatment_reads, islands
@@ -110,35 +110,39 @@ def run_sicer_df(args):
     treatment_reads_1, islands_1 = run_sicer(args_1, True)
     treatment_reads_2, islands_2 = run_sicer(args_2, True)
 
-    file_name_1 = os.path.basename(args.treatment_file[0])
-    file_name_2 = os.path.basename(args.treatment_file[1])
+    file_name_1 = os.path.splitext(os.path.basename(args.treatment_file[0]))[0]
+    file_name_2 = os.path.splitext(os.path.basename(args.treatment_file[1]))[0]
 
     union_islands = find_union_islands(islands_1, islands_2, genome_data, args.cpu)
+
+    writer = DiffExprIslandFileWriter(
+        file_name_1, file_name_2, args.output_directory, "union-island",
+        union_islands, args.window_size, e_value=args.e_value, gap_size=args.gap_size
+    )
+    writer.write()
 
     df_islands = compare_two_libraries(
         genome_data, treatment_reads_1, treatment_reads_2, 
         union_islands, args.fragment_size, args.cpu
     )
 
-    df_writer = DiffExprIslandWriter(
-        file_name_1, file_name_2, args.output_directory,
-        df_islands, args.window_size, False, False, gap_size=args.gap_size
-    )
-
-    df_writer.write()
+    writer.islands = df_islands
+    writer.file_type = "summary"
+    writer.write()
 
     a_vs_b_filtered = filter_islands_by_fdr(
         df_islands, args.false_discovery_rate_df, args.cpu, True, True
     )
-
-    df_writer.fdr_filtered = True
-    df_writer.increased = True
-    df_writer.fdr = args.false_discovery_rate_df
-    df_writer.write()
+    
+    writer.islands = a_vs_b_filtered
+    writer.file_type = "fdr-filtered-increased"
+    writer.fdr = args.false_discovery_rate_df
+    writer.write()
 
     b_vs_a_filtered = filter_islands_by_fdr(
         df_islands, args.false_discovery_rate_df, args.cpu, True, False
     )
 
-    df_writer.increased = False
-    df_writer.write()
+    writer.islands = b_vs_a_filtered
+    writer.file_type = "fdr-filtered-decreased"
+    writer.write()

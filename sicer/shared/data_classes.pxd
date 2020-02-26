@@ -59,4 +59,5 @@ cdef extern from "data_objects.h" nogil:
 
         DiffExprIsland()
         DiffExprIsland(string chrom, uint32_t start, uint32_t end)
+        DiffExprIsland(Island island)
         string toString()

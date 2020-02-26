@@ -10,12 +10,13 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++",
-            "-w"
+            "-w",
+            "-std=c++11",
+            "-stdlib=libc++"
         ],
         "include_dirs": [
-            "./sicer/shared",
             "sicer/shared",
+            "./sicer/shared",
             "."
         ],
         "language": "c++",

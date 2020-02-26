@@ -1,6 +1,6 @@
 # SICER Internal Imports
-from sicer.shared.data_classes cimport Island
-from sicer.shared.containers cimport IslandContainer
+from sicer.shared.data_classes cimport Island, DiffExprIsland
+from sicer.shared.containers cimport IslandContainer, DiffExprIslandContainer
 from sicer.shared.utils cimport merge
 
 # Cython Imports
@@ -19,16 +19,18 @@ cdef bool compare_islands(Island i, Island j) nogil:
     return i.start < j.start
 
 cdef void _find_union_islands_by_chrom(
-    vector[Island]& union_islands,
+    vector[DiffExprIsland]& union_islands,
     vector[Island]& islands_1,
     vector[Island]& islands_2
 ) nogil:
 
     if islands_1.size() == 0:
-        union_islands.swap(islands_2)
+        for n in range(islands_2.size()):
+            union_islands.push_back(DiffExprIsland(islands_2[n]))
         return
     if islands_2.size() == 0:
-        union_islands.swap(islands_1)
+        for n in range(islands_1.size()):
+            union_islands.push_back(DiffExprIsland(islands_1[n]))
         return
 
     cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())
@@ -49,16 +51,16 @@ cdef void _find_union_islands_by_chrom(
     while i < merged_islands.size():
         next = merged_islands[i]
         if next.start > current.end:
-            union_islands.push_back(current)
+            union_islands.push_back(DiffExprIsland(current))
             current = next
         else:
             if next.end > current.end:
                 current.end = next.end
         preinc(i)
 
-    union_islands.push_back(current)
+    union_islands.push_back(DiffExprIsland(current))
 
-cdef IslandContainer _find_union_islands(
+cdef DiffExprIslandContainer _find_union_islands(
     IslandContainer islands_1,
     IslandContainer islands_2,
     object genome_data,
@@ -67,7 +69,7 @@ cdef IslandContainer _find_union_islands(
     # Convert Python list to vector for no-GIL use
     cdef vector[string] chroms = islands_1.getChromosomes()
 
-    cdef IslandContainer union_islands = IslandContainer(genome_data)
+    cdef DiffExprIslandContainer union_islands = DiffExprIslandContainer(genome_data)
 
     cdef int i
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
@@ -82,7 +84,7 @@ cdef IslandContainer _find_union_islands(
 
     return union_islands
 
-cpdef IslandContainer find_union_islands(
+cpdef DiffExprIslandContainer find_union_islands(
     islands_1,
     islands_2,
     genome_data,

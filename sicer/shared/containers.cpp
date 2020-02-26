@@ -10,8 +10,9 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++",
-            "-w"
+            "-w",
+            "-std=c++11",
+            "-stdlib=libc++"
         ],
         "include_dirs": [
             "sicer/shared",
@@ -1030,7 +1031,7 @@ static struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *__py
  * 
  * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
  * 
- *     def __cinit__(self, object genome_data, IslandContainer islands):
+ *     def __cinit__(self, object genome_data):
  */
 
 struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer {
@@ -1310,12 +1311,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
-/* ArgTypeTest.proto */
-#define __Pyx_ArgTypeTest(obj, type, none_allowed, name, exact)\
-    ((likely((Py_TYPE(obj) == type) | (none_allowed && (obj == Py_None)))) ? 1 :\
-        __Pyx__ArgTypeTest(obj, type, name, exact))
-static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
-
 /* PyObject_GenericGetAttrNoDict.proto */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj, PyObject* attr_name);
@@ -1510,7 +1505,6 @@ static const char __pyx_k_chrom[] = "chrom";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_reduce[] = "__reduce__";
-static const char __pyx_k_islands[] = "islands";
 static const char __pyx_k_species[] = "species";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_setstate[] = "__setstate__";
@@ -1553,7 +1547,6 @@ static PyObject *__pyx_n_s_getReadCount;
 static PyObject *__pyx_n_s_getTotalTagCount;
 static PyObject *__pyx_n_s_getWindowCount;
 static PyObject *__pyx_n_s_getstate;
-static PyObject *__pyx_n_s_islands;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_map;
 static PyObject *__pyx_n_s_name;
@@ -1597,7 +1590,7 @@ static void __pyx_pf_5sicer_6shared_10containers_15IslandContainer_8__dealloc__(
 static PyObject *__pyx_pf_5sicer_6shared_10containers_15IslandContainer_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_6shared_10containers_15IslandContainer_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_lambda_funcdef_lambda3(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x); /* proto */
-static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cinit__(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_islands); /* proto */
+static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cinit__(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_self, PyObject *__pyx_v_genome_data); /* proto */
 static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_2updateIslandCount(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_4getChromosomes(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_6getIslandCount(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_self); /* proto */
@@ -4983,7 +4976,7 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_15IslandContainer_12__sets
 /* "sicer/shared/containers.pyx":123
  * cdef class DiffExprIslandContainer:
  * 
- *     def __cinit__(self, object genome_data, IslandContainer islands):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, object genome_data):             # <<<<<<<<<<<<<<
  *         self.species = genome_data.species
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
  */
@@ -4992,19 +4985,16 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_15IslandContainer_12__sets
 static int __pyx_pw_5sicer_6shared_10containers_23DiffExprIslandContainer_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static int __pyx_pw_5sicer_6shared_10containers_23DiffExprIslandContainer_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_genome_data = 0;
-  struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_islands = 0;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_genome_data,&__pyx_n_s_islands,0};
-    PyObject* values[2] = {0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_genome_data,0};
+    PyObject* values[1] = {0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        CYTHON_FALLTHROUGH;
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
         CYTHON_FALLTHROUGH;
         case  0: break;
@@ -5015,47 +5005,34 @@ static int __pyx_pw_5sicer_6shared_10containers_23DiffExprIslandContainer_1__cin
         case  0:
         if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
-        CYTHON_FALLTHROUGH;
-        case  1:
-        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, 1); __PYX_ERR(0, 123, __pyx_L3_error)
-        }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 123, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_genome_data = values[0];
-    __pyx_v_islands = ((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)values[1]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 123, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 123, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.shared.containers.DiffExprIslandContainer.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_islands), __pyx_ptype_5sicer_6shared_10containers_IslandContainer, 1, "islands", 0))) __PYX_ERR(0, 123, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cinit__(((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_self), __pyx_v_genome_data, __pyx_v_islands);
+  __pyx_r = __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cinit__(((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_self), __pyx_v_genome_data);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = -1;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 /* "sicer/shared/containers.pyx":125
- *     def __cinit__(self, object genome_data, IslandContainer islands):
+ *     def __cinit__(self, object genome_data):
  *         self.species = genome_data.species
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))             # <<<<<<<<<<<<<<
  *         self.island_count = 0
@@ -5121,14 +5098,13 @@ static PyObject *__pyx_lambda_funcdef_lambda3(CYTHON_UNUSED PyObject *__pyx_self
 /* "sicer/shared/containers.pyx":123
  * cdef class DiffExprIslandContainer:
  * 
- *     def __cinit__(self, object genome_data, IslandContainer islands):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, object genome_data):             # <<<<<<<<<<<<<<
  *         self.species = genome_data.species
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
  */
 
-static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cinit__(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_islands) {
+static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cinit__(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_self, PyObject *__pyx_v_genome_data) {
   PyObject *__pyx_v_chrom = NULL;
-  std::vector<Island> ::size_type __pyx_v_size;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -5142,7 +5118,7 @@ static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cini
 
   /* "sicer/shared/containers.pyx":124
  * 
- *     def __cinit__(self, object genome_data, IslandContainer islands):
+ *     def __cinit__(self, object genome_data):
  *         self.species = genome_data.species             # <<<<<<<<<<<<<<
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
  *         self.island_count = 0
@@ -5157,7 +5133,7 @@ static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cini
   __pyx_t_1 = 0;
 
   /* "sicer/shared/containers.pyx":125
- *     def __cinit__(self, object genome_data, IslandContainer islands):
+ *     def __cinit__(self, object genome_data):
  *         self.species = genome_data.species
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))             # <<<<<<<<<<<<<<
  *         self.island_count = 0
@@ -5192,7 +5168,7 @@ static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cini
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
  *         self.island_count = 0             # <<<<<<<<<<<<<<
  *         for chrom in self.chromosomes:
- *             size = deref(islands.getVectorPtr(chrom)).size()
+ *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland]()))
  */
   __pyx_v_self->island_count = 0;
 
@@ -5200,8 +5176,8 @@ static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cini
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
  *         self.island_count = 0
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             size = deref(islands.getVectorPtr(chrom)).size()
- *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))
+ *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland]()))
+ * 
  */
   if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
@@ -5222,46 +5198,36 @@ static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cini
     /* "sicer/shared/containers.pyx":128
  *         self.island_count = 0
  *         for chrom in self.chromosomes:
- *             size = deref(islands.getVectorPtr(chrom)).size()             # <<<<<<<<<<<<<<
- *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))
- * 
- */
-    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
-    __pyx_v_size = (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, __pyx_t_5)).size();
-
-    /* "sicer/shared/containers.pyx":129
- *         for chrom in self.chromosomes:
- *             size = deref(islands.getVectorPtr(chrom)).size()
- *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))             # <<<<<<<<<<<<<<
+ *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland]()))             # <<<<<<<<<<<<<<
  * 
  *     cpdef void updateIslandCount(self):
  */
-    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
     try {
-      __pyx_t_6 = std::vector<DiffExprIsland> (__pyx_v_size);
+      __pyx_t_6 = std::vector<DiffExprIsland> ();
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 129, __pyx_L1_error)
+      __PYX_ERR(0, 128, __pyx_L1_error)
     }
     try {
       __pyx_t_7 = std::pair<std::string,std::vector<DiffExprIsland> > (__pyx_t_5, __pyx_t_6);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 129, __pyx_L1_error)
+      __PYX_ERR(0, 128, __pyx_L1_error)
     }
     try {
       __pyx_v_self->data.insert(__pyx_t_7);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 129, __pyx_L1_error)
+      __PYX_ERR(0, 128, __pyx_L1_error)
     }
 
     /* "sicer/shared/containers.pyx":127
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
  *         self.island_count = 0
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
- *             size = deref(islands.getVectorPtr(chrom)).size()
- *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))
+ *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland]()))
+ * 
  */
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5269,7 +5235,7 @@ static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cini
   /* "sicer/shared/containers.pyx":123
  * cdef class DiffExprIslandContainer:
  * 
- *     def __cinit__(self, object genome_data, IslandContainer islands):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, object genome_data):             # <<<<<<<<<<<<<<
  *         self.species = genome_data.species
  *         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
  */
@@ -5289,8 +5255,8 @@ static int __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer___cini
   return __pyx_r;
 }
 
-/* "sicer/shared/containers.pyx":131
- *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))
+/* "sicer/shared/containers.pyx":130
+ *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland]()))
  * 
  *     cpdef void updateIslandCount(self):             # <<<<<<<<<<<<<<
  *         cdef int new_count = 0
@@ -5319,7 +5285,7 @@ static void __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_update
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_updateIslandCount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_updateIslandCount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_6shared_10containers_23DiffExprIslandContainer_3updateIslandCount)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -5335,7 +5301,7 @@ static void __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_update
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5355,7 +5321,7 @@ static void __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_update
     #endif
   }
 
-  /* "sicer/shared/containers.pyx":132
+  /* "sicer/shared/containers.pyx":131
  * 
  *     cpdef void updateIslandCount(self):
  *         cdef int new_count = 0             # <<<<<<<<<<<<<<
@@ -5364,7 +5330,7 @@ static void __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_update
  */
   __pyx_v_new_count = 0;
 
-  /* "sicer/shared/containers.pyx":133
+  /* "sicer/shared/containers.pyx":132
  *     cpdef void updateIslandCount(self):
  *         cdef int new_count = 0
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
@@ -5373,37 +5339,37 @@ static void __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_update
  */
   if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 133, __pyx_L1_error)
+    __PYX_ERR(0, 132, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_self->chromosomes; __Pyx_INCREF(__pyx_t_1); __pyx_t_5 = 0;
   for (;;) {
     if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 132, __pyx_L1_error)
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "sicer/shared/containers.pyx":134
+    /* "sicer/shared/containers.pyx":133
  *         cdef int new_count = 0
  *         for chrom in self.chromosomes:
  *             new_count += self.data.at(chrom).size()             # <<<<<<<<<<<<<<
  * 
  *         self.island_count = new_count
  */
-    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
     try {
       __pyx_t_7 = __pyx_v_self->data.at(__pyx_t_6);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 134, __pyx_L1_error)
+      __PYX_ERR(0, 133, __pyx_L1_error)
     }
     __pyx_v_new_count = (__pyx_v_new_count + __pyx_t_7->size());
 
-    /* "sicer/shared/containers.pyx":133
+    /* "sicer/shared/containers.pyx":132
  *     cpdef void updateIslandCount(self):
  *         cdef int new_count = 0
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
@@ -5413,7 +5379,7 @@ static void __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_update
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/shared/containers.pyx":136
+  /* "sicer/shared/containers.pyx":135
  *             new_count += self.data.at(chrom).size()
  * 
  *         self.island_count = new_count             # <<<<<<<<<<<<<<
@@ -5422,8 +5388,8 @@ static void __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_update
  */
   __pyx_v_self->island_count = __pyx_v_new_count;
 
-  /* "sicer/shared/containers.pyx":131
- *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))
+  /* "sicer/shared/containers.pyx":130
+ *             self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland]()))
  * 
  *     cpdef void updateIslandCount(self):             # <<<<<<<<<<<<<<
  *         cdef int new_count = 0
@@ -5462,7 +5428,7 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("updateIslandCount", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_updateIslandCount(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_updateIslandCount(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5479,7 +5445,7 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_
   return __pyx_r;
 }
 
-/* "sicer/shared/containers.pyx":138
+/* "sicer/shared/containers.pyx":137
  *         self.island_count = new_count
  * 
  *     cdef mapcpp[string, vector[DiffExprIsland]] getData(self):             # <<<<<<<<<<<<<<
@@ -5492,7 +5458,7 @@ static std::map<std::string,std::vector<DiffExprIsland> >  __pyx_f_5sicer_6share
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getData", 0);
 
-  /* "sicer/shared/containers.pyx":139
+  /* "sicer/shared/containers.pyx":138
  * 
  *     cdef mapcpp[string, vector[DiffExprIsland]] getData(self):
  *         return self.data             # <<<<<<<<<<<<<<
@@ -5502,7 +5468,7 @@ static std::map<std::string,std::vector<DiffExprIsland> >  __pyx_f_5sicer_6share
   __pyx_r = __pyx_v_self->data;
   goto __pyx_L0;
 
-  /* "sicer/shared/containers.pyx":138
+  /* "sicer/shared/containers.pyx":137
  *         self.island_count = new_count
  * 
  *     cdef mapcpp[string, vector[DiffExprIsland]] getData(self):             # <<<<<<<<<<<<<<
@@ -5516,7 +5482,7 @@ static std::map<std::string,std::vector<DiffExprIsland> >  __pyx_f_5sicer_6share
   return __pyx_r;
 }
 
-/* "sicer/shared/containers.pyx":141
+/* "sicer/shared/containers.pyx":140
  *         return self.data
  * 
  *     cdef vector[DiffExprIsland]* getVectorPtr(self, string chrom) nogil:             # <<<<<<<<<<<<<<
@@ -5528,7 +5494,7 @@ static std::vector<DiffExprIsland>  *__pyx_f_5sicer_6shared_10containers_23DiffE
   std::vector<DiffExprIsland>  *__pyx_r;
   __Pyx_FakeReference<std::vector<DiffExprIsland> > __pyx_t_1;
 
-  /* "sicer/shared/containers.pyx":142
+  /* "sicer/shared/containers.pyx":141
  * 
  *     cdef vector[DiffExprIsland]* getVectorPtr(self, string chrom) nogil:
  *         return &self.data.at(chrom)             # <<<<<<<<<<<<<<
@@ -5545,12 +5511,12 @@ static std::vector<DiffExprIsland>  *__pyx_f_5sicer_6shared_10containers_23DiffE
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 142, __pyx_L1_error)
+    __PYX_ERR(0, 141, __pyx_L1_error)
   }
   __pyx_r = (&__pyx_t_1);
   goto __pyx_L0;
 
-  /* "sicer/shared/containers.pyx":141
+  /* "sicer/shared/containers.pyx":140
  *         return self.data
  * 
  *     cdef vector[DiffExprIsland]* getVectorPtr(self, string chrom) nogil:             # <<<<<<<<<<<<<<
@@ -5566,7 +5532,7 @@ static std::vector<DiffExprIsland>  *__pyx_f_5sicer_6shared_10containers_23DiffE
   return __pyx_r;
 }
 
-/* "sicer/shared/containers.pyx":144
+/* "sicer/shared/containers.pyx":143
  *         return &self.data.at(chrom)
  * 
  *     cpdef list getChromosomes(self):             # <<<<<<<<<<<<<<
@@ -5592,7 +5558,7 @@ static PyObject *__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_g
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getChromosomes); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getChromosomes); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_6shared_10containers_23DiffExprIslandContainer_5getChromosomes)) {
         __Pyx_XDECREF(__pyx_r);
@@ -5609,10 +5575,10 @@ static PyObject *__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_g
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 144, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 143, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5631,7 +5597,7 @@ static PyObject *__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_g
     #endif
   }
 
-  /* "sicer/shared/containers.pyx":145
+  /* "sicer/shared/containers.pyx":144
  * 
  *     cpdef list getChromosomes(self):
  *         return self.chromosomes             # <<<<<<<<<<<<<<
@@ -5643,7 +5609,7 @@ static PyObject *__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_g
   __pyx_r = __pyx_v_self->chromosomes;
   goto __pyx_L0;
 
-  /* "sicer/shared/containers.pyx":144
+  /* "sicer/shared/containers.pyx":143
  *         return &self.data.at(chrom)
  * 
  *     cpdef list getChromosomes(self):             # <<<<<<<<<<<<<<
@@ -5684,7 +5650,7 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getChromosomes", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_getChromosomes(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_getChromosomes(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5701,7 +5667,7 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_
   return __pyx_r;
 }
 
-/* "sicer/shared/containers.pyx":147
+/* "sicer/shared/containers.pyx":146
  *         return self.chromosomes
  * 
  *     cpdef uint32_t getIslandCount(self):             # <<<<<<<<<<<<<<
@@ -5728,7 +5694,7 @@ static uint32_t __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_ge
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getIslandCount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getIslandCount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5sicer_6shared_10containers_23DiffExprIslandContainer_7getIslandCount)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -5744,10 +5710,10 @@ static uint32_t __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_ge
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyInt_As_uint32_t(__pyx_t_2); if (unlikely((__pyx_t_5 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 147, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_As_uint32_t(__pyx_t_2); if (unlikely((__pyx_t_5 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 146, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5766,7 +5732,7 @@ static uint32_t __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_ge
     #endif
   }
 
-  /* "sicer/shared/containers.pyx":148
+  /* "sicer/shared/containers.pyx":147
  * 
  *     cpdef uint32_t getIslandCount(self):
  *         return self.island_count             # <<<<<<<<<<<<<<
@@ -5776,7 +5742,7 @@ static uint32_t __pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_ge
   __pyx_r = __pyx_v_self->island_count;
   goto __pyx_L0;
 
-  /* "sicer/shared/containers.pyx":147
+  /* "sicer/shared/containers.pyx":146
  *         return self.chromosomes
  * 
  *     cpdef uint32_t getIslandCount(self):             # <<<<<<<<<<<<<<
@@ -5816,7 +5782,7 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getIslandCount", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_getIslandCount(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_5sicer_6shared_10containers_23DiffExprIslandContainer_getIslandCount(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5833,7 +5799,7 @@ static PyObject *__pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_
   return __pyx_r;
 }
 
-/* "sicer/shared/containers.pyx":150
+/* "sicer/shared/containers.pyx":149
  *         return self.island_count
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -5863,7 +5829,7 @@ static void __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_8__de
   __Pyx_FakeReference<std::vector<DiffExprIsland> > __pyx_t_6;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "sicer/shared/containers.pyx":151
+  /* "sicer/shared/containers.pyx":150
  * 
  *     def __dealloc__(self):
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
@@ -5872,50 +5838,50 @@ static void __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_8__de
  */
   if (unlikely(__pyx_v_self->chromosomes == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 151, __pyx_L1_error)
+    __PYX_ERR(0, 150, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_self->chromosomes; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "sicer/shared/containers.pyx":152
+    /* "sicer/shared/containers.pyx":151
  *     def __dealloc__(self):
  *         for chrom in self.chromosomes:
  *             self.data.at(chrom).clear()             # <<<<<<<<<<<<<<
  *             self.data.at(chrom).shrink_to_fit()
  */
-    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 152, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L1_error)
     try {
       __pyx_t_5 = __pyx_v_self->data.at(__pyx_t_4);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 152, __pyx_L1_error)
+      __PYX_ERR(0, 151, __pyx_L1_error)
     }
     __pyx_t_5->clear();
 
-    /* "sicer/shared/containers.pyx":153
+    /* "sicer/shared/containers.pyx":152
  *         for chrom in self.chromosomes:
  *             self.data.at(chrom).clear()
  *             self.data.at(chrom).shrink_to_fit()             # <<<<<<<<<<<<<<
  */
-    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 152, __pyx_L1_error)
     try {
       __pyx_t_6 = __pyx_v_self->data.at(__pyx_t_4);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 153, __pyx_L1_error)
+      __PYX_ERR(0, 152, __pyx_L1_error)
     }
     __pyx_t_6->shrink_to_fit();
 
-    /* "sicer/shared/containers.pyx":151
+    /* "sicer/shared/containers.pyx":150
  * 
  *     def __dealloc__(self):
  *         for chrom in self.chromosomes:             # <<<<<<<<<<<<<<
@@ -5925,7 +5891,7 @@ static void __pyx_pf_5sicer_6shared_10containers_23DiffExprIslandContainer_8__de
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/shared/containers.pyx":150
+  /* "sicer/shared/containers.pyx":149
  *         return self.island_count
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -6739,7 +6705,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_getTotalTagCount, __pyx_k_getTotalTagCount, sizeof(__pyx_k_getTotalTagCount), 0, 0, 1, 1},
   {&__pyx_n_s_getWindowCount, __pyx_k_getWindowCount, sizeof(__pyx_k_getWindowCount), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
-  {&__pyx_n_s_islands, __pyx_k_islands, sizeof(__pyx_k_islands), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_map, __pyx_k_map, sizeof(__pyx_k_map), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
@@ -8589,27 +8554,6 @@ bad:
     return;
 }
 #endif
-
-/* ArgTypeTest */
-static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact)
-{
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    else if (exact) {
-        #if PY_MAJOR_VERSION == 2
-        if ((type == &PyBaseString_Type) && likely(__Pyx_PyBaseString_CheckExact(obj))) return 1;
-        #endif
-    }
-    else {
-        if (likely(__Pyx_TypeCheck(obj, type))) return 1;
-    }
-    PyErr_Format(PyExc_TypeError,
-        "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
-        name, type->tp_name, Py_TYPE(obj)->tp_name);
-    return 0;
-}
 
 /* PyObject_GenericGetAttrNoDict */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000

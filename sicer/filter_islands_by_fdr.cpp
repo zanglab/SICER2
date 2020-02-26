@@ -10,12 +10,13 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++",
-            "-w"
+            "-w",
+            "-std=c++11",
+            "-stdlib=libc++"
         ],
         "include_dirs": [
-            "./sicer/shared",
             "sicer/shared",
+            "./sicer/shared",
             "."
         ],
         "language": "c++",
@@ -1862,7 +1863,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
                             goto __pyx_L10;
                             __pyx_L10:;
                             #ifdef _OPENMP
-                            #pragma omp critical(__pyx_parallel_lastprivates3)
+                            #pragma omp critical(__pyx_parallel_lastprivates2)
                             #endif /* _OPENMP */
                             {
                                 __pyx_parallel_temp0 = __pyx_v_i;
@@ -2158,7 +2159,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                             goto __pyx_L11;
                             __pyx_L11:;
                             #ifdef _OPENMP
-                            #pragma omp critical(__pyx_parallel_lastprivates4)
+                            #pragma omp critical(__pyx_parallel_lastprivates3)
                             #endif /* _OPENMP */
                             {
                                 __pyx_parallel_temp0 = __pyx_v_i;

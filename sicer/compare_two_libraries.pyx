@@ -102,7 +102,7 @@ cpdef DiffExprIslandContainer compare_two_libraries(
     object genome_data,
     BEDReadContainer reads_A, 
     BEDReadContainer reads_B,
-    IslandContainer union_islands,
+    DiffExprIslandContainer union_islands,
     int frag_size,
     int num_cpu
 ):
@@ -112,7 +112,6 @@ cpdef DiffExprIslandContainer compare_two_libraries(
     cdef uint32_t lib_size_A = reads_A.getReadCount()
     cdef uint32_t lib_size_B = reads_B.getReadCount()
     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()
-    cdef DiffExprIslandContainer df_container = DiffExprIslandContainer(genome_data, union_islands)
 
     cdef int i
     cdef ReturnItem result
@@ -123,7 +122,7 @@ cpdef DiffExprIslandContainer compare_two_libraries(
 
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
         result = _associate_tag_count_to_regions_by_chrom(
-                            deref(df_container.getVectorPtr(chroms.at(i))),
+                            deref(union_islands.getVectorPtr(chroms.at(i))),
                             deref(reads_A.getVectorPtr(chroms.at(i))),
                             deref(reads_B.getVectorPtr(chroms.at(i))),
                             lib_scaling_factor,
@@ -132,12 +131,12 @@ cpdef DiffExprIslandContainer compare_two_libraries(
         pvalues_A_vs_B.insert(pvalues_A_vs_B.end(), result.pvalues_A_vs_B.begin(), result.pvalues_A_vs_B.end())
         pvalues_B_vs_A.insert(pvalues_B_vs_A.end(), result.pvalues_B_vs_A.begin(), result.pvalues_B_vs_A.end())
 
-    df_container.updateIslandCount()
+    union_islands.updateIslandCount()
 
     cdef vector[double] pvalues_rank_A_vs_B = rankdata(pvalues_A_vs_B)
     cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)
 
-    cdef uint32_t total_count = df_container.getIslandCount()
+    cdef uint32_t total_count = union_islands.getIslandCount()
     cdef vector[double] norm_counts_A = vector[double](total_count)
     cdef vector[double] norm_counts_B = vector[double](total_count)
 
@@ -145,8 +144,8 @@ cpdef DiffExprIslandContainer compare_two_libraries(
     cdef vector[DiffExprIsland] vec
     cdef double norm_count_A, norm_count_B
 
-    for chrom in df_container.getChromosomes():
-        vec = deref(df_container.getVectorPtr(chrom))
+    for chrom in union_islands.getChromosomes():
+        vec = deref(union_islands.getVectorPtr(chrom))
         for j in range(vec.size()):
             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
@@ -165,4 +164,4 @@ cpdef DiffExprIslandContainer compare_two_libraries(
     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)
     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
 
-    return df_container
+    return union_islands

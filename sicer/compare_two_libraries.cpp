@@ -10,8 +10,9 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++",
-            "-w"
+            "-w",
+            "-std=c++11",
+            "-stdlib=libc++"
         ],
         "include_dirs": [
             "./sicer/shared",
@@ -1576,7 +1577,7 @@ static double (*__pyx_f_5scipy_7special_14cython_special_pdtrc)(double, double, 
 /* Module declarations from 'sicer.compare_two_libraries' */
 static double __pyx_f_5sicer_21compare_two_libraries__calc_pvalue(uint32_t, uint32_t, double); /*proto*/
 static struct __pyx_t_5sicer_21compare_two_libraries_ReturnItem __pyx_f_5sicer_21compare_two_libraries__associate_tag_count_to_regions_by_chrom(std::vector<DiffExprIsland>  &, std::vector<BEDRead>  &, std::vector<BEDRead>  &, double, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_21compare_two_libraries_compare_two_libraries(PyObject *, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *, int, int, int __pyx_skip_dispatch); /*proto*/
+static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_21compare_two_libraries_compare_two_libraries(PyObject *, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *, int, int, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
 static PyObject *__pyx_convert_vector_to_py_double(const std::vector<double>  &); /*proto*/
@@ -1636,7 +1637,7 @@ static PyObject *__pyx_n_s_stats;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_union_islands;
 static PyObject *__pyx_kp_u_with_p_value;
-static PyObject *__pyx_pf_5sicer_21compare_two_libraries_compare_two_libraries(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, int __pyx_v_num_cpu); /* proto */
+static PyObject *__pyx_pf_5sicer_21compare_two_libraries_compare_two_libraries(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, int __pyx_v_num_cpu); /* proto */
 static PyObject *__pyx_tuple_;
 /* Late includes */
 
@@ -1773,7 +1774,7 @@ static struct __pyx_t_5sicer_21compare_two_libraries_ReturnItem __pyx_f_5sicer_2
   int __pyx_v_index;
   std::vector<uint32_t>  __pyx_v_island_starts;
   std::vector<uint32_t>  __pyx_v_island_ends;
-  std::vector<BEDRead> ::size_type __pyx_v_i;
+  std::vector<DiffExprIsland> ::size_type __pyx_v_i;
   std::vector<double>  __pyx_v_pvalues_A_vs_B;
   std::vector<double>  __pyx_v_pvalues_B_vs_A;
   double __pyx_v_pvalue_A_vs_B;
@@ -1783,7 +1784,7 @@ static struct __pyx_t_5sicer_21compare_two_libraries_ReturnItem __pyx_f_5sicer_2
   std::vector<uint32_t>  __pyx_t_2;
   std::vector<DiffExprIsland> ::size_type __pyx_t_3;
   std::vector<DiffExprIsland> ::size_type __pyx_t_4;
-  std::vector<BEDRead> ::size_type __pyx_t_5;
+  std::vector<DiffExprIsland> ::size_type __pyx_t_5;
   uint32_t __pyx_t_6;
   std::vector<BEDRead> ::size_type __pyx_t_7;
   std::vector<BEDRead> ::size_type __pyx_t_8;
@@ -1900,10 +1901,10 @@ static struct __pyx_t_5sicer_21compare_two_libraries_ReturnItem __pyx_f_5sicer_2
  *         pos = get_tag_pos(reads_A[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  */
-  __pyx_t_5 = __pyx_v_reads_A.size();
-  __pyx_t_7 = __pyx_t_5;
-  for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-    __pyx_v_i = __pyx_t_8;
+  __pyx_t_7 = __pyx_v_reads_A.size();
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_8; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
 
     /* "sicer/compare_two_libraries.pyx":72
  * 
@@ -1959,10 +1960,10 @@ static struct __pyx_t_5sicer_21compare_two_libraries_ReturnItem __pyx_f_5sicer_2
  *         pos = get_tag_pos(reads_B[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  */
-  __pyx_t_5 = __pyx_v_reads_B.size();
-  __pyx_t_7 = __pyx_t_5;
-  for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-    __pyx_v_i = __pyx_t_8;
+  __pyx_t_7 = __pyx_v_reads_B.size();
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_8; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
 
     /* "sicer/compare_two_libraries.pyx":78
  * 
@@ -2183,12 +2184,11 @@ static struct __pyx_t_5sicer_21compare_two_libraries_ReturnItem __pyx_f_5sicer_2
  */
 
 static PyObject *__pyx_pw_5sicer_21compare_two_libraries_1compare_two_libraries(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_21compare_two_libraries_compare_two_libraries(PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, CYTHON_UNUSED int __pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_21compare_two_libraries_compare_two_libraries(CYTHON_UNUSED PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, CYTHON_UNUSED int __pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
   std::vector<std::string>  __pyx_v_chroms;
   uint32_t __pyx_v_lib_size_A;
   uint32_t __pyx_v_lib_size_B;
   double __pyx_v_lib_scaling_factor;
-  struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_df_container = 0;
   int __pyx_v_i;
   struct __pyx_t_5sicer_21compare_two_libraries_ReturnItem __pyx_v_result;
   std::vector<double>  __pyx_v_pvalues_A_vs_B;
@@ -2212,13 +2212,13 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   std::vector<std::string>  __pyx_t_2;
   double __pyx_t_3;
   uint32_t __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
+  std::vector<std::string> ::size_type __pyx_t_5;
   std::vector<std::string> ::size_type __pyx_t_6;
   std::vector<std::string> ::size_type __pyx_t_7;
-  std::vector<std::string> ::size_type __pyx_t_8;
+  __Pyx_FakeReference<std::string> __pyx_t_8;
   __Pyx_FakeReference<std::string> __pyx_t_9;
   __Pyx_FakeReference<std::string> __pyx_t_10;
-  __Pyx_FakeReference<std::string> __pyx_t_11;
+  PyObject *__pyx_t_11 = NULL;
   PyObject *__pyx_t_12 = NULL;
   PyObject *__pyx_t_13 = NULL;
   std::vector<double>  __pyx_t_14;
@@ -2272,7 +2272,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  *     cdef uint32_t lib_size_A = reads_A.getReadCount()
  *     cdef uint32_t lib_size_B = reads_B.getReadCount()             # <<<<<<<<<<<<<<
  *     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()
- *     cdef DiffExprIslandContainer df_container = DiffExprIslandContainer(genome_data, union_islands)
+ * 
  */
   __pyx_v_lib_size_B = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_reads_B->__pyx_vtab)->getReadCount(__pyx_v_reads_B, 0);
 
@@ -2280,8 +2280,8 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  *     cdef uint32_t lib_size_A = reads_A.getReadCount()
  *     cdef uint32_t lib_size_B = reads_B.getReadCount()
  *     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()             # <<<<<<<<<<<<<<
- *     cdef DiffExprIslandContainer df_container = DiffExprIslandContainer(genome_data, union_islands)
  * 
+ *     cdef int i
  */
   __pyx_t_3 = ((double)((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_reads_A->__pyx_vtab)->getReadCount(__pyx_v_reads_A, 0));
   __pyx_t_4 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_reads_B->__pyx_vtab)->getReadCount(__pyx_v_reads_B, 0);
@@ -2291,51 +2291,30 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   }
   __pyx_v_lib_scaling_factor = (__pyx_t_3 / ((double)__pyx_t_4));
 
-  /* "sicer/compare_two_libraries.pyx":115
- *     cdef uint32_t lib_size_B = reads_B.getReadCount()
- *     cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()
- *     cdef DiffExprIslandContainer df_container = DiffExprIslandContainer(genome_data, union_islands)             # <<<<<<<<<<<<<<
- * 
- *     cdef int i
- */
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_v_genome_data);
-  __Pyx_GIVEREF(__pyx_v_genome_data);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_genome_data);
-  __Pyx_INCREF(((PyObject *)__pyx_v_union_islands));
-  __Pyx_GIVEREF(((PyObject *)__pyx_v_union_islands));
-  PyTuple_SET_ITEM(__pyx_t_1, 1, ((PyObject *)__pyx_v_union_islands));
-  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer), __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 115, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_df_container = ((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_t_5);
-  __pyx_t_5 = 0;
-
-  /* "sicer/compare_two_libraries.pyx":120
+  /* "sicer/compare_two_libraries.pyx":119
  *     cdef ReturnItem result
  *     cdef vector[double] pvalues_A_vs_B
  *     pvalues_A_vs_B.reserve(union_islands.getIslandCount())             # <<<<<<<<<<<<<<
  *     cdef vector[double] pvalues_B_vs_A
  *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())
  */
-  __pyx_v_pvalues_A_vs_B.reserve(((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0));
+  __pyx_v_pvalues_A_vs_B.reserve(((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0));
 
-  /* "sicer/compare_two_libraries.pyx":122
+  /* "sicer/compare_two_libraries.pyx":121
  *     pvalues_A_vs_B.reserve(union_islands.getIslandCount())
  *     cdef vector[double] pvalues_B_vs_A
  *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())             # <<<<<<<<<<<<<<
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  */
-  __pyx_v_pvalues_B_vs_A.reserve(((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0));
+  __pyx_v_pvalues_B_vs_A.reserve(((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0));
 
-  /* "sicer/compare_two_libraries.pyx":124
+  /* "sicer/compare_two_libraries.pyx":123
  *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
  *         result = _associate_tag_count_to_regions_by_chrom(
- *                             deref(df_container.getVectorPtr(chroms.at(i))),
+ *                             deref(union_islands.getVectorPtr(chroms.at(i))),
  */
   {
       #ifdef WITH_THREAD
@@ -2344,7 +2323,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       __Pyx_FastGIL_Remember();
       #endif
       /*try:*/ {
-        __pyx_t_6 = __pyx_v_chroms.size();
+        __pyx_t_5 = __pyx_v_chroms.size();
         if (1 == 0) abort();
         {
             int __pyx_parallel_temp0 = ((int)0xbad0bad0);
@@ -2359,11 +2338,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_8 = (__pyx_t_6 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_8 > 0)
+            __pyx_t_7 = (__pyx_t_5 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_7 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel num_threads(__pyx_v_num_cpu) private(__pyx_t_10, __pyx_t_11, __pyx_t_9) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
+                #pragma omp parallel num_threads(__pyx_v_num_cpu) private(__pyx_t_10, __pyx_t_8, __pyx_t_9) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
@@ -2375,17 +2354,37 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                     #ifdef _OPENMP
                     #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_result) schedule(guided)
                     #endif /* _OPENMP */
-                    for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_8; __pyx_t_7++){
+                    for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_7; __pyx_t_6++){
                         if (__pyx_parallel_why < 2)
                         {
-                            __pyx_v_i = (int)(0 + 1 * __pyx_t_7);
+                            __pyx_v_i = (int)(0 + 1 * __pyx_t_6);
 
-                            /* "sicer/compare_two_libraries.pyx":126
+                            /* "sicer/compare_two_libraries.pyx":125
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         result = _associate_tag_count_to_regions_by_chrom(
- *                             deref(df_container.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
+ *                             deref(union_islands.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
  *                             deref(reads_A.getVectorPtr(chroms.at(i))),
  *                             deref(reads_B.getVectorPtr(chroms.at(i))),
+ */
+                            try {
+                              __pyx_t_8 = __pyx_v_chroms.at(__pyx_v_i);
+                            } catch(...) {
+                              #ifdef WITH_THREAD
+                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                              #endif
+                              __Pyx_CppExn2PyErr();
+                              #ifdef WITH_THREAD
+                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                              #endif
+                              __PYX_ERR(0, 125, __pyx_L8_error)
+                            }
+
+                            /* "sicer/compare_two_libraries.pyx":126
+ *         result = _associate_tag_count_to_regions_by_chrom(
+ *                             deref(union_islands.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_A.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
+ *                             deref(reads_B.getVectorPtr(chroms.at(i))),
+ *                             lib_scaling_factor,
  */
                             try {
                               __pyx_t_9 = __pyx_v_chroms.at(__pyx_v_i);
@@ -2401,11 +2400,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                             }
 
                             /* "sicer/compare_two_libraries.pyx":127
- *         result = _associate_tag_count_to_regions_by_chrom(
- *                             deref(df_container.getVectorPtr(chroms.at(i))),
- *                             deref(reads_A.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
- *                             deref(reads_B.getVectorPtr(chroms.at(i))),
+ *                             deref(union_islands.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_A.getVectorPtr(chroms.at(i))),
+ *                             deref(reads_B.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
  *                             lib_scaling_factor,
+ *                             frag_size
  */
                             try {
                               __pyx_t_10 = __pyx_v_chroms.at(__pyx_v_i);
@@ -2420,36 +2419,16 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                               __PYX_ERR(0, 127, __pyx_L8_error)
                             }
 
-                            /* "sicer/compare_two_libraries.pyx":128
- *                             deref(df_container.getVectorPtr(chroms.at(i))),
- *                             deref(reads_A.getVectorPtr(chroms.at(i))),
- *                             deref(reads_B.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
- *                             lib_scaling_factor,
- *                             frag_size
- */
-                            try {
-                              __pyx_t_11 = __pyx_v_chroms.at(__pyx_v_i);
-                            } catch(...) {
-                              #ifdef WITH_THREAD
-                              PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                              #endif
-                              __Pyx_CppExn2PyErr();
-                              #ifdef WITH_THREAD
-                              __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                              #endif
-                              __PYX_ERR(0, 128, __pyx_L8_error)
-                            }
-
-                            /* "sicer/compare_two_libraries.pyx":125
+                            /* "sicer/compare_two_libraries.pyx":124
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         result = _associate_tag_count_to_regions_by_chrom(             # <<<<<<<<<<<<<<
- *                             deref(df_container.getVectorPtr(chroms.at(i))),
+ *                             deref(union_islands.getVectorPtr(chroms.at(i))),
  *                             deref(reads_A.getVectorPtr(chroms.at(i))),
  */
-                            __pyx_v_result = __pyx_f_5sicer_21compare_two_libraries__associate_tag_count_to_regions_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getVectorPtr(__pyx_v_df_container, __pyx_t_9)), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_reads_A->__pyx_vtab)->getVectorPtr(__pyx_v_reads_A, __pyx_t_10)), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_reads_B->__pyx_vtab)->getVectorPtr(__pyx_v_reads_B, __pyx_t_11)), __pyx_v_lib_scaling_factor, __pyx_v_frag_size);
+                            __pyx_v_result = __pyx_f_5sicer_21compare_two_libraries__associate_tag_count_to_regions_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getVectorPtr(__pyx_v_union_islands, __pyx_t_8)), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_reads_A->__pyx_vtab)->getVectorPtr(__pyx_v_reads_A, __pyx_t_9)), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_reads_B->__pyx_vtab)->getVectorPtr(__pyx_v_reads_B, __pyx_t_10)), __pyx_v_lib_scaling_factor, __pyx_v_frag_size);
 
-                            /* "sicer/compare_two_libraries.pyx":132
+                            /* "sicer/compare_two_libraries.pyx":131
  *                             frag_size
  *                         )
  *         pvalues_A_vs_B.insert(pvalues_A_vs_B.end(), result.pvalues_A_vs_B.begin(), result.pvalues_A_vs_B.end())             # <<<<<<<<<<<<<<
@@ -2466,15 +2445,15 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 132, __pyx_L8_error)
+                              __PYX_ERR(0, 131, __pyx_L8_error)
                             }
 
-                            /* "sicer/compare_two_libraries.pyx":133
+                            /* "sicer/compare_two_libraries.pyx":132
  *                         )
  *         pvalues_A_vs_B.insert(pvalues_A_vs_B.end(), result.pvalues_A_vs_B.begin(), result.pvalues_A_vs_B.end())
  *         pvalues_B_vs_A.insert(pvalues_B_vs_A.end(), result.pvalues_B_vs_A.begin(), result.pvalues_B_vs_A.end())             # <<<<<<<<<<<<<<
  * 
- *     df_container.updateIslandCount()
+ *     union_islands.updateIslandCount()
  */
                             try {
                               __pyx_v_pvalues_B_vs_A.insert(__pyx_v_pvalues_B_vs_A.end(), __pyx_v_result.pvalues_B_vs_A.begin(), __pyx_v_result.pvalues_B_vs_A.end());
@@ -2486,7 +2465,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 133, __pyx_L8_error)
+                              __PYX_ERR(0, 132, __pyx_L8_error)
                             }
                             goto __pyx_L11;
                             __pyx_L8_error:;
@@ -2510,7 +2489,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                             goto __pyx_L10;
                             __pyx_L10:;
                             #ifdef _OPENMP
-                            #pragma omp critical(__pyx_parallel_lastprivates2)
+                            #pragma omp critical(__pyx_parallel_lastprivates0)
                             #endif /* _OPENMP */
                             {
                                 __pyx_parallel_temp0 = __pyx_v_i;
@@ -2571,12 +2550,12 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
         #endif
       }
 
-      /* "sicer/compare_two_libraries.pyx":124
+      /* "sicer/compare_two_libraries.pyx":123
  *     pvalues_B_vs_A.reserve(union_islands.getIslandCount())
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
  *         result = _associate_tag_count_to_regions_by_chrom(
- *                             deref(df_container.getVectorPtr(chroms.at(i))),
+ *                             deref(union_islands.getVectorPtr(chroms.at(i))),
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -2597,89 +2576,89 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       }
   }
 
-  /* "sicer/compare_two_libraries.pyx":135
+  /* "sicer/compare_two_libraries.pyx":134
  *         pvalues_B_vs_A.insert(pvalues_B_vs_A.end(), result.pvalues_B_vs_A.begin(), result.pvalues_B_vs_A.end())
  * 
- *     df_container.updateIslandCount()             # <<<<<<<<<<<<<<
+ *     union_islands.updateIslandCount()             # <<<<<<<<<<<<<<
  * 
  *     cdef vector[double] pvalues_rank_A_vs_B = rankdata(pvalues_A_vs_B)
  */
-  ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->updateIslandCount(__pyx_v_df_container, 0);
+  ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->updateIslandCount(__pyx_v_union_islands, 0);
 
-  /* "sicer/compare_two_libraries.pyx":137
- *     df_container.updateIslandCount()
+  /* "sicer/compare_two_libraries.pyx":136
+ *     union_islands.updateIslandCount()
  * 
  *     cdef vector[double] pvalues_rank_A_vs_B = rankdata(pvalues_A_vs_B)             # <<<<<<<<<<<<<<
  *     cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues_A_vs_B); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues_A_vs_B); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __pyx_t_13 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_1);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
+    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_11);
     if (likely(__pyx_t_13)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
       __Pyx_INCREF(__pyx_t_13);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __Pyx_DECREF_SET(__pyx_t_11, function);
     }
   }
-  __pyx_t_5 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_12);
+  __pyx_t_1 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 137, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_14 = __pyx_convert_vector_from_py_double(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_14 = __pyx_convert_vector_from_py_double(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_pvalues_rank_A_vs_B = __pyx_t_14;
 
-  /* "sicer/compare_two_libraries.pyx":138
+  /* "sicer/compare_two_libraries.pyx":137
  * 
  *     cdef vector[double] pvalues_rank_A_vs_B = rankdata(pvalues_A_vs_B)
  *     cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)             # <<<<<<<<<<<<<<
  * 
- *     cdef uint32_t total_count = df_container.getIslandCount()
+ *     cdef uint32_t total_count = union_islands.getIslandCount()
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues_B_vs_A); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_rankdata); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_pvalues_B_vs_A); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __pyx_t_13 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_1);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
+    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_11);
     if (likely(__pyx_t_13)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
       __Pyx_INCREF(__pyx_t_13);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __Pyx_DECREF_SET(__pyx_t_11, function);
     }
   }
-  __pyx_t_5 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_12);
+  __pyx_t_1 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 138, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_14 = __pyx_convert_vector_from_py_double(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_14 = __pyx_convert_vector_from_py_double(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 138, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_pvalues_rank_B_vs_A = __pyx_t_14;
 
-  /* "sicer/compare_two_libraries.pyx":140
+  /* "sicer/compare_two_libraries.pyx":139
  *     cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)
  * 
- *     cdef uint32_t total_count = df_container.getIslandCount()             # <<<<<<<<<<<<<<
+ *     cdef uint32_t total_count = union_islands.getIslandCount()             # <<<<<<<<<<<<<<
  *     cdef vector[double] norm_counts_A = vector[double](total_count)
  *     cdef vector[double] norm_counts_B = vector[double](total_count)
  */
-  __pyx_v_total_count = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getIslandCount(__pyx_v_df_container, 0);
+  __pyx_v_total_count = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0);
 
-  /* "sicer/compare_two_libraries.pyx":141
+  /* "sicer/compare_two_libraries.pyx":140
  * 
- *     cdef uint32_t total_count = df_container.getIslandCount()
+ *     cdef uint32_t total_count = union_islands.getIslandCount()
  *     cdef vector[double] norm_counts_A = vector[double](total_count)             # <<<<<<<<<<<<<<
  *     cdef vector[double] norm_counts_B = vector[double](total_count)
  * 
@@ -2688,12 +2667,12 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
     __pyx_t_14 = std::vector<double> (__pyx_v_total_count);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 141, __pyx_L1_error)
+    __PYX_ERR(0, 140, __pyx_L1_error)
   }
   __pyx_v_norm_counts_A = __pyx_t_14;
 
-  /* "sicer/compare_two_libraries.pyx":142
- *     cdef uint32_t total_count = df_container.getIslandCount()
+  /* "sicer/compare_two_libraries.pyx":141
+ *     cdef uint32_t total_count = union_islands.getIslandCount()
  *     cdef vector[double] norm_counts_A = vector[double](total_count)
  *     cdef vector[double] norm_counts_B = vector[double](total_count)             # <<<<<<<<<<<<<<
  * 
@@ -2703,11 +2682,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
     __pyx_t_14 = std::vector<double> (__pyx_v_total_count);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 142, __pyx_L1_error)
+    __PYX_ERR(0, 141, __pyx_L1_error)
   }
   __pyx_v_norm_counts_B = __pyx_t_14;
 
-  /* "sicer/compare_two_libraries.pyx":144
+  /* "sicer/compare_two_libraries.pyx":143
  *     cdef vector[double] norm_counts_B = vector[double](total_count)
  * 
  *     cdef uint32_t k = 0             # <<<<<<<<<<<<<<
@@ -2716,45 +2695,45 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  */
   __pyx_v_k = 0;
 
-  /* "sicer/compare_two_libraries.pyx":148
+  /* "sicer/compare_two_libraries.pyx":147
  *     cdef double norm_count_A, norm_count_B
  * 
- *     for chrom in df_container.getChromosomes():             # <<<<<<<<<<<<<<
- *         vec = deref(df_container.getVectorPtr(chrom))
+ *     for chrom in union_islands.getChromosomes():             # <<<<<<<<<<<<<<
+ *         vec = deref(union_islands.getVectorPtr(chrom))
  *         for j in range(vec.size()):
  */
-  __pyx_t_5 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getChromosomes(__pyx_v_df_container, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (unlikely(__pyx_t_5 == Py_None)) {
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getChromosomes(__pyx_v_union_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 148, __pyx_L1_error)
+    __PYX_ERR(0, 147, __pyx_L1_error)
   }
-  __pyx_t_1 = __pyx_t_5; __Pyx_INCREF(__pyx_t_1); __pyx_t_15 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_11 = __pyx_t_1; __Pyx_INCREF(__pyx_t_11); __pyx_t_15 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
-    if (__pyx_t_15 >= PyList_GET_SIZE(__pyx_t_1)) break;
+    if (__pyx_t_15 >= PyList_GET_SIZE(__pyx_t_11)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_15); __Pyx_INCREF(__pyx_t_5); __pyx_t_15++; if (unlikely(0 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_15); __Pyx_INCREF(__pyx_t_1); __pyx_t_15++; if (unlikely(0 < 0)) __PYX_ERR(0, 147, __pyx_L1_error)
     #else
-    __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_15); __pyx_t_15++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_11, __pyx_t_15); __pyx_t_15++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     #endif
-    __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_5);
-    __pyx_t_5 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_chrom, __pyx_t_1);
+    __pyx_t_1 = 0;
 
-    /* "sicer/compare_two_libraries.pyx":149
+    /* "sicer/compare_two_libraries.pyx":148
  * 
- *     for chrom in df_container.getChromosomes():
- *         vec = deref(df_container.getVectorPtr(chrom))             # <<<<<<<<<<<<<<
+ *     for chrom in union_islands.getChromosomes():
+ *         vec = deref(union_islands.getVectorPtr(chrom))             # <<<<<<<<<<<<<<
  *         for j in range(vec.size()):
  *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
  */
-    __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L1_error)
-    __pyx_v_vec = (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_df_container->__pyx_vtab)->getVectorPtr(__pyx_v_df_container, __pyx_t_16));
+    __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_v_chrom); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_v_vec = (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getVectorPtr(__pyx_v_union_islands, __pyx_t_16));
 
-    /* "sicer/compare_two_libraries.pyx":150
- *     for chrom in df_container.getChromosomes():
- *         vec = deref(df_container.getVectorPtr(chrom))
+    /* "sicer/compare_two_libraries.pyx":149
+ *     for chrom in union_islands.getChromosomes():
+ *         vec = deref(union_islands.getVectorPtr(chrom))
  *         for j in range(vec.size()):             # <<<<<<<<<<<<<<
  *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
  *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
@@ -2764,8 +2743,8 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
     for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_18; __pyx_t_19+=1) {
       __pyx_v_j = __pyx_t_19;
 
-      /* "sicer/compare_two_libraries.pyx":151
- *         vec = deref(df_container.getVectorPtr(chrom))
+      /* "sicer/compare_two_libraries.pyx":150
+ *         vec = deref(union_islands.getVectorPtr(chrom))
  *         for j in range(vec.size()):
  *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]             # <<<<<<<<<<<<<<
  *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
@@ -2775,11 +2754,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       __pyx_t_20 = (__pyx_v_pvalues_rank_A_vs_B[__pyx_v_k]);
       if (unlikely(__pyx_t_20 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 151, __pyx_L1_error)
+        __PYX_ERR(0, 150, __pyx_L1_error)
       }
       (__pyx_v_vec[__pyx_v_j]).fdr_A_vs_B = (__pyx_t_3 / __pyx_t_20);
 
-      /* "sicer/compare_two_libraries.pyx":152
+      /* "sicer/compare_two_libraries.pyx":151
  *         for j in range(vec.size()):
  *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
  *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]             # <<<<<<<<<<<<<<
@@ -2790,11 +2769,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       __pyx_t_3 = (__pyx_v_pvalues_rank_B_vs_A[__pyx_v_k]);
       if (unlikely(__pyx_t_3 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 152, __pyx_L1_error)
+        __PYX_ERR(0, 151, __pyx_L1_error)
       }
       (__pyx_v_vec[__pyx_v_j]).fdr_B_vs_A = (__pyx_t_20 / __pyx_t_3);
 
-      /* "sicer/compare_two_libraries.pyx":153
+      /* "sicer/compare_two_libraries.pyx":152
  *             vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
  *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
  *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000             # <<<<<<<<<<<<<<
@@ -2804,11 +2783,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       __pyx_t_3 = ((double)(__pyx_v_vec[__pyx_v_j]).count_A);
       if (unlikely(__pyx_v_lib_size_A == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 153, __pyx_L1_error)
+        __PYX_ERR(0, 152, __pyx_L1_error)
       }
       __pyx_v_norm_count_A = ((__pyx_t_3 / ((double)__pyx_v_lib_size_A)) * 1000000.0);
 
-      /* "sicer/compare_two_libraries.pyx":154
+      /* "sicer/compare_two_libraries.pyx":153
  *             vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
  *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000
  *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000             # <<<<<<<<<<<<<<
@@ -2818,11 +2797,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       __pyx_t_3 = ((double)(__pyx_v_vec[__pyx_v_j]).count_B);
       if (unlikely(__pyx_v_lib_size_B == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 154, __pyx_L1_error)
+        __PYX_ERR(0, 153, __pyx_L1_error)
       }
       __pyx_v_norm_count_B = ((__pyx_t_3 / ((double)__pyx_v_lib_size_B)) * 1000000.0);
 
-      /* "sicer/compare_two_libraries.pyx":155
+      /* "sicer/compare_two_libraries.pyx":154
  *             norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000
  *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000
  *             vec[j].norm_count_A = norm_count_A             # <<<<<<<<<<<<<<
@@ -2831,7 +2810,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  */
       (__pyx_v_vec[__pyx_v_j]).norm_count_A = __pyx_v_norm_count_A;
 
-      /* "sicer/compare_two_libraries.pyx":156
+      /* "sicer/compare_two_libraries.pyx":155
  *             norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000
  *             vec[j].norm_count_A = norm_count_A
  *             vec[j].norm_count_B = norm_count_B             # <<<<<<<<<<<<<<
@@ -2840,7 +2819,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  */
       (__pyx_v_vec[__pyx_v_j]).norm_count_B = __pyx_v_norm_count_B;
 
-      /* "sicer/compare_two_libraries.pyx":157
+      /* "sicer/compare_two_libraries.pyx":156
  *             vec[j].norm_count_A = norm_count_A
  *             vec[j].norm_count_B = norm_count_B
  *             norm_counts_A[k] = norm_count_A             # <<<<<<<<<<<<<<
@@ -2849,7 +2828,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  */
       (__pyx_v_norm_counts_A[__pyx_v_k]) = __pyx_v_norm_count_A;
 
-      /* "sicer/compare_two_libraries.pyx":158
+      /* "sicer/compare_two_libraries.pyx":157
  *             vec[j].norm_count_B = norm_count_B
  *             norm_counts_A[k] = norm_count_A
  *             norm_counts_B[k] = norm_count_B             # <<<<<<<<<<<<<<
@@ -2858,7 +2837,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  */
       (__pyx_v_norm_counts_B[__pyx_v_k]) = __pyx_v_norm_count_B;
 
-      /* "sicer/compare_two_libraries.pyx":159
+      /* "sicer/compare_two_libraries.pyx":158
  *             norm_counts_A[k] = norm_count_A
  *             norm_counts_B[k] = norm_count_B
  *             vec[j].fc_A_vs_B = (<double> (vec[j].count_A + 1)) / (vec[j].count_B + 1) / lib_scaling_factor             # <<<<<<<<<<<<<<
@@ -2869,16 +2848,16 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       __pyx_t_21 = ((__pyx_v_vec[__pyx_v_j]).count_B + 1);
       if (unlikely(__pyx_t_21 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 159, __pyx_L1_error)
+        __PYX_ERR(0, 158, __pyx_L1_error)
       }
       __pyx_t_20 = (__pyx_t_3 / ((double)__pyx_t_21));
       if (unlikely(__pyx_v_lib_scaling_factor == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 159, __pyx_L1_error)
+        __PYX_ERR(0, 158, __pyx_L1_error)
       }
       (__pyx_v_vec[__pyx_v_j]).fc_A_vs_B = (__pyx_t_20 / __pyx_v_lib_scaling_factor);
 
-      /* "sicer/compare_two_libraries.pyx":160
+      /* "sicer/compare_two_libraries.pyx":159
  *             norm_counts_B[k] = norm_count_B
  *             vec[j].fc_A_vs_B = (<double> (vec[j].count_A + 1)) / (vec[j].count_B + 1) / lib_scaling_factor
  *             vec[j].fc_B_vs_A = (<double> (vec[j].count_B + 1)) / (vec[j].count_A + 1) * lib_scaling_factor             # <<<<<<<<<<<<<<
@@ -2889,11 +2868,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       __pyx_t_21 = ((__pyx_v_vec[__pyx_v_j]).count_A + 1);
       if (unlikely(__pyx_t_21 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 160, __pyx_L1_error)
+        __PYX_ERR(0, 159, __pyx_L1_error)
       }
       (__pyx_v_vec[__pyx_v_j]).fc_B_vs_A = ((__pyx_t_20 / ((double)__pyx_t_21)) * __pyx_v_lib_scaling_factor);
 
-      /* "sicer/compare_two_libraries.pyx":161
+      /* "sicer/compare_two_libraries.pyx":160
  *             vec[j].fc_A_vs_B = (<double> (vec[j].count_A + 1)) / (vec[j].count_B + 1) / lib_scaling_factor
  *             vec[j].fc_B_vs_A = (<double> (vec[j].count_B + 1)) / (vec[j].count_A + 1) * lib_scaling_factor
  *             preinc(k)             # <<<<<<<<<<<<<<
@@ -2903,69 +2882,69 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       (void)((++__pyx_v_k));
     }
 
-    /* "sicer/compare_two_libraries.pyx":148
+    /* "sicer/compare_two_libraries.pyx":147
  *     cdef double norm_count_A, norm_count_B
  * 
- *     for chrom in df_container.getChromosomes():             # <<<<<<<<<<<<<<
- *         vec = deref(df_container.getVectorPtr(chrom))
+ *     for chrom in union_islands.getChromosomes():             # <<<<<<<<<<<<<<
+ *         vec = deref(union_islands.getVectorPtr(chrom))
  *         for j in range(vec.size()):
  */
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "sicer/compare_two_libraries.pyx":163
+  /* "sicer/compare_two_libraries.pyx":162
  *             preinc(k)
  * 
  *     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)             # <<<<<<<<<<<<<<
  *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
  *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_scipy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_stats); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_scipy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_stats); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_pearsonr); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_pearsonr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_A); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_12 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_A); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_13 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_B); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_13 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_B); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __pyx_t_22 = NULL;
   __pyx_t_23 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_22 = PyMethod_GET_SELF(__pyx_t_5);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_22 = PyMethod_GET_SELF(__pyx_t_1);
     if (likely(__pyx_t_22)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_22);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
       __pyx_t_23 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_5)) {
+  if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_22, __pyx_t_12, __pyx_t_13};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 162, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_22); __pyx_t_22 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_22, __pyx_t_12, __pyx_t_13};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 162, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_22); __pyx_t_22 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   } else
   #endif
   {
-    __pyx_t_24 = PyTuple_New(2+__pyx_t_23); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_24 = PyTuple_New(2+__pyx_t_23); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 162, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_24);
     if (__pyx_t_22) {
       __Pyx_GIVEREF(__pyx_t_22); PyTuple_SET_ITEM(__pyx_t_24, 0, __pyx_t_22); __pyx_t_22 = NULL;
@@ -2976,62 +2955,62 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
     PyTuple_SET_ITEM(__pyx_t_24, 1+__pyx_t_23, __pyx_t_13);
     __pyx_t_12 = 0;
     __pyx_t_13 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_24, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_24, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
   }
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_v_pearson = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_pearson = __pyx_t_11;
+  __pyx_t_11 = 0;
 
-  /* "sicer/compare_two_libraries.pyx":164
+  /* "sicer/compare_two_libraries.pyx":163
  * 
  *     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)
  *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])             # <<<<<<<<<<<<<<
  *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)
  *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pearson, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetItemInt(__pyx_v_pearson, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pearson, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_pearson, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_24 = PyTuple_New(4); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_24 = PyTuple_New(4); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_24);
   __Pyx_INCREF(__pyx_kp_u_Pearson_s_correlation_is);
   __Pyx_GIVEREF(__pyx_kp_u_Pearson_s_correlation_is);
   PyTuple_SET_ITEM(__pyx_t_24, 0, __pyx_kp_u_Pearson_s_correlation_is);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_24, 1, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_11);
+  PyTuple_SET_ITEM(__pyx_t_24, 1, __pyx_t_11);
   __Pyx_INCREF(__pyx_kp_u_with_p_value);
   __Pyx_GIVEREF(__pyx_kp_u_with_p_value);
   PyTuple_SET_ITEM(__pyx_t_24, 2, __pyx_kp_u_with_p_value);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_24, 3, __pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_24, 3, __pyx_t_1);
+  __pyx_t_11 = 0;
   __pyx_t_1 = 0;
-  __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_24, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_24, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/compare_two_libraries.pyx":165
+  /* "sicer/compare_two_libraries.pyx":164
  *     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)
  *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
  *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)             # <<<<<<<<<<<<<<
  *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_24, __pyx_n_s_scipy); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_24, __pyx_n_s_scipy); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_24);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_stats); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_stats); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-  __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_spearmanr); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_spearmanr); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_24);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_A); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_13 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_B); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_11 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_A); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_13 = __pyx_convert_vector_to_py_double(__pyx_v_norm_counts_B); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __pyx_t_12 = NULL;
   __pyx_t_23 = 0;
@@ -3047,82 +3026,82 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_24)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_13};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_24, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
+    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_11, __pyx_t_13};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_24, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_24)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_13};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_24, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
+    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_11, __pyx_t_13};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_24, __pyx_temp+1-__pyx_t_23, 2+__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   } else
   #endif
   {
-    __pyx_t_22 = PyTuple_New(2+__pyx_t_23); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 165, __pyx_L1_error)
+    __pyx_t_22 = PyTuple_New(2+__pyx_t_23); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_22);
     if (__pyx_t_12) {
       __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_22, 0, __pyx_t_12); __pyx_t_12 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_22, 0+__pyx_t_23, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_11);
+    PyTuple_SET_ITEM(__pyx_t_22, 0+__pyx_t_23, __pyx_t_11);
     __Pyx_GIVEREF(__pyx_t_13);
     PyTuple_SET_ITEM(__pyx_t_22, 1+__pyx_t_23, __pyx_t_13);
-    __pyx_t_1 = 0;
+    __pyx_t_11 = 0;
     __pyx_t_13 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_24, __pyx_t_22, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_24, __pyx_t_22, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
   }
   __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-  __pyx_v_spearman = __pyx_t_5;
-  __pyx_t_5 = 0;
+  __pyx_v_spearman = __pyx_t_1;
+  __pyx_t_1 = 0;
 
-  /* "sicer/compare_two_libraries.pyx":166
+  /* "sicer/compare_two_libraries.pyx":165
  *     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
  *     spearman = scipy.stats.spearmanr(norm_counts_A, norm_counts_B)
  *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])             # <<<<<<<<<<<<<<
  * 
- *     return df_container
+ *     return union_islands
  */
-  __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_spearman, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_24 = __Pyx_GetItemInt(__pyx_v_spearman, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_spearman, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_24 = __Pyx_GetItemInt(__pyx_v_spearman, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_24);
-  __pyx_t_22 = PyTuple_New(4); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_22 = PyTuple_New(4); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_22);
   __Pyx_INCREF(__pyx_kp_u_Spearman_s_correlation_is);
   __Pyx_GIVEREF(__pyx_kp_u_Spearman_s_correlation_is);
   PyTuple_SET_ITEM(__pyx_t_22, 0, __pyx_kp_u_Spearman_s_correlation_is);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_22, 1, __pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_22, 1, __pyx_t_1);
   __Pyx_INCREF(__pyx_kp_u_with_p_value);
   __Pyx_GIVEREF(__pyx_kp_u_with_p_value);
   PyTuple_SET_ITEM(__pyx_t_22, 2, __pyx_kp_u_with_p_value);
   __Pyx_GIVEREF(__pyx_t_24);
   PyTuple_SET_ITEM(__pyx_t_22, 3, __pyx_t_24);
-  __pyx_t_5 = 0;
+  __pyx_t_1 = 0;
   __pyx_t_24 = 0;
-  __pyx_t_24 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_22, NULL); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_22, NULL); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_24);
   __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
   __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
 
-  /* "sicer/compare_two_libraries.pyx":168
+  /* "sicer/compare_two_libraries.pyx":167
  *     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
  * 
- *     return df_container             # <<<<<<<<<<<<<<
+ *     return union_islands             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_df_container));
-  __pyx_r = __pyx_v_df_container;
+  __Pyx_INCREF(((PyObject *)__pyx_v_union_islands));
+  __pyx_r = __pyx_v_union_islands;
   goto __pyx_L0;
 
   /* "sicer/compare_two_libraries.pyx":101
@@ -3136,7 +3115,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13);
   __Pyx_XDECREF(__pyx_t_22);
@@ -3144,7 +3123,6 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   __Pyx_AddTraceback("sicer.compare_two_libraries.compare_two_libraries", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_df_container);
   __Pyx_XDECREF(__pyx_v_chrom);
   __Pyx_XDECREF(__pyx_v_pearson);
   __Pyx_XDECREF(__pyx_v_spearman);
@@ -3159,7 +3137,7 @@ static PyObject *__pyx_pw_5sicer_21compare_two_libraries_1compare_two_libraries(
   PyObject *__pyx_v_genome_data = 0;
   struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_A = 0;
   struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_B = 0;
-  struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_union_islands = 0;
+  struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_union_islands = 0;
   int __pyx_v_frag_size;
   int __pyx_v_num_cpu;
   PyObject *__pyx_r = 0;
@@ -3239,7 +3217,7 @@ static PyObject *__pyx_pw_5sicer_21compare_two_libraries_1compare_two_libraries(
     __pyx_v_genome_data = values[0];
     __pyx_v_reads_A = ((struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *)values[1]);
     __pyx_v_reads_B = ((struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *)values[2]);
-    __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)values[3]);
+    __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)values[3]);
     __pyx_v_frag_size = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_frag_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
     __pyx_v_num_cpu = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_num_cpu == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L3_error)
   }
@@ -3253,7 +3231,7 @@ static PyObject *__pyx_pw_5sicer_21compare_two_libraries_1compare_two_libraries(
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_reads_A), __pyx_ptype_5sicer_6shared_10containers_BEDReadContainer, 1, "reads_A", 0))) __PYX_ERR(0, 103, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_reads_B), __pyx_ptype_5sicer_6shared_10containers_BEDReadContainer, 1, "reads_B", 0))) __PYX_ERR(0, 104, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_union_islands), __pyx_ptype_5sicer_6shared_10containers_IslandContainer, 1, "union_islands", 0))) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_union_islands), __pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer, 1, "union_islands", 0))) __PYX_ERR(0, 105, __pyx_L1_error)
   __pyx_r = __pyx_pf_5sicer_21compare_two_libraries_compare_two_libraries(__pyx_self, __pyx_v_genome_data, __pyx_v_reads_A, __pyx_v_reads_B, __pyx_v_union_islands, __pyx_v_frag_size, __pyx_v_num_cpu);
 
   /* function exit code */
@@ -3265,7 +3243,7 @@ static PyObject *__pyx_pw_5sicer_21compare_two_libraries_1compare_two_libraries(
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5sicer_21compare_two_libraries_compare_two_libraries(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, int __pyx_v_num_cpu) {
+static PyObject *__pyx_pf_5sicer_21compare_two_libraries_compare_two_libraries(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_genome_data, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_A, struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_v_reads_B, struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_union_islands, int __pyx_v_frag_size, int __pyx_v_num_cpu) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;

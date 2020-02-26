@@ -120,13 +120,12 @@ cdef class IslandContainer:
 
 cdef class DiffExprIslandContainer:
 
-    def __cinit__(self, object genome_data, IslandContainer islands):
+    def __cinit__(self, object genome_data):
         self.species = genome_data.species
         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
         self.island_count = 0
         for chrom in self.chromosomes:
-            size = deref(islands.getVectorPtr(chrom)).size()
-            self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland](size)))
+            self.data.insert(pair[string, vector[DiffExprIsland]](chrom, vector[DiffExprIsland]()))
 
     cpdef void updateIslandCount(self):
         cdef int new_count = 0

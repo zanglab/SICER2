@@ -3,19 +3,6 @@ import subprocess
 import time
 import compare
 
-parser = argparse.ArgumentParser(description="Test SICER2")
-parser.add_argument("--sicer", action="store_true", help="If set, test SICER")
-parser.add_argument("--recognicer", action="store_true", help="If set, test RECOGNICER")
-parser.add_argument("--df", action="store_true", help="If set, test df mode")
-
-parser.add_argument("--data_dir", type=str, help="Path to location of data")
-parser.add_argument("--output_dir", type=str, help="Path to output results of SICER")
-parser.add_argument("--test_dir", type=str, help="Path to where ground-truth results are located")
-
-test_sicer = args.sicer or args.all
-test_recognicer = args.recognicer or args.all
-test_df = args.df or args.all
-
 core_count = 12
 
 test_dir =  '/nv/vol190/zanglab/jy2ma/sicer2'
@@ -48,6 +35,86 @@ gm12878_ctrl_group = set(['45210_treat_rep1.bed','36626_treat_rep1.bed','36629_t
         '45220_treat_rep1.bed','36572_treat_rep1.bed','36582_treat_rep1.bed','45212_treat_rep1.bed'])
 """
 
+
+def compare_files(f1, f2):
+    file1 = open(file1_name, 'r')
+    file2 = open(file2_name, 'r')
+
+    for line1, line2 in zip(file1, file2):
+        line1_split = line1.replace('\n', '').split('\t')
+        line2_split = line2.replace('\n', '').split('\t')
+        if len(line1_split) != len(line_split)
+            raise ValueError(f'Different # of Columns: \"{line1}\" and \"{line2}\"')
+
+        for i in range(len(line1_split)):
+            if line1_split[i].isDigit():
+                line1_split[i] = int(line1_split[i])
+            else:
+                try:
+                    line1_split[i] = float(line1_split[i])
+                except ValueError:
+                    pass
+            if line2_split[i].isDigit():
+                line2_split[i] = int(line2_split[i])
+            else:
+                try:
+                    line2_split[i] = float(line2_split[i])
+                except ValueError:
+                    pass
+
+        line_equal = True
+        for a, b in zip(line1_split, line2_split):
+            if type(a) != type(b):
+                raise ValueError(f'Comparing different types: {a}({type(a)}) and {b}({type(b)})')
+            if type(a) is str or type(a) is int:
+                line_equal &= a == b
+            else:
+                line_equal &= isclose(a, b, abs_tol=1e-6)
+
+        if not line_equal:
+            raise ValueError(f'Differing lines: \"{line1}\" and \"{line2}\"')
+    return True 
+
+def compare_wig_files(f1, f2):
+    file1 = open(file1_name, 'r')
+    file2 = open(file2_name, 'r')
+    equal = True
+    for line1, line2 in zip(file1, file2):
+        line_equal = True
+        if(re.match("^track", line1)):
+            if (re.match("^track", line2)):
+                line_equal &= line1 == line2
+            else:
+                line_equal = False
+        elif(re.match("^variableStep", line1)):
+            if(re.match("^variableStep", line2)):
+                line_equal &= line1 == line2
+            else:
+                line_equal = False
+        elif(line1 != ""):
+            line1_split = line1.replace('\n', '').split('\t')
+            line1_split[1] = float(line1_split[1])
+            line2 = line2.replace('\n', '').split('\t')
+            line2_split[1] = float(line2_split[1])
+
+            line_equal &= line1_split[0] == line2_split[0] and isclose(line1_split[1], line2_split[1], abs_tol=0.01)
+
+        if not line_equal:
+            raise ValueError(f'Differing lines: \"{line1}\" and \"{line2}\"')
+
+    return True
+
+def compare_sicer():
+    pass
+
+def compare_sicer_df():
+    pass
+
+def compare_recognicer():
+
+def compare_recognicer_df():
+
+
 def run_sicer(treatment, control, output):
     subprocess.call(['sicer', '-t', treatment, '-c', control, '-s', 'hg38', '-o', output, '--significant_reads', '>', '/dev/null'])
 
@@ -61,7 +128,7 @@ def run_sicer_df(t1, t2, c1, c2, output):
 def run_recognicer_df(t1, t2, c1, c2, output):
     subprocess.call(['recognicer_df', '-t', t1, t2, '-c', c1, c2, '-s', 'hg38', '-o', output, '--significant_reads', '>', '/dev/null'])
 
-def df_test(test_type, data_dir, output_dir, test_dir):
+def df_test(test_type, data_dir, output_dir, test_dir, file=None):
 
     faulty = False
 
@@ -105,7 +172,7 @@ def df_test(test_type, data_dir, output_dir, test_dir):
     else:
         return True
 
-def recognicer_test(data_dir, output_dir, test_dir):
+def recognicer_test(data_dir, output_dir, test_dir, file=None):
 
     faulty = False
 
@@ -130,7 +197,7 @@ def recognicer_test(data_dir, output_dir, test_dir):
     else:
         return True
 
-def sicer_test(data_dir, output_dir, test_dir):
+def sicer_test(data_dir, output_dir, test_dir, file=None):
 
     faulty = False
 
@@ -155,6 +222,19 @@ def sicer_test(data_dir, output_dir, test_dir):
     else:
         return True
 
+def get_args():
+    parser = argparse.ArgumentParser(description="Test SICER2")
+    parser.add_argument("--sicer", action="store_true", help="If set, test SICER")
+    parser.add_argument("--recognicer", action="store_true", help="If set, test RECOGNICER")
+    parser.add_argument("--df", action="store_true", help="If set, test df mode")
+
+    parser.add_argument("--data_dir", type=str, help="Path to location of data")
+    parser.add_argument("--output_dir", type=str, help="Path to output results of SICER")
+    parser.add_argument("--test_dir", type=str, help="Path to where ground-truth results are located")
+
+    parser.add_argument('--test_file', type=str, nargs='+', help='Name of the files to test. If not set, default to pre-set files')
+    parser.add_argument('--control_file', type=str, nargs='+', help='Name of the corresponding control_file to test. If not set, default to pre-set files')
+
 if __name__ == "__main__":
     args = parser.parse_args()
 
@@ -167,23 +247,19 @@ if __name__ == "__main__":
     if not os.path.isdir(args.test_dir):
         raise ValueError(f"Directory `{args.test_dir}` doesn't exist.")
 
-    test_sicer = args.sicer
-    test_recognicer = args.recognicer
-    test_df = args.df
-
     test_passed = 0
 
     if test_sicer and not test_df:
-        test_passed = sicer_test(args.data_dir, args.output_dir, args.test_dir)
+        test_passed &= sicer_test(args.data_dir, args.output_dir, args.test_dir)
 
     if test_recognicer and not test_df:
-        test_passed = recognicer_test(args.data_dir, args.output_dir, args.test_dir)
+        test_passed &= recognicer_test(args.data_dir, args.output_dir, args.test_dir)
 
     if test_df:
         if test_sicer:
-            test_passed = df_test("sicer", args.data_dir, args.output_dir, args.test_dir)
+            test_passed &= df_test("sicer", args.data_dir, args.output_dir, args.test_dir)
         else:
-            test_passed = df_test("recognicer", args.data_dir, args.output_dir, args.test_dir)
+            test_passed &= df_test("recognicer", args.data_dir, args.output_dir, args.test_dir)
 
     if test_passed:
         print("All tests passed!")

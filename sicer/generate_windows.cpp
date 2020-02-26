@@ -9,8 +9,9 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++",
-            "-w"
+            "-w",
+            "-std=c++11",
+            "-stdlib=libc++"
         ],
         "include_dirs": [
             "sicer/shared",
@@ -2328,7 +2329,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_WindowContainer *__pyx_f_5si
                             goto __pyx_L12;
                             __pyx_L12:;
                             #ifdef _OPENMP
-                            #pragma omp critical(__pyx_parallel_lastprivates5)
+                            #pragma omp critical(__pyx_parallel_lastprivates4)
                             #endif /* _OPENMP */
                             {
                                 __pyx_parallel_temp0 = __pyx_v_i;

@@ -9,7 +9,7 @@ if (float(sys.version[:3])<3):
     sys.stderr.write('ERROR: Python3 required! \n')
     sys.exit(1)
 
-USE_CYTHON = False
+USE_CYTHON = True
 
 EXT = '.pyx' if USE_CYTHON else '.cpp'
 

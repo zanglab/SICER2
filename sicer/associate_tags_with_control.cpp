@@ -10,12 +10,13 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++",
-            "-w"
+            "-w",
+            "-std=c++11",
+            "-stdlib=libc++"
         ],
         "include_dirs": [
-            "./sicer/shared",
             "sicer/shared",
+            "./sicer/shared",
             "."
         ],
         "language": "c++",
@@ -1601,7 +1602,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   int __pyx_v_index;
   std::vector<uint32_t>  __pyx_v_island_starts;
   std::vector<uint32_t>  __pyx_v_island_ends;
-  std::vector<BEDRead> ::size_type __pyx_v_i;
+  std::vector<Island> ::size_type __pyx_v_i;
   uint32_t __pyx_v_length;
   double __pyx_v_avg;
   double __pyx_v_fc;
@@ -1613,7 +1614,7 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
   std::vector<uint32_t>  __pyx_t_3;
   std::vector<Island> ::size_type __pyx_t_4;
   std::vector<Island> ::size_type __pyx_t_5;
-  std::vector<BEDRead> ::size_type __pyx_t_6;
+  std::vector<Island> ::size_type __pyx_t_6;
   uint32_t __pyx_t_7;
   std::vector<BEDRead> ::size_type __pyx_t_8;
   std::vector<BEDRead> ::size_type __pyx_t_9;
@@ -1741,10 +1742,10 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  */
-  __pyx_t_6 = __pyx_v_treatment_reads.size();
-  __pyx_t_8 = __pyx_t_6;
-  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-    __pyx_v_i = __pyx_t_9;
+  __pyx_t_8 = __pyx_v_treatment_reads.size();
+  __pyx_t_9 = __pyx_t_8;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_9; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
 
     /* "sicer/associate_tags_with_control.pyx":41
  * 
@@ -1800,10 +1801,10 @@ static std::vector<double>  __pyx_f_5sicer_27associate_tags_with_control__associ
  *         pos = get_tag_pos(control_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  */
-  __pyx_t_6 = __pyx_v_control_reads.size();
-  __pyx_t_8 = __pyx_t_6;
-  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-    __pyx_v_i = __pyx_t_9;
+  __pyx_t_8 = __pyx_v_control_reads.size();
+  __pyx_t_9 = __pyx_t_8;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_9; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
 
     /* "sicer/associate_tags_with_control.pyx":47
  * 

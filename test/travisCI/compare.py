@@ -220,12 +220,12 @@ def compare_sicer(f):
     elif f == 2:
         tf = os.path.basename(treatment_file_2).replace(".bed",'')
 
-    chk_score_island = check_scoreisland(tf+sicer_output_files_suffix[0], current_dir+'expected_output/'+tf+sicer_output_files_suffix[0])
-    chk_island_bed = check_islandbed(tf+sicer_output_files_suffix[1], current_dir+'expected_output/'+tf+sicer_output_files_suffix[1])
-    chk_filtered_bed = check_filteredbed(tf+sicer_output_files_suffix[2], current_dir+'expected_output/'+tf+sicer_output_files_suffix[2])
-    chk_wig1 = check_WIG(tf+sicer_output_files_suffix[3], current_dir+'expected_output/'+tf+sicer_output_files_suffix[3])
-    chk_island_summary = check_islandsummary(tf+sicer_output_files_suffix[4], current_dir+'expected_output/'+tf+sicer_output_files_suffix[4])
-    chk_wig2 = check_WIG(tf+sicer_output_files_suffix[5], current_dir+'expected_output/'+tf+sicer_output_files_suffix[5])
+    chk_score_island = check_scoreisland("./test/travisCI/test_output/" + tf+sicer_output_files_suffix[0], current_dir+'expected_output/'+tf+sicer_output_files_suffix[0])
+    chk_island_bed = check_islandbed("./test/travisCI/test_output/" + tf+sicer_output_files_suffix[1], current_dir+'expected_output/'+tf+sicer_output_files_suffix[1])
+    chk_filtered_bed = check_filteredbed("./test/travisCI/test_output/" + tf+sicer_output_files_suffix[2], current_dir+'expected_output/'+tf+sicer_output_files_suffix[2])
+    chk_wig1 = check_WIG("./test/travisCI/test_output/" + tf+sicer_output_files_suffix[3], current_dir+'expected_output/'+tf+sicer_output_files_suffix[3])
+    chk_island_summary = check_islandsummary("./test/travisCI/test_output/" + tf+sicer_output_files_suffix[4], current_dir+'expected_output/'+tf+sicer_output_files_suffix[4])
+    chk_wig2 = check_WIG("./test/travisCI/test_output/" + tf+sicer_output_files_suffix[5], current_dir+'expected_output/'+tf+sicer_output_files_suffix[5])
 
     final_result = (chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary and chk_wig2)
     return final_result
@@ -240,10 +240,10 @@ def compare_sicer_df():
     decreased_fname = f1_name+sicerdf_output_files_suffix[2]
     increased_fname = f1_name+sicerdf_output_files_suffix[3]
 
-    chk_unionisland = check_unionisland(union_island_file_name, current_dir+'expected_output/'+union_island_file_name)
-    chk_summary = check_13columns(summary_name, current_dir+'expected_output/'+summary_name)
-    chk_decreased = check_13columns(decreased_fname, current_dir+'expected_output/'+decreased_fname)
-    chk_increased = check_13columns(increased_fname, current_dir+'expected_output/'+increased_fname)
+    chk_unionisland = check_unionisland("./test/travisCI/test_output/" + union_island_file_name, current_dir+'expected_output/'+union_island_file_name)
+    chk_summary = check_13columns("./test/travisCI/test_output/" + summary_name, current_dir+'expected_output/'+summary_name)
+    chk_decreased = check_13columns("./test/travisCI/test_output/" + decreased_fname, current_dir+'expected_output/'+decreased_fname)
+    chk_increased = check_13columns("./test/travisCI/test_output/" + increased_fname, current_dir+'expected_output/'+increased_fname)
 
     final_result = (chk_unionisland and chk_summary and chk_decreased and chk_increased)
 
@@ -255,12 +255,12 @@ def compare_recog(f):
     elif f == 2:
         tf = os.path.basename(treatment_file_2).replace(".bed",'')
 
-    chk_score_island = check_scoreisland(tf+recog_output_files_suffix[0], current_dir+'expected_output/'+tf+recog_output_files_suffix[0])
-    chk_island_bed = check_islandbed(tf+recog_output_files_suffix[1], current_dir+'expected_output/'+tf+recog_output_files_suffix[1])
-    chk_filtered_bed = check_filteredbed(tf+recog_output_files_suffix[2], current_dir+'expected_output/'+tf+recog_output_files_suffix[2])
-    chk_wig1 = check_WIG(tf+recog_output_files_suffix[3], current_dir+'expected_output/'+tf+recog_output_files_suffix[3])
-    chk_island_summary = check_islandsummary(tf+recog_output_files_suffix[4], current_dir+'expected_output/'+tf+recog_output_files_suffix[4])
-    chk_wig2 = check_WIG(tf+recog_output_files_suffix[5], current_dir+'expected_output/'+tf+'-W200-cgnormalized.wig')
+    chk_score_island = check_scoreisland("./test/travisCI/test_output/" + tf+recog_output_files_suffix[0], current_dir+'expected_output/'+tf+recog_output_files_suffix[0])
+    chk_island_bed = check_islandbed("./test/travisCI/test_output/" + tf+recog_output_files_suffix[1], current_dir+'expected_output/'+tf+recog_output_files_suffix[1])
+    chk_filtered_bed = check_filteredbed("./test/travisCI/test_output/" + tf+recog_output_files_suffix[2], current_dir+'expected_output/'+tf+recog_output_files_suffix[2])
+    chk_wig1 = check_WIG("./test/travisCI/test_output/" + tf+recog_output_files_suffix[3], current_dir+'expected_output/'+tf+recog_output_files_suffix[3])
+    chk_island_summary = check_islandsummary("./test/travisCI/test_output/" + tf+recog_output_files_suffix[4], current_dir+'expected_output/'+tf+recog_output_files_suffix[4])
+    chk_wig2 = check_WIG("./test/travisCI/test_output/" + tf+recog_output_files_suffix[5], current_dir+'expected_output/'+tf+'-W200-cgnormalized.wig')
 
     final_result = (chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary and chk_wig2)
     return final_result
@@ -275,10 +275,10 @@ def compare_recog_df():
     decreased_fname = f1_name+recogdf_output_files_suffix[2]
     increased_fname = f1_name+recogdf_output_files_suffix[3]
 
-    chk_unionisland = check_unionisland(union_island_file_name, current_dir+'expected_output/'+union_island_file_name)
-    chk_summary = check_13columns(summary_name, current_dir+'expected_output/'+summary_name)
-    chk_decreased = check_13columns(decreased_fname, current_dir+'expected_output/'+decreased_fname)
-    chk_increased = check_13columns(increased_fname, current_dir+'expected_output/'+increased_fname)
+    chk_unionisland = check_unionisland("./test/travisCI/test_output/" + union_island_file_name, current_dir+'expected_output/'+union_island_file_name)
+    chk_summary = check_13columns("./test/travisCI/test_outpu/t" + summary_name, current_dir+'expected_output/'+summary_name)
+    chk_decreased = check_13columns("./test/travisCI/test_outpu/t" + decreased_fname, current_dir+'expected_output/'+decreased_fname)
+    chk_increased = check_13columns("./test/travisCI/test_output/" + increased_fname, current_dir+'expected_output/'+increased_fname)
 
     final_result = (chk_unionisland and chk_summary and chk_decreased and chk_increased)
 

@@ -10,8 +10,9 @@
         "extra_compile_args": [
             "-O3",
             "-ffast-math",
-            "-stdlib=libc++",
-            "-w"
+            "-w",
+            "-std=c++11",
+            "-stdlib=libc++"
         ],
         "include_dirs": [
             "./sicer/shared",
@@ -1349,6 +1350,9 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
 #include <new>
 
 /* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
+
+/* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntToPy.proto */
@@ -1403,9 +1407,9 @@ static PyTypeObject *__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandConta
 
 /* Module declarations from 'sicer.find_union_islands' */
 static bool __pyx_f_5sicer_18find_union_islands_compare_islands(Island, Island); /*proto*/
-static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std::vector<Island>  &, std::vector<Island>  &, std::vector<Island>  &); /*proto*/
-static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *, PyObject *, int); /*proto*/
-static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std::vector<DiffExprIsland>  &, std::vector<Island>  &, std::vector<Island>  &); /*proto*/
+static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *, PyObject *, int); /*proto*/
+static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
 #define __Pyx_MODULE_NAME "sicer.find_union_islands"
@@ -1413,11 +1417,13 @@ extern int __pyx_module_is_main_sicer__find_union_islands;
 int __pyx_module_is_main_sicer__find_union_islands = 0;
 
 /* Implementation of 'sicer.find_union_islands' */
+static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_print;
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_print[] = "print";
+static const char __pyx_k_range[] = "range";
 static const char __pyx_k_num_cpu[] = "num_cpu";
 static const char __pyx_k_islands_1[] = "islands_1";
 static const char __pyx_k_islands_2[] = "islands_2";
@@ -1437,6 +1443,7 @@ static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_num_cpu;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_vtable;
+static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_pf_5sicer_18find_union_islands_find_union_islands(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu); /* proto */
 static PyObject *__pyx_tuple_;
@@ -1480,25 +1487,29 @@ static bool __pyx_f_5sicer_18find_union_islands_compare_islands(Island __pyx_v_i
  *     return i.start < j.start
  * 
  * cdef void _find_union_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[Island]& union_islands,
+ *     vector[DiffExprIsland]& union_islands,
  *     vector[Island]& islands_1,
  */
 
-static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std::vector<Island>  &__pyx_v_union_islands, std::vector<Island>  &__pyx_v_islands_1, std::vector<Island>  &__pyx_v_islands_2) {
+static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std::vector<DiffExprIsland>  &__pyx_v_union_islands, std::vector<Island>  &__pyx_v_islands_1, std::vector<Island>  &__pyx_v_islands_2) {
+  std::vector<Island> ::size_type __pyx_v_n;
   std::vector<Island>  __pyx_v_merged_islands;
   Island __pyx_v_current;
   Island __pyx_v_next;
   uint32_t __pyx_v_i;
   int __pyx_t_1;
-  std::vector<Island>  __pyx_t_2;
-  uint32_t __pyx_t_3;
+  std::vector<Island> ::size_type __pyx_t_2;
+  std::vector<Island> ::size_type __pyx_t_3;
+  std::vector<Island> ::size_type __pyx_t_4;
+  std::vector<Island>  __pyx_t_5;
+  uint32_t __pyx_t_6;
 
   /* "sicer/find_union_islands.pyx":27
  * ) nogil:
  * 
  *     if islands_1.size() == 0:             # <<<<<<<<<<<<<<
- *         union_islands.swap(islands_2)
- *         return
+ *         for n in range(islands_2.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_2[n]))
  */
   __pyx_t_1 = ((__pyx_v_islands_1.size() == 0) != 0);
   if (__pyx_t_1) {
@@ -1506,18 +1517,42 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     /* "sicer/find_union_islands.pyx":28
  * 
  *     if islands_1.size() == 0:
- *         union_islands.swap(islands_2)             # <<<<<<<<<<<<<<
+ *         for n in range(islands_2.size()):             # <<<<<<<<<<<<<<
+ *             union_islands.push_back(DiffExprIsland(islands_2[n]))
+ *         return
+ */
+    __pyx_t_2 = __pyx_v_islands_2.size();
+    __pyx_t_3 = __pyx_t_2;
+    for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+      __pyx_v_n = __pyx_t_4;
+
+      /* "sicer/find_union_islands.pyx":29
+ *     if islands_1.size() == 0:
+ *         for n in range(islands_2.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_2[n]))             # <<<<<<<<<<<<<<
  *         return
  *     if islands_2.size() == 0:
  */
-    __pyx_v_union_islands.swap(__pyx_v_islands_2);
+      try {
+        __pyx_v_union_islands.push_back(DiffExprIsland((__pyx_v_islands_2[__pyx_v_n])));
+      } catch(...) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        __Pyx_CppExn2PyErr();
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 29, __pyx_L1_error)
+      }
+    }
 
-    /* "sicer/find_union_islands.pyx":29
- *     if islands_1.size() == 0:
- *         union_islands.swap(islands_2)
+    /* "sicer/find_union_islands.pyx":30
+ *         for n in range(islands_2.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_2[n]))
  *         return             # <<<<<<<<<<<<<<
  *     if islands_2.size() == 0:
- *         union_islands.swap(islands_1)
+ *         for n in range(islands_1.size()):
  */
     goto __pyx_L0;
 
@@ -1525,49 +1560,73 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  * ) nogil:
  * 
  *     if islands_1.size() == 0:             # <<<<<<<<<<<<<<
- *         union_islands.swap(islands_2)
- *         return
+ *         for n in range(islands_2.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_2[n]))
  */
   }
 
-  /* "sicer/find_union_islands.pyx":30
- *         union_islands.swap(islands_2)
+  /* "sicer/find_union_islands.pyx":31
+ *             union_islands.push_back(DiffExprIsland(islands_2[n]))
  *         return
  *     if islands_2.size() == 0:             # <<<<<<<<<<<<<<
- *         union_islands.swap(islands_1)
- *         return
+ *         for n in range(islands_1.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_1[n]))
  */
   __pyx_t_1 = ((__pyx_v_islands_2.size() == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "sicer/find_union_islands.pyx":31
+    /* "sicer/find_union_islands.pyx":32
  *         return
  *     if islands_2.size() == 0:
- *         union_islands.swap(islands_1)             # <<<<<<<<<<<<<<
+ *         for n in range(islands_1.size()):             # <<<<<<<<<<<<<<
+ *             union_islands.push_back(DiffExprIsland(islands_1[n]))
+ *         return
+ */
+    __pyx_t_2 = __pyx_v_islands_1.size();
+    __pyx_t_3 = __pyx_t_2;
+    for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+      __pyx_v_n = __pyx_t_4;
+
+      /* "sicer/find_union_islands.pyx":33
+ *     if islands_2.size() == 0:
+ *         for n in range(islands_1.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_1[n]))             # <<<<<<<<<<<<<<
  *         return
  * 
  */
-    __pyx_v_union_islands.swap(__pyx_v_islands_1);
+      try {
+        __pyx_v_union_islands.push_back(DiffExprIsland((__pyx_v_islands_1[__pyx_v_n])));
+      } catch(...) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        __Pyx_CppExn2PyErr();
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 33, __pyx_L1_error)
+      }
+    }
 
-    /* "sicer/find_union_islands.pyx":32
- *     if islands_2.size() == 0:
- *         union_islands.swap(islands_1)
+    /* "sicer/find_union_islands.pyx":34
+ *         for n in range(islands_1.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_1[n]))
  *         return             # <<<<<<<<<<<<<<
  * 
  *     cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())
  */
     goto __pyx_L0;
 
-    /* "sicer/find_union_islands.pyx":30
- *         union_islands.swap(islands_2)
+    /* "sicer/find_union_islands.pyx":31
+ *             union_islands.push_back(DiffExprIsland(islands_2[n]))
  *         return
  *     if islands_2.size() == 0:             # <<<<<<<<<<<<<<
- *         union_islands.swap(islands_1)
- *         return
+ *         for n in range(islands_1.size()):
+ *             union_islands.push_back(DiffExprIsland(islands_1[n]))
  */
   }
 
-  /* "sicer/find_union_islands.pyx":34
+  /* "sicer/find_union_islands.pyx":36
  *         return
  * 
  *     cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())             # <<<<<<<<<<<<<<
@@ -1575,7 +1634,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  *     merge[vi_itr, vi_itr, vi_itr, cmp_f](
  */
   try {
-    __pyx_t_2 = std::vector<Island> ((__pyx_v_islands_1.size() + __pyx_v_islands_2.size()));
+    __pyx_t_5 = std::vector<Island> ((__pyx_v_islands_1.size() + __pyx_v_islands_2.size()));
   } catch(...) {
     #ifdef WITH_THREAD
     PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1584,11 +1643,11 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 34, __pyx_L1_error)
+    __PYX_ERR(0, 36, __pyx_L1_error)
   }
-  __pyx_v_merged_islands = __pyx_t_2;
+  __pyx_v_merged_islands = __pyx_t_5;
 
-  /* "sicer/find_union_islands.pyx":36
+  /* "sicer/find_union_islands.pyx":38
  *     cdef vector[Island] merged_islands = vector[Island](islands_1.size() + islands_2.size())
  * 
  *     merge[vi_itr, vi_itr, vi_itr, cmp_f](             # <<<<<<<<<<<<<<
@@ -1597,7 +1656,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
   (void)(std::merge<__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_vi_itr,__pyx_t_5sicer_18find_union_islands_cmp_f>(__pyx_v_islands_1.begin(), __pyx_v_islands_1.end(), __pyx_v_islands_2.begin(), __pyx_v_islands_2.end(), __pyx_v_merged_islands.begin(), __pyx_f_5sicer_18find_union_islands_compare_islands));
 
-  /* "sicer/find_union_islands.pyx":45
+  /* "sicer/find_union_islands.pyx":47
  *     )
  * 
  *     cdef Island current = merged_islands[0]             # <<<<<<<<<<<<<<
@@ -1606,7 +1665,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
   __pyx_v_current = (__pyx_v_merged_islands[0]);
 
-  /* "sicer/find_union_islands.pyx":47
+  /* "sicer/find_union_islands.pyx":49
  *     cdef Island current = merged_islands[0]
  *     cdef Island next;
  *     cdef uint32_t i = 1             # <<<<<<<<<<<<<<
@@ -1615,7 +1674,7 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
   __pyx_v_i = 1;
 
-  /* "sicer/find_union_islands.pyx":49
+  /* "sicer/find_union_islands.pyx":51
  *     cdef uint32_t i = 1
  * 
  *     while i < merged_islands.size():             # <<<<<<<<<<<<<<
@@ -1626,34 +1685,34 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     __pyx_t_1 = ((__pyx_v_i < __pyx_v_merged_islands.size()) != 0);
     if (!__pyx_t_1) break;
 
-    /* "sicer/find_union_islands.pyx":50
+    /* "sicer/find_union_islands.pyx":52
  * 
  *     while i < merged_islands.size():
  *         next = merged_islands[i]             # <<<<<<<<<<<<<<
  *         if next.start > current.end:
- *             union_islands.push_back(current)
+ *             union_islands.push_back(DiffExprIsland(current))
  */
     __pyx_v_next = (__pyx_v_merged_islands[__pyx_v_i]);
 
-    /* "sicer/find_union_islands.pyx":51
+    /* "sicer/find_union_islands.pyx":53
  *     while i < merged_islands.size():
  *         next = merged_islands[i]
  *         if next.start > current.end:             # <<<<<<<<<<<<<<
- *             union_islands.push_back(current)
+ *             union_islands.push_back(DiffExprIsland(current))
  *             current = next
  */
     __pyx_t_1 = ((__pyx_v_next.start > __pyx_v_current.end) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/find_union_islands.pyx":52
+      /* "sicer/find_union_islands.pyx":54
  *         next = merged_islands[i]
  *         if next.start > current.end:
- *             union_islands.push_back(current)             # <<<<<<<<<<<<<<
+ *             union_islands.push_back(DiffExprIsland(current))             # <<<<<<<<<<<<<<
  *             current = next
  *         else:
  */
       try {
-        __pyx_v_union_islands.push_back(__pyx_v_current);
+        __pyx_v_union_islands.push_back(DiffExprIsland(__pyx_v_current));
       } catch(...) {
         #ifdef WITH_THREAD
         PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1662,29 +1721,29 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 52, __pyx_L1_error)
+        __PYX_ERR(0, 54, __pyx_L1_error)
       }
 
-      /* "sicer/find_union_islands.pyx":53
+      /* "sicer/find_union_islands.pyx":55
  *         if next.start > current.end:
- *             union_islands.push_back(current)
+ *             union_islands.push_back(DiffExprIsland(current))
  *             current = next             # <<<<<<<<<<<<<<
  *         else:
  *             if next.end > current.end:
  */
       __pyx_v_current = __pyx_v_next;
 
-      /* "sicer/find_union_islands.pyx":51
+      /* "sicer/find_union_islands.pyx":53
  *     while i < merged_islands.size():
  *         next = merged_islands[i]
  *         if next.start > current.end:             # <<<<<<<<<<<<<<
- *             union_islands.push_back(current)
+ *             union_islands.push_back(DiffExprIsland(current))
  *             current = next
  */
-      goto __pyx_L7;
+      goto __pyx_L11;
     }
 
-    /* "sicer/find_union_islands.pyx":55
+    /* "sicer/find_union_islands.pyx":57
  *             current = next
  *         else:
  *             if next.end > current.end:             # <<<<<<<<<<<<<<
@@ -1695,17 +1754,17 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
       __pyx_t_1 = ((__pyx_v_next.end > __pyx_v_current.end) != 0);
       if (__pyx_t_1) {
 
-        /* "sicer/find_union_islands.pyx":56
+        /* "sicer/find_union_islands.pyx":58
  *         else:
  *             if next.end > current.end:
  *                 current.end = next.end             # <<<<<<<<<<<<<<
  *         preinc(i)
  * 
  */
-        __pyx_t_3 = __pyx_v_next.end;
-        __pyx_v_current.end = __pyx_t_3;
+        __pyx_t_6 = __pyx_v_next.end;
+        __pyx_v_current.end = __pyx_t_6;
 
-        /* "sicer/find_union_islands.pyx":55
+        /* "sicer/find_union_islands.pyx":57
  *             current = next
  *         else:
  *             if next.end > current.end:             # <<<<<<<<<<<<<<
@@ -1714,27 +1773,27 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
  */
       }
     }
-    __pyx_L7:;
+    __pyx_L11:;
 
-    /* "sicer/find_union_islands.pyx":57
+    /* "sicer/find_union_islands.pyx":59
  *             if next.end > current.end:
  *                 current.end = next.end
  *         preinc(i)             # <<<<<<<<<<<<<<
  * 
- *     union_islands.push_back(current)
+ *     union_islands.push_back(DiffExprIsland(current))
  */
     (void)((++__pyx_v_i));
   }
 
-  /* "sicer/find_union_islands.pyx":59
+  /* "sicer/find_union_islands.pyx":61
  *         preinc(i)
  * 
- *     union_islands.push_back(current)             # <<<<<<<<<<<<<<
+ *     union_islands.push_back(DiffExprIsland(current))             # <<<<<<<<<<<<<<
  * 
- * cdef IslandContainer _find_union_islands(
+ * cdef DiffExprIslandContainer _find_union_islands(
  */
   try {
-    __pyx_v_union_islands.push_back(__pyx_v_current);
+    __pyx_v_union_islands.push_back(DiffExprIsland(__pyx_v_current));
   } catch(...) {
     #ifdef WITH_THREAD
     PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1743,14 +1802,14 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 59, __pyx_L1_error)
+    __PYX_ERR(0, 61, __pyx_L1_error)
   }
 
   /* "sicer/find_union_islands.pyx":21
  *     return i.start < j.start
  * 
  * cdef void _find_union_islands_by_chrom(             # <<<<<<<<<<<<<<
- *     vector[Island]& union_islands,
+ *     vector[DiffExprIsland]& union_islands,
  *     vector[Island]& islands_1,
  */
 
@@ -1761,19 +1820,19 @@ static void __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom(std
   __pyx_L0:;
 }
 
-/* "sicer/find_union_islands.pyx":61
- *     union_islands.push_back(current)
+/* "sicer/find_union_islands.pyx":63
+ *     union_islands.push_back(DiffExprIsland(current))
  * 
- * cdef IslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
+ * cdef DiffExprIslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
  *     IslandContainer islands_1,
  *     IslandContainer islands_2,
  */
 
-static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_islands_1, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, CYTHON_UNUSED int __pyx_v_num_cpu) {
+static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_18find_union_islands__find_union_islands(struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_islands_1, struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, CYTHON_UNUSED int __pyx_v_num_cpu) {
   std::vector<std::string>  __pyx_v_chroms;
-  struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_v_union_islands = 0;
+  struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_v_union_islands = 0;
   int __pyx_v_i;
-  struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_r = NULL;
+  struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   std::vector<std::string>  __pyx_t_2;
@@ -1783,32 +1842,32 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("_find_union_islands", 0);
 
-  /* "sicer/find_union_islands.pyx":68
+  /* "sicer/find_union_islands.pyx":70
  * ):
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = islands_1.getChromosomes()             # <<<<<<<<<<<<<<
  * 
- *     cdef IslandContainer union_islands = IslandContainer(genome_data)
+ *     cdef DiffExprIslandContainer union_islands = DiffExprIslandContainer(genome_data)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getChromosomes(__pyx_v_islands_1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getChromosomes(__pyx_v_islands_1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/find_union_islands.pyx":70
+  /* "sicer/find_union_islands.pyx":72
  *     cdef vector[string] chroms = islands_1.getChromosomes()
  * 
- *     cdef IslandContainer union_islands = IslandContainer(genome_data)             # <<<<<<<<<<<<<<
+ *     cdef DiffExprIslandContainer union_islands = DiffExprIslandContainer(genome_data)             # <<<<<<<<<<<<<<
  * 
  *     cdef int i
  */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_10containers_IslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer), __pyx_v_genome_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_t_1);
+  __pyx_v_union_islands = ((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "sicer/find_union_islands.pyx":73
+  /* "sicer/find_union_islands.pyx":75
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -1845,14 +1904,14 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/find_union_islands.pyx":74
+                            /* "sicer/find_union_islands.pyx":76
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         _find_union_islands_by_chrom(             # <<<<<<<<<<<<<<
  *             deref(union_islands.getVectorPtr(chroms[i])),
  *             deref(islands_1.getVectorPtr(chroms[i])),
  */
-                            __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getVectorPtr(__pyx_v_union_islands, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getVectorPtr(__pyx_v_islands_1, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_2->__pyx_vtab)->getVectorPtr(__pyx_v_islands_2, (__pyx_v_chroms[__pyx_v_i]))));
+                            __pyx_f_5sicer_18find_union_islands__find_union_islands_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getVectorPtr(__pyx_v_union_islands, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_1->__pyx_vtab)->getVectorPtr(__pyx_v_islands_1, (__pyx_v_chroms[__pyx_v_i]))), (*((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_2->__pyx_vtab)->getVectorPtr(__pyx_v_islands_2, (__pyx_v_chroms[__pyx_v_i]))));
                         }
                     }
                 }
@@ -1866,7 +1925,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
         #endif
       }
 
-      /* "sicer/find_union_islands.pyx":73
+      /* "sicer/find_union_islands.pyx":75
  * 
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -1885,25 +1944,25 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
       }
   }
 
-  /* "sicer/find_union_islands.pyx":80
+  /* "sicer/find_union_islands.pyx":82
  *         )
  * 
  *     union_islands.updateIslandCount()             # <<<<<<<<<<<<<<
  *     print("Union of islands count: ", union_islands.getIslandCount())
  * 
  */
-  ((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->updateIslandCount(__pyx_v_union_islands, 0);
+  ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->updateIslandCount(__pyx_v_union_islands, 0);
 
-  /* "sicer/find_union_islands.pyx":81
+  /* "sicer/find_union_islands.pyx":83
  * 
  *     union_islands.updateIslandCount()
  *     print("Union of islands count: ", union_islands.getIslandCount())             # <<<<<<<<<<<<<<
  * 
  *     return union_islands
  */
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_union_islands->__pyx_vtab)->getIslandCount(__pyx_v_union_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_kp_u_Union_of_islands_count);
   __Pyx_GIVEREF(__pyx_kp_u_Union_of_islands_count);
@@ -1911,27 +1970,27 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/find_union_islands.pyx":83
+  /* "sicer/find_union_islands.pyx":85
  *     print("Union of islands count: ", union_islands.getIslandCount())
  * 
  *     return union_islands             # <<<<<<<<<<<<<<
  * 
- * cpdef IslandContainer find_union_islands(
+ * cpdef DiffExprIslandContainer find_union_islands(
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __Pyx_INCREF(((PyObject *)__pyx_v_union_islands));
   __pyx_r = __pyx_v_union_islands;
   goto __pyx_L0;
 
-  /* "sicer/find_union_islands.pyx":61
- *     union_islands.push_back(current)
+  /* "sicer/find_union_islands.pyx":63
+ *     union_islands.push_back(DiffExprIsland(current))
  * 
- * cdef IslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
+ * cdef DiffExprIslandContainer _find_union_islands(             # <<<<<<<<<<<<<<
  *     IslandContainer islands_1,
  *     IslandContainer islands_2,
  */
@@ -1949,34 +2008,34 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
   return __pyx_r;
 }
 
-/* "sicer/find_union_islands.pyx":85
+/* "sicer/find_union_islands.pyx":87
  *     return union_islands
  * 
- * cpdef IslandContainer find_union_islands(             # <<<<<<<<<<<<<<
+ * cpdef DiffExprIslandContainer find_union_islands(             # <<<<<<<<<<<<<<
  *     islands_1,
  *     islands_2,
  */
 
 static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_r = NULL;
+static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_f_5sicer_18find_union_islands_find_union_islands(PyObject *__pyx_v_islands_1, PyObject *__pyx_v_islands_2, PyObject *__pyx_v_genome_data, PyObject *__pyx_v_num_cpu, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("find_union_islands", 0);
 
-  /* "sicer/find_union_islands.pyx":91
+  /* "sicer/find_union_islands.pyx":93
  *     num_cpu
  * ):
  *     print("Finding the union islands between two treatment libraries...")             # <<<<<<<<<<<<<<
  *     return _find_union_islands(
  *         islands_1,
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/find_union_islands.pyx":92
+  /* "sicer/find_union_islands.pyx":94
  * ):
  *     print("Finding the union islands between two treatment libraries...")
  *     return _find_union_islands(             # <<<<<<<<<<<<<<
@@ -1985,50 +2044,50 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
 
-  /* "sicer/find_union_islands.pyx":93
+  /* "sicer/find_union_islands.pyx":95
  *     print("Finding the union islands between two treatment libraries...")
  *     return _find_union_islands(
  *         islands_1,             # <<<<<<<<<<<<<<
  *         islands_2,
  *         genome_data,
  */
-  if (!(likely(((__pyx_v_islands_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_1, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 93, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_1, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 95, __pyx_L1_error)
 
-  /* "sicer/find_union_islands.pyx":94
+  /* "sicer/find_union_islands.pyx":96
  *     return _find_union_islands(
  *         islands_1,
  *         islands_2,             # <<<<<<<<<<<<<<
  *         genome_data,
  *         num_cpu
  */
-  if (!(likely(((__pyx_v_islands_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_2, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands_2, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 96, __pyx_L1_error)
 
-  /* "sicer/find_union_islands.pyx":96
+  /* "sicer/find_union_islands.pyx":98
  *         islands_2,
  *         genome_data,
  *         num_cpu             # <<<<<<<<<<<<<<
  *     )
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
 
-  /* "sicer/find_union_islands.pyx":92
+  /* "sicer/find_union_islands.pyx":94
  * ):
  *     print("Finding the union islands between two treatment libraries...")
  *     return _find_union_islands(             # <<<<<<<<<<<<<<
  *         islands_1,
  *         islands_2,
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands__find_union_islands(((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_1), ((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_2), __pyx_v_genome_data, __pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands__find_union_islands(((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_1), ((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands_2), __pyx_v_genome_data, __pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = ((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_t_1);
+  __pyx_r = ((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/find_union_islands.pyx":85
+  /* "sicer/find_union_islands.pyx":87
  *     return union_islands
  * 
- * cpdef IslandContainer find_union_islands(             # <<<<<<<<<<<<<<
+ * cpdef DiffExprIslandContainer find_union_islands(             # <<<<<<<<<<<<<<
  *     islands_1,
  *     islands_2,
  */
@@ -2081,23 +2140,23 @@ static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_islands_2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 1); __PYX_ERR(0, 85, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 1); __PYX_ERR(0, 87, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_genome_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 2); __PYX_ERR(0, 85, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 2); __PYX_ERR(0, 87, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 3); __PYX_ERR(0, 85, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, 3); __PYX_ERR(0, 87, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_union_islands") < 0)) __PYX_ERR(0, 85, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "find_union_islands") < 0)) __PYX_ERR(0, 87, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -2114,7 +2173,7 @@ static PyObject *__pyx_pw_5sicer_18find_union_islands_1find_union_islands(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 85, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("find_union_islands", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 87, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.find_union_islands.find_union_islands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2133,7 +2192,7 @@ static PyObject *__pyx_pf_5sicer_18find_union_islands_find_union_islands(CYTHON_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("find_union_islands", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands_find_union_islands(__pyx_v_islands_1, __pyx_v_islands_2, __pyx_v_genome_data, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_18find_union_islands_find_union_islands(__pyx_v_islands_1, __pyx_v_islands_2, __pyx_v_genome_data, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2389,11 +2448,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_num_cpu, __pyx_k_num_cpu, sizeof(__pyx_k_num_cpu), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
+  {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 83, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2403,14 +2464,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/find_union_islands.pyx":91
+  /* "sicer/find_union_islands.pyx":93
  *     num_cpu
  * ):
  *     print("Finding the union islands between two treatment libraries...")             # <<<<<<<<<<<<<<
  *     return _find_union_islands(
  *         islands_1,
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_the_union_islands_betwee); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Finding_the_union_islands_betwee); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -2717,8 +2778,8 @@ if (!__Pyx_RefNanny) {
 
   /* "sicer/find_union_islands.pyx":1
  * # SICER Internal Imports             # <<<<<<<<<<<<<<
- * from sicer.shared.data_classes cimport Island
- * from sicer.shared.containers cimport IslandContainer
+ * from sicer.shared.data_classes cimport Island, DiffExprIsland
+ * from sicer.shared.containers cimport IslandContainer, DiffExprIslandContainer
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3560,6 +3621,28 @@ bad:
     Py_XDECREF(py_frame);
 }
 
+/* CIntFromPyVerify */
+#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
+    }
+
 /* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
     const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
@@ -3591,27 +3674,194 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
     }
 }
 
-/* CIntFromPyVerify */
-#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
+/* CIntFromPy */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+    const size_t neg_one = (size_t) ((size_t) 0 - (size_t) 1), const_zero = (size_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (size_t) -1;
+        }
+    } else {
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
     }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
+}
 
 /* CIntFromPy */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {

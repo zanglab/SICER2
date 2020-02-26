@@ -3,18 +3,18 @@ import os
 import sys
 import subprocess
 
-output_files_suffix = ['-W200-G600.scoreisland', '-W200-G600-FDR0.01-island.bed',
+file_suffix = ['-W200-G600.scoreisland', '-W200-G600-FDR0.01-island.bed',
                        '-W200-G600-FDR0.01-islandfiltered.bed', '-W200-G600-FDR0.01-islandfiltered-normalized.wig',
                        '-W200-G600-islands-summary', '-W200-normalized.wig']
 
-df_output_file_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.island',
+df_file_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.island',
                          '-W200-G600-decreased-islands-summary-FDR0.01', '-W200-G600-increased-islands-summary-FDR0.01']
 
 
-recog_output_files_suffix = ['-W200.cgisland', '-W200-FDR0.01-island.bed',
+recog_file_suffix = ['-W200.cgisland', '-W200-FDR0.01-island.bed',
                              '-W200-FDR0.01-islandfiltered.bed', '-W200-FDR0.01-islandfiltered-normalized.wig',
                              '-W200-islands-summary', '-W200-normalized.wig']
-recogdf_output_files_suffix = ['-W200-summary', '-W200-union.island',
+recog_df_file_suffix = ['-W200-summary', '-W200-union.island',
                                '-W200-decreased-islands-summary-FDR0.01', '-W200-increased-islands-summary-FDR0.01']
 
 

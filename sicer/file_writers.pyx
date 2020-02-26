@@ -22,14 +22,16 @@ cdef class WigFileWriter:
         WindowContainer windows,
         int window_size,
         bint filtered,
-        object gap_size = None,
-        object fdr = None
+        object fdr = None,
+        object gap_size = None
     ):
         self.file_name = file_name
         self.output_dir = output_dir
         self.windows = windows
         self.window_size = window_size
         self.filtered = filtered
+        self.gap_size = gap_size
+        self.fdr = fdr
 
         if filtered and fdr is None:
             raise ValueError("Missing FDR value")
@@ -66,7 +68,9 @@ cdef class WigFileWriter:
         # Format final file_name
         self.file_name += "-W" + str(self.window_size)
         if self.filtered:
-            self.file_name += "-G" + str(self.gap_size) + "-FDR" + str(self.fdr) + "-islandfiltered"
+            if not self.gap_size:
+                self.file_name += "-G" + str(self.gap_size) 
+            self.file_name += "-FDR" + str(self.fdr) + "-islandfiltered"
 
         cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")
         self.file_name += "-normalized.wig"
@@ -80,17 +84,17 @@ cdef class IslandFileWriter:
     # Writes island files
 
     def __cinit__(self, 
-        str file_name, 
+        str file_name,
         str output_dir,
-        object file_type,
+        str file_type,
         IslandContainer islands,
         int window_size,
         object gap_size = None,
         object fdr = None
     ):
         self.file_name = file_name
-        self.output_dir = output_dir
         self.file_type = file_type
+        self.output_dir = output_dir
         self.islands = islands
         self.window_size = window_size
         self.gap_size = gap_size
@@ -206,37 +210,37 @@ cdef class BEDFileWriter:
         self.c_write(outfile_path)
 
 
-cdef class DiffExprIslandWriter:
+cdef class DiffExprIslandFileWriter:
     def __cinit__(self, 
         str file_name_1, 
         str file_name_2,
-        str output_dir, 
+        str output_dir,
+        str file_type,
         DiffExprIslandContainer islands,
         int window_size,
-        bint fdr_filtered,
-        bint increased,
+        object e_value = None,
         object fdr = None,
         object gap_size = None
     ):
         self.file_name_1 = file_name_1
         self.file_name_2 = file_name_2
+        self.file_type = file_type
         self.output_dir = output_dir
         self.islands = islands
         self.window_size = window_size
-        self.fdr_filtered = fdr_filtered
-        self.increased = increased
+        self.e_value = e_value
         self.fdr = fdr
         self.gap_size = gap_size
         self.header = b"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A"
         self.format = b"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"
 
-        if fdr_filtered and fdr is None:
+        if "fdr-filtered" in self.file_type and fdr is None:
             raise ValueError("Missing FDR value")
 
-    cdef void c_write(self, cstr outfile_path):
+    cdef void c_write_all(self, cstr outfile_path):
         cdef FILE *fp = fopen(outfile_path, "w")
 
-        if not self.fdr_filtered:
+        if "fdr-filtered" in self.file_type:
             fprintf(fp, self.header)
 
         cdef vector[string] chroms = self.islands.getChromosomes()
@@ -255,21 +259,51 @@ cdef class DiffExprIslandWriter:
                     island.fc_B_vs_A, island.pvalue_B_vs_A, island.fdr_B_vs_A
                 )
 
+    cdef void c_write_basic(self, cstr outfile_path):
+        cdef FILE *fp = fopen(outfile_path, "w")
+
+        cdef vector[string] chroms = self.islands.getChromosomes()
+        cdef vector[DiffExprIsland]* vptr
+        cdef DiffExprIsland island
+        
+        for i in range(chroms.size()):
+            vptr = self.islands.getVectorPtr(chroms[i])
+            for j in range(deref(vptr).size()):
+                island = deref(vptr)[j]
+                fprintf(fp, "%s\t%d\t%d\n", 
+                    island.chrom.c_str(), island.start, island.end
+                )
+
     cpdef void write(self):
-        file_name = self.file_name_1 + "-and-" + self.file_name_2
+        if self.file_type == "union-island":
+            file_name = self.file_name_1 + "-vs-" + self.file_name_2
+        elif self.file_type == "summary":
+            file_name = self.file_name_1 + "-and-" + self.file_name_2
+        else:
+            file_name = self.file_name_1
+
         file_name += "-W" + str(self.window_size)
 
         if self.gap_size is not None:
             file_name += "-G" + str(self.gap_size)
 
-        if self.fdr_filtered:
-            if self.increased:
-                file_name += '-increased-islands-summary-FDR' + str(self.fdr)
-            else:
-                file_name += '-decreased-islands-summary-FDR' + str(self.fdr)
-        else:
+        if self.file_type == "union-island":
+            if self.e_value is not None:
+                file_name += "-E" + str(self.e_value)
+            file_name += "-union.island"
+
+        if self.file_type == "fdr-filtered-increased":
+            file_name += '-increased-islands-summary-FDR' + str(self.fdr)
+        elif self.file_type == "fdr-filtered-decreased":
+            file_name += '-decreased-islands-summary-FDR' + str(self.fdr)
+        elif self.file_type == "summary":
             file_name += "-summary"
 
         cdef bytes outfile_path = (self.output_dir + "/" + file_name).encode("UTF-8")
 
-        self.c_write(outfile_path)
+        if self.file_type == "union-island":
+            print("file_name:", outfile_path.decode("utf-8"))
+            self.c_write_basic(outfile_path)
+        else:
+            self.c_write_all(outfile_path)
+
