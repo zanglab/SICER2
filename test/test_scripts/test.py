@@ -102,7 +102,9 @@ def compare_files(f1, f2):
                 elif (type(a) is int and type(b) is float):
                     line_equal &= isclose(float(a), b, abs_tol=1e-6)
                 else:
-                    raise ValueError(f'Error: In \"{base}\", comparing different types: {a}({type(a)}) and {b}({type(b)})')
+                    str_a = str(a) + '(' + str(type(a)) + ')'
+                    str_b = str(b) + '(' + str(type(b)) + ')' 
+                    raise ValueError('Error: In \"' + base + '\", comparing different types: ' + str_a + ' and ' + str_b +'.')
             if type(a) is str or type(a) is int:
                 line_equal &= a == b
             else:
