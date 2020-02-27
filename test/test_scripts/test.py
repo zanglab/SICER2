@@ -52,7 +52,8 @@ recognicer_df_suffix = [
 ]
 
 def format_err_msg(line1, line2, f):
-    return f'Differing lines in {os.path.basename(f)} \n \"{line1}\"   ||   \"{line2}\"'
+    file = os.path.basename(f)
+    return 'Differing lines in ' + file + ':\n\"' + line1 + '\"   ||  \"' + line2 + '\"'
 
 def isclose(a, b, rel_tol=1e-07, abs_tol=0.0):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
@@ -64,7 +65,7 @@ def compare_files(f1, f2):
 
     for line1, line2 in zip_longest(file1, file2, fillvalue="EOF-EOF-EOF-EOF-EOF"):
         if line1 == "EOF-EOF-EOF-EOF-EOF" or line2 == "EOF-EOF-EOF-EOF-EOF":
-            raise ValueError(f"Unequal line length in {f1}")
+            raise ValueError("Unequal line length in " + str(f1))
 
         line1 = line1.replace('\n', '')
         line2 = line2.replace('\n', '')
@@ -122,7 +123,7 @@ def compare_wig_files(f1, f2):
         line2 = line2.replace('\n', '')
 
         if line1 != line2 and (line1 == "EOF-EOF-EOF-EOF-EOF" or line2 == "EOF-EOF-EOF-EOF-EOF"):
-            raise ValueError(f"Error: Unequal # of length in {f1}")
+            raise ValueError("Error: Unequal # of length in \"" + f1 + "\"")
 
         line_equal = True
         if(re.match("^track", line1)):
@@ -285,11 +286,11 @@ def df_test(test_type, data_dir, output_dir, test_dir, files, controls):
         c1 = data_dir + '/' + controls[0]
         c2 = data_dir + '/' + controls[1]
         if test_type == "sicer":
-            print(f"Testing `sicer_df` with \"{files[0]}\" and \"{files[1]}\"...")
+            print('Testing `sicer_df` with \"' + files[0] + '\" and \"' + files[1] + '\"...')
             run_sicer_df(t1, t2, c1, c2, output_dir)
             passed = compare_sicer_df(output_dir, test_dir, files[0], files[1])
         else:
-            print(f"Testing `recognicer_df` of \"{files[0]}\" and \"{files[1]}\"...")
+            print('Testing `recognicer_df` with \"' + files[0] + '\" and \"' + files[1] + '\"...')
             run_recognicer_df(t1, t2, c1, c2, output_dir)
             passed = compare_recognicer_df(output_dir, test_dir, files[0], files[1])
 
@@ -320,11 +321,11 @@ def df_test(test_type, data_dir, output_dir, test_dir, files, controls):
             c2 = data_dir + '/' + c2
 
             if test_type == "sicer":
-                print(f"Testing `sicer_df` with \"{f1}\" and \"{f2}\"...")
+                print('Testing `sicer_df` with \"' + f1 + '\" and \"' + f2 + '\"...')
                 run_sicer_df(t1, t2, c1, c2, output_dir)
                 passed = compare.check_sicer_df(output_dir, test_dir, f1, f2)
             else:
-                print(f"Testing `recognicer_df` of \"{f1}\" and \"{f2}\"...")
+                print('Testing `recognicer_df` with \"' + f1 + '\" and \"' + f2 + '\"...')
                 run_recognicer_df(t1, t2, c1, c2, output_dir)
                 passed = compare.check_recognicer_df(output_dir, test_dir, f1, f2)
 
@@ -344,7 +345,7 @@ def recognicer_test(data_dir, output_dir, test_dir, files=None, controls=None):
     faulty = False
 
     if file:
-        print(f"Testing `recognicer` with \"{file}\"...")
+        print('Testing `recognicer` with \"' + file + '\"...')
         run_recognicer(data_dir + '/' + file, data_dir + '/' + control, output_dir)
         passed = compare_recognicer(file, output_dir, test_dir)
 
@@ -362,7 +363,7 @@ def recognicer_test(data_dir, output_dir, test_dir, files=None, controls=None):
                 control = 'GSM733780_K562_input.bed'
             control = data_dir + '/' + control
 
-            print(f"Testing `recognicer` with \"{file}\"...")
+            print('Testing `recognicer` with \"' + file + '\"...')
             run_recognicer(file, control, output_dir)
             passed = compare_recognicer(output_dir, test_dir, file)
 
@@ -381,7 +382,7 @@ def sicer_test(data_dir, output_dir, test_dir, file=None, control=None):
     faulty = False
 
     if file:
-        print(f"Testing `sicer` with \"{file}\"...")
+        print('Testing `sicer` with \"' + file + '\"...')
         run_sicer(data_dir + '/' + file, data_dir + '/' + control, output_dir)
         passed = compare_sicer(file, output_dir, test_dir)
 
@@ -398,7 +399,7 @@ def sicer_test(data_dir, output_dir, test_dir, file=None, control=None):
                 control = 'GSM733780_K562_input.bed'
             control = data_dir + '/' + control
 
-            print(f"Testing `sicer` with \"{file}\"...")
+            print('Testing `sicer` with \"' + file + '\"...')
             run_sicer(file, control, output_dir)
             passed = compare_sicer(output_dir, test_dir, file)
 
@@ -431,10 +432,10 @@ if __name__ == "__main__":
     args = get_args()
 
     if not os.path.isdir(args.data_dir):
-        raise ValueError(f"Directory `{args.data_dir}` doesn't exist.")
+        raise ValueError("Directory \"" + args.data_dir + "\"doesn't exist.")
 
     if not os.path.isdir(args.test_dir):
-        raise ValueError(f"Directory `{args.test_dir}` doesn't exist.")
+        raise ValueError("Directory \"" + args.test_dir + "\"doesn't exist.")
 
     test_passed = True
 
