@@ -17,7 +17,7 @@ if (float(sys.version[:3])<3.5):
     warnings.formatwarning = warning_on_one_line
     warnings.warn("Recommended to use Python 3.5 or above to run SICER2.")
 
-USE_CYTHON = True
+USE_CYTHON = False
 
 EXT = '.pyx' if USE_CYTHON else '.cpp'
 
