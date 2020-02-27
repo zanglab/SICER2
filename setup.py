@@ -10,7 +10,7 @@ if (float(sys.version[:3])<3):
     sys.stderr.write('ERROR: Python3 required! \n')
     sys.exit(1)
 
-if (float(sys.version[:5])<3.50):
+if (float(sys.version[:3])<3.5):
     def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
         return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
 

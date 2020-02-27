@@ -2,6 +2,8 @@
 
 #First build and install SICER2
 python3 setup.py sdist
+ls
+pwd
 source_dist=$(ls dist)
 pip3 install ./dist/$source_dist
 
