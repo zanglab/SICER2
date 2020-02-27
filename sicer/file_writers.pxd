@@ -3,6 +3,7 @@ from sicer.shared.data_classes cimport Island, BEDRead
 from sicer.shared.containers cimport BEDReadContainer, WindowContainer, IslandContainer, DiffExprIslandContainer
 
 from libc.stdint cimport uint32_t
+from libc.stdio cimport FILE
 
 ctypedef char* cstr
 
@@ -37,9 +38,9 @@ cdef class IslandFileWriter:
         object gap_size
         object fdr
 
-        cstr format_summary_line(self, Island island)
-        cstr format_bed_line(self, Island island)
-        cstr format_scoreisland_line(self, Island island)
+        void write_summary_line(self, Island island, FILE *fp)
+        void write_bed_line(self, Island island, FILE *fp)
+        void write_scoreisland_line(self, Island island, FILE *fp)
 
         void c_write(self, cstr outfile_path)
 

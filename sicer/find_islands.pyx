@@ -122,7 +122,7 @@ cdef IslandContainer _find_islands(
         )
 
     islands.updateIslandCount()
-    print("Island count: ", islands.getIslandCount())
+    print("Total island count: ", islands.getIslandCount())
 
     return islands
 

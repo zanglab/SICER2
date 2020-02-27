@@ -1,5 +1,6 @@
 import os
 import sys
+import warnings
 import subprocess
 from distutils.core import setup
 from setuptools import find_packages, Extension
@@ -8,6 +9,13 @@ from setuptools.command.build_ext import build_ext as _build_ext
 if (float(sys.version[:3])<3):
     sys.stderr.write('ERROR: Python3 required! \n')
     sys.exit(1)
+
+if (float(sys.version[:5])<3.50):
+    def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
+        return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
+
+    warnings.formatwarning = warning_on_one_line
+    warnings.warn("Recommended to use Python 3.5 or above to run SICER2.")
 
 USE_CYTHON = True
 

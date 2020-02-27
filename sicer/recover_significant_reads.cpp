@@ -15,8 +15,8 @@
             "-stdlib=libc++"
         ],
         "include_dirs": [
-            "sicer/shared",
             "./sicer/shared",
+            "sicer/shared",
             "."
         ],
         "language": "c++",
@@ -913,10 +913,11 @@ struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer {
   PyObject *chromosomes;
   std::map<std::string,std::vector<BEDRead> >  data;
   uint32_t read_count;
+  uint32_t total_count;
 };
 
 
-/* "sicer/shared/containers.pxd":29
+/* "sicer/shared/containers.pxd":33
  * 
  * 
  * cdef class WindowContainer:             # <<<<<<<<<<<<<<
@@ -934,7 +935,7 @@ struct __pyx_obj_5sicer_6shared_10containers_WindowContainer {
 };
 
 
-/* "sicer/shared/containers.pxd":45
+/* "sicer/shared/containers.pxd":49
  * 
  * 
  * cdef class IslandContainer:             # <<<<<<<<<<<<<<
@@ -951,7 +952,7 @@ struct __pyx_obj_5sicer_6shared_10containers_IslandContainer {
 };
 
 
-/* "sicer/shared/containers.pxd":59
+/* "sicer/shared/containers.pxd":63
  * 
  * 
  * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
@@ -981,7 +982,9 @@ struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer {
 struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer {
   void (*insertRead)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, std::string, BEDRead);
   void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  void (*setTotalReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
   uint32_t (*getReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getTotalReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
   PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
   std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *);
   std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, std::string);
@@ -989,7 +992,7 @@ struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer {
 static struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *__pyx_vtabptr_5sicer_6shared_10containers_BEDReadContainer;
 
 
-/* "sicer/shared/containers.pxd":29
+/* "sicer/shared/containers.pxd":33
  * 
  * 
  * cdef class WindowContainer:             # <<<<<<<<<<<<<<
@@ -1008,7 +1011,7 @@ struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer {
 static struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer *__pyx_vtabptr_5sicer_6shared_10containers_WindowContainer;
 
 
-/* "sicer/shared/containers.pxd":45
+/* "sicer/shared/containers.pxd":49
  * 
  * 
  * cdef class IslandContainer:             # <<<<<<<<<<<<<<
@@ -1026,7 +1029,7 @@ struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer {
 static struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *__pyx_vtabptr_5sicer_6shared_10containers_IslandContainer;
 
 
-/* "sicer/shared/containers.pxd":59
+/* "sicer/shared/containers.pxd":63
  * 
  * 
  * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
@@ -1409,52 +1412,89 @@ static void __pyx_f_5sicer_25recover_significant_reads__recover_significant_read
   std::vector<uint32_t>  __pyx_v_remove;
   std::vector<Island> ::size_type __pyx_v_i;
   int __pyx_t_1;
-  int __pyx_t_2;
-  std::vector<uint32_t>  __pyx_t_3;
+  std::vector<uint32_t>  __pyx_t_2;
+  std::vector<Island> ::size_type __pyx_t_3;
   std::vector<Island> ::size_type __pyx_t_4;
   std::vector<Island> ::size_type __pyx_t_5;
-  std::vector<Island> ::size_type __pyx_t_6;
-  uint32_t __pyx_t_7;
+  uint32_t __pyx_t_6;
+  std::vector<BEDRead> ::size_type __pyx_t_7;
   std::vector<BEDRead> ::size_type __pyx_t_8;
-  std::vector<BEDRead> ::size_type __pyx_t_9;
 
   /* "sicer/recover_significant_reads.pyx":21
  *     int frag_size
  * ) nogil:
- *     if islands.size() == 0 or treatment_reads.size() == 0:             # <<<<<<<<<<<<<<
- *         return
- * 
+ *     if islands.size() == 0:             # <<<<<<<<<<<<<<
+ *         treatment_reads.clear()
+ *         treatment_reads.shrink_to_fit()
  */
-  __pyx_t_2 = ((__pyx_v_islands.size() == 0) != 0);
-  if (!__pyx_t_2) {
-  } else {
-    __pyx_t_1 = __pyx_t_2;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __pyx_t_2 = ((__pyx_v_treatment_reads.size() == 0) != 0);
-  __pyx_t_1 = __pyx_t_2;
-  __pyx_L4_bool_binop_done:;
+  __pyx_t_1 = ((__pyx_v_islands.size() == 0) != 0);
   if (__pyx_t_1) {
 
     /* "sicer/recover_significant_reads.pyx":22
  * ) nogil:
- *     if islands.size() == 0 or treatment_reads.size() == 0:
+ *     if islands.size() == 0:
+ *         treatment_reads.clear()             # <<<<<<<<<<<<<<
+ *         treatment_reads.shrink_to_fit()
+ *         return
+ */
+    __pyx_v_treatment_reads.clear();
+
+    /* "sicer/recover_significant_reads.pyx":23
+ *     if islands.size() == 0:
+ *         treatment_reads.clear()
+ *         treatment_reads.shrink_to_fit()             # <<<<<<<<<<<<<<
+ *         return
+ * 
+ */
+    __pyx_v_treatment_reads.shrink_to_fit();
+
+    /* "sicer/recover_significant_reads.pyx":24
+ *         treatment_reads.clear()
+ *         treatment_reads.shrink_to_fit()
  *         return             # <<<<<<<<<<<<<<
  * 
- *     cdef uint32_t pos
+ *     if treatment_reads.size() == 0:
  */
     goto __pyx_L0;
 
     /* "sicer/recover_significant_reads.pyx":21
  *     int frag_size
  * ) nogil:
- *     if islands.size() == 0 or treatment_reads.size() == 0:             # <<<<<<<<<<<<<<
+ *     if islands.size() == 0:             # <<<<<<<<<<<<<<
+ *         treatment_reads.clear()
+ *         treatment_reads.shrink_to_fit()
+ */
+  }
+
+  /* "sicer/recover_significant_reads.pyx":26
+ *         return
+ * 
+ *     if treatment_reads.size() == 0:             # <<<<<<<<<<<<<<
+ *         return
+ * 
+ */
+  __pyx_t_1 = ((__pyx_v_treatment_reads.size() == 0) != 0);
+  if (__pyx_t_1) {
+
+    /* "sicer/recover_significant_reads.pyx":27
+ * 
+ *     if treatment_reads.size() == 0:
+ *         return             # <<<<<<<<<<<<<<
+ * 
+ *     cdef uint32_t pos
+ */
+    goto __pyx_L0;
+
+    /* "sicer/recover_significant_reads.pyx":26
+ *         return
+ * 
+ *     if treatment_reads.size() == 0:             # <<<<<<<<<<<<<<
  *         return
  * 
  */
   }
 
-  /* "sicer/recover_significant_reads.pyx":26
+  /* "sicer/recover_significant_reads.pyx":31
  *     cdef uint32_t pos
  *     cdef int index
  *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())             # <<<<<<<<<<<<<<
@@ -1462,7 +1502,7 @@ static void __pyx_f_5sicer_25recover_significant_reads__recover_significant_read
  *     cdef vector[uint32_t] remove
  */
   try {
-    __pyx_t_3 = std::vector<uint32_t> (__pyx_v_islands.size());
+    __pyx_t_2 = std::vector<uint32_t> (__pyx_v_islands.size());
   } catch(...) {
     #ifdef WITH_THREAD
     PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1471,11 +1511,11 @@ static void __pyx_f_5sicer_25recover_significant_reads__recover_significant_read
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 26, __pyx_L1_error)
+    __PYX_ERR(0, 31, __pyx_L1_error)
   }
-  __pyx_v_island_starts = __pyx_t_3;
+  __pyx_v_island_starts = __pyx_t_2;
 
-  /* "sicer/recover_significant_reads.pyx":27
+  /* "sicer/recover_significant_reads.pyx":32
  *     cdef int index
  *     cdef vector[uint32_t] island_starts = vector[uint32_t](islands.size())
  *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())             # <<<<<<<<<<<<<<
@@ -1483,7 +1523,7 @@ static void __pyx_f_5sicer_25recover_significant_reads__recover_significant_read
  *     for i in range(islands.size()):
  */
   try {
-    __pyx_t_3 = std::vector<uint32_t> (__pyx_v_islands.size());
+    __pyx_t_2 = std::vector<uint32_t> (__pyx_v_islands.size());
   } catch(...) {
     #ifdef WITH_THREAD
     PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -1492,86 +1532,86 @@ static void __pyx_f_5sicer_25recover_significant_reads__recover_significant_read
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 27, __pyx_L1_error)
+    __PYX_ERR(0, 32, __pyx_L1_error)
   }
-  __pyx_v_island_ends = __pyx_t_3;
+  __pyx_v_island_ends = __pyx_t_2;
 
-  /* "sicer/recover_significant_reads.pyx":29
+  /* "sicer/recover_significant_reads.pyx":34
  *     cdef vector[uint32_t] island_ends = vector[uint32_t](islands.size())
  *     cdef vector[uint32_t] remove
  *     for i in range(islands.size()):             # <<<<<<<<<<<<<<
  *         island_starts[i] = islands[i].start
  *         island_ends[i] = islands[i].end
  */
-  __pyx_t_4 = __pyx_v_islands.size();
-  __pyx_t_5 = __pyx_t_4;
-  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
-    __pyx_v_i = __pyx_t_6;
+  __pyx_t_3 = __pyx_v_islands.size();
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+    __pyx_v_i = __pyx_t_5;
 
-    /* "sicer/recover_significant_reads.pyx":30
+    /* "sicer/recover_significant_reads.pyx":35
  *     cdef vector[uint32_t] remove
  *     for i in range(islands.size()):
  *         island_starts[i] = islands[i].start             # <<<<<<<<<<<<<<
  *         island_ends[i] = islands[i].end
  * 
  */
-    __pyx_t_7 = (__pyx_v_islands[__pyx_v_i]).start;
-    (__pyx_v_island_starts[__pyx_v_i]) = __pyx_t_7;
+    __pyx_t_6 = (__pyx_v_islands[__pyx_v_i]).start;
+    (__pyx_v_island_starts[__pyx_v_i]) = __pyx_t_6;
 
-    /* "sicer/recover_significant_reads.pyx":31
+    /* "sicer/recover_significant_reads.pyx":36
  *     for i in range(islands.size()):
  *         island_starts[i] = islands[i].start
  *         island_ends[i] = islands[i].end             # <<<<<<<<<<<<<<
  * 
  *     for i in range(treatment_reads.size()):
  */
-    __pyx_t_7 = (__pyx_v_islands[__pyx_v_i]).end;
-    (__pyx_v_island_ends[__pyx_v_i]) = __pyx_t_7;
+    __pyx_t_6 = (__pyx_v_islands[__pyx_v_i]).end;
+    (__pyx_v_island_ends[__pyx_v_i]) = __pyx_t_6;
   }
 
-  /* "sicer/recover_significant_reads.pyx":33
+  /* "sicer/recover_significant_reads.pyx":38
  *         island_ends[i] = islands[i].end
  * 
  *     for i in range(treatment_reads.size()):             # <<<<<<<<<<<<<<
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
  */
-  __pyx_t_8 = __pyx_v_treatment_reads.size();
-  __pyx_t_9 = __pyx_t_8;
-  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_9; __pyx_t_4+=1) {
-    __pyx_v_i = __pyx_t_4;
+  __pyx_t_7 = __pyx_v_treatment_reads.size();
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_8; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
 
-    /* "sicer/recover_significant_reads.pyx":34
+    /* "sicer/recover_significant_reads.pyx":39
  * 
  *     for i in range(treatment_reads.size()):
  *         pos = get_tag_pos(treatment_reads[i], frag_size)             # <<<<<<<<<<<<<<
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
- *         if index >= 0:
+ *         if index < 0:
  */
     __pyx_v_pos = __pyx_f_5sicer_6shared_5utils_get_tag_pos((__pyx_v_treatment_reads[__pyx_v_i]), __pyx_v_frag_size);
 
-    /* "sicer/recover_significant_reads.pyx":35
+    /* "sicer/recover_significant_reads.pyx":40
  *     for i in range(treatment_reads.size()):
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)             # <<<<<<<<<<<<<<
- *         if index >= 0:
+ *         if index < 0:
  *             remove.push_back(i)
  */
     __pyx_v_index = __pyx_f_5sicer_6shared_5utils_bin_tag_in_island(__pyx_v_island_starts, __pyx_v_island_ends, __pyx_v_pos);
 
-    /* "sicer/recover_significant_reads.pyx":36
+    /* "sicer/recover_significant_reads.pyx":41
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
- *         if index >= 0:             # <<<<<<<<<<<<<<
+ *         if index < 0:             # <<<<<<<<<<<<<<
  *             remove.push_back(i)
  * 
  */
-    __pyx_t_1 = ((__pyx_v_index >= 0) != 0);
+    __pyx_t_1 = ((__pyx_v_index < 0) != 0);
     if (__pyx_t_1) {
 
-      /* "sicer/recover_significant_reads.pyx":37
+      /* "sicer/recover_significant_reads.pyx":42
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
- *         if index >= 0:
+ *         if index < 0:
  *             remove.push_back(i)             # <<<<<<<<<<<<<<
  * 
  *     treatment_reads.erase(
@@ -1586,20 +1626,20 @@ static void __pyx_f_5sicer_25recover_significant_reads__recover_significant_read
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 37, __pyx_L1_error)
+        __PYX_ERR(0, 42, __pyx_L1_error)
       }
 
-      /* "sicer/recover_significant_reads.pyx":36
+      /* "sicer/recover_significant_reads.pyx":41
  *         pos = get_tag_pos(treatment_reads[i], frag_size)
  *         index = bin_tag_in_island(island_starts, island_ends, pos)
- *         if index >= 0:             # <<<<<<<<<<<<<<
+ *         if index < 0:             # <<<<<<<<<<<<<<
  *             remove.push_back(i)
  * 
  */
     }
   }
 
-  /* "sicer/recover_significant_reads.pyx":39
+  /* "sicer/recover_significant_reads.pyx":44
  *             remove.push_back(i)
  * 
  *     treatment_reads.erase(             # <<<<<<<<<<<<<<
@@ -1623,7 +1663,7 @@ static void __pyx_f_5sicer_25recover_significant_reads__recover_significant_read
   __pyx_L0:;
 }
 
-/* "sicer/recover_significant_reads.pyx":44
+/* "sicer/recover_significant_reads.pyx":49
  *     )
  * 
  * cdef BEDReadContainer _recover_significant_reads(             # <<<<<<<<<<<<<<
@@ -1645,20 +1685,20 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
   __Pyx_FakeReference<std::string> __pyx_t_7;
   __Pyx_RefNannySetupContext("_recover_significant_reads", 0);
 
-  /* "sicer/recover_significant_reads.pyx":51
+  /* "sicer/recover_significant_reads.pyx":56
  * ):
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = islands.getChromosomes()             # <<<<<<<<<<<<<<
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromosomes(__pyx_v_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromosomes(__pyx_v_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/recover_significant_reads.pyx":53
+  /* "sicer/recover_significant_reads.pyx":58
  *     cdef vector[string] chroms = islands.getChromosomes()
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -1707,7 +1747,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/recover_significant_reads.pyx":55
+                            /* "sicer/recover_significant_reads.pyx":60
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         _recover_significant_reads_by_chrom(
  *             deref(islands.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
@@ -1724,10 +1764,10 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 55, __pyx_L8_error)
+                              __PYX_ERR(0, 60, __pyx_L8_error)
                             }
 
-                            /* "sicer/recover_significant_reads.pyx":56
+                            /* "sicer/recover_significant_reads.pyx":61
  *         _recover_significant_reads_by_chrom(
  *             deref(islands.getVectorPtr(chroms.at(i))),
  *             deref(treatment_reads.getVectorPtr(chroms.at(i))),             # <<<<<<<<<<<<<<
@@ -1744,10 +1784,10 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
                               #ifdef WITH_THREAD
                               __Pyx_PyGILState_Release(__pyx_gilstate_save);
                               #endif
-                              __PYX_ERR(0, 56, __pyx_L8_error)
+                              __PYX_ERR(0, 61, __pyx_L8_error)
                             }
 
-                            /* "sicer/recover_significant_reads.pyx":54
+                            /* "sicer/recover_significant_reads.pyx":59
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         _recover_significant_reads_by_chrom(             # <<<<<<<<<<<<<<
@@ -1836,7 +1876,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
         #endif
       }
 
-      /* "sicer/recover_significant_reads.pyx":53
+      /* "sicer/recover_significant_reads.pyx":58
  *     cdef vector[string] chroms = islands.getChromosomes()
  *     cdef int i
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -1862,7 +1902,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
       }
   }
 
-  /* "sicer/recover_significant_reads.pyx":60
+  /* "sicer/recover_significant_reads.pyx":65
  *         )
  * 
  *     treatment_reads.updateReadCount()             # <<<<<<<<<<<<<<
@@ -1871,7 +1911,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
  */
   ((struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_treatment_reads->__pyx_vtab)->updateReadCount(__pyx_v_treatment_reads, 0);
 
-  /* "sicer/recover_significant_reads.pyx":62
+  /* "sicer/recover_significant_reads.pyx":67
  *     treatment_reads.updateReadCount()
  * 
  *     return treatment_reads             # <<<<<<<<<<<<<<
@@ -1883,7 +1923,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
   __pyx_r = __pyx_v_treatment_reads;
   goto __pyx_L0;
 
-  /* "sicer/recover_significant_reads.pyx":44
+  /* "sicer/recover_significant_reads.pyx":49
  *     )
  * 
  * cdef BEDReadContainer _recover_significant_reads(             # <<<<<<<<<<<<<<
@@ -1902,7 +1942,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
   return __pyx_r;
 }
 
-/* "sicer/recover_significant_reads.pyx":64
+/* "sicer/recover_significant_reads.pyx":69
  *     return treatment_reads
  * 
  * cpdef BEDReadContainer recover_significant_reads(             # <<<<<<<<<<<<<<
@@ -1919,18 +1959,18 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("recover_significant_reads", 0);
 
-  /* "sicer/recover_significant_reads.pyx":70
+  /* "sicer/recover_significant_reads.pyx":75
  *     num_cpu
  * ):
  *     print("Filtering reads with identified significant islands...")             # <<<<<<<<<<<<<<
  *     return _recover_significant_reads(
  *         islands,
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/recover_significant_reads.pyx":71
+  /* "sicer/recover_significant_reads.pyx":76
  * ):
  *     print("Filtering reads with identified significant islands...")
  *     return _recover_significant_reads(             # <<<<<<<<<<<<<<
@@ -1939,56 +1979,56 @@ static struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *__pyx_f_5s
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
 
-  /* "sicer/recover_significant_reads.pyx":72
+  /* "sicer/recover_significant_reads.pyx":77
  *     print("Filtering reads with identified significant islands...")
  *     return _recover_significant_reads(
  *         islands,             # <<<<<<<<<<<<<<
  *         treatment_reads,
  *         frag_size,
  */
-  if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 77, __pyx_L1_error)
 
-  /* "sicer/recover_significant_reads.pyx":73
+  /* "sicer/recover_significant_reads.pyx":78
  *     return _recover_significant_reads(
  *         islands,
  *         treatment_reads,             # <<<<<<<<<<<<<<
  *         frag_size,
  *         num_cpu
  */
-  if (!(likely(((__pyx_v_treatment_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_treatment_reads, __pyx_ptype_5sicer_6shared_10containers_BEDReadContainer))))) __PYX_ERR(0, 73, __pyx_L1_error)
+  if (!(likely(((__pyx_v_treatment_reads) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_treatment_reads, __pyx_ptype_5sicer_6shared_10containers_BEDReadContainer))))) __PYX_ERR(0, 78, __pyx_L1_error)
 
-  /* "sicer/recover_significant_reads.pyx":74
+  /* "sicer/recover_significant_reads.pyx":79
  *         islands,
  *         treatment_reads,
  *         frag_size,             # <<<<<<<<<<<<<<
  *         num_cpu
  *     )
  */
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_frag_size); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_frag_size); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
 
-  /* "sicer/recover_significant_reads.pyx":75
+  /* "sicer/recover_significant_reads.pyx":80
  *         treatment_reads,
  *         frag_size,
  *         num_cpu             # <<<<<<<<<<<<<<
  *     )
  * 
  */
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
 
-  /* "sicer/recover_significant_reads.pyx":71
+  /* "sicer/recover_significant_reads.pyx":76
  * ):
  *     print("Filtering reads with identified significant islands...")
  *     return _recover_significant_reads(             # <<<<<<<<<<<<<<
  *         islands,
  *         treatment_reads,
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_25recover_significant_reads__recover_significant_reads(((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands), ((struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_treatment_reads), __pyx_t_2, __pyx_t_3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_25recover_significant_reads__recover_significant_reads(((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands), ((struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *)__pyx_v_treatment_reads), __pyx_t_2, __pyx_t_3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "sicer/recover_significant_reads.pyx":64
+  /* "sicer/recover_significant_reads.pyx":69
  *     return treatment_reads
  * 
  * cpdef BEDReadContainer recover_significant_reads(             # <<<<<<<<<<<<<<
@@ -2044,23 +2084,23 @@ static PyObject *__pyx_pw_5sicer_25recover_significant_reads_1recover_significan
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_treatment_reads)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, 1); __PYX_ERR(0, 64, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, 1); __PYX_ERR(0, 69, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_frag_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, 2); __PYX_ERR(0, 64, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, 2); __PYX_ERR(0, 69, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, 3); __PYX_ERR(0, 64, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, 3); __PYX_ERR(0, 69, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "recover_significant_reads") < 0)) __PYX_ERR(0, 64, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "recover_significant_reads") < 0)) __PYX_ERR(0, 69, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -2077,7 +2117,7 @@ static PyObject *__pyx_pw_5sicer_25recover_significant_reads_1recover_significan
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 64, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("recover_significant_reads", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 69, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.recover_significant_reads.recover_significant_reads", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2096,7 +2136,7 @@ static PyObject *__pyx_pf_5sicer_25recover_significant_reads_recover_significant
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("recover_significant_reads", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_25recover_significant_reads_recover_significant_reads(__pyx_v_islands, __pyx_v_treatment_reads, __pyx_v_frag_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_25recover_significant_reads_recover_significant_reads(__pyx_v_islands, __pyx_v_treatment_reads, __pyx_v_frag_size, __pyx_v_num_cpu, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2356,8 +2396,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 29, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 75, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2367,14 +2407,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/recover_significant_reads.pyx":70
+  /* "sicer/recover_significant_reads.pyx":75
  *     num_cpu
  * ):
  *     print("Filtering reads with identified significant islands...")             # <<<<<<<<<<<<<<
  *     return _recover_significant_reads(
  *         islands,
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Filtering_reads_with_identified); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Filtering_reads_with_identified); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -2449,14 +2489,14 @@ static int __Pyx_modinit_type_import_code(void) {
    if (!__pyx_ptype_5sicer_6shared_10containers_BEDReadContainer) __PYX_ERR(2, 14, __pyx_L1_error)
   __pyx_vtabptr_5sicer_6shared_10containers_BEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_BEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_BEDReadContainer)) __PYX_ERR(2, 14, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_10containers_WindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.containers", "WindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_10containers_WindowContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_10containers_WindowContainer) __PYX_ERR(2, 29, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_10containers_WindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_WindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_WindowContainer)) __PYX_ERR(2, 29, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_10containers_WindowContainer) __PYX_ERR(2, 33, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_10containers_WindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_WindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_WindowContainer)) __PYX_ERR(2, 33, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_10containers_IslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.containers", "IslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_10containers_IslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_10containers_IslandContainer) __PYX_ERR(2, 45, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_10containers_IslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_IslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_IslandContainer)) __PYX_ERR(2, 45, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_10containers_IslandContainer) __PYX_ERR(2, 49, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_10containers_IslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_IslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_IslandContainer)) __PYX_ERR(2, 49, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.containers", "DiffExprIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer) __PYX_ERR(2, 59, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer)) __PYX_ERR(2, 59, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer) __PYX_ERR(2, 63, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer)) __PYX_ERR(2, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;

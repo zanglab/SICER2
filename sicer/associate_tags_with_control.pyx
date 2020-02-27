@@ -14,7 +14,7 @@ from cython.parallel import parallel, prange
 from libc.stdint cimport uint32_t
 
 from scipy.special.cython_special cimport pdtrc as poisson_sf
-from scipy.stats import rankdata
+import scipy
 
 cdef vector[double] _associate_tag_count_to_regions_by_chrom (
     vector[Island]& islands,
@@ -100,7 +100,7 @@ cdef IslandContainer _associate_tag_count_to_region(
         pvalues.insert(pvalues.end(), returned_vec.begin(), returned_vec.end())
 
     cdef list pvalues_list = pvalues
-    cdef vector[double] pvalue_rank = rankdata(pvalues_list)
+    cdef vector[double] pvalue_rank = scipy.stats.rankdata(pvalues_list)
     cdef vector[Island]* vptr
     cdef int k = 0
     cdef double alpha_stat

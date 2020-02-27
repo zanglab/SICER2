@@ -72,6 +72,7 @@ cdef IslandContainer _filter_islands_by_fdr(
         _filter_islands_by_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)
 
     islands.updateIslandCount()
+    print("Significant island count: ", islands.getIslandCount())
 
     return islands
 

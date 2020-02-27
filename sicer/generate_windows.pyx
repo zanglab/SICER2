@@ -52,7 +52,7 @@ cdef void _generate_window_from_tags(
     cdef uint32_t adjusted_tag_pos
     
     if tag_list.size() > 0:
-        curr_win_start = (tag_list.at(0) // window_size) * window_size
+        curr_win_start = (tag_list[0] // window_size) * window_size
         curr_tag_count = 1
 
         if tag_list.size() > 1:

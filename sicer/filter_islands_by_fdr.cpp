@@ -899,7 +899,7 @@ typedef char *__pyx_t_5sicer_6shared_12data_classes_cstr;
 typedef char *__pyx_t_5sicer_6shared_10containers_cstr;
 struct __pyx_opt_args_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr;
 
-/* "sicer/filter_islands_by_fdr.pyx":98
+/* "sicer/filter_islands_by_fdr.pyx":99
  *     return islands
  * 
  * cpdef filter_islands_by_fdr(islands, fdr, num_cpu, diff_expr, A_vs_B=False):             # <<<<<<<<<<<<<<
@@ -925,10 +925,11 @@ struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer {
   PyObject *chromosomes;
   std::map<std::string,std::vector<BEDRead> >  data;
   uint32_t read_count;
+  uint32_t total_count;
 };
 
 
-/* "sicer/shared/containers.pxd":29
+/* "sicer/shared/containers.pxd":33
  * 
  * 
  * cdef class WindowContainer:             # <<<<<<<<<<<<<<
@@ -946,7 +947,7 @@ struct __pyx_obj_5sicer_6shared_10containers_WindowContainer {
 };
 
 
-/* "sicer/shared/containers.pxd":45
+/* "sicer/shared/containers.pxd":49
  * 
  * 
  * cdef class IslandContainer:             # <<<<<<<<<<<<<<
@@ -963,7 +964,7 @@ struct __pyx_obj_5sicer_6shared_10containers_IslandContainer {
 };
 
 
-/* "sicer/shared/containers.pxd":59
+/* "sicer/shared/containers.pxd":63
  * 
  * 
  * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
@@ -993,7 +994,9 @@ struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer {
 struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer {
   void (*insertRead)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, std::string, BEDRead);
   void (*updateReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  void (*setTotalReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
   uint32_t (*getReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
+  uint32_t (*getTotalReadCount)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
   PyObject *(*getChromosomes)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, int __pyx_skip_dispatch);
   std::map<std::string,std::vector<BEDRead> >  (*getData)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *);
   std::vector<BEDRead>  *(*getVectorPtr)(struct __pyx_obj_5sicer_6shared_10containers_BEDReadContainer *, std::string);
@@ -1001,7 +1004,7 @@ struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer {
 static struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer *__pyx_vtabptr_5sicer_6shared_10containers_BEDReadContainer;
 
 
-/* "sicer/shared/containers.pxd":29
+/* "sicer/shared/containers.pxd":33
  * 
  * 
  * cdef class WindowContainer:             # <<<<<<<<<<<<<<
@@ -1020,7 +1023,7 @@ struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer {
 static struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer *__pyx_vtabptr_5sicer_6shared_10containers_WindowContainer;
 
 
-/* "sicer/shared/containers.pxd":45
+/* "sicer/shared/containers.pxd":49
  * 
  * 
  * cdef class IslandContainer:             # <<<<<<<<<<<<<<
@@ -1038,7 +1041,7 @@ struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer {
 static struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *__pyx_vtabptr_5sicer_6shared_10containers_IslandContainer;
 
 
-/* "sicer/shared/containers.pxd":59
+/* "sicer/shared/containers.pxd":63
  * 
  * 
  * cdef class DiffExprIslandContainer:             # <<<<<<<<<<<<<<
@@ -1300,6 +1303,9 @@ static void __Pyx_CppExn2PyErr() {
 }
 #endif
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
+
 /* None.proto */
 #include <new>
 
@@ -1387,9 +1393,11 @@ static const char __pyx_k_num_cpu[] = "num_cpu";
 static const char __pyx_k_diff_expr[] = "diff_expr";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_Significant_island_count[] = "Significant island count: ";
 static const char __pyx_k_Identifying_significant_islands[] = "Identifying significant islands using FDR criterion...";
 static PyObject *__pyx_n_s_A_vs_B;
 static PyObject *__pyx_kp_u_Identifying_significant_islands;
+static PyObject *__pyx_kp_u_Significant_island_count;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_diff_expr;
 static PyObject *__pyx_n_s_fdr;
@@ -1757,6 +1765,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
   std::vector<std::string> ::size_type __pyx_t_4;
   std::vector<std::string> ::size_type __pyx_t_5;
   __Pyx_FakeReference<std::string> __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("_filter_islands_by_fdr", 0);
 
   /* "sicer/filter_islands_by_fdr.pyx":68
@@ -1952,13 +1961,35 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
  *         _filter_islands_by_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)
  * 
  *     islands.updateIslandCount()             # <<<<<<<<<<<<<<
+ *     print("Significant island count: ", islands.getIslandCount())
  * 
- *     return islands
  */
   ((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands->__pyx_vtab)->updateIslandCount(__pyx_v_islands, 0);
 
-  /* "sicer/filter_islands_by_fdr.pyx":76
+  /* "sicer/filter_islands_by_fdr.pyx":75
+ * 
  *     islands.updateIslandCount()
+ *     print("Significant island count: ", islands.getIslandCount())             # <<<<<<<<<<<<<<
+ * 
+ *     return islands
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(((struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands->__pyx_vtab)->getIslandCount(__pyx_v_islands, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_INCREF(__pyx_kp_u_Significant_island_count);
+  __Pyx_GIVEREF(__pyx_kp_u_Significant_island_count);
+  PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_kp_u_Significant_island_count);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "sicer/filter_islands_by_fdr.pyx":77
+ *     print("Significant island count: ", islands.getIslandCount())
  * 
  *     return islands             # <<<<<<<<<<<<<<
  * 
@@ -1980,6 +2011,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("sicer.filter_islands_by_fdr._filter_islands_by_fdr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -1988,7 +2020,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *__pyx_f_5si
   return __pyx_r;
 }
 
-/* "sicer/filter_islands_by_fdr.pyx":78
+/* "sicer/filter_islands_by_fdr.pyx":79
  *     return islands
  * 
  * cdef DiffExprIslandContainer _filter_diff_expr_islands_by_fdr(             # <<<<<<<<<<<<<<
@@ -2011,20 +2043,20 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   __Pyx_FakeReference<std::string> __pyx_t_8;
   __Pyx_RefNannySetupContext("_filter_diff_expr_islands_by_fdr", 0);
 
-  /* "sicer/filter_islands_by_fdr.pyx":85
+  /* "sicer/filter_islands_by_fdr.pyx":86
  * ):
  *     # Convert Python list to vector for no-GIL use
  *     cdef vector[string] chroms = islands.getChromosomes()             # <<<<<<<<<<<<<<
  *     cdef int i
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromosomes(__pyx_v_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_islands->__pyx_vtab)->getChromosomes(__pyx_v_islands, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_chroms = __pyx_t_2;
 
-  /* "sicer/filter_islands_by_fdr.pyx":88
+  /* "sicer/filter_islands_by_fdr.pyx":89
  *     cdef int i
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -2073,7 +2105,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_4);
 
-                            /* "sicer/filter_islands_by_fdr.pyx":89
+                            /* "sicer/filter_islands_by_fdr.pyx":90
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         if A_vs_B:             # <<<<<<<<<<<<<<
@@ -2083,7 +2115,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                             __pyx_t_6 = (__pyx_v_A_vs_B != 0);
                             if (__pyx_t_6) {
 
-                              /* "sicer/filter_islands_by_fdr.pyx":90
+                              /* "sicer/filter_islands_by_fdr.pyx":91
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         if A_vs_B:
  *             _filter_islands_by_A_vs_B_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)             # <<<<<<<<<<<<<<
@@ -2100,11 +2132,11 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                                 #ifdef WITH_THREAD
                                 __Pyx_PyGILState_Release(__pyx_gilstate_save);
                                 #endif
-                                __PYX_ERR(0, 90, __pyx_L8_error)
+                                __PYX_ERR(0, 91, __pyx_L8_error)
                               }
                               __pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_A_vs_B_fdr_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, __pyx_t_7)), __pyx_v_fdr);
 
-                              /* "sicer/filter_islands_by_fdr.pyx":89
+                              /* "sicer/filter_islands_by_fdr.pyx":90
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
  *         if A_vs_B:             # <<<<<<<<<<<<<<
@@ -2114,7 +2146,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                               goto __pyx_L10;
                             }
 
-                            /* "sicer/filter_islands_by_fdr.pyx":92
+                            /* "sicer/filter_islands_by_fdr.pyx":93
  *             _filter_islands_by_A_vs_B_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)
  *         else:
  *             _filter_islands_by_B_vs_A_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)             # <<<<<<<<<<<<<<
@@ -2132,7 +2164,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
                                 #ifdef WITH_THREAD
                                 __Pyx_PyGILState_Release(__pyx_gilstate_save);
                                 #endif
-                                __PYX_ERR(0, 92, __pyx_L8_error)
+                                __PYX_ERR(0, 93, __pyx_L8_error)
                               }
                               __pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_B_vs_A_fdr_by_chrom((*((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_islands->__pyx_vtab)->getVectorPtr(__pyx_v_islands, __pyx_t_8)), __pyx_v_fdr);
                             }
@@ -2218,7 +2250,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
         #endif
       }
 
-      /* "sicer/filter_islands_by_fdr.pyx":88
+      /* "sicer/filter_islands_by_fdr.pyx":89
  *     cdef int i
  * 
  *     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):             # <<<<<<<<<<<<<<
@@ -2244,7 +2276,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
       }
   }
 
-  /* "sicer/filter_islands_by_fdr.pyx":94
+  /* "sicer/filter_islands_by_fdr.pyx":95
  *             _filter_islands_by_B_vs_A_fdr_by_chrom(deref(islands.getVectorPtr(chroms.at(i))), fdr)
  * 
  *     islands.updateIslandCount()             # <<<<<<<<<<<<<<
@@ -2253,7 +2285,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
  */
   ((struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_islands->__pyx_vtab)->updateIslandCount(__pyx_v_islands, 0);
 
-  /* "sicer/filter_islands_by_fdr.pyx":96
+  /* "sicer/filter_islands_by_fdr.pyx":97
  *     islands.updateIslandCount()
  * 
  *     return islands             # <<<<<<<<<<<<<<
@@ -2265,7 +2297,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   __pyx_r = __pyx_v_islands;
   goto __pyx_L0;
 
-  /* "sicer/filter_islands_by_fdr.pyx":78
+  /* "sicer/filter_islands_by_fdr.pyx":79
  *     return islands
  * 
  * cdef DiffExprIslandContainer _filter_diff_expr_islands_by_fdr(             # <<<<<<<<<<<<<<
@@ -2284,7 +2316,7 @@ static struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *__p
   return __pyx_r;
 }
 
-/* "sicer/filter_islands_by_fdr.pyx":98
+/* "sicer/filter_islands_by_fdr.pyx":99
  *     return islands
  * 
  * cpdef filter_islands_by_fdr(islands, fdr, num_cpu, diff_expr, A_vs_B=False):             # <<<<<<<<<<<<<<
@@ -2309,28 +2341,28 @@ static PyObject *__pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(Py
     }
   }
 
-  /* "sicer/filter_islands_by_fdr.pyx":99
+  /* "sicer/filter_islands_by_fdr.pyx":100
  * 
  * cpdef filter_islands_by_fdr(islands, fdr, num_cpu, diff_expr, A_vs_B=False):
  *     print("Identifying significant islands using FDR criterion...")             # <<<<<<<<<<<<<<
  *     if diff_expr:
  *         return _filter_diff_expr_islands_by_fdr(A_vs_B, islands, fdr, num_cpu)
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sicer/filter_islands_by_fdr.pyx":100
+  /* "sicer/filter_islands_by_fdr.pyx":101
  * cpdef filter_islands_by_fdr(islands, fdr, num_cpu, diff_expr, A_vs_B=False):
  *     print("Identifying significant islands using FDR criterion...")
  *     if diff_expr:             # <<<<<<<<<<<<<<
  *         return _filter_diff_expr_islands_by_fdr(A_vs_B, islands, fdr, num_cpu)
  *     else:
  */
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_diff_expr); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_diff_expr); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 101, __pyx_L1_error)
   if (__pyx_t_2) {
 
-    /* "sicer/filter_islands_by_fdr.pyx":101
+    /* "sicer/filter_islands_by_fdr.pyx":102
  *     print("Identifying significant islands using FDR criterion...")
  *     if diff_expr:
  *         return _filter_diff_expr_islands_by_fdr(A_vs_B, islands, fdr, num_cpu)             # <<<<<<<<<<<<<<
@@ -2338,17 +2370,17 @@ static PyObject *__pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(Py
  *         return _filter_islands_by_fdr(islands, fdr, num_cpu)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_A_vs_B); if (unlikely((__pyx_t_3 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
-    if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer))))) __PYX_ERR(0, 101, __pyx_L1_error)
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_fdr); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
-    __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_21filter_islands_by_fdr__filter_diff_expr_islands_by_fdr(__pyx_t_3, ((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_islands), __pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_A_vs_B); if (unlikely((__pyx_t_3 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
+    if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer))))) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_fdr); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_21filter_islands_by_fdr__filter_diff_expr_islands_by_fdr(__pyx_t_3, ((struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer *)__pyx_v_islands), __pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "sicer/filter_islands_by_fdr.pyx":100
+    /* "sicer/filter_islands_by_fdr.pyx":101
  * cpdef filter_islands_by_fdr(islands, fdr, num_cpu, diff_expr, A_vs_B=False):
  *     print("Identifying significant islands using FDR criterion...")
  *     if diff_expr:             # <<<<<<<<<<<<<<
@@ -2357,24 +2389,24 @@ static PyObject *__pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(Py
  */
   }
 
-  /* "sicer/filter_islands_by_fdr.pyx":103
+  /* "sicer/filter_islands_by_fdr.pyx":104
  *         return _filter_diff_expr_islands_by_fdr(A_vs_B, islands, fdr, num_cpu)
  *     else:
  *         return _filter_islands_by_fdr(islands, fdr, num_cpu)             # <<<<<<<<<<<<<<
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 103, __pyx_L1_error)
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_fdr); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
-    __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr(((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands), __pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+    if (!(likely(((__pyx_v_islands) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_islands, __pyx_ptype_5sicer_6shared_10containers_IslandContainer))))) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_fdr); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_num_cpu); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_1 = ((PyObject *)__pyx_f_5sicer_21filter_islands_by_fdr__filter_islands_by_fdr(((struct __pyx_obj_5sicer_6shared_10containers_IslandContainer *)__pyx_v_islands), __pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
   }
 
-  /* "sicer/filter_islands_by_fdr.pyx":98
+  /* "sicer/filter_islands_by_fdr.pyx":99
  *     return islands
  * 
  * cpdef filter_islands_by_fdr(islands, fdr, num_cpu, diff_expr, A_vs_B=False):             # <<<<<<<<<<<<<<
@@ -2434,19 +2466,19 @@ static PyObject *__pyx_pw_5sicer_21filter_islands_by_fdr_1filter_islands_by_fdr(
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_fdr)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, 1); __PYX_ERR(0, 98, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, 1); __PYX_ERR(0, 99, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_cpu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, 2); __PYX_ERR(0, 98, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, 2); __PYX_ERR(0, 99, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_diff_expr)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, 3); __PYX_ERR(0, 98, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, 3); __PYX_ERR(0, 99, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -2456,7 +2488,7 @@ static PyObject *__pyx_pw_5sicer_21filter_islands_by_fdr_1filter_islands_by_fdr(
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "filter_islands_by_fdr") < 0)) __PYX_ERR(0, 98, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "filter_islands_by_fdr") < 0)) __PYX_ERR(0, 99, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2478,7 +2510,7 @@ static PyObject *__pyx_pw_5sicer_21filter_islands_by_fdr_1filter_islands_by_fdr(
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 98, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("filter_islands_by_fdr", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 99, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sicer.filter_islands_by_fdr.filter_islands_by_fdr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2500,7 +2532,7 @@ static PyObject *__pyx_pf_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(C
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.A_vs_B = __pyx_v_A_vs_B;
-  __pyx_t_1 = __pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(__pyx_v_islands, __pyx_v_fdr, __pyx_v_num_cpu, __pyx_v_diff_expr, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5sicer_21filter_islands_by_fdr_filter_islands_by_fdr(__pyx_v_islands, __pyx_v_fdr, __pyx_v_num_cpu, __pyx_v_diff_expr, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2747,6 +2779,7 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_A_vs_B, __pyx_k_A_vs_B, sizeof(__pyx_k_A_vs_B), 0, 0, 1, 1},
   {&__pyx_kp_u_Identifying_significant_islands, __pyx_k_Identifying_significant_islands, sizeof(__pyx_k_Identifying_significant_islands), 0, 1, 0, 0},
+  {&__pyx_kp_u_Significant_island_count, __pyx_k_Significant_island_count, sizeof(__pyx_k_Significant_island_count), 0, 1, 0, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_diff_expr, __pyx_k_diff_expr, sizeof(__pyx_k_diff_expr), 0, 0, 1, 1},
   {&__pyx_n_s_fdr, __pyx_k_fdr, sizeof(__pyx_k_fdr), 0, 0, 1, 1},
@@ -2762,7 +2795,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 19, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 75, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2772,14 +2805,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "sicer/filter_islands_by_fdr.pyx":99
+  /* "sicer/filter_islands_by_fdr.pyx":100
  * 
  * cpdef filter_islands_by_fdr(islands, fdr, num_cpu, diff_expr, A_vs_B=False):
  *     print("Identifying significant islands using FDR criterion...")             # <<<<<<<<<<<<<<
  *     if diff_expr:
  *         return _filter_diff_expr_islands_by_fdr(A_vs_B, islands, fdr, num_cpu)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Identifying_significant_islands); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Identifying_significant_islands); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -2854,14 +2887,14 @@ static int __Pyx_modinit_type_import_code(void) {
    if (!__pyx_ptype_5sicer_6shared_10containers_BEDReadContainer) __PYX_ERR(2, 14, __pyx_L1_error)
   __pyx_vtabptr_5sicer_6shared_10containers_BEDReadContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_BEDReadContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_BEDReadContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_BEDReadContainer)) __PYX_ERR(2, 14, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_10containers_WindowContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.containers", "WindowContainer", sizeof(struct __pyx_obj_5sicer_6shared_10containers_WindowContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_10containers_WindowContainer) __PYX_ERR(2, 29, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_10containers_WindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_WindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_WindowContainer)) __PYX_ERR(2, 29, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_10containers_WindowContainer) __PYX_ERR(2, 33, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_10containers_WindowContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_WindowContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_WindowContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_WindowContainer)) __PYX_ERR(2, 33, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_10containers_IslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.containers", "IslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_10containers_IslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_10containers_IslandContainer) __PYX_ERR(2, 45, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_10containers_IslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_IslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_IslandContainer)) __PYX_ERR(2, 45, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_10containers_IslandContainer) __PYX_ERR(2, 49, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_10containers_IslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_IslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_IslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_IslandContainer)) __PYX_ERR(2, 49, __pyx_L1_error)
   __pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer = __Pyx_ImportType(__pyx_t_1, "sicer.shared.containers", "DiffExprIslandContainer", sizeof(struct __pyx_obj_5sicer_6shared_10containers_DiffExprIslandContainer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer) __PYX_ERR(2, 59, __pyx_L1_error)
-  __pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer)) __PYX_ERR(2, 59, __pyx_L1_error)
+   if (!__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer) __PYX_ERR(2, 63, __pyx_L1_error)
+  __pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer = (struct __pyx_vtabstruct_5sicer_6shared_10containers_DiffExprIslandContainer*)__Pyx_GetVtable(__pyx_ptype_5sicer_6shared_10containers_DiffExprIslandContainer->tp_dict); if (unlikely(!__pyx_vtabptr_5sicer_6shared_10containers_DiffExprIslandContainer)) __PYX_ERR(2, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -3748,6 +3781,37 @@ bad:
         }\
         return (target_type) value;\
     }
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
+    const uint32_t neg_one = (uint32_t) ((uint32_t) 0 - (uint32_t) 1), const_zero = (uint32_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(uint32_t) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(uint32_t) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
+                                     little, !is_unsigned);
+    }
+}
 
 /* CIntFromPy */
 static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {

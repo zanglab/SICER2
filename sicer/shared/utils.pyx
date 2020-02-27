@@ -16,11 +16,8 @@ cdef int bin_tag_in_island(
 ) nogil:
     cdef uint32_t start_index = upper_bound(island_starts.begin(), island_starts.end(), tag_pos) - island_starts.begin()
     cdef uint32_t end_index = lower_bound(island_ends.begin(), island_ends.end(), tag_pos) - island_ends.begin()
-    if (start_index < island_starts.size() 
-        and end_index < island_ends.size()
-        and start_index - end_index == 1
-    ):
-        return start_index - 1;
+    if (end_index < island_ends.size() and start_index - end_index == 1):
+        return end_index
     else:
         return -1;
 

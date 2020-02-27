@@ -57,7 +57,8 @@ typedef struct Island {
 public:
     Island() {}
     Island(string chr, unsigned int start, unsigned int end, double score):
-        chrom(chr), start(start), end(end), score(score) {}
+        chrom(chr), start(start), end(end), score(score), obs_count(0), control_count(0),
+        pvalue(0.0), fc(0.0), alpha_stat(0.0) {}
     string toString()
     {
         ostringstream ostr;
@@ -84,8 +85,9 @@ typedef struct DiffExprIsland {
 public:
     DiffExprIsland() {}
     DiffExprIsland(string chr, unsigned int start, unsigned int end):
-        chrom(chr), start(start), end(end) {}
-    DiffExprIsland(Island island): chrom(island.chrom), start(island.start), end(island.end) {}
+        chrom(chr), start(start), end(end), count_A(0), count_B(0) {}
+    DiffExprIsland(Island island): 
+        chrom(island.chrom), start(island.start), end(island.end), count_A(0), count_B(0) {}
     string toString()
     {
         ostringstream ostr;

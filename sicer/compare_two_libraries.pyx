@@ -16,7 +16,6 @@ from libc.stdint cimport uint32_t
 
 from scipy.special.cython_special cimport pdtrc as poisson_sf
 import scipy.stats
-from scipy.stats import rankdata
 
 cdef struct ReturnItem:
     vector[double] pvalues_A_vs_B
@@ -93,8 +92,8 @@ cdef ReturnItem _associate_tag_count_to_regions_by_chrom (
         islands[i].pvalue_A_vs_B = pvalue_A_vs_B
         islands[i].pvalue_B_vs_A = pvalue_B_vs_A
 
-    ret.pvalues_B_vs_A.swap(pvalues_A_vs_B)
-    ret.pvalues_A_vs_B.swap(pvalues_B_vs_A)
+    ret.pvalues_A_vs_B.swap(pvalues_A_vs_B)
+    ret.pvalues_B_vs_A.swap(pvalues_B_vs_A)
 
     return ret
 
@@ -109,9 +108,9 @@ cpdef DiffExprIslandContainer compare_two_libraries(
     print("Comparing two treatment libraries...")
     # Convert Python list to vector for no-GIL use
     cdef vector[string] chroms = reads_A.getChromosomes()
-    cdef uint32_t lib_size_A = reads_A.getReadCount()
-    cdef uint32_t lib_size_B = reads_B.getReadCount()
-    cdef double lib_scaling_factor = (<double> reads_A.getReadCount()) / reads_B.getReadCount()
+    cdef uint32_t lib_size_A = reads_A.getTotalReadCount()
+    cdef uint32_t lib_size_B = reads_B.getTotalReadCount()
+    cdef double lib_scaling_factor = (<double> lib_size_A) / lib_size_B
 
     cdef int i
     cdef ReturnItem result
@@ -133,10 +132,10 @@ cpdef DiffExprIslandContainer compare_two_libraries(
 
     union_islands.updateIslandCount()
 
-    cdef vector[double] pvalues_rank_A_vs_B = rankdata(pvalues_A_vs_B)
-    cdef vector[double] pvalues_rank_B_vs_A = rankdata(pvalues_B_vs_A)
+    pvalues_rank_A_vs_B = scipy.stats.rankdata(pvalues_A_vs_B)
+    pvalues_rank_B_vs_A = scipy.stats.rankdata(pvalues_B_vs_A)
 
-    cdef uint32_t total_count = union_islands.getIslandCount()
+    cdef uint32_t total_count = pvalues_A_vs_B.size()
     cdef vector[double] norm_counts_A = vector[double](total_count)
     cdef vector[double] norm_counts_B = vector[double](total_count)
 
@@ -145,18 +144,20 @@ cpdef DiffExprIslandContainer compare_two_libraries(
     cdef double norm_count_A, norm_count_B
 
     for chrom in union_islands.getChromosomes():
-        vec = deref(union_islands.getVectorPtr(chrom))
-        for j in range(vec.size()):
-            vec[j].fdr_A_vs_B = pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k]
-            vec[j].fdr_B_vs_A = pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k]
-            norm_count_A = (<double> vec[j].count_A) / lib_size_A * 1000000
-            norm_count_B = (<double> vec[j].count_B) / lib_size_B * 1000000
-            vec[j].norm_count_A = norm_count_A
-            vec[j].norm_count_B = norm_count_B
+        vecptr = union_islands.getVectorPtr(chrom)
+        for j in range(deref(vecptr).size()):
+            deref(vecptr)[j].fdr_A_vs_B = fmin(1.0, pvalues_A_vs_B[k] * total_count / pvalues_rank_A_vs_B[k])
+            deref(vecptr)[j].fdr_B_vs_A = fmin(1.0, pvalues_B_vs_A[k] * total_count / pvalues_rank_B_vs_A[k])
+
+            norm_count_A = (<double> deref(vecptr)[j].count_A) / (<double> lib_size_A) * 1000000
+            norm_count_B = (<double> deref(vecptr)[j].count_B) / (<double> lib_size_B) * 1000000
+
+            deref(vecptr)[j].norm_count_A = norm_count_A
+            deref(vecptr)[j].norm_count_B = norm_count_B
             norm_counts_A[k] = norm_count_A
             norm_counts_B[k] = norm_count_B
-            vec[j].fc_A_vs_B = (<double> (vec[j].count_A + 1)) / (vec[j].count_B + 1) / lib_scaling_factor
-            vec[j].fc_B_vs_A = (<double> (vec[j].count_B + 1)) / (vec[j].count_A + 1) * lib_scaling_factor
+            deref(vecptr)[j].fc_A_vs_B = ((<double> (deref(vecptr)[j].count_A + 1)) / (deref(vecptr)[j].count_B + 1)) / lib_scaling_factor
+            deref(vecptr)[j].fc_B_vs_A = ((<double> (deref(vecptr)[j].count_B + 1)) / (deref(vecptr)[j].count_A + 1)) * lib_scaling_factor
             preinc(k)
 
     pearson = scipy.stats.pearsonr(norm_counts_A, norm_counts_B)

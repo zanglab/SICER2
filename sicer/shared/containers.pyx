@@ -12,6 +12,7 @@ cdef class BEDReadContainer:
         self.species = genome_data.species
         self.chromosomes = list(map(lambda x: x.encode("UTF-8"), genome_data.chrom))
         self.read_count = 0
+        self.total_count = 0
         for chrom in self.chromosomes:
             self.data.insert(pair[string, vector[BEDRead]](chrom, vector[BEDRead]()))
 
@@ -25,6 +26,13 @@ cdef class BEDReadContainer:
 
         self.read_count = new_count
 
+    cpdef void setTotalReadCount(self):
+        cdef int new_count = 0
+        for chrom in self.chromosomes:
+            new_count = new_count + self.data[chrom].size()
+
+        self.total_count = new_count
+
     cdef mapcpp[string, vector[BEDRead]] getData(self):
         return self.data
 
@@ -36,6 +44,9 @@ cdef class BEDReadContainer:
 
     cpdef uint32_t getReadCount(self):
         return self.read_count
+
+    cpdef uint32_t getTotalReadCount(self):
+        return self.total_count
 
     def __dealloc__(self):
         for chrom in self.chromosomes:

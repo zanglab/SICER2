@@ -25,6 +25,7 @@ def run_recognicer(args, df_run=False):
 
     treatment_reader = BEDReader(args.treatment_file, genome_data, args.cpu, args.redundancy_threshold)
     treatment_reads = treatment_reader.read_file()
+    treatment_reads.setTotalReadCount()
 
     if args.control_file is not None:
         control_reader = BEDReader(args.control_file, genome_data, args.cpu, args.redundancy_threshold)
@@ -65,15 +66,16 @@ def run_recognicer(args, df_run=False):
                                 args.window_size, None, args.false_discovery_rate).write()
 
     if args.significant_reads:
-        sig_reads = recover_significant_reads(filtered_islands, treatment_reads, args.fragment_size, args.cpu)
-        BEDFileWriter(base_name, args.output_directory, sig_reads,args.window_size,
+        treatment_reads = recover_significant_reads(filtered_islands, treatment_reads, args.fragment_size, args.cpu)
+        BEDFileWriter(base_name, args.output_directory, treatment_reads, args.window_size,
                         args.false_discovery_rate).write()
 
-        sig_windows = generate_windows(sig_reads, genome_data, args.fragment_size, args.window_size, args.cpu)
+        sig_windows = generate_windows(treatment_reads, genome_data, args.fragment_size, args.window_size, args.cpu)
         WigFileWriter(base_name, args.output_directory, sig_windows, 
                         args.window_size, True, args.false_discovery_rate).write()
 
     if df_run:
+        print("\n")
         return treatment_reads, islands
 
 def run_recognicer_df(args):

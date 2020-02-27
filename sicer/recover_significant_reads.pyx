@@ -18,7 +18,12 @@ cdef void _recover_significant_reads_by_chrom(
     vector[BEDRead]& treatment_reads,
     int frag_size
 ) nogil:
-    if islands.size() == 0 or treatment_reads.size() == 0:
+    if islands.size() == 0:
+        treatment_reads.clear()
+        treatment_reads.shrink_to_fit()
+        return
+
+    if treatment_reads.size() == 0:
         return
 
     cdef uint32_t pos
@@ -33,7 +38,7 @@ cdef void _recover_significant_reads_by_chrom(
     for i in range(treatment_reads.size()):
         pos = get_tag_pos(treatment_reads[i], frag_size)
         index = bin_tag_in_island(island_starts, island_ends, pos)
-        if index >= 0:
+        if index < 0:
             remove.push_back(i)
 
     treatment_reads.erase(
@@ -74,5 +79,4 @@ cpdef BEDReadContainer recover_significant_reads(
         frag_size,
         num_cpu
     )
-
 

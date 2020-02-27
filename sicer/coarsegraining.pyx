@@ -18,17 +18,21 @@ from libcpp.algorithm cimport binary_search, sort
 ctypedef pair[vector[uint32_t], vector[double]] corr_pair
 ctypedef bool (*cmp_f)(Island, Island)
 ctypedef vector[Island].iterator vi_itr
+ctypedef vector[uint32_t].iterator vu_itr
+ctypedef bool (*uint_cmp)(uint32_t, uint32_t)
 ctypedef vector[uint32_t]* v_uint_ptr
 
 cdef bool compare_islands(Island i, Island j) nogil:
     return i.start < j.start
 
+cdef bool compare_uint(uint32_t i, uint32_t j) nogil:
+    return i < j
+
 cdef vector[Island] _generate_islands_from_start_pos(
     vector[uint32_t]& start_list,
-    int window_size,
+    uint32_t window_size,
     string chrom
-) nogil:
-
+) nogil: 
     cdef vector[Island] islands
     for i in range(start_list.size()):
         islands.push_back(Island(chrom, start_list[i], start_list[i] + window_size - 1, 1))
@@ -38,7 +42,7 @@ cdef vector[Island] _generate_islands_from_start_pos(
 cdef vector[Island] _backstep(
     vector[Island]& islands,
     vector[uint32_t] start_list,
-    int window_size,
+    uint32_t window_size,
     string chrom
 ) nogil:
     cdef bool start_left, start_right, end_left, end_right
@@ -115,7 +119,7 @@ cdef double _linreg(vector[uint32_t]& x, vector[double]& y) nogil:
 
 cdef double _start_list_correlation_r_rev(
     vector[uint32_t]& start_list,
-    int win, 
+    uint32_t win, 
     int r, 
     int chrom_length
 ) nogil:
@@ -155,7 +159,7 @@ cdef corr_pair _start_list_correlation_function(
     if max_iter > 3:
         max_iter = 3
 
-    cdef uint32_t i = 0
+    cdef uint32_t i
     for i in range(max_iter):
         r = i * win
         c = _start_list_correlation_r_rev(start_list, win, r, chrom_length)
@@ -183,33 +187,44 @@ cdef double _correlation_length_fit(corr_pair pair) nogil:
 
 cdef vector[Island] _traceback(
     vector[v_uint_ptr] graining_results,
-    int window_size,
+    uint32_t window_size,
     int step_size,
     uint32_t chrom_length,
     string chrom
 ) nogil:
-    window_size = window_size * <int> pow(step_size, (graining_results.size() - 1))
+    window_size = window_size * <uint32_t> pow(step_size, (graining_results.size() - 1))
     cdef uint32_t end = graining_results.size() - 1
+
     cdef vector[uint32_t] backlist = deref(graining_results[end])
     cdef corr_pair correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
     cdef double correlation_length = _correlation_length_fit(correlation_pair)
     cdef double correlation_length_next
 
-    cdef int i = 1
-    while i < graining_results.size():
-        backlist = deref(graining_results[end - i])
-        window_size = window_size // step_size
+    if graining_results.size() > 1:
+        backlist = deref(graining_results[end-1])
         correlation_pair = _start_list_correlation_function(backlist, window_size, chrom_length)
         correlation_length_next = _correlation_length_fit(correlation_pair)
 
-        if correlation_length > 1.0 and correlation_length_next >= correlation_length:
+    cdef uint32_t i = 1
+    while i < graining_results.size():
+        backlist = deref(graining_results[end-i])
+        window_size = window_size // step_size
+
+        if correlation_length > 1.0 and correlation_length_next > correlation_length:
+        # if correlation_length > 1.0 and correlation_length_next >= correlation_length:
+        # Ask Zang about this.
             break
         else:
             correlation_length = correlation_length_next
-
+            if graining_results.size() > i + 1:
+                correlation_pair = _start_list_correlation_function(deref(graining_results[end-i- 1]), window_size, chrom_length)
+                correlation_length_next = _correlation_length_fit(correlation_pair)
+            else:
+                correlation_length_next = 10000
         preinc(i)
+
     cdef vector[Island] islands = _generate_islands_from_start_pos(backlist, window_size, chrom)
-    
+
     while i < graining_results.size():
         backlist = deref(graining_results[end - i])
         islands = _backstep(islands, backlist, window_size, chrom)
@@ -218,10 +233,15 @@ cdef vector[Island] _traceback(
 
     return islands
 
-cdef v_uint_ptr _graining(vector[uint32_t]& starts, int window_size, int step_size, int step_score) nogil:
+cdef v_uint_ptr _graining(
+    vector[uint32_t]& starts,
+    uint32_t window_size, 
+    int step_size, 
+    int step_score
+) nogil:
 
     cdef int i, j, h, k, n  # variables used by legacy code
-    cdef uint32_t end_limit = starts[starts.size()-1]
+    cdef uint32_t end_limit = deref(starts.end())
     cdef v_uint_ptr new_starts = new vector[uint32_t]()
 
     cdef int step
@@ -243,21 +263,20 @@ cdef v_uint_ptr _graining(vector[uint32_t]& starts, int window_size, int step_si
 
 cdef vector[v_uint_ptr] _coarsegraining(
     v_uint_ptr eligible_starts,
-    int window_size,
+    uint32_t window_size,
     int step_size,
     int step_score
 ) nogil:
     
     cdef vector[v_uint_ptr] graining_results
+    sort[vu_itr, uint_cmp](deref(eligible_starts).begin(), deref(eligible_starts).end(), compare_uint)
     graining_results.push_back(eligible_starts)
 
     while deref(eligible_starts).size() > 0:
-        graining_results.push_back(eligible_starts)
-
-        # `graining` modifies `eligible_starts` inplace
         eligible_starts = _graining(deref(eligible_starts), window_size, step_size, step_score)
-
         window_size = window_size * step_size
+        if deref(eligible_starts).size() > 0:
+            graining_results.push_back(eligible_starts)
 
     return graining_results
 

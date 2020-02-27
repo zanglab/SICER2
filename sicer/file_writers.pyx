@@ -1,9 +1,11 @@
+import os
+
 # SICER Internal Imports
 from sicer.shared.data_classes cimport BEDRead, Window, DiffExprIsland
 from sicer.shared.utils cimport to_string
 
 #Cython Imports
-from libc.stdio cimport FILE, fopen, snprintf, fprintf, fclose, printf
+from libc.stdio cimport fopen, snprintf, fprintf, fclose, printf
 from cython.operator cimport preincrement as preinc
 from libcpp.map cimport map as mapcpp
 from libcpp.vector cimport vector
@@ -11,7 +13,7 @@ from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 
 ctypedef vector[Window]* win_vec_ptr
-ctypedef cstr (*format_f)(IslandFileWriter, Island)
+ctypedef void (*format_f)(IslandFileWriter, Island, FILE*)
 
 cdef class WigFileWriter:
     # Writes .wig file of windows
@@ -57,7 +59,7 @@ cdef class WigFileWriter:
                 chrom_header = b"variableStep chrom=" + chroms[i] + b" span=" + to_string(window_size) + b"\n"
                 fprintf(fp, chrom_header.c_str())
                 for j in range(deref(vptr).size()):
-                    fprintf(fp, "%d\t%.2f\n", deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
+                    fprintf(fp, "%u\t%.2f\n", deref(vptr)[j].start + 1, deref(vptr)[j].count / scaling_factor)
 
     cpdef void write(self):
         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
@@ -65,14 +67,18 @@ cdef class WigFileWriter:
         cdef int count = self.windows.getTotalTagCount()
         cdef double scaling_factor =  count / 1000000.0 * (self.window_size / 1000.0)
 
+        cdef str base = self.file_name
+        if self.filtered:
+            base += '-islandfiltered'
+        cdef bytes wig_header = ("track type=wiggle_0 name=" + base + "\n").encode("UTF-8")
+
         # Format final file_name
         self.file_name += "-W" + str(self.window_size)
         if self.filtered:
-            if not self.gap_size:
+            if self.gap_size:
                 self.file_name += "-G" + str(self.gap_size) 
             self.file_name += "-FDR" + str(self.fdr) + "-islandfiltered"
 
-        cdef bytes wig_header = ("track type=wiggle_0 name=" + self.file_name + "\n").encode("UTF-8")
         self.file_name += "-normalized.wig"
 
         cdef bytes outfile_path = (self.output_dir + "/" + self.file_name).encode("UTF-8")
@@ -103,27 +109,21 @@ cdef class IslandFileWriter:
         if file_type == "fdr-filtered" and fdr is None:
             raise ValueError("Missing FDR value")
 
-    cdef cstr format_summary_line(self, Island island):
-        cdef char buffer[128]
-        snprintf(buffer, 128, "%s\t%d\t%d\t%d\t%d\t%.10e\t%.10f\t%.10e\n",
+    cdef void write_summary_line(self, Island island, FILE *fp):
+        fprintf(fp, b"%s\t%u\t%u\t%u\t%u\t%.10e\t%.10f\t%.10e\n",
                 island.chrom.c_str(), island.start, island.end, island.obs_count,
                 island.control_count, island.pvalue, island.fc, island.alpha_stat
                 )
-        return buffer
 
-    cdef cstr format_bed_line(self, Island island):
-        cdef char buffer[64]
-        snprintf(buffer, 64, "%s\t%d\t%d\t%d\n",
+    cdef void write_bed_line(self, Island island, FILE *fp):
+        fprintf(fp, b"%s\t%u\t%u\t%u\n",
                 island.chrom.c_str(), island.start, island.end, island.obs_count
                 )
-        return buffer
 
-    cdef cstr format_scoreisland_line(self, Island island):
-        cdef char buffer[64]
-        snprintf(buffer, 64, "%s\t%d\t%d\t%.10f\n",
+    cdef void write_scoreisland_line(self, Island island, FILE *fp):
+        fprintf(fp, b"%s\t%u\t%u\t%.10f\n",
                 island.chrom.c_str(), island.start, island.end, island.score
                 )
-        return buffer
 
     cdef void c_write(self, cstr outfile_path):
         cdef FILE *fp = fopen(outfile_path, "w")
@@ -132,21 +132,18 @@ cdef class IslandFileWriter:
         cdef cstr line
         cdef vector[Island]* vptr
 
-        cdef format_f func
+        cdef format_f write
         if self.file_type == "summary":
-            func = self.format_summary_line
+            write = self.write_summary_line
         elif self.file_type == "fdr-filtered":
-            func = self.format_bed_line
-        elif self.file_type == "scoreisland":
-            func = self.format_scoreisland_line
-        elif self.file_type == "cgisland":
-            func = self.format_bed_line
+            write = self.write_bed_line
+        elif self.file_type == "scoreisland" or self.file_type == "cgisland":
+            write = self.write_scoreisland_line
 
         for i in range(chroms.size()):
             vptr = self.islands.getVectorPtr(chroms[i])
             for j in range(deref(vptr).size()):
-                line = func(self, deref(vptr)[j])
-                fprintf(fp, line)
+                write(self, deref(vptr)[j], fp)
 
     cpdef void write(self):
         self.file_name += "-W" + str(self.window_size)
@@ -194,7 +191,7 @@ cdef class BEDFileWriter:
             vptr = self.reads.getVectorPtr(chroms[i])
             for j in range(deref(vptr).size()):
                 read = deref(vptr)[j]
-                fprintf(fp, "%s\t%d\t%d\t%s\t%d\t%c\n", 
+                fprintf(fp, "%s\t%u\t%u\t%s\t%d\t%c\n", 
                     read.chrom.c_str(), read.start, read.end, 
                     read.name.c_str(), read.score, read.strand
                 )
@@ -231,8 +228,8 @@ cdef class DiffExprIslandFileWriter:
         self.e_value = e_value
         self.fdr = fdr
         self.gap_size = gap_size
-        self.header = b"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A"
-        self.format = b"%s\t%d\t%d\t%d\t%.10f\t%d\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"
+        self.header = b"#chrom\tstart\tend\tReadcount_A\tNormalized_Readcount_A\tReadcountB\tNormalized_Readcount_B\tFc_A_vs_B\tpvalue_A_vs_B\tFDR_A_vs_B\tFc_B_vs_A\tpvalue_B_vs_A\tFDR_B_vs_A\n"
+        self.format = b"%s\t%u\t%u\t%u\t%.10f\t%u\t%.10f\t%.10f\t%.10e\t%.10e\t%.10f\t%.10e\t%.10e\n"
 
         if "fdr-filtered" in self.file_type and fdr is None:
             raise ValueError("Missing FDR value")
@@ -240,7 +237,7 @@ cdef class DiffExprIslandFileWriter:
     cdef void c_write_all(self, cstr outfile_path):
         cdef FILE *fp = fopen(outfile_path, "w")
 
-        if "fdr-filtered" in self.file_type:
+        if "summary" in self.file_type:
             fprintf(fp, self.header)
 
         cdef vector[string] chroms = self.islands.getChromosomes()
@@ -270,7 +267,7 @@ cdef class DiffExprIslandFileWriter:
             vptr = self.islands.getVectorPtr(chroms[i])
             for j in range(deref(vptr).size()):
                 island = deref(vptr)[j]
-                fprintf(fp, "%s\t%d\t%d\n", 
+                fprintf(fp, "%s\t%u\t%u\n", 
                     island.chrom.c_str(), island.start, island.end
                 )
 
@@ -302,7 +299,6 @@ cdef class DiffExprIslandFileWriter:
         cdef bytes outfile_path = (self.output_dir + "/" + file_name).encode("UTF-8")
 
         if self.file_type == "union-island":
-            print("file_name:", outfile_path.decode("utf-8"))
             self.c_write_basic(outfile_path)
         else:
             self.c_write_all(outfile_path)

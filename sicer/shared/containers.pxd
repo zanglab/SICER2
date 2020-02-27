@@ -17,10 +17,14 @@ cdef class BEDReadContainer:
         list chromosomes
         mapcpp[string, vector[BEDRead]] data
         uint32_t read_count
+        # Unlike read_count, total_count is set only once at the beginning
+        uint32_t total_count
 
     cdef void insertRead(self, string chrom, BEDRead item)
     cpdef void updateReadCount(self)
+    cpdef void setTotalReadCount(self)
     cpdef uint32_t getReadCount(self)
+    cpdef uint32_t getTotalReadCount(self)
     cpdef list getChromosomes(self)
     cdef mapcpp[string, vector[BEDRead]] getData(self)
     cdef vector[BEDRead]* getVectorPtr(self, string chrom) nogil

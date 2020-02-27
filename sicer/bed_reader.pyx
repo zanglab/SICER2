@@ -58,7 +58,7 @@ cdef class BEDReader:
         int threshold
     ) nogil:
         # Indices to delete
-        cdef vector[int] shouldDelete
+        cdef vector[uint32_t] shouldDelete
 
         cdef uint32_t start = -1
         cdef uint32_t end = -1
