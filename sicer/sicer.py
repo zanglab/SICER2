@@ -6,17 +6,17 @@ import os
 from copy import deepcopy
 
 # SICER Internal Imports
-from sicer.background_stat import BackgroundStatistics
+from sicer.shared.background_stat import BackgroundStatistics
 from sicer.shared.genome_data import GenomeData
-from sicer.bed_reader import BEDReader
-from sicer.generate_windows import generate_windows
-from sicer.find_islands import find_islands
-from sicer.associate_tags_with_control import associate_tags_with_control
-from sicer.filter_islands_by_fdr import filter_islands_by_fdr
-from sicer.recover_significant_reads import recover_significant_reads
-from sicer.find_union_islands import find_union_islands
-from sicer.compare_two_libraries import compare_two_libraries
-from sicer.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter, DiffExprIslandFileWriter
+from sicer.core.bed_reader import BEDReader
+from sicer.core.generate_windows import generate_windows
+from sicer.core.find_islands import find_islands
+from sicer.core.associate_tags_with_control import associate_tags_with_control
+from sicer.core.filter_islands_by_fdr import filter_islands_by_fdr
+from sicer.core.recover_significant_reads import recover_significant_reads
+from sicer.core.find_union_islands import find_union_islands
+from sicer.core.compare_two_libraries import compare_two_libraries
+from sicer.core.file_writers import WigFileWriter, IslandFileWriter, BEDFileWriter, DiffExprIslandFileWriter
 
 WINDOW_PVALUE = 0.20
 BIN_SIZE = 0.001

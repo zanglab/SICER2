@@ -17,7 +17,7 @@ if (float(sys.version[:3])<3.5):
     warnings.formatwarning = warning_on_one_line
     warnings.warn("Recommended to use Python 3.5 or above to run SICER2.")
 
-USE_CYTHON = False
+USE_CYTHON = True
 
 EXT = '.pyx' if USE_CYTHON else '.cpp'
 
@@ -29,10 +29,10 @@ if "clang" in subprocess.check_output(['gcc', '--version']).decode('utf-8').lowe
 
 extension_names = [
     'sicer.shared.data_classes', 'sicer.shared.containers', 'sicer.shared.utils',
-    'sicer.file_writers', 'sicer.bed_reader', 'sicer.generate_windows', 
-    'sicer.find_islands', 'sicer.associate_tags_with_control', 
-    'sicer.filter_islands_by_fdr', 'sicer.recover_significant_reads', 
-    'sicer.coarsegraining', 'sicer.find_union_islands', 'sicer.compare_two_libraries'
+    'sicer.core.file_writers', 'sicer.core.bed_reader', 'sicer.core.generate_windows', 
+    'sicer.core.find_islands', 'sicer.core.associate_tags_with_control', 
+    'sicer.core.filter_islands_by_fdr', 'sicer.core.recover_significant_reads', 
+    'sicer.core.coarsegraining', 'sicer.core.find_union_islands', 'sicer.core.compare_two_libraries'
     ]
 
 def generate_extensions(name_list):
@@ -54,13 +54,13 @@ extensions = generate_extensions(extension_names)
 
 if USE_CYTHON:
     from Cython.Build import cythonize
-    extensions = cythonize(extensions, language_level='3')
+    extensions = cythonize(extensions, language_level=3)
 
 data_ext = ['*.pyx', '*.pxd', '*.h', '*.c', '*.hpp', '*.cpp']
 
 setup(
     name='SICER2',
-    version='1.1.0',
+    version='2.0.0',
     description='SICER2, a redesigned and improved ChIP-seq broad peak calling tool',
     long_description='Redesigned and improved version of the original ChIP-seq broad peak calling tool SICER. Also contains Coarse-graining Approach for Identifying Broad Domains from ChIP-Enriched Regions (RECOGNICER)',
     url='http://zanglab.github.io/SICER2 ',
@@ -69,7 +69,7 @@ setup(
     license='MIT',
     packages=find_packages(),
     package_data={'sicer': data_ext + ['genomedata/*.json'], 'sicer.shared': data_ext},
-    scripts=['bin/sicer','bin/sicer_df', 'bin/recognicer', 'bin/recognicer_df'],
+    scripts=['bin/sicer','bin/sicer-df', 'bin/recognicer', 'bin/recognicer-df'],
     setup_requires=['numpy','scipy>=1.3.0'],
     install_requires=['numpy','scipy>=1.3.0'],
     keywords = ['ChIP-Seq','SICER'],

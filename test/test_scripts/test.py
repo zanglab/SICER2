@@ -251,28 +251,28 @@ def compare_recognicer_df(output_dir, test_dir, file1, file2):
     return result
 
 def run_sicer(treatment, control, output):
-    run = subprocess.Popen(' '.join(['sicer', '-t', treatment, '-c', control, '-s', 'hg38', '-o', output, '--significant_reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
+    run = subprocess.Popen(' '.join(['sicer', '-t', treatment, '-c', control, '-s', 'hg38', '-o', output, '--significant-reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
     run.wait()
     if run.returncode != 0:
         raise Exception("SICER2 execution failure")
     return run.returncode
 
 def run_recognicer(treatment, control, output):
-    run = subprocess.Popen(' '.join(['recognicer', '-t', treatment, '-c', control, '-s', 'hg38', '-o', output, '--significant_reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
+    run = subprocess.Popen(' '.join(['recognicer', '-t', treatment, '-c', control, '-s', 'hg38', '-o', output, '--significant-reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
     run.wait()
     if run.returncode != 0:
         raise Exception("SICER2 execution failure")
     return run.returncode
 
 def run_sicer_df(t1, t2, c1, c2, output):
-    run = subprocess.Popen(' '.join(['sicer_df', '-t', t1, t2, '-c', c1, c2, '-s', 'hg38', '-o', output, '--significant_reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
+    run = subprocess.Popen(' '.join(['sicer-df', '-t', t1, t2, '-c', c1, c2, '-s', 'hg38', '-o', output, '--significant-reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
     run.wait()
     if run.returncode != 0:
         raise Exception("SICER2 execution failure")
     return run.returncode
 
 def run_recognicer_df(t1, t2, c1, c2, output):
-    run = subprocess.Popen(' '.join(['recognicer_df', '-t', t1, t2, '-c', c1, c2, '-s', 'hg38', '-o', output, '--significant_reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
+    run = subprocess.Popen(' '.join(['recognicer-df', '-t', t1, t2, '-c', c1, c2, '-s', 'hg38', '-o', output, '--significant-reads', '>', '/dev/null']), stdin=subprocess.PIPE, shell=True)
     run.wait()
     if run.returncode != 0:
         raise Exception("SICER2 execution failure")
@@ -288,11 +288,11 @@ def df_test(test_type, data_dir, output_dir, test_dir, files, controls):
         c1 = data_dir + '/' + controls[0]
         c2 = data_dir + '/' + controls[1]
         if test_type == "sicer":
-            print('Testing `sicer_df` with \"' + files[0] + '\" and \"' + files[1] + '\"...')
+            print('Testing `sicer-df` with \"' + files[0] + '\" and \"' + files[1] + '\"...')
             run_sicer_df(t1, t2, c1, c2, output_dir)
             passed = compare_sicer_df(output_dir, test_dir, files[0], files[1])
         else:
-            print('Testing `recognicer_df` with \"' + files[0] + '\" and \"' + files[1] + '\"...')
+            print('Testing `recognicer-df` with \"' + files[0] + '\" and \"' + files[1] + '\"...')
             run_recognicer_df(t1, t2, c1, c2, output_dir)
             passed = compare_recognicer_df(output_dir, test_dir, files[0], files[1])
 
@@ -420,12 +420,12 @@ def get_args():
     parser.add_argument("--recognicer", action="store_true", help="If set, test RECOGNICER")
     parser.add_argument("--df", action="store_true", help="If set, test df mode")
 
-    parser.add_argument("--data_dir", type=str, help="Path to location of data")
-    parser.add_argument("--output_dir", type=str, help="Path to output results of SICER")
-    parser.add_argument("--test_dir", type=str, help="Path to where ground-truth results are located")
+    parser.add_argument("--data-dir", type=str, help="Path to location of data")
+    parser.add_argument("--output-dir", type=str, help="Path to output results of SICER")
+    parser.add_argument("--test-dir", type=str, help="Path to where ground-truth results are located")
 
-    parser.add_argument('--test_file', type=str, nargs='+', help='Name of the file to test. Enter two files for df-testing. If not set, default to pre-set files')
-    parser.add_argument('--control_file', type=str, nargs='+', help='Name of the corresponding control_file to test. If not set, default to pre-set files')
+    parser.add_argument('--test-file', type=str, nargs='+', help='Name of the file to test. Enter two files for df-testing. If not set, default to pre-set files')
+    parser.add_argument('--control-file', type=str, nargs='+', help='Name of the corresponding control_file to test. If not set, default to pre-set files')
 
     return parser.parse_args()
 

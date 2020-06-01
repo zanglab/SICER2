@@ -5,42 +5,41 @@
 
 import os
 import sys, errno, warnings
-
-curr_path = os.getcwd()
-cpu_available = os.cpu_count()
-
 import subprocess
 import argparse
 
 # SICER Internal Imports
-from sicer.recognicer import run_recognicer_df
+from sicer.sicer import run_sicer_df
 from sicer.shared.genome_data import get_available_species
+
+curr_path = os.getcwd()
+cpu_available = os.cpu_count()
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
         return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
 
 warnings.formatwarning = warning_on_one_line
 
-def main():
-    '''The main function/pipeline for RECOGNICER-differential enrichment'''
-    parser = argparse.ArgumentParser(description='Processing arguments for RECOGNICER', usage = "Use --help or -h for more information")
+def get_args():
+    '''The main function/pipeline for SICER-differential enrichment'''
+    parser = argparse.ArgumentParser(description='Processing arguments for SICER', usage = "Use --help or -h for more information")
 
     parser.add_argument(
-        '--treatment_file',
+        '--treatment-file',
         '-t',
         required=True,
         nargs='+',
         type=str,
-        help='''Names of the sample file you wish to run RECOGNICER on. This can either be the relative or the absolute path of the file. Must be in BED or BAM format.'''
+        help='''Name of the sample file you wish to run SICER on. This can either be the relative or the absolute path of the file. Must be in BED or BAM format.'''
     )
 
     parser.add_argument(
-        '--control_file',
+        '--control-file',
         '-c',
         required=False,
         nargs='*',
         type=str,
-        help='''Name of the control library in BED or BAM format. This can either be the relative or the absolute path of the file. If you wish to run RECOGNICER without a control library, simply do not enter the file. '''
+        help='''Name of the control library in BED or BAM format. This can either be the relative or the absolute path of the file. If you wish to run SICER without a control library, simply do not enter the file. '''
     )
 
     parser.add_argument(
@@ -48,11 +47,11 @@ def main():
         '-s',
         required=True,
         type=str,
-        help='The species/genome used (ex: hg38)'
+        help='The species/genome to use. (Available: {})'.format(get_available_species())
     )
 
     parser.add_argument(
-        '--redundancy_threshold',
+        '--redundancy-threshold',
         '-rt',
         required=False,
         type=int,
@@ -61,15 +60,15 @@ def main():
     )
 
     parser.add_argument(
-        '--window_size',
+        '--window-size',
         '-w',
         required=False,
         type=int,
         default=200,
-        help='Resolution of RECOGNICER. Default value is 200 (bp)'
+        help='Resolution of SICER. Default value is 200 (bp)'
     )
     parser.add_argument(
-        '--fragment_size',
+        '--fragment-size',
         '-f',
         required=False,
         type=int,
@@ -78,7 +77,7 @@ def main():
     )
 
     parser.add_argument(
-        '--effective_genome_fraction',
+        '--effective-genome-fraction',
         '-egf',
         required=False,
         type=float,
@@ -87,7 +86,7 @@ def main():
     )
 
     parser.add_argument(
-        '--false_discovery_rate',
+        '--false-discovery-rate',
         '-fdr',
         required=False,
         default=0.01,
@@ -96,8 +95,8 @@ def main():
     )
 
     parser.add_argument(
-        '--false_discovery_rate_df',
-        '-fdr_df',
+        '--false-discovery-rate-df',
+        '-fdr-df',
         required=False,
         default=0.01,
         type=float,
@@ -105,7 +104,7 @@ def main():
     )
 
     parser.add_argument(
-        '--output_directory',
+        '--output-directory',
         '-o',
         required=False,
         default=curr_path,
@@ -114,21 +113,20 @@ def main():
     )
 
     parser.add_argument(
-        '--step_size',
-        '-s_size',
+        '--gap-size',
+        '-g',
         required=False,
         type=int,
-        default=3,
-        help='Step Size: the number of windows in one graining unit. Used for RECOGNICER algorithm '
+        default=600,
+        help='The minimum length of a \"gap\" such that neighboring window is an \"island.\" This value must be a multiple of the window size. Default value is 600 (bp)'''
     )
-
     parser.add_argument(
-        '--step_score',
-        '-s_score',
+        '--e-value',
+        '-e',
         required=False,
         type=int,
-        default=2,
-        help='Step Score: The minimum number of positive elements in the graining unit to call the unit positive. Used for RECOGNICER algorithm'
+        default=1000,
+        help='E-value. Requires user input when no control library is provided. Default value is 1000'
     )
 
     parser.add_argument(
@@ -137,36 +135,29 @@ def main():
         required=False,
         type=int,
         default=cpu_available,
-        help='CPU Core Count: The number of CPU cores RECOGNICER program will use when executing multi-processing tasks. Ideal core count is the species\' number of chromosomes. Default value is the maximum number of cores avaiable in the system.'
+        help='CPU Core Count: The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal core count is the species\' number of chromosomes. Default value is the maximum number of cores avaiable in the system.'
     )
 
     parser.add_argument(
-        '--significant_reads',
+        '--significant-reads',
         required=False,
         action='store_true',
         help='Output Significant Reads: Enter \"--significant_reads\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
-
-    parser.add_argument(
-        "--verbose",
-        "-v",
-        required=False,
-        help="increase console output verbosity",
-        action="store_true")
-
+    
     args = parser.parse_args()
-    setattr(args,'subcommand','RECOGNICER')
-    setattr(args,'df',True)
+    
+    return args
 
-    # Check if argument inputs are valid
+def check_args(args):
     if (len(args.treatment_file) != 2):
-        sys.stderr.write("Error: RECOGNICER needs two treatment files as input\n")
+        sys.stderr.write("Error: SICER needs two treatment files as input\n")
         sys.exit(1)
 
     for i in range(len(args.treatment_file)):
         file = args.treatment_file[i]
-        if not(os.path.isabs(file)):
-            args.treatment_file[i] = os.path.join(curr_path, file)
+        if not(os.path.isabs(args.treatment_file[i])):
+            args.treatment_file[i] = os.path.join(curr_path, args.treatment_file[i])
 
         if not os.path.isfile(args.treatment_file[i]):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file)
@@ -196,8 +187,8 @@ def main():
         sys.stderr.write("Error: Effective genome fraction must be a value between 0 and 1.\n")
         sys.exit(1)
 
-    if (args.step_score > args.step_size):
-        sys.stderr.write("Error: Cannot have the step score be larger than step size.\n")
+    if (args.gap_size % args.window_size != 0):
+        sys.stderr.write("Error: Gap size is not a multiple of window size.\n")
         sys.exit(1)
 
     if args.cpu > cpu_available:
@@ -212,7 +203,7 @@ def main():
 
     if (args.control_file is not None):
         if (len(args.control_file) > 2):
-            sys.stderr.write("Error: Too many control file inputs. RECOGNICER accepts at max two files.\n")
+            sys.stderr.write("Error: Too many control file inputs. SICER accepts at max two files.\n")
             sys.exit(1)
 
         if (len(args.control_file) == 1):
@@ -243,11 +234,10 @@ def main():
                         sys.exit(1)
                 args.control_file[i] = bed_file_name
 
-
-    print("Running RECOGNICER with given arguments \n")
-    run_recognicer_df(args)
+if __name__ == '__main__':
+    args = get_args()
+    check_args(args)
+    print("Running SICER with given arguments \n")
+    run_sicer_df(args)
     print("Program Finished Running")
 
-
-if __name__ == '__main__':
-    main()

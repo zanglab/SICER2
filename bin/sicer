@@ -5,10 +5,6 @@
 
 import os
 import sys, errno, warnings
-
-curr_path = os.getcwd()
-cpu_available = os.cpu_count()
-
 import subprocess
 import argparse
 
@@ -16,17 +12,20 @@ import argparse
 from sicer.sicer import run_sicer
 from sicer.shared.genome_data import get_available_species
 
+curr_path = os.getcwd()
+cpu_available = os.cpu_count()
+
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
         return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
 
 warnings.formatwarning = warning_on_one_line
 
-def main():
+def get_args():
     '''The main function/pipeline for SICER'''
     parser = argparse.ArgumentParser(description='Processing arguments for SICER', usage = "Use --help or -h for more information")
 
     parser.add_argument(
-        '--treatment_file',
+        '--treatment-file',
         '-t',
         required=True,
         type=str,
@@ -34,7 +33,7 @@ def main():
     )
 
     parser.add_argument(
-        '--control_file',
+        '--control-file',
         '-c',
         required=False,
         type=str,
@@ -46,11 +45,11 @@ def main():
         '-s',
         required=True,
         type=str,
-        help='The species/genome used (ex: hg38)'
+        help='The species/genome to use. (Available: {})'.format(get_available_species())
     )
 
     parser.add_argument(
-        '--redundancy_threshold',
+        '--redundancy-threshold',
         '-rt',
         required=False,
         type=int,
@@ -59,7 +58,7 @@ def main():
     )
 
     parser.add_argument(
-        '--window_size',
+        '--window-size',
         '-w',
         required=False,
         type=int,
@@ -67,7 +66,7 @@ def main():
         help='Resolution of SICER. Default value is 200 (bp)'
     )
     parser.add_argument(
-        '--fragment_size',
+        '--fragment-size',
         '-f',
         required=False,
         type=int,
@@ -76,7 +75,7 @@ def main():
     )
 
     parser.add_argument(
-        '--effective_genome_fraction',
+        '--effective-genome-fraction',
         '-egf',
         required=False,
         type=float,
@@ -85,7 +84,7 @@ def main():
     )
 
     parser.add_argument(
-        '--false_discovery_rate',
+        '--false-discovery-rate',
         '-fdr',
         required=False,
         default=0.01,
@@ -94,7 +93,7 @@ def main():
     )
 
     parser.add_argument(
-        '--output_directory',
+        '--output-directory',
         '-o',
         required=False,
         default=curr_path,
@@ -103,7 +102,7 @@ def main():
     )
 
     parser.add_argument(
-        '--gap_size',
+        '--gap-size',
         '-g',
         required=False,
         type=int,
@@ -111,7 +110,7 @@ def main():
         help='The minimum length of a \"gap\" such that neighboring window is an \"island.\" This value must be a multiple of the window size. Default value is 600 (bp)'''
     )
     parser.add_argument(
-        '--e_value',
+        '--e-value',
         '-e',
         required=False,
         type=int,
@@ -129,25 +128,16 @@ def main():
     )
 
     parser.add_argument(
-        '--significant_reads',
+        '--significant-reads',
         required=False,
         action='store_true',
         help='Output Significant Reads: Enter \"--significant_reads\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
-    parser.add_argument(
-        "--verbose",
-        "-v",
-        required=False,
-        help="increase console output verbosity",
-        action="store_true"
-    )
-
     args = parser.parse_args()
-    setattr(args,'subcommand','SICER')
-    setattr(args,'df',False)
+    return args
 
-    # Check if argument inputs are valid
+def check_args(args):
     if not(os.path.isabs(args.treatment_file)):
         args.treatment_file = os.path.join(curr_path, args.treatment_file)
 
@@ -222,11 +212,10 @@ def main():
         args.cpu = cpu_available
         warnings.warn("The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
 
+if __name__ == '__main__':
+    args = get_args()
+    check_args(args)
     print("Running SICER with given arguments \n")
     run_sicer(args)
-
     print("Program Finished Running")
 
-
-if __name__ == '__main__':
-    main()
