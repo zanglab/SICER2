@@ -45,76 +45,76 @@ The terminal command to run SICER is `sicer`. The command to run RECOGNICER is `
 Both `sicer` command and `recognicer` command take several flag-based arguments as inputs. Two arguments are required: (1) name/path of treatment file, (2) species of reference genome. Arguments for each command are explained below.
 
 ### SICER Arguments
-##### -t/--treatment_file (Required)
+##### -t/--treatment-file (Required)
 The file must either be in BED or BAM format (note that you need *bedtools* installed to directly enter BAM files).
 The file name can either the relative path or the absolute path of the file.
 
-##### -c/--control_file (Optional)
+##### -c/--control-file (Optional)
 Like the treatment file, control file must be in BED or BAM format and can be the relative path or the absolute path of the file. However, control library input is optional.
 
 ##### -s/--species (Required)
 ex) `-s hg38`
 
-##### -rt/--redundancy_threshold (Optional)
+##### -rt/--redundancy-threshold (Optional)
 The number of copies of indentical reads allowed in a library. Default value is 1
 
-##### -w/--window_size (Optional)
+##### -w/--window-size (Optional)
 Resolution of SICER. Default value is 200 (bp)
 
-##### -f/--fragment_size (Optional)
+##### -f/--fragment-size (Optional)
 The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read.
 Default value is 150 (bp).
 
-##### -egf/--effective_genome_faction (Optional)
+##### -egf/--effective-genome-faction (Optional)
 Effective genome as fraction of the genome size. Default value is 0.74.
 
-##### -fdr/--false_discovery_rate (Optional)
+##### -fdr/--false-discovery-rate (Optional)
 Remove all islands with an false-discovery-rate below cutoff. Default value is 0.01.
 
-##### -g/--gap_size (Optional)
+##### -g/--gap-size (Optional)
 The minimum length of a "gap" such that neighboring window is an "island."
 Please note that this value must be a multiple of the window size.
 Default value is 600 (bp).
 
-##### -e/--e_value (Optional)
+##### -e/--e-value (Optional)
 E-value. Requires user input when no control library is provided. Default value is 1000
 
-##### -o/--output_directory (Optional)
+##### -o/--output-directory (Optional)
 Path of the directory in which results will be stored. Default output directory is the current working directory.
 
 ##### -cpu/--cpu (Optional)
 The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal number of cores is the species' number of chromosomes. Default value is the maximum number of cores avaiable in the system.
 
-##### --significant_reads (Optional)
-Significant Reads: Type "--significant_reads" flag to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
+##### --significant-reads (Optional)
+Significant Reads: Type "--significant-reads" flag to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
 
 ### RECOGNICER Arguments
-All of the arguments for RECOGNICER are identical to those of SICER except for `gap_size` and `e_value`.
-Instead of these two arguments, RECOGNICER has two arguments called `step_size` and `step_score`.
+All of the arguments for RECOGNICER are identical to those of SICER except for `gap-size` and `e-value`.
+Instead of these two arguments, RECOGNICER has two arguments called `step-size` and `step-score`.
 
-##### -s_size/--step_size (Optional)
+##### --step-size (Optional)
 The number of windows in one graining unit. Default value is 3.
 
-##### -s_score/--step_score (Optional)
+##### --step-score (Optional)
 The minimum number of positive elements in the graining unit to call the unit positive. Default value is 2.
 
 
 ## Using SICER2 for differential peak calling
-The commands for differential peak calling are `sicer_df` and `recognicer_df`.  
+The commands for differential peak calling are `sicer-df` and `recognicer-df`.  
 
 #### Arguments
 The arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below.
 
-Also, differential peak calling has one additional argument called `----false_discovery_rate_df`
+Also, differential peak calling has one additional argument called `----false-discovery-rate-df`
 
-##### -t/--treatment_file (Required)
+##### -t/--treatment-file (Required)
 Two files must be given as input. The first file must be the knockout (KO) file and the second file must be the wild-type (WT) file.
 Both files must either be in BED or BAM format.
 
-##### -c/--control_file (Optional)
+##### -c/--control-file (Optional)
 While optional, two files must be given as input if you decide to provide the input. The first file must be the control library corresponding to the knockout (KO) treatment file and the second file must be the control library corresponding to the wild-type (WT) treatment file. Both files must either be in BED or BAM format.
 
-##### -fdr_df/--false_discovery_rate_df (Optional)
+##### -fdr-df/--false-discovery-rate-df (Optional)
 Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01.
 
 
@@ -130,11 +130,11 @@ Cutoff for identification of significant changes been wild-type library and knoc
 
 3. Calling SICER with control libraries for differential peak calling.
 
-`sicer_df -t treatment1.bed treatment2.bed -c control1.bed control2.bed -s hg38`
+`sicer-df -t treatment1.bed treatment2.bed -c control1.bed control2.bed -s hg38`
 
 4. Calling SICER without control libraries for differential peak calling.
 
-`sicer_df -t treatment1.bed treatment2.bed -s hg38`
+`sicer-df -t treatment1.bed treatment2.bed -s hg38`
 
 ## Contact
 Please contact Zang Lab at zang@virginia.edu.
