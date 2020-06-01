@@ -325,11 +325,11 @@ def df_test(test_type, data_dir, output_dir, test_dir, files, controls):
             if test_type == "sicer":
                 print('Testing `sicer_df` with \"' + f1 + '\" and \"' + f2 + '\"...')
                 run_sicer_df(t1, t2, c1, c2, output_dir)
-                passed = compare.check_sicer_df(output_dir, test_dir, f1, f2)
+                passed = compare_sicer_df(output_dir, test_dir, f1, f2)
             else:
                 print('Testing `recognicer_df` with \"' + f1 + '\" and \"' + f2 + '\"...')
                 run_recognicer_df(t1, t2, c1, c2, output_dir)
-                passed = compare.check_recognicer_df(output_dir, test_dir, f1, f2)
+                passed = compare_recognicer_df(output_dir, test_dir, f1, f2)
 
             if passed:
                 print("Test passed!")
@@ -367,7 +367,7 @@ def recognicer_test(data_dir, output_dir, test_dir, files=None, controls=None):
 
             print('Testing `recognicer` with \"' + file + '\"...')
             run_recognicer(file, control, output_dir)
-            passed = compare_recognicer(output_dir, test_dir, file)
+            passed = compare_recognicer(file, output_dir, test_dir)
 
             if passed:
                 print("Test passed!")
@@ -403,7 +403,7 @@ def sicer_test(data_dir, output_dir, test_dir, file=None, control=None):
 
             print('Testing `sicer` with \"' + file + '\"...')
             run_sicer(file, control, output_dir)
-            passed = compare_sicer(output_dir, test_dir, file)
+            passed = compare_sicer(file, output_dir, test_dir)
 
             if passed:
                 print("Test passed!")
