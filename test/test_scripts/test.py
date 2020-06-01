@@ -302,8 +302,7 @@ def df_test(test_type, data_dir, output_dir, test_dir, files, controls):
             faulty = True
 
     else:
-
-        for i in range(len(FILES),2):
+        for i in range(0, len(FILES),2):
             f1 = FILES[i]
             f2 = FILES[i+1]
 
