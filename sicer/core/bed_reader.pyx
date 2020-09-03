@@ -115,6 +115,7 @@ cdef class BEDReader:
             token = strtok(NULL, "\t")
 
         if count != 6:
+            print("Error: Not a valid BED6 line: %s " % line.decode("UTF-8"))
             raise ValueError("Not a valid BED6 line: %s " % line.decode("UTF-8"))
 
         return BEDRead(string(read[0]), strtoul(read[1],NULL,10), strtoul(read[2],NULL,10), 
@@ -136,7 +137,7 @@ cdef class BEDReader:
 
         while getline(&line, &len, fp) != -1:
             read = self._parseBEDLine(line)
-            if read.chrom.c_str() in chromosomes: 
+            if read.chrom.c_str() in chromosomes:
                 reads.insertRead(read.chrom, read)
 
         fclose(fp)

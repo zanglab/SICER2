@@ -317,7 +317,7 @@ def df_test(test_type, data_dir, output_dir, test_dir, files, controls):
                 c2 = 'GSM733780_K562_input.bed'
 
             t1 = data_dir + '/' + f1
-            t2 = data_dir + '/' + f1
+            t2 = data_dir + '/' + f2
             c1 = data_dir + '/' + c1
             c2 = data_dir + '/' + c2
 
@@ -432,11 +432,11 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
 
-    if not os.path.isdir(args.data_dir):
-        raise ValueError("Directory \"" + args.data_dir + "\"doesn't exist.")
+    if not os.path.exists(args.data_dir):
+        raise ValueError("Directory \"" + args.data_dir + "\" doesn't exist.")
 
-    if not os.path.isdir(args.test_dir):
-        raise ValueError("Directory \"" + args.test_dir + "\"doesn't exist.")
+    if not os.path.exists(args.test_dir):
+        raise ValueError("Directory \"" + args.test_dir + "\" doesn't exist.")
 
     test_passed = True
 

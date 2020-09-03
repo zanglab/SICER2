@@ -1,10 +1,9 @@
 # SICER Internal Imports
-from sicer.shared.utils cimport poisson
 from sicer.shared.data_classes cimport BEDRead, Window, Island
 from sicer.shared.containers cimport BEDReadContainer, WindowContainer, IslandContainer
 
 # Cython Imports
-from libc.math cimport log
+from libc.math cimport log, exp, M_PI
 from libcpp cimport bool
 from libc.stdint cimport uint32_t
 from cython.operator cimport dereference as deref
@@ -15,7 +14,38 @@ from libcpp.string cimport string
 from cython.parallel import parallel, prange
 from libcpp.algorithm cimport sort
 
+
 cdef int WINDOW_SIZE_BUFFER = 2
+
+
+cdef double fact(int m) nogil:
+    cdef double value = 1.0
+    if m != 0:
+        while m != 1:
+            value = value * m
+            m = m - 1
+    return value
+
+
+# Return the log of a factorial, using Srinivasa Ramanujan's approximation when m>=20
+cdef double factln(int m) nogil:
+    cdef double value = 1.0
+    if m < 20:
+        if m != 0:
+            while m != 1:
+                value = value * m;
+                m = m - 1;
+        return log(value);
+    else:
+        return m * log(m) - m + log(m * (1 + 4 * m * (1 + 2 * m))) / 6.0 + log(M_PI) / 2
+
+
+cdef double poisson(int i, double average) nogil:
+    if i < 20:
+        return exp(-average) * average ** i / fact(i)
+    else:
+        return exp(-average + i * log(average) - factln(i))
+
 
 cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) nogil:
     cdef vector[Island] filtered_islands
@@ -26,6 +56,7 @@ cdef void _filter_by_threshold(vector[Island]& islands, double score_threshold) 
 
         islands.swap(filtered_islands)
 
+
 cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil:
     cdef uint32_t proximal_island_dist = gap_size + WINDOW_SIZE_BUFFER
     # Create new vector of islands b/c we generally throw away majority of islands
@@ -34,7 +65,7 @@ cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil
     cdef uint32_t curr_start
     cdef uint32_t curr_end
     cdef double curr_score
-    cdef uint32_t dist
+    cdef int dist
 
     if islands.size() > 0:
         if islands.size() == 1:
@@ -46,10 +77,14 @@ cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil
         curr_score = islands[0].score
         for i in range(1, islands.size()):
             dist = islands[i].start - curr_end
+            if chrom == b"chr2" and curr_start == 32916000:
+                print(islands[i].score, dist)
             if dist <= proximal_island_dist:
                 curr_end = islands[i].end
                 curr_score += islands[i].score
             else:
+                #if chrom == b"chr2" and curr_start == 32916000 and curr_end == 32916799:
+                    #print(curr_score)
                 final_islands.push_back(Island(chrom, curr_start, curr_end, curr_score))
                 curr_start = islands[i].start
                 curr_end = islands[i].end
@@ -59,6 +94,7 @@ cdef void _combine_proximal_islands(vector[Island]& islands, int gap_size) nogil
 
         # Swap with our final islands
         islands.swap(final_islands)
+
 
 cdef void _generate_islands(
     vector[Window]& windows,
@@ -81,6 +117,7 @@ cdef void _generate_islands(
                 # Create Island
                 islands.push_back(Island(windows[i].chrom, windows[i].start, windows[i].end, score))
 
+
 cdef void _find_islands_by_chrom(
     vector[Window]& windows,
     vector[Island]& islands,
@@ -95,6 +132,7 @@ cdef void _find_islands_by_chrom(
         _generate_islands(windows, islands, min_tag_threshold, avg_tag_count)
         _combine_proximal_islands(islands, gap_size)
         _filter_by_threshold(islands, score_threshold)
+
 
 cdef IslandContainer _find_islands(
     WindowContainer windows,
@@ -112,6 +150,7 @@ cdef IslandContainer _find_islands(
 
     cdef int i
     for i in prange(chroms.size(), schedule='guided', num_threads=num_cpu, nogil=True):
+    #for i in range(chroms.size()):
         _find_islands_by_chrom(
             deref(windows.getVectorPtr(chroms[i])),
             deref(islands.getVectorPtr(chroms[i])),
@@ -125,6 +164,7 @@ cdef IslandContainer _find_islands(
     print("Total island count: ", islands.getIslandCount())
 
     return islands
+
 
 cpdef IslandContainer find_islands(
     windows,
