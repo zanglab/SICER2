@@ -136,5 +136,18 @@ Cutoff for identification of significant changes been wild-type library and knoc
 
 `sicer_df -t treatment1.bed treatment2.bed -s hg38`
 
+## Adding your own species
+To add a new species, the user has to edit the `SICER2/sicer/lib/GenomeData.py` file directly. To do so,
+1. Clone SICER2 repository.
+2. Edit `sicer/lib/GenomeData.py` as following:
+
+    Create a list of all the chromosome numbers like "hg38_chroms"
+    Create a dictionary that maps chromosome numbers to their length like "hg38_chrom_lengths"
+    Update both "species_chroms" and "species_chrom_lengths" dictionaries so that species name is mapped to the list of chromosomes and the length dictionary.
+    Use the species name used as key value in "species_chroms" and "species_chrom_lengths" as argument for "--species"
+
+
+3. Once finished with editing GenomeData.py, run  `pip install -e .` in the top directory of the repo. This should install the user's local version of SICER2.
+
 ## Contact
 Please contact Zang Lab at zang@virginia.edu.

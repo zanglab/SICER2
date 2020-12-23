@@ -42,13 +42,13 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom, verbose):
             if verbose:
                 print_return += ("Ilegitimate read with start less than zero is ignored \n"
                                  + chrom + "\t" + str(start) + "\t" + str(
-                            end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
+                            end) + "\t" + name + "\t" + str(score) + "\t" + strand + "\n")
         elif (end >= chrom_length):
             if verbose:
                 print_return += (
                             "Ilegitimate read with end beyond chromosome length " + str(chrom_length) + " is ignored \n"
                             + chrom + "\t" + str(start) + "\t" + str(
-                        end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
+                        end) + "\t" + name + "\t" + str(score) + "\t" + strand + "\n")
         else:
             if (strand == '+'):
                 position = start + shift
