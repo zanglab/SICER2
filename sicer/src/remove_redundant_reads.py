@@ -106,7 +106,7 @@ def match_by_chrom(file, chrom):
     matched_reads = subprocess.Popen(['grep', match, file], stdout=subprocess.PIPE) #Use Popen so that if no matches are found, it doesn't throw an exception
     chrom_reads = str(matched_reads.communicate()[0],'utf-8').splitlines()  # generates a list of each reads, which are represented by a string value
     file_name = os.path.basename(file)
-    read_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('name', 'U20'), ('score', np.int32), ('strand', 'U1')])
+    read_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('name', 'U20'), ('score', 'U6'), ('strand', 'U1')])
     processed_reads = np.empty(len(chrom_reads), dtype=read_dtype)
 
     for i, reads in enumerate(chrom_reads):
