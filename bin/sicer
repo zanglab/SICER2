@@ -265,7 +265,7 @@ def main():
 
     if not os.path.isabs(args.output_directory):
         args.output_directory = os.path.join(curr_path, args.output_directory)
-    if not os.path.isabs(args.temp_dir) and args.temp_dir is not None:
+    if args.temp_dir is not None and not os.path.isabs(args.temp_dir):
         args.temp_dir = os.path.join(curr_path, args.temp_dir)
 
     if args.cpu > cpu_available:
@@ -282,8 +282,8 @@ def main():
     logger.setup("Fragment size: %s" % args.fragment_size)
     logger.setup("Effective genome fraction: %s" % args.effective_genome_fraction)
     logger.setup("False discovery rate: %s" % args.false_discovery_rate)
-    logger.setup("False discovery rate approach: %s" % "Benjamini-Hochberg" if args.fdr_method.lower() == "bh"
-                 else "False discovery rate approach: %s" % "Clipper")
+    logger.setup("FDR control method: %s" % "Benjamini-Hochberg" if args.fdr_method.lower() == "bh"
+                 else "FDR control method: %s" % "Clipper")
     logger.setup("Output directory: %s" % args.output_directory)
     logger.setup("Gap size: %s" % args.gap_size)
     logger.setup("E-value: %s" % args.e_value)
