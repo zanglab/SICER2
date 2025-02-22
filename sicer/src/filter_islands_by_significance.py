@@ -2,10 +2,10 @@
 
 # Modified by: Jin Yong Yoo
 
-import multiprocessing as mp
+
 import os
 from functools import partial
-from math import *
+import logging
 
 import numpy as np
 
@@ -45,13 +45,14 @@ def filter_by_fdr_SICER_df(args, columnindex, chrom):
 
 
 def main(args, columnindex, pool):
-    chroms = GenomeData.species_chroms[args.species];
+    s_logger = logging.getLogger("s_logger")
+    chroms = GenomeData.species_chroms[args.species]
     total_island_count = 0
     total_read_count = 0
 
-    df_call = args.df # Determines if this function was called by SICER or SICER-DF
+    df_call = args.df  # Determines if this function was called by SICER or SICER-DF
 
-    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    # pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filtered_output = []
     if (df_call):
         filter_by_fdr_partial = partial(filter_by_fdr_SICER_df, args, columnindex)
@@ -102,6 +103,4 @@ def main(args, columnindex, pool):
                 total_island_count += 1
                 total_read_count += island[3]
 
-    print("Given significance", str(args.false_discovery_rate), ", there are", total_island_count,
-          "significant islands")
-    return total_read_count
+    return total_read_count, total_island_count

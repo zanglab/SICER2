@@ -2,13 +2,11 @@
 
 # Authors: Chongzhi Zang, Weiqun Peng
 
-# Modified by: Jin Yong Yoo
+# Modified by: Jin Yong Yoo, Shiyu Jiang
 
 import bisect
-import multiprocessing as mp
 import os
 from functools import partial
-from math import *
 
 import numpy as np
 
@@ -23,9 +21,12 @@ def tag_position(read, fragment_size):
         return read[2] - 1 - shift
 
 
-def filter_tags_by_islands(file_name, fragment_size, chrom):
+def filter_tags_by_islands(file_name, ctrl_name, fragment_size, chrom):
     island_list = np.load(file_name + '_' + chrom + '_island_summary.npy', allow_pickle=True)
-    read_list = np.load(file_name + '_' + chrom + '.npy', allow_pickle=True)
+    if ctrl_name is not None:
+        read_list = np.load(ctrl_name + '_' + chrom + '.npy', allow_pickle=True)
+    else:
+        read_list = np.load(file_name + '_' + chrom + '.npy', allow_pickle=True)
     filtered_reads = []
     if (len(island_list) > 0):
         island_start_list = []
@@ -43,18 +44,27 @@ def filter_tags_by_islands(file_name, fragment_size, chrom):
                 filtered_reads.append(read)
 
     np_filtered_reads = np.array(filtered_reads, dtype=object)
-    np.save(file_name + '_' + chrom + '_filtered.npy', np_filtered_reads)
+    if ctrl_name is not None:
+        np.save(ctrl_name + '_' + chrom + '_filtered.npy', np_filtered_reads)
+    else:
+        np.save(file_name + '_' + chrom + '_filtered.npy', np_filtered_reads)
 
 
-def main(args, pool):
-    chroms = GenomeData.species_chroms[args.species];
+def main(args, pool, control_lib_exists):
+    chroms = GenomeData.species_chroms[args.species]
     treatment_file = args.treatment_file.replace('.bed', '')
 
     # Use multiprocessing to filter raw tags by islands in parallel processes
     #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
-    filter_tags_by_islands_partial = partial(filter_tags_by_islands, treatment_file, args.fragment_size)
+    filter_tags_by_islands_partial = partial(filter_tags_by_islands, treatment_file, None, args.fragment_size)
     pool.map(filter_tags_by_islands_partial, chroms)
     #pool.close()
+
+    if control_lib_exists:
+        control_file = args.control_file.replace('.bed', '')
+        filter_tags_by_islands_partial = partial(filter_tags_by_islands, treatment_file, control_file, args.fragment_size)
+        pool.map(filter_tags_by_islands_partial, chroms)
+        #pool.close()
 
     output_file_name = treatment_file + '-W' + str(args.window_size)
     if (args.subcommand == "SICER"):
@@ -68,4 +78,5 @@ def main(args, pool):
                 output_line = str(read[0]) + '\t' + str(read[1]) + '\t' + str(read[2]) + '\t' + str(
                     read[3]) + '\t' + str(read[4]) + '\t' + str(read[5]) + '\n'
                 outfile.write(output_line)
+
 

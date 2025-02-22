@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # Author: Jin Yong Yoo
 
-import multiprocessing as mp
 import os
-from math import *
 
 import numpy as np
 
@@ -19,7 +17,7 @@ def get_counts(graph_file):
 
 
 def main(args, output_file_name, pool):
-    chroms = GenomeData.species_chroms[args.species];
+    chroms = GenomeData.species_chroms[args.species]
     scaling_factor = 1000000
     total_count = 0  # total count of islands
     file = args.treatment_file.replace('.bed', '')

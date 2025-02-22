@@ -1,14 +1,14 @@
 # Authors: Chongzhi Zang, Weiqun Peng
 
-# Modified by: Jin Yong Yoo
+# Modified by: Jin Yong Yoo, Shiyu Jiang
 
-import multiprocessing as mp
 import os
 import re
 import sys
 import subprocess
 from functools import partial
 import numpy as np
+import logging
 
 from sicer.lib import GenomeData
 
@@ -138,7 +138,8 @@ def find_and_filter_reads(path_to_file, cutoff, chrom):
 
 
 def main(args, path_to_file, pool):
-    chroms = GenomeData.species_chroms[args.species];  # list of chromsomes of the given species
+    s_logger = logging.getLogger("s_logger")
+    chroms = GenomeData.species_chroms[args.species]  # list of chromosomes of the given species
     cutoff = args.redundancy_threshold
 
     # Use multiprocessing module to run parallel processes for each chromosome
@@ -148,11 +149,11 @@ def main(args, path_to_file, pool):
     #pool.close()
 
     total_read_count = 0
-    print(('-' *105))
-    print(('{:<5s}{:^25s}{:^25s}{:^25s}{:^25s}'.format("chrom", "Total plus reads", "Retained plus reads", "Total minus reads", "Retained minus reads")))
-    print(('-' *105))
+    s_logger.info(('-' *105))
+    s_logger.info(('{:<5s}{:^25s}{:^25s}{:^25s}{:^25s}'.format("chrom", "Total plus reads", "Retained plus reads", "Total minus reads", "Retained minus reads")))
+    s_logger.info(('-' *105))
     for result in filtered_result:
-        print(result[0])
+        s_logger.info(result[0])
         total_read_count += result[1]
 
     return total_read_count

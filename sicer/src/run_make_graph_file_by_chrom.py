@@ -1,12 +1,11 @@
 # Authors: Dustin E Schones, Chongzhi Zang, Weiqun Peng and Keji Zhao
 
-# Modified by: Jin Yong Yoo
+# Modified by: Jin Yong Yoo, Shiyu Jiang
 
-import multiprocessing as mp
 from functools import partial
-from math import *
 import sys
 import numpy as np
+import logging
 
 from sicer.lib import GenomeData
 
@@ -25,7 +24,6 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom, verbose):
     output:
         return: a sorted list of positions which might have redundent entries
     """
-
     postive_tag_counts = 0
     negative_tag_counts = 0
     shift = int(round(fragment_size / 2))
@@ -46,9 +44,9 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom, verbose):
         elif (end >= chrom_length):
             if verbose:
                 print_return += (
-                            "Ilegitimate read with end beyond chromosome length " + str(chrom_length) + " is ignored \n"
-                            + chrom + "\t" + str(start) + "\t" + str(
-                        end) + "\t" + name + "\t" + str(score) + "\t" + strand + "\n")
+                        "Ilegitimate read with end beyond chromosome length " + str(chrom_length) + " is ignored \n"
+                        + chrom + "\t" + str(start) + "\t" + str(
+                    end) + "\t" + name + "\t" + str(score) + "\t" + strand + "\n")
         else:
             if (strand == '+'):
                 position = start + shift
@@ -71,7 +69,8 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom, verbose):
     total_tag_counts = postive_tag_counts + negative_tag_counts
     print_return += 'Total count of ' + chrom + ' tags: ' + str(total_tag_counts)
     if verbose:
-        print_return += ('  ('+str(postive_tag_counts) + ' positive tags, ' + str(negative_tag_counts) + ' negative tags)')
+        print_return += (
+                    '  (' + str(postive_tag_counts) + ' positive tags, ' + str(negative_tag_counts) + ' negative tags)')
 
     return (taglist, print_return)
 
@@ -135,7 +134,7 @@ def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size):
 def makeGraphFile(args, filtered, chrom, chrom_length):
     file = args.treatment_file.replace('.bed', '')  # removes the .bed extension
 
-    bed_file_name = file + '_' + chrom   # name of the ChIP-seq reads
+    bed_file_name = file + '_' + chrom  # name of the ChIP-seq reads
     if filtered:
         bed_file_name = bed_file_name + '_filtered.npy'
     else:
@@ -144,23 +143,49 @@ def makeGraphFile(args, filtered, chrom, chrom_length):
     chrom_reads = np.load(bed_file_name, allow_pickle=True)
 
     tag_list, print_return = get_bed_coords(chrom_reads, chrom_length, args.fragment_size, chrom, args.verbose)
-    
-    chrom_graph, tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size)
 
+    chrom_graph, tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size)
 
     file_save_name = file + '_' + chrom
     if filtered:
         file_save_name += '_filtered_graph.npy'
     else:
         file_save_name += '_graph.npy'
-    
-    #graph_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('count', np.int32)])
+
+    # graph_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('count', np.int32)])
     np_chrom_graph = np.array(chrom_graph, dtype=object)
     np.save(file_save_name, np_chrom_graph)
+    np.save('reads_' + file_save_name, np_chrom_graph)  # TODO
+
+    # generate for control file
+    if args.control_file is not None:
+        file = args.control_file.replace('.bed', '')  # removes the .bed extension
+
+        bed_file_name = file + '_' + chrom  # name of the ChIP-seq reads
+        if filtered:
+            bed_file_name = bed_file_name + '_filtered.npy'
+        else:
+            bed_file_name = bed_file_name + '.npy'
+
+        chrom_reads = np.load(bed_file_name, allow_pickle=True)
+        tag_list, print_return = get_bed_coords(chrom_reads, chrom_length, args.fragment_size, chrom, args.verbose)
+        chrom_graph, tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size)
+
+        file_save_name = file + '_' + chrom
+        if filtered:
+            file_save_name += '_filtered_graph.npy'
+        else:
+            file_save_name += '_graph.npy'
+
+        # graph_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('count', np.int32)])
+        np_chrom_graph = np.array(chrom_graph, dtype=object)
+        np.save('reads_' + file_save_name, np_chrom_graph)
+
     return (tag_count, print_return)
 
 
 def main(args, pool, filtered=False):
+    s_logger = logging.getLogger("s_logger")
     chroms = GenomeData.species_chroms[args.species]
     chrom_lengths = GenomeData.species_chrom_lengths[args.species]
 
@@ -169,18 +194,18 @@ def main(args, pool, filtered=False):
         if chrom in chrom_lengths.keys():
             chrom_length = chrom_lengths[chrom]
         else:
-            print("Can not find the length of ", chrom)
+            s_logger.info("Can not find the length of ", chrom)
         list_of_args.append((chrom, chrom_length))
 
     # Use multiprocessing to partition the gneome in windows and generate the summary files in parallel processes
-    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    # pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     makeGraphFile_partial = partial(makeGraphFile, args, filtered)
     makeGraphFile_result = pool.starmap(makeGraphFile_partial, list_of_args)
-    #pool.close()
+    # pool.close()
 
     total_tag_count = 0
     for result in makeGraphFile_result:
         total_tag_count += result[0]
-        print(result[1])
+        s_logger.info(result[1])
 
     return (total_tag_count)
