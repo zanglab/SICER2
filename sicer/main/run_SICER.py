@@ -41,7 +41,7 @@ def main(args, df_run=False):
         logger.info("Control library is provided. SICER 2 will run with a control library.\n")
 
     # Creates temporary directory to contain all intermediate files. # TODO: define none
-    if args.temp_dir is None:
+    if args.temp_directory is None:
         try:
             temp_dir = tempfile.mkdtemp()
             # Change current working directory to temp_dir
@@ -53,9 +53,9 @@ def main(args, df_run=False):
             sys.exit(-1)
     else:
         if df_run:
-            temp_dir = os.path.join(args.temp_dir, str(time.time()))
+            temp_dir = os.path.join(args.temp_directory, str(time.time()))
         else:
-            temp_dir = args.temp_dir
+            temp_dir = args.temp_directory
         try:
             # check if the temp directory is empty
             if os.path.exists(temp_dir):

@@ -18,7 +18,7 @@ from sicer.lib import GenomeData
 def find_union_islands(no_control, temp_dir_1, temp_dir_2, chrom):
     file_name_1 = temp_dir_1 + '_' + chrom
     file_name_2 = temp_dir_2 + '_' + chrom
-    if (no_control == True):
+    if no_control == True:
         file_name_1 += '_graph.npy'
         file_name_2 += '_graph.npy'
     else:
@@ -27,15 +27,15 @@ def find_union_islands(no_control, temp_dir_1, temp_dir_2, chrom):
 
     island_list_1 = np.load(file_name_1, allow_pickle=True)
     island_list_2 = np.load(file_name_2, allow_pickle=True)
-    if (len(island_list_1) == 0):
+    if len(island_list_1) == 0:
         island_list = island_list_2
-    elif (len(island_list_2) == 0):
+    elif len(island_list_2) == 0:
         island_list = island_list_1
     else:
         island_list = np.concatenate((island_list_1, island_list_2))
 
     union_island_list = []
-    if (len(island_list) > 0):
+    if len(island_list) > 0:
         island_list = island_list[np.argsort(island_list[:, 1])]
         current = island_list[0]
         i = 1
@@ -71,7 +71,7 @@ def main(args, temp_dir_1, temp_dir_2, pool):
 
     outfile_name = (args.treatment_file[0].replace('.bed', '') + '-vs-' + args.treatment_file[1].replace('.bed', '') + '-W' + str(
         args.window_size))
-    if (args.subcommand == "SICER"):
+    if args.subcommand == "SICER":
         outfile_name += '-G' + str(args.gap_size) + '-E' + str(args.e_value) + '-union.island'
     else:
         outfile_name += '-union.island'

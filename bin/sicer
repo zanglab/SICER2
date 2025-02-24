@@ -5,10 +5,12 @@
 
 import os
 import time
-import sys, errno, warnings
+import sys
+import errno
+import warnings
 
 curr_path = os.getcwd()
-cpu_available = os.cpu_count() - 1  #leave one core for I/O
+cpu_available = os.cpu_count() - 1  # leave one core for I/O
 
 import subprocess
 import argparse
@@ -27,7 +29,9 @@ warnings.formatwarning = warning_on_one_line
 
 
 def main():
-    '''The main function/pipeline for SICER'''
+    """
+    The main function/pipeline for SICER
+    """
     parser = argparse.ArgumentParser(description='Processing arguments for SICER 2.0.',
                                      usage="Use --help or -h for more information")
 
@@ -167,7 +171,7 @@ def main():
     )
 
     parser.add_argument(
-        "--temp_dir",
+        "--temp_directory",
         "-td",
         required=False,
         type=str,
@@ -188,7 +192,7 @@ def main():
         except:
             exit(f"Error: Cannot create output directory {args.output_directory}")
     set_log_path(args.output_directory)
-    logger = logging.getLogger("SICER 2.0")
+    logger = logging.getLogger("SICER 2")
 
     # Check if argument inputs are valid
     if not os.path.isabs(args.treatment_file):
@@ -299,7 +303,6 @@ def main():
             sys.exit(1)
 
     run_SICER.main(args)
-
     logger.info(f"SICER 2.0 finished running with execution time of {((time.time() - start_time) / 60):.2f} minutes.")
 
 

@@ -5,7 +5,6 @@
 
 import os
 from functools import partial
-import logging
 
 import numpy as np
 
@@ -34,10 +33,9 @@ def filter_by_fdr_SICER_df(args, columnindex, chrom):
     summary_bed = []
 
     for line in summary_graph:
-        if (line[columnindex] <= cutoff):
-            bed_line = (
-            line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], line[8], line[9], line[10],
-            line[11], line[12])
+        if line[columnindex] <= cutoff:
+            bed_line = (line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], line[8], line[9],
+                        line[10], line[11], line[12])
             summary_bed.append(bed_line)
     save_file_name = chrom + '_union_island_summary_filtered' + str(columnindex) + '.npy'
     np_summary_bed = np.array(summary_bed, dtype=object)
@@ -45,7 +43,6 @@ def filter_by_fdr_SICER_df(args, columnindex, chrom):
 
 
 def main(args, columnindex, pool):
-    s_logger = logging.getLogger("s_logger")
     chroms = GenomeData.species_chroms[args.species]
     total_island_count = 0
     total_read_count = 0
@@ -62,23 +59,23 @@ def main(args, columnindex, pool):
         filtered_output = pool.map(filter_by_fdr_partial, chroms)
 
     outfile_name = ''
-    if (df_call and args.subcommand == "SICER"):
-        if (columnindex == 9):
+    if df_call and args.subcommand == "SICER":
+        if columnindex == 9:
             outfile_name = (args.treatment_file[0].replace('.bed', '') + '-W' + str(args.window_size) + '-G' + str(
                 args.gap_size) +
                             '-increased-islands-summary-FDR' + str(args.false_discovery_rate_df))
-        elif (columnindex == 12):
+        elif columnindex == 12:
             outfile_name = (args.treatment_file[0].replace('.bed', '') + '-W' + str(args.window_size) + '-G' + str(
                 args.gap_size) +
                             '-decreased-islands-summary-FDR' + str(args.false_discovery_rate_df))
     elif (not (df_call) and args.subcommand == "SICER"):
         outfile_name = (args.treatment_file.replace('.bed', '') + '-W' + str(args.window_size) + '-G'
                         + str(args.gap_size) + '-FDR' + str(args.false_discovery_rate) + '-island.bed')
-    elif (df_call and args.subcommand == "RECOGNICER"):
-        if (columnindex == 9):
+    elif df_call and args.subcommand == "RECOGNICER":
+        if columnindex == 9:
             outfile_name = (args.treatment_file[0].replace('.bed', '') + '-W' + str(args.window_size) +
                             '-increased-islands-summary-FDR' + str(args.false_discovery_rate_df))
-        elif (columnindex == 12):
+        elif columnindex == 12:
             outfile_name = (args.treatment_file[0].replace('.bed', '') + '-W' + str(args.window_size) +
                             '-decreased-islands-summary-FDR' + str(args.false_discovery_rate_df))
     elif (not (df_call) and args.subcommand == "RECOGNICER"):

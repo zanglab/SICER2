@@ -2,18 +2,18 @@
 
 # Authors: Chongzhi Zang, Weiqun Peng
 
-# Modified by: Jin Yong Yoo
+# Modified by: Jin Yong Yoo, Shiyu Jiang
 
 import multiprocessing as mp
 import os
 from functools import partial
 from math import *
+import logging
 
 import numpy as np
 import scipy.stats
 
 from sicer.lib import GenomeData
-from sicer.lib import Utility
 from sicer.lib import associate_tags_with_regions
 
 
@@ -111,10 +111,11 @@ def associate_tags_count_to_regions(args, path_A, path_B, scaling_factor, chrom)
 
 
 def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_size, pool):
+    s_logger = logging.getLogger("s_logger")
     chroms = GenomeData.species_chroms[args.species]
 
-    print("Library size of ", args.treatment_file[0], ":  ", A_library_size)
-    print("Library size of ", args.treatment_file[1], ":  ", B_library_size)
+    s_logger.info(f"Library size of {args.treatment_file[0]}:  {A_library_size}")
+    s_logger.info(f"Library size of {args.treatment_file[1]}:  {B_library_size}")
 
     library_scaling_factor = A_library_size * 1.0 / B_library_size  # A vs B
 
@@ -130,8 +131,8 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
         total_read_count_A += count[0]
         total_read_count_B += count[1]
 
-    print("Total number of A reads on islands is: ", total_read_count_A)
-    print("Total number of B reads on islands is: ", total_read_count_B)
+    s_logger.info(f"Total number of A reads on islands is: {total_read_count_A}")
+    s_logger.info(f"Total number of B reads on islands is: {total_read_count_B}")
 
     island_A_readcount = []
     island_B_readcount = []
@@ -161,7 +162,7 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
     pseudo_count = 1
     outfile_name = (args.treatment_file[0].replace('.bed', '') + '-and-' + args.treatment_file[1].replace('.bed', '') +
                     '-W' + str(args.window_size))
-    if (args.subcommand == "SICER"):
+    if args.subcommand == "SICER":
         outfile_name += ('-G' + str(args.gap_size) + '-summary')
     else:
         outfile_name += '-summary'
@@ -171,7 +172,7 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
                     '#chrom' + "\t" + 'start' + "\t" + 'end' + "\t" + "Readcount_A" + "\t" + 'Normalized_Readcount_A' + "\t" + 'ReadcountB' + "\t" + 'Normalized_Readcount_B'
                     + "\t" + "Fc_A_vs_B" + "\t" + "pvalue_A_vs_B" + "\t" + "FDR_A_vs_B" + "\t" + "Fc_B_vs_A" + "\t" + "pvalue_B_vs_A" + "\t" + "FDR_B_vs_A" + "\n")
         outfile.write(outline)
-        j = 0;
+        j = 0
         for chrom in chroms:
             island_list = np.load(chrom + '_union_output.npy', allow_pickle=True)
             complete_island_list = []
@@ -205,6 +206,6 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
     A_array = A_array / float(A_library_size * scaling_factor)
     B_array = B_array / float(B_library_size * scaling_factor)
     pearson = scipy.stats.pearsonr(A_array, B_array)
-    print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
+    s_logger.info(f"Pearson's correlation is: {pearson[0]} with p-value {pearson[1]}.")
     spearman = scipy.stats.spearmanr(A_array, B_array)
-    print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
+    s_logger.info(f"Spearman's correlation is: {spearman[0]} with p-value {spearman[1]}.")

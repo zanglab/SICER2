@@ -6,6 +6,8 @@ import copy
 import os
 import shutil
 import sys
+import time
+import logging
 import tempfile
 import multiprocessing as mp
 
@@ -20,9 +22,11 @@ from sicer.src import filter_islands_by_significance
 
 
 def main(args):
+    logger = logging.getLogger("SICER 2")
+    s_logger = logging.getLogger("s_logger")
     # Checks if there is a control library
     control_lib_exists = True
-    if (args.control_file is None):
+    if args.control_file is None:
         control_lib_exists = False
 
     # Create deep copy of the 'args' object for each treatment
@@ -35,14 +39,13 @@ def main(args):
     args_1.df = False
     args_2.df = False
 
-    if (control_lib_exists):
+    if control_lib_exists:
         args_1.control_file = str(args.control_file[0])
         args_2.control_file = str(args.control_file[1])
 
-        # Execute run_SICER for each treatment library
+    # Execute run_SICER for each treatment library
     temp_dir_1, library_size_file1 = run_SICER.main(args_1, True)
     temp_dir_2, library_size_file2 = run_SICER.main(args_2, True)
-
 
     try:
         temp_dir = tempfile.mkdtemp()
@@ -57,25 +60,23 @@ def main(args):
         pool = mp.Pool(processes=min(args.cpu, num_chroms))
 
         # Find the union island between two treatment files. It will generate a summary file
-        print("\n")
+        s_logger.info(" ")
         args.treatment_file[0] = os.path.basename(args.treatment_file[0])
         args.treatment_file[1] = os.path.basename(args.treatment_file[1])
-        print("Finding all the union islands of ", args.treatment_file[0], "and ", args.treatment_file[1], "...")
+        logger.info(f"Finding all the union islands of {args.treatment_file[0]} and {args.treatment_file[1]} ...")
         find_union_islands.main(args, temp_dir_1, temp_dir_2, pool)
-        print("\n")
+        s_logger.info(" ")
 
         # Compare two treatment libraries
-        print("Comparing two treatment libraries...")
+        logger.info("Comparing two treatment libraries...")
         compare_two_libraries_on_islands.main(args, temp_dir_1, temp_dir_2, library_size_file1, library_size_file2, pool)
-        print("\n")
+        s_logger.info(" ")
 
-        print("Identifying significantly increased islands using BH corrected p-value cutoff...")
+        logger.info("Identifying significantly increased islands using BH corrected p-value cutoff...")
         filter_islands_by_significance.main(args, 9, pool)
-        print("\n")
 
-        print("Identifying significantly decreased islands using BH-corrected p-value cutoff...")
+        logger.info("Identifying significantly decreased islands using BH corrected p-value cutoff...")
         filter_islands_by_significance.main(args, 12, pool)
-        print("\n")
 
         pool.close()
         pool.join()
