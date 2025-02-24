@@ -269,8 +269,8 @@ def main():
 
     if not os.path.isabs(args.output_directory):
         args.output_directory = os.path.join(curr_path, args.output_directory)
-    if args.temp_dir is not None and not os.path.isabs(args.temp_dir):
-        args.temp_dir = os.path.join(curr_path, args.temp_dir)
+    if args.temp_directory is not None and not os.path.isabs(args.temp_directory):
+        args.temp_directory = os.path.join(curr_path, args.temp_directory)
 
     if args.cpu > cpu_available:
         args.cpu = cpu_available
