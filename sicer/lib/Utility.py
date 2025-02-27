@@ -25,6 +25,18 @@ import re, os, sys, shutil
 from math import *
 from string import *
 
+def get_available_cpus():
+    try:
+        # Try to get the number of cores available to this process
+        CPUS = len(os.sched_getaffinity(0))
+    except AttributeError:
+        # Windows / MacOS probably don't have this functionality
+        CPUS = os.cpu_count()
+    # leave one core for I/O if number of CPUS > 1
+    CPUS = CPUS -1 if CPUS > 1 else CPUS
+    return CPUS
+
+
 def get_total_tag_counts(tag_bed_file):
     """
     Get total tag counts given the current experimental run

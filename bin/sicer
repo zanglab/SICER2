@@ -7,7 +7,6 @@ import os
 import sys, errno, warnings
 
 curr_path = os.getcwd()
-cpu_available = os.cpu_count() - 1  #leave one core for I/O
 
 import subprocess
 import argparse
@@ -15,6 +14,8 @@ import argparse
 # Imports from SICER package
 from sicer.main import run_SICER
 from sicer.lib import Utility, GenomeData
+
+cpu_available = Utility.get_available_cpus()
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
         return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
