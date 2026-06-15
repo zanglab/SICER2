@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-06-15
+### Added
+- Add mm39 to GenomeData.py
 
 ## [1.0.2] - 2020-02-21
 ### Added
