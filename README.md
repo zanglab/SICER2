@@ -1,12 +1,12 @@
-# SICER2
-Redesigned and improved ChIP-seq broad peak calling tool SICER
+# SICER2.1.0
+Redesigned and improved ChIP-seq and CUT&Tag broad peak calling tool SICER.
 
-[![Build Status](https://travis-ci.com/zanglab/SICER2.svg?branch=master)](https://travis-ci.com/zanglab/SICER2)
+[![Build Status](https://travis-ci.com/tmx1228/SICER2.1.0.svg?branch=master)](https://travis-ci.com/tmx1228/SICER2.1.0)
 
 ## Introduction
 Chromatin immunoprecipitation combined with high-throughput sequencing (ChIP-seq) can be used to map binding sites of a protein of interest in the genome. Histone modifications usually occupy broad chromatin domains and result in diffuse patterns in ChIP-seq data that make it difficult to identify signal enrichment. SICER, a spatial clustering approach for the identification of ChIP-enriched regions, was developed for calling broad peaks from ChIP-seq data. 
 
-Usability of the original SICER software has been affected by increased throughputs of ChIP-seq experiments over the years. We now present SICER2, a more user-friendly version of SICER that has been redisgned and streamlined to handle large ChIP-seq data sets. This new Python package supports multiple job submissions on cluster systems and parallel processing on multicore architectures.
+Usability of the original SICER software has been affected by increased throughput of ChIP-seq experiments over the years. We now present SICER2.1.0, a more user-friendly version of SICER that has been redesigned and streamlined to handle large ChIP-seq and CUT&Tag data sets. This version supports paired-end (PE) input and accepts BAM files directly as input.
 
 For more information about the original SICER algorithm, please see,
 
@@ -22,8 +22,7 @@ Easiest way to install SICER2 is through `pip`. Simply open the terminal and typ
 
 ### Requirements
 #### Python Version
-Unlike the original version of SICER, SICER2 runs in Python 3.
-Please use Python 3 to install and run SICER 2.0.
+SICER2 runs in Python 3. Please use Python 3 to install and run SICER2.1.0.
 
 #### Libraries
 Numpy and Scipy are required to run SICER2. Please have these installed before installing SICER2.
@@ -33,11 +32,10 @@ This can be done by simply typing `pip install numpy scipy` under command line (
 C compiler is required to compile C codes that are part of the SICER2 package. This also means that python header files (e.g. Python.h) are needed. For Linux users, make sure to have python-dev installed. For Mac OS X users, it is recommended that you install Xcode.
 
 #### BedTools
-Lastly, if you would like to directly pass BAM files as input files for SICER2, you need to have *bedtools* installed. Please refer to this [link](http://bedtools.readthedocs.io/en/latest/) for more details on installing bedtools. This is not required if you will intend to only pass BED files as input files.
+If you would like to directly pass BAM files as input files for SICER2, you need to have *bedtools* installed. Please refer to this [link](http://bedtools.readthedocs.io/en/latest/) for more details on installing bedtools. This is not required if you will only pass BED files as input files.
 
 ### Other Installations
 For local installation, the source distribution file is available at Zang Lab website ([link](http://faculty.virginia.edu/zanglab/))
-
 
 ## Using SICER2
 The terminal command to run SICER is `sicer`. The command to run RECOGNICER is `recognicer`.
@@ -51,6 +49,9 @@ The file name can either the relative path or the absolute path of the file.
 
 ##### -c/--control_file (Optional)
 Like the treatment file, control file must be in BED or BAM format and can be the relative path or the absolute path of the file. However, control library input is optional.
+
+##### --input_type (Optional)
+Specify whether input data is single-end (SE) or paired-end (PE). Default is SE.
 
 ##### -s/--species (Required)
 ex) `-s hg38`
@@ -98,7 +99,6 @@ The number of windows in one graining unit. Default value is 3.
 ##### -s_score/--step_score (Optional)
 The minimum number of positive elements in the graining unit to call the unit positive. Default value is 2.
 
-
 ## Using SICER2 for differential peak calling
 The commands for differential peak calling are `sicer_df` and `recognicer_df`.  
 
@@ -116,7 +116,6 @@ While optional, two files must be given as input if you decide to provide the in
 
 ##### -fdr_df/--false_discovery_rate_df (Optional)
 Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01.
-
 
 ## Example Use
 1. Calling SICER with a control library.
@@ -146,8 +145,8 @@ To add a new species, the user has to edit the `SICER2/sicer/lib/GenomeData.py` 
     Update both "species_chroms" and "species_chrom_lengths" dictionaries so that species name is mapped to the list of chromosomes and the length dictionary.
     Use the species name used as key value in "species_chroms" and "species_chrom_lengths" as argument for "--species"
 
-
 3. Once finished with editing GenomeData.py, run  `pip install -e .` in the top directory of the repo. This should install the user's local version of SICER2.
 
 ## Contact
 Please contact Zang Lab at zang@virginia.edu.
+

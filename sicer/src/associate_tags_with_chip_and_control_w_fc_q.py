@@ -2,6 +2,8 @@
 
 # Modified by: Jin Yong Yoo
 
+# Modified by: Mengxue Tian (2026)
+
 import multiprocessing as mp
 import os
 from functools import partial
@@ -56,9 +58,16 @@ def associate_tag_count_to_regions(args, scaling_factor, control_library_size, g
         if (control_count > 0):
             average = control_count * scaling_factor
         else:
-            length = island[2] - island[1] + 1
-            average = length * control_library_size * 1.0 / genomesize
-            average = min(0.25, average) * scaling_factor;
+            # Expected control reads based on island length and genome-wide background
+            length = float(island[2]) - float(island[1]) + 1.0
+        
+            average = (
+                length
+                * float(control_library_size)
+                / float(genomesize)
+            )
+            
+            average = min(0.25, average) * float(scaling_factor)
         fc = float(observation_count) / float(average)
         if (observation_count > average):
             pvalue = scipy.stats.poisson.sf(observation_count, average)
