@@ -1,9 +1,9 @@
-site_name: SICER2 Documentation
+site_name: SICER2.1.0 Documentation
 pages:
     - 'Quick Start': index.md
     - 'Workflow of SICER2': workflow.md
-    - 'Understanding SICER2 Outputs': sicer2_output.md
+    - 'Understanding SICER2 Outputs': sicer2.1.0_output.md
     - Contact: contact.md
 theme: readthedocs
-repo_url: https://github.com/zanglab/SICER2
-site_author: Jin Yong Yoo
+repo_url: https://github.com/tmx1228/SICER2.1.0
+site_author: Mengxue Tian

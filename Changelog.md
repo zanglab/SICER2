@@ -1,23 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-
-## [1.0.2] - 2020-02-21
-### Added
-- Changelog file to keep track of changes to this project.
-
+## [2.1] - 2026-02-05
 ### Fixed
-- Fixed bug with outputting to an user-specified output directory.
-- Fixed bug in `find_islands_in_pr` so that empty island lists do not trigger `IndexError`. 
+- Fixed generating bed file from bam file duplicate issue.
 
-## [1.0.1] - 2019-12-28
-### Fixed
-- Fixed issue with calling BEDTools using `subprocess.call`. Instead, use `subprocess.Popen` to enable piping.
-- Fixed method for getting CPU count
-    
-## [1.0.0] - 2019-06-14
+## [2.1] - 2026-01-03
 ### Added
-- New version of SICER for improved user-friendliness and parallelization support
-- Multiprocessing based on chromosomes
-- RECOGNICER algorithm added
-- Uses BEDTools to convert BAM file to BED automatically
+- SICER2.1 now accepts BAM file as input data.
+
+## [2.1] - 2025-12-08
+### Added
+- SICER2.1 now accepts paired-end data.
+

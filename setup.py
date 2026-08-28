@@ -13,12 +13,12 @@ extra_c_args = ["-w","-O3","-ffast-math"]
 ext_modules = [Extension("sicer.src.coarsegraining",["sicer/src/coarsegraining.c"],extra_compile_args=extra_c_args)]
 
 setup(
-    name='SICER2',
-    version='1.0.2',
-    description = 'SICER2, a redesigned and improved ChIP-seq broad peak calling tool',
-    long_description='Redesigned and improved version of the original ChIP-seq broad peak calling tool SICER. Also contains Coarse-graining Approach for Identifying Broad Domains from ChIP-Enriched Regions (RECOGNICER)',
-    url = 'http://zanglab.github.io/SICER2 ',
-    author = 'Jin Yong Yoo, Yiren Wang, Chongzhi Zang*',
+    name='SICER',
+    version='2.1.0',
+    description = 'SICER2, a redesigned and improved ChIP-seq and CUT&Tag broad peak calling tool',
+    long_description='Redesigned and improved version of the original ChIP-seq and CUT&Tag broad peak calling tool SICER. Also contains Coarse-graining Approach for Identifying Broad Domains from Signal-Enriched Regions (RECOGNICER)',
+    url = 'http://zanglab.github.io/SICER2.1 ',
+    author = 'Mengxue Tian, Jin Yong Yoo, Yiren Wang, Chongzhi Zang*',
     author_email = 'zang@virginia.edu',
     license = 'MIT',
     packages=find_packages(),

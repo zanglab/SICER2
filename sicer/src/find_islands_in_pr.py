@@ -155,7 +155,7 @@ def main(args, total_read_count, pool):
     print("Window_size: ", args.window_size);
     print("Gap size: ", args.gap_size);
     print("E value is:", args.e_value);
-    print("Total read count:", total_read_count)
+    print("Total", "fragment count:" if args.input_type == "PE" else "read count:", total_read_count)
     chroms = GenomeData.species_chroms[
         args.species];  # list of chromsomes for the given species (e.g. chr1, chr2, ... , chrx)
     genome_length = sum(GenomeData.species_chrom_lengths[args.species].values());  # list of length of each chromsomes
@@ -220,3 +220,4 @@ def main(args, total_read_count, pool):
                 outfile.write(line)
 
     print("Total number of islands: ", total_number_islands);
+
